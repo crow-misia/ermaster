@@ -1,0 +1,16 @@
+	/**
+	 * @logicalColumnName ‚ğİ’è‚µ‚Ü‚·.
+	 * 
+	 * @param @physicalColumnName @logicalColumnName
+	 */
+	public void set@PhysicalColumnName(@type @physicalColumnName) {
+		this.@physicalColumnName = @physicalColumnName;
+	}
+
+	/**
+	 * @logicalColumnName ‚ğæ“¾‚µ‚Ü‚·.
+	 * 
+	 * @return @logicalColumnName
+	 */
+	public @type get@PhysicalColumnName() {
+	}

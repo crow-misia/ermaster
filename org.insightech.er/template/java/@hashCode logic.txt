@@ -1,0 +1,1 @@
+		result = prime * result + ((@primaryKey == null) ? 0 : @primaryKey.hashCode()); 
