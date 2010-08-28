@@ -31,6 +31,7 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.FileText;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.testdata.TestDataCreator;
+import org.insightech.er.editor.model.dbexport.testdata.impl.DBUnitFlatXmlTestDataCreator;
 import org.insightech.er.editor.model.dbexport.testdata.impl.DBUnitTestDataCreator;
 import org.insightech.er.editor.model.dbexport.testdata.impl.SQLTestDataCreator;
 import org.insightech.er.editor.model.testdata.TestData;
@@ -41,6 +42,12 @@ public class ExportToTestDataDialog extends AbstractDialog {
 	private Button formatSqlRadio;
 
 	private Button formatDBUnitRadio;
+
+	private Button formatDBUnitFlatXmlRadio;
+
+	private Button repeatToDirectRadio;
+
+	private Button directToRepeatRadio;
 
 	private FileText outputFileText;
 
@@ -66,24 +73,10 @@ public class ExportToTestDataDialog extends AbstractDialog {
 	 */
 	@Override
 	protected void initialize(Composite parent) {
-		GridData groupGridData = new GridData();
-		groupGridData.horizontalAlignment = GridData.FILL;
-		groupGridData.grabExcessHorizontalSpace = true;
-		groupGridData.horizontalSpan = 3;
+		this.createFormatGroup(parent);
+		this.createOutputOrderGroup(parent);
 
-		GridLayout groupLayout = new GridLayout();
-		groupLayout.marginWidth = 15;
-		groupLayout.marginHeight = 15;
-
-		Group group = new Group(parent, SWT.NONE);
-		group.setText(ResourceString.getResourceString("label.format"));
-		group.setLayoutData(groupGridData);
-		group.setLayout(groupLayout);
-
-		this.formatSqlRadio = CompositeFactory.createRadio(this, group,
-				"label.sql");
-		this.formatDBUnitRadio = CompositeFactory.createRadio(this, group,
-				"label.dbunit");
+		CompositeFactory.filler(parent, 3);
 
 		CompositeFactory.createLabel(parent, "label.output.file");
 
@@ -100,6 +93,50 @@ public class ExportToTestDataDialog extends AbstractDialog {
 		CompositeFactory.filler(parent, 3);
 	}
 
+	private void createFormatGroup(Composite parent) {
+		GridData formatGroupGridData = new GridData();
+		formatGroupGridData.horizontalAlignment = GridData.FILL;
+		formatGroupGridData.grabExcessHorizontalSpace = true;
+		formatGroupGridData.horizontalSpan = 3;
+
+		GridLayout formatGroupLayout = new GridLayout();
+		formatGroupLayout.marginWidth = 15;
+		formatGroupLayout.marginHeight = 15;
+
+		Group formatGroup = new Group(parent, SWT.NONE);
+		formatGroup.setText(ResourceString.getResourceString("label.format"));
+		formatGroup.setLayoutData(formatGroupGridData);
+		formatGroup.setLayout(formatGroupLayout);
+
+		this.formatSqlRadio = CompositeFactory.createRadio(this, formatGroup,
+				"label.sql");
+		this.formatDBUnitRadio = CompositeFactory.createRadio(this,
+				formatGroup, "label.dbunit");
+		this.formatDBUnitFlatXmlRadio = CompositeFactory.createRadio(this,
+				formatGroup, "label.dbunit.flat.xml");
+	}
+
+	private void createOutputOrderGroup(Composite parent) {
+		GridData groupGridData = new GridData();
+		groupGridData.horizontalAlignment = GridData.FILL;
+		groupGridData.grabExcessHorizontalSpace = true;
+		groupGridData.horizontalSpan = 3;
+
+		GridLayout groupLayout = new GridLayout();
+		groupLayout.marginWidth = 15;
+		groupLayout.marginHeight = 15;
+
+		Group group = new Group(parent, SWT.NONE);
+		group.setText(ResourceString.getResourceString("label.output.order"));
+		group.setLayoutData(groupGridData);
+		group.setLayout(groupLayout);
+
+		this.directToRepeatRadio = CompositeFactory.createRadio(this, group,
+				"label.output.order.direct.to.repeat");
+		this.repeatToDirectRadio = CompositeFactory.createRadio(this, group,
+				"label.output.order.repeat.to.direct");
+	}
+
 	@Override
 	protected void addListener() {
 		super.addListener();
@@ -109,7 +146,7 @@ public class ExportToTestDataDialog extends AbstractDialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				outputFileText.setFilterExtension(".sql");
-				
+
 				String path = outputFileText.getFilePath();
 
 				if (path != null && path.endsWith(".xml")) {
@@ -126,7 +163,7 @@ public class ExportToTestDataDialog extends AbstractDialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				outputFileText.setFilterExtension(".xml");
-				
+
 				String path = outputFileText.getFilePath();
 
 				if (path != null && path.endsWith(".sql")) {
@@ -138,6 +175,24 @@ public class ExportToTestDataDialog extends AbstractDialog {
 
 		});
 
+		this.formatDBUnitFlatXmlRadio
+				.addSelectionListener(new SelectionAdapter() {
+
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						outputFileText.setFilterExtension(".xml");
+
+						String path = outputFileText.getFilePath();
+
+						if (path != null && path.endsWith(".sql")) {
+							path = path.substring(0, path.length()
+									- ".sql".length());
+							path += ".xml";
+							outputFileText.setText(path);
+						}
+					}
+
+				});
 	}
 
 	@Override
@@ -156,6 +211,20 @@ public class ExportToTestDataDialog extends AbstractDialog {
 
 		} else if (this.formatDBUnitRadio.getSelection()) {
 			this.testData.setExportFormat(TestData.EXPORT_FORMT_DBUNIT);
+
+		} else if (this.formatDBUnitFlatXmlRadio.getSelection()) {
+			this.testData
+					.setExportFormat(TestData.EXPORT_FORMT_DBUNIT_FLAT_XML);
+
+		}
+
+		if (this.repeatToDirectRadio.getSelection()) {
+			this.testData
+					.setExportOrder(TestData.EXPORT_ORDER_REPEAT_TO_DIRECT);
+
+		} else if (this.directToRepeatRadio.getSelection()) {
+			this.testData
+					.setExportOrder(TestData.EXPORT_ORDER_DIRECT_TO_REPEAT);
 
 		}
 
@@ -176,6 +245,10 @@ public class ExportToTestDataDialog extends AbstractDialog {
 			if (this.testData.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT) {
 				testDataCreator = new DBUnitTestDataCreator(this.testData
 						.getExportFileEncoding());
+
+			} else if (this.testData.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
+				testDataCreator = new DBUnitFlatXmlTestDataCreator(
+						this.testData.getExportFileEncoding());
 
 			} else {
 				testDataCreator = new SQLTestDataCreator();
@@ -216,9 +289,21 @@ public class ExportToTestDataDialog extends AbstractDialog {
 			this.formatDBUnitRadio.setSelection(true);
 			extension = ".xml";
 
+		} else if (this.testData.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
+			this.formatDBUnitFlatXmlRadio.setSelection(true);
+			extension = ".xml";
+
 		} else {
 			this.formatSqlRadio.setSelection(true);
 			extension = ".sql";
+
+		}
+
+		if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
+			this.directToRepeatRadio.setSelection(true);
+
+		} else {
+			this.repeatToDirectRadio.setSelection(true);
 
 		}
 

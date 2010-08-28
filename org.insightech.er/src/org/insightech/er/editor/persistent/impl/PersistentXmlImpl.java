@@ -680,6 +680,8 @@ public class PersistentXmlImpl extends Persistent {
 				"</name>\n");
 		xml.append("\t<export_format>").append(testData.getExportFormat())
 				.append("</export_format>\n");
+		xml.append("\t<export_order>").append(testData.getExportFormat())
+				.append("</export_order>\n");
 		xml.append("\t<export_file_path>").append(
 				escape(testData.getExportFilePath())).append(
 				"</export_file_path>\n");
@@ -1685,7 +1687,7 @@ public class PersistentXmlImpl extends Persistent {
 		return xml.toString();
 	}
 
-	private static String escape(String s) {
+	public static String escape(String s) {
 		if (s == null) {
 			return "";
 		}

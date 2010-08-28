@@ -773,6 +773,7 @@ public class XMLLoader {
 
 		testData.setName(this.getStringValue(element, "name"));
 		testData.setExportFormat(this.getIntValue(element, "export_format"));
+		testData.setExportOrder(this.getIntValue(element, "export_order"));
 		testData.setExportFilePath(this.getStringValue(element,
 				"export_file_path"));
 		testData.setExportFileEncoding(this.getStringValue(element,

@@ -46,13 +46,26 @@ public abstract class TestDataCreator {
 
 			sb.append(this.getTableHeader(diagram, table));
 
-			for (Map<NormalColumn, String> data : directTestData.getDataList()) {
-				sb.append(this.getDirectTestData(table, data, diagram
-						.getDatabase()));
-			}
+			if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
+				for (Map<NormalColumn, String> data : directTestData
+						.getDataList()) {
+					sb.append(this.getDirectTestData(table, data, diagram
+							.getDatabase()));
+				}
 
-			sb.append(this.getRepeatTestData(table, repeatTestData, diagram
-					.getDatabase()));
+				sb.append(this.getRepeatTestData(table, repeatTestData, diagram
+						.getDatabase()));
+
+			} else {
+				sb.append(this.getRepeatTestData(table, repeatTestData, diagram
+						.getDatabase()));
+
+				for (Map<NormalColumn, String> data : directTestData
+						.getDataList()) {
+					sb.append(this.getDirectTestData(table, data, diagram
+							.getDatabase()));
+				}
+			}
 
 			sb.append(this.getTableFooter(table));
 		}
