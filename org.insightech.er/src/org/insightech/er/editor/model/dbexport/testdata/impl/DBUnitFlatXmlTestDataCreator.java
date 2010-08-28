@@ -10,11 +10,11 @@ import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.persistent.impl.PersistentXmlImpl;
 
-public class DBUnitTestDataCreator extends TestDataCreator {
+public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 
 	private String encoding;
 
-	public DBUnitTestDataCreator(String encoding) {
+	public DBUnitFlatXmlTestDataCreator(String encoding) {
 		this.encoding = encoding;
 	}
 
@@ -23,15 +23,18 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 			Map<NormalColumn, String> data, String database) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("\t\t<row>\r\n");
+		sb.append("\t<");
+		sb.append(table.getNameWithSchema(database));
 
 		for (NormalColumn column : table.getExpandedColumns()) {
-			sb.append("\t\t\t<value>");
+			sb.append(" ");
+			sb.append(column.getPhysicalName());
+			sb.append("=\"");
 			sb.append(PersistentXmlImpl.escape(data.get(column)));
-			sb.append("</value>\r\n");
+			sb.append("\"");
 		}
 
-		sb.append("\t\t</row>\r\n");
+		sb.append(">\r\n");
 
 		return sb.toString();
 	}
@@ -42,9 +45,13 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < repeatTestData.getTestDataNum(); i++) {
-			sb.append("\t\t<row>\r\n");
+			sb.append("\t<");
+			sb.append(table.getNameWithSchema(database));
 
 			for (NormalColumn column : table.getExpandedColumns()) {
+				sb.append(" ");
+				sb.append(column.getPhysicalName());
+				sb.append("=\"");
 
 				RepeatTestDataDef repeatTestDataDef = repeatTestData
 						.getDataDef(column);
@@ -52,12 +59,11 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 				String value = this.getRepeatTestDataValue(i,
 						repeatTestDataDef, column);
 
-				sb.append("\t\t\t<value>");
 				sb.append(PersistentXmlImpl.escape(value));
-				sb.append("</value>\r\n");
+				sb.append("\"");
 			}
 
-			sb.append("\t\t</row>\r\n");
+			sb.append(">\r\n");
 		}
 
 		return sb.toString();
@@ -81,24 +87,12 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 
 	@Override
 	protected String getTableHeader(ERDiagram diagram, ERTable table) {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("\t<table name=\"");
-		sb.append(table.getNameWithSchema(diagram.getDatabase()));
-		sb.append("\">\r\n");
-
-		for (NormalColumn column : table.getExpandedColumns()) {
-			sb.append("\t\t<column>");
-			sb.append(column.getPhysicalName());
-			sb.append("</column>\r\n");
-		}
-
-		return sb.toString();
+		return "";
 	}
 
 	@Override
 	protected String getTableFooter(ERTable table) {
-		return "\t</table>\r\n";
+		return "";
 	}
 
 }

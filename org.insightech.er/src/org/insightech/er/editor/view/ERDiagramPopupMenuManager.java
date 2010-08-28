@@ -15,8 +15,8 @@ import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.action.category.CategoryManageAction;
 import org.insightech.er.editor.view.action.category.ChangeFreeLayoutAction;
 import org.insightech.er.editor.view.action.category.ChangeShowReferredTablesAction;
-import org.insightech.er.editor.view.action.dbexport.ExportToDictionaryAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToDDLAction;
+import org.insightech.er.editor.view.action.dbexport.ExportToDictionaryAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToExcelAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToHtmlAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
@@ -53,7 +53,6 @@ import org.insightech.er.editor.view.action.translation.TranslationManageAction;
 public class ERDiagramPopupMenuManager extends MenuManager {
 
 	private ActionRegistry actionRegistry;
-//	public MenuManager exportMenu;
 
 	public ERDiagramPopupMenuManager(ActionRegistry actionRegistry,
 			final ERDiagram diagram) {
@@ -92,6 +91,14 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		this.add(undoAction);
 		this.add(redoAction);
 
+		final IAction copyAction = this.getAction(ActionFactory.COPY);
+		copyAction.setActionDefinitionId("org.eclipse.ui.edit.copy");
+		this.add(copyAction);
+		
+		final IAction pasteAction = this.getAction(ActionFactory.PASTE);
+		pasteAction.setActionDefinitionId("org.eclipse.ui.edit.paste");
+		this.add(pasteAction);
+		
 		this.add(this.getAction(ActionFactory.DELETE));
 		this.add(this.getAction(ActionFactory.SELECT_ALL));
 		this.add(this.getAction(EditAllAttributesAction.ID));
@@ -107,21 +114,25 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		this.add(this.getAction(SearchAction.ID));
 
 		this.add(new Separator());
-
+		
+		MenuManager displayMenu = new MenuManager(ResourceString
+				.getResourceString("label.display"));
+		
 		MenuManager viewModeMenu = new MenuManager(ResourceString
 				.getResourceString("label.view.mode"));
 		viewModeMenu.add(changeViewToPhysicalAction);
 		viewModeMenu.add(changeViewToLogicalAction);
 		viewModeMenu.add(changeViewToBothAction);
 
-		this.add(viewModeMenu);
+		displayMenu.add(viewModeMenu);
+		
 
 		MenuManager notationMenu = new MenuManager(ResourceString
 				.getResourceString("label.notation"));
 		notationMenu.add(changeToIENotationAction);
 		notationMenu.add(changeToIDEF1XNotationAction);
 
-		this.add(notationMenu);
+		displayMenu.add(notationMenu);
 
 		MenuManager notationLevelMenu = new MenuManager(ResourceString
 				.getResourceString("label.notation.level"));
@@ -135,7 +146,7 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 
 		notationLevelMenu.add(changeNotationExpandGroupAction);
 
-		this.add(notationLevelMenu);
+		displayMenu.add(notationLevelMenu);
 
 		MenuManager designMenu = new MenuManager(ResourceString
 				.getResourceString("label.design"));
@@ -144,15 +155,17 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		designMenu.add(changeDesignToFrameAction);
 		designMenu.add(changeDesignToSimpleAction);
 
-		this.add(designMenu);
+		displayMenu.add(designMenu);
 
-		this.add(changeCapitalAction);
-		this.add(changeStampAction);
+		displayMenu.add(changeCapitalAction);
+		displayMenu.add(changeStampAction);
 
+		this.add(displayMenu);
+		
 		this.add(new Separator());
 
 		MenuManager importMenu = new MenuManager(ResourceString
-				.getResourceString("action.title.import"),"Import");
+				.getResourceString("action.title.import"), "Import");
 
 		importMenu.add(this.getAction(ImportFromDBAction.ID));
 		importMenu.add(this.getAction(ImportFromFileAction.ID));
@@ -160,17 +173,17 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		this.add(importMenu);
 
 		MenuManager exportMenu = new MenuManager(ResourceString
-				.getResourceString("action.title.export"),"Export");
+				.getResourceString("action.title.export"), "Export");
 		exportMenu.add(this.getAction(ExportToImageAction.ID));
 		exportMenu.add(this.getAction(ExportToExcelAction.ID));
 		exportMenu.add(this.getAction(ExportToHtmlAction.ID));
 		exportMenu.add(this.getAction(ExportToDDLAction.ID));
 		exportMenu.add(this.getAction(ExportToDictionaryAction.ID));
-		exportMenu.add(this.getAction(ExportToTranslationDictionaryAction.ID));	
+		exportMenu.add(this.getAction(ExportToTranslationDictionaryAction.ID));
 		exportMenu.add(new GroupMarker("export"));
-		
+
 		this.add(exportMenu);
-		
+
 		this.add(new Separator());
 
 		this.add(this.getAction(PageSettingAction.ID));
@@ -284,7 +297,7 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 
 		});
 	}
-	
+
 	private IAction getAction(ActionFactory actionFactory) {
 		return this.actionRegistry.getAction(actionFactory.getId());
 	}

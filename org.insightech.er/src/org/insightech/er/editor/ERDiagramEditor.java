@@ -54,9 +54,9 @@ import org.insightech.er.editor.view.ERDiagramPopupMenuManager;
 import org.insightech.er.editor.view.action.category.CategoryManageAction;
 import org.insightech.er.editor.view.action.category.ChangeFreeLayoutAction;
 import org.insightech.er.editor.view.action.category.ChangeShowReferredTablesAction;
-import org.insightech.er.editor.view.action.dbexport.ExportToDictionaryAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToDBAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToDDLAction;
+import org.insightech.er.editor.view.action.dbexport.ExportToDictionaryAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToExcelAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToHtmlAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
@@ -111,8 +111,7 @@ import org.insightech.er.editor.view.outline.ERDiagramOutlinePage;
 import org.insightech.er.editor.view.outline.ERDiagramOutlinePopupMenuManager;
 import org.insightech.er.editor.view.property_source.ERDiagramPropertySourceProvider;
 import org.insightech.er.editor.view.tool.ERDiagramPaletteRoot;
-import org.insightech.er.extention.Extensionloader;
-import org.insightech.er.extention.ExtensionloaderAdapter;
+import org.insightech.er.extention.ExtensionLoaderAdapter;
 
 /**
  * TODO ON UPDATE、ON DELETE のプルダウンを設定できるものだけに制限する<br>
@@ -138,8 +137,8 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 	private Map<IMarker, Object> markedObjectMap = new HashMap<IMarker, Object>();
 
 	private PropertySheetPage propertySheetPage;
-	
-	private ExtensionloaderAdapter exAdapter;
+
+	private ExtensionLoaderAdapter extensionLoaderAdapter;
 
 	private boolean isDirty;
 
@@ -170,8 +169,8 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		this.propertySheetPage = new PropertySheetPage();
 		this.propertySheetPage
 				.setPropertySourceProvider(new ERDiagramPropertySourceProvider());
+
 		
-		this.exAdapter = new ExtensionloaderAdapter();
 	}
 
 	/**
@@ -226,8 +225,8 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		MenuManager menuMgr = new ERDiagramPopupMenuManager(this
 				.getActionRegistry(), this.diagram);
 		
-		exAdapter.addERDiagramPopupMenu(menuMgr, this.getActionRegistry());
-		
+		this.extensionLoaderAdapter.addERDiagramPopupMenu(menuMgr, this.getActionRegistry());
+
 		viewer.setContextMenu(menuMgr);
 
 		viewer.setContents(diagram);
@@ -370,15 +369,13 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 				selectionActionList.add(action.getId());
 			}
 
- 			registry.registerAction(action);
+			registry.registerAction(action);
 
 		}
-/**		IAction action1 = new TestExport(this);
-		selectionActionList.add(action1.getId());
-		registry.registerAction(action1);
-**/
-		exAdapter.addActions(this, registry, selectionActionList);
-		
+
+		this.extensionLoaderAdapter = new ExtensionLoaderAdapter();
+		this.extensionLoaderAdapter.addActions(this, registry, selectionActionList);
+
 		IAction action = registry.getAction(SearchAction.ID);
 		this.addKeyHandler(action);
 	}

@@ -54,6 +54,7 @@ public class FileText {
 
 	public void setText(String text) {
 		this.text.setText(text);
+		this.text.setSelection(text.length());
 	}
 
 	public boolean isBlank() {
