@@ -3,8 +3,10 @@ package org.insightech.er.db.impl.postgres;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 
 public class PostgresTableImportManager extends ImportFromDBManagerBase {
@@ -43,9 +45,14 @@ public class PostgresTableImportManager extends ImportFromDBManagerBase {
 				view.setPhysicalName(viewName);
 				view.setLogicalName(this.translationResources
 						.translate(viewName));
-				view.setSql(rs.getString("definition"));
+				
+				String sql = rs.getString("definition");
+				view.setSql(sql);
 				view.getTableViewProperties().setSchema(schema);
 
+				List<Column> columnList = this.getViewColumnList(sql);
+				view.setColumns(columnList);
+				
 				return view;
 			}
 

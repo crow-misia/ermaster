@@ -62,7 +62,7 @@ public class GroupDialog extends AbstractDialog implements
 				.getWorkbench().getActiveWorkbenchWindow().getShell(), diagram);
 
 		new ERTableComposite(this, composite, this.diagram, null,
-				(List) this.copyData.getColumns(), columnDialog, this, 2, true);
+				(List) this.copyData.getColumns(), columnDialog, this, 2, true, true);
 
 		this.groupNameText.setFocus();
 	}

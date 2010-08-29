@@ -49,7 +49,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 	private Text logicalNameText;
 
 	private String oldPhysicalName;
-	
+
 	private Combo groupCombo;
 
 	private Button groupAddButton;
@@ -120,7 +120,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 		this.tableComposite = new ERTableComposite(this, parent, this.copyData
 				.getDiagram(), this.copyData, this.copyData.getColumns(),
-				columnDialog, this.tableDialog, 2, true);
+				columnDialog, this.tableDialog, 2, true, true);
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 		this.groupTableComposite = new ERTableComposite(this, group,
 				this.copyData.getDiagram(), null, null, null, null, 2, false,
-				GROUP_TABLE_HEIGHT);
+				false, GROUP_TABLE_HEIGHT);
 
 		this.groupManageButton = new Button(group, SWT.NONE);
 		this.groupManageButton.setText(ResourceString
@@ -366,7 +366,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 	@Override
 	protected void addListener() {
 		super.addListener();
-		
+
 		this.physicalNameText.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
@@ -382,5 +382,4 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 		});
 	}
 
-	
 }

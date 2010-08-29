@@ -115,7 +115,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 		this.tableComposite = new ERTableComposite(this, parent, this.copyData
 				.getDiagram(), null, this.copyData.getColumns(), columnDialog,
-				this.viewDialog, 2, true);
+				this.viewDialog, 2, true, false);
 	}
 
 	/**
@@ -267,7 +267,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 		this.groupTableComposite = new ERTableComposite(this, group,
 				this.copyData.getDiagram(), null, null, null, null, 2, false,
-				GROUP_TABLE_HEIGHT);
+				false, GROUP_TABLE_HEIGHT);
 
 		this.groupManageButton = new Button(group, SWT.NONE);
 		this.groupManageButton.setText(ResourceString

@@ -34,7 +34,7 @@ public class SqlTabWrapper extends ValidatableTabWrapper {
 		this.setLayout(gridLayout);
 
 		this.sqlText = CompositeFactory.createTextArea(this.viewDialog, this, "label.sql",
-				-1, 400, 1, true);
+				400, 400, 1, true);
 
 		this.sqlText.setText(Format.null2blank(copyData.getSql()));
 	}

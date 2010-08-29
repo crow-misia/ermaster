@@ -75,6 +75,8 @@ public class ERTableComposite extends Composite {
 	private Map<Column, TableEditor[]> columnNotNullCheckMap = new HashMap<Column, TableEditor[]>();
 
 	private boolean buttonDisplay;
+	
+	private boolean checkboxEnabled;
 
 	private int height;
 
@@ -83,20 +85,21 @@ public class ERTableComposite extends Composite {
 	public ERTableComposite(ERTableCompositeHolder holder, Composite parent,
 			ERDiagram diagram, ERTable erTable, List<Column> columnList,
 			AbstractColumnDialog columnDialog, AbstractDialog parentDialog,
-			int horizontalSpan, boolean buttonDisplay) {
+			int horizontalSpan, boolean buttonDisplay, boolean checkboxEnabled) {
 		this(holder, parent, diagram, erTable, columnList, columnDialog,
-				parentDialog, horizontalSpan, buttonDisplay, DEFAULT_HEIGHT);
+				parentDialog, horizontalSpan, buttonDisplay, checkboxEnabled, DEFAULT_HEIGHT);
 	}
 
 	public ERTableComposite(ERTableCompositeHolder holder, Composite parent,
 			ERDiagram diagram, ERTable erTable, List<Column> columnList,
 			AbstractColumnDialog columnDialog, AbstractDialog parentDialog,
-			int horizontalSpan, boolean buttonDisplay, int height) {
+			int horizontalSpan, boolean buttonDisplay, boolean checkboxEnabled, int height) {
 		super(parent, SWT.NONE);
 
 		this.holder = holder;
 		this.height = height;
 		this.buttonDisplay = buttonDisplay;
+		this.checkboxEnabled = checkboxEnabled;
 
 		this.diagram = diagram;
 		this.ertable = erTable;
@@ -406,7 +409,7 @@ public class ERTableComposite extends Composite {
 
 		this.columnNotNullCheckMap.put(normalColumn, editors);
 
-		if (this.buttonDisplay) {
+		if (this.checkboxEnabled) {
 			notNullCheckButton.addSelectionListener(new SelectionAdapter() {
 
 				/**
