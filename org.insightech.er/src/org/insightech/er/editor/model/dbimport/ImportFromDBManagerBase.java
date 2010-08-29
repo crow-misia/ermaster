@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -168,13 +169,14 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 			this.importedSequences = this.importSequences(this.dbObjectList);
 			this.importedTriggers = this.importTriggers(this.dbObjectList);
-			this.importedViews = this.importViews(this.dbObjectList);
 			this.importedTablespaces = this
 					.importTablespaces(this.dbObjectList);
 			this.importedTables = this.importTables(this.dbObjectList, monitor);
 			this.importedTables.addAll(this.importSynonyms());
 
 			this.setForeignKeys(this.importedTables);
+
+			this.importedViews = this.importViews(this.dbObjectList);
 
 		} catch (InterruptedException e) {
 			throw e;
@@ -1051,6 +1053,144 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 	abstract protected View importView(String schema, String viewName)
 			throws SQLException;
 
+	protected List<Column> getViewColumnList(String sql) {
+		List<Column> columnList = new ArrayList<Column>();
+
+		String upperSql = sql.toUpperCase();
+		int selectIndex = upperSql.indexOf("SELECT ");
+		int fromIndex = upperSql.indexOf(" FROM ");
+
+		if (selectIndex == -1 || fromIndex == -1) {
+			return null;
+		}
+
+		String columnsPart = sql.substring(selectIndex + "SELECT ".length(),
+				fromIndex);
+		String fromPart = sql.substring(fromIndex + " FROM ".length());
+
+		int whereIndex = fromPart.toUpperCase().indexOf(" WHERE ");
+
+		if (whereIndex != -1) {
+			fromPart = fromPart.substring(0, whereIndex);
+		}
+
+		Map<String, String> aliasTableMap = new HashMap<String, String>();
+
+		StringTokenizer fromTokenizer = new StringTokenizer(fromPart, ",");
+
+		while (fromTokenizer.hasMoreTokens()) {
+			String tableName = fromTokenizer.nextToken().trim();
+
+			tableName.replaceAll(" AS", "");
+			tableName.replaceAll(" as", "");
+			tableName.replaceAll(" As", "");
+			tableName.replaceAll(" aS", "");
+
+			String tableAlias = null;
+
+			int asIndex = tableName.toUpperCase().indexOf(" ");
+			if (asIndex != -1) {
+				tableAlias = tableName.substring(asIndex + 1).trim();
+				tableName = tableName.substring(0, asIndex).trim();
+
+				aliasTableMap.put(tableAlias, tableName);
+			}
+		}
+
+		StringTokenizer columnTokenizer = new StringTokenizer(columnsPart, ",");
+
+		while (columnTokenizer.hasMoreTokens()) {
+			String columnName = columnTokenizer.nextToken().trim();
+
+			columnName = columnName.replaceAll(" AS", "");
+			columnName = columnName.replaceAll(" as", "");
+			columnName = columnName.replaceAll(" As", "");
+			columnName = columnName.replaceAll(" aS", "");
+
+			String columnAlias = null;
+
+			int asIndex = columnName.toUpperCase().indexOf(" ");
+			if (asIndex != -1) {
+				columnAlias = columnName.substring(asIndex + 1).trim();
+				columnName = columnName.substring(0, asIndex).trim();
+
+			}
+
+			int dotIndex = columnName.indexOf(".");
+
+			String tableName = null;
+
+			if (dotIndex != -1) {
+				String aliasTableName = columnName.substring(0, dotIndex);
+				columnName = columnName.substring(dotIndex + 1);
+
+				tableName = aliasTableMap.get(aliasTableName);
+
+				if (tableName == null) {
+					tableName = aliasTableName;
+				}
+			}
+
+			if (columnAlias == null) {
+				columnAlias = columnName;
+			}
+
+			NormalColumn targetColumn = null;
+
+			if (tableName != null && columnName != null) {
+				tableName = tableName.toLowerCase();
+				columnName = columnName.toLowerCase();
+
+				for (ERTable table : this.importedTables) {
+					if (table.getPhysicalName() != null
+							&& tableName.equals(table.getPhysicalName()
+									.toLowerCase())) {
+						for (NormalColumn column : table.getExpandedColumns()) {
+							if (column.getPhysicalName() != null
+									&& columnName.equals(column
+											.getPhysicalName().toLowerCase())) {
+								targetColumn = column;
+
+								break;
+							}
+						}
+
+						if (targetColumn != null) {
+							break;
+						}
+					}
+
+				}
+			}
+
+			Word word = null;
+
+			if (targetColumn != null) {
+				word = new Word(targetColumn.getWord());
+				word.setPhysicalName(columnAlias);
+
+			} else {
+				word = new Word(columnAlias, this.translationResources
+						.translate(columnAlias), null, null, null, null);
+
+			}
+
+			UniqueWord uniqueWord = new UniqueWord(word);
+
+			if (this.dictionary.get(uniqueWord) != null) {
+				word = this.dictionary.get(uniqueWord);
+			} else {
+				this.dictionary.put(uniqueWord, word);
+			}
+
+			NormalColumn column = new NormalColumn(word, false, false, false,
+					false, null, null, null);
+			columnList.add(column);
+		}
+
+		return columnList;
+	}
+
 	public List<Tablespace> getImportedTablespaces() {
 		return importedTablespaces;
 	}
@@ -1105,7 +1245,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			DatabaseMetaData metaData = con.getMetaData();
 
 			metaData.getIndexInfo(null, "SYS", "ALERT_QT", false, false);
-			
+
 		} finally {
 			if (con != null) {
 				con.close();

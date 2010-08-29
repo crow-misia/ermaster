@@ -160,7 +160,7 @@ public class GroupManageDialog extends AbstractDialog implements
 				.getWorkbench().getActiveWorkbenchWindow().getShell(), diagram);
 
 		this.tableComposite = new ERTableComposite(this, composite,
-				this.diagram, null, null, columnDialog, this, 2, true);
+				this.diagram, null, null, columnDialog, this, 2, true, true);
 
 		createComposite3(composite);
 	}
