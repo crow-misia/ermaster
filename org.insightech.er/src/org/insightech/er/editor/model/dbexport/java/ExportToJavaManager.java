@@ -4,13 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.dbexport.html.page_generator.HtmlReportPageGenerator;
-import org.insightech.er.editor.model.dbexport.html.page_generator.OverviewHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.util.Format;
@@ -21,28 +19,35 @@ public class ExportToJavaManager {
 
 	private static final String TEMPLATE_DIR = "java/";
 
-	protected List<HtmlReportPageGenerator> htmlReportPageGeneratorList = new ArrayList<HtmlReportPageGenerator>();
-
-	protected OverviewHtmlReportPageGenerator overviewPageGenerator;
-
 	private String outputDir;
+
+	private String fileEncoding;
 
 	private String packageName;
 
 	private String packageDir;
 
-	private String classNamePrefix;
+	private String classNameSuffix;
 
 	private String extendsClass;
 
 	protected ERDiagram diagram;
 
-	public ExportToJavaManager(String outputDir, String packageName,
+	private Set<String> importClasseNames;
+
+	public ExportToJavaManager(String outputDir, String fileEncoding,
+			String packageName, String classNameSuffix, String extendsClass,
 			ERDiagram diagram) {
 		this.outputDir = outputDir;
+		this.fileEncoding = fileEncoding;
 		this.packageName = packageName;
-		this.packageDir = packageName.replaceAll(".", "/");
+		this.packageDir = packageName.replaceAll("\\.", "/");
 		this.diagram = diagram;
+
+		this.classNameSuffix = classNameSuffix;
+		this.extendsClass = Format.null2blank(this.extendsClass);
+
+		this.importClasseNames = new TreeSet<String>();
 	}
 
 	protected void doPreTask(ERTable table) {
@@ -59,14 +64,17 @@ public class ExportToJavaManager {
 				.getTableSet().getList()) {
 			this.doPreTask(table);
 
+			this.importClasseNames.clear();
+			this.importClasseNames.add("java.io.Serializable");
+			
 			template = this.generateContent(diagram, table, packageName,
 					"template");
 
-			String className = this.getClassName(table);
+			String className = this.getClassName(table)
+					+ this.getClassName(this.classNameSuffix, true);
 
-			this
-					.writeOut(this.packageDir + "/" + className + ".java",
-							template);
+			this.writeOut("/" + this.packageDir + "/" + className + ".java",
+					template);
 
 			this.doPostTask();
 		}
@@ -76,9 +84,9 @@ public class ExportToJavaManager {
 		return this.getClassName(table.getPhysicalName(), true);
 	}
 
-	protected String getClassName(String name, boolean capitale) {
+	protected String getClassName(String name, boolean capital) {
 		String className = name.toLowerCase();
-		if (className.length() > 0) {
+		if (capital && className.length() > 0) {
 			String first = className.substring(0, 1);
 			String other = className.substring(1);
 
@@ -89,10 +97,7 @@ public class ExportToJavaManager {
 			className = className.substring(1);
 		}
 
-		int index = 0;
-		if (!capitale) {
-			index = className.indexOf("_");
-		}
+		int index = className.indexOf("_");
 
 		while (index != -1) {
 			String before = className.substring(0, index);
@@ -106,10 +111,10 @@ public class ExportToJavaManager {
 			String after = null;
 
 			if (className.length() == index + 1) {
-				after = className.substring(index + 2);
+				after = "";
 
 			} else {
-				after = "";
+				after = className.substring(index + 2);
 			}
 
 			className = before + target.toUpperCase() + after;
@@ -161,8 +166,9 @@ public class ExportToJavaManager {
 						normalColumn);
 			}
 
-			content.replaceAll("@properties", properties.toString());
-			content.replaceAll("@setter_getter", setterGetters.toString());
+			content = content.replaceAll("@properties\r\n", properties.toString());
+			content = content.replaceAll("@setter_getter\r\n", setterGetters
+					.toString());
 
 			if (table.getPrimaryKeySize() > 0) {
 				String hashCodeEquals = this.loadResource("@hashCode_equals");
@@ -178,42 +184,70 @@ public class ExportToJavaManager {
 					this.addContent(equals, equalsTemplate, primaryKey);
 				}
 
-				hashCodeEquals.replaceAll("@hashCode logic", hashCodes
-						.toString());
-				hashCodeEquals.replaceAll("@equals logic", equals.toString());
+				hashCodeEquals = hashCodeEquals.replaceAll(
+						"@hashCode logic\r\n", hashCodes.toString());
+				hashCodeEquals = hashCodeEquals.replaceAll("@equals logic\r\n",
+						equals.toString());
 
-				content.replaceAll("@hashCode_equals", hashCodeEquals
-						.toString());
-
-			} else {
-				content.replaceAll("@hashCode_equals\r\n", "");
-			}
-
-			if (this.extendsClass == null) {
-				content.replaceAll("@import extends\r\n", "");
-			}
-
-			content.replaceAll("@package", packageName);
-			content.replaceAll("@LogicalTableName", table.getLogicalName());
-			content.replaceAll("@PhysicalTableName", this.getClassName(table));
-			content.replaceAll("@prefix", Format
-					.null2blank(this.classNamePrefix));
-
-			String extendsClass = Format.null2blank(this.extendsClass);
-			content.replaceAll("@extendsClass", extendsClass);
-
-			int index = extendsClass.lastIndexOf(".");
-			String extendsClassWithoutPackage = null;
-
-			if (index == -1) {
-				extendsClassWithoutPackage = extendsClass;
+				content = content.replaceAll("@hashCode_equals\r\n",
+						hashCodeEquals.toString());
 
 			} else {
-				extendsClassWithoutPackage = extendsClass.substring(index + 1);
+				content = content.replaceAll("@hashCode_equals\r\n", "");
 			}
 
-			content.replaceAll("@extendsClassWithoutPackage",
-					extendsClassWithoutPackage);
+			content = content.replaceAll("@package", packageName);
+			content = content.replaceAll("@LogicalTableName", table
+					.getLogicalName());
+			content = content.replaceAll("@PhysicalTableName", this
+					.getClassName(table));
+			content = content.replaceAll("@suffix", Format
+					.null2blank(this.classNameSuffix));
+			content = content.replaceAll("@version", "@version \\$Id\\$");
+			
+
+			String interfaceTemplate = this.loadResource("@implements");
+			content = content.replaceAll("@implements", interfaceTemplate);
+
+			if ("".equals(this.extendsClass)) {
+				content = content.replaceAll("@import extends\r\n", "");
+				content = content.replaceAll("@extends ", "");
+
+			} else {
+				this.importClasseNames.add(this.extendsClass);
+
+				String importExtendsTemplate = this
+						.loadResource("@import extends");
+				content = content.replaceAll("@import extends",
+						importExtendsTemplate);
+
+				String extendsTemplate = this.loadResource("@extends");
+				content = content.replaceAll("@extends", extendsTemplate);
+
+				int index = extendsClass.lastIndexOf(".");
+				String extendsClassWithoutPackage = null;
+
+				if (index == -1) {
+					extendsClassWithoutPackage = extendsClass;
+
+				} else {
+					extendsClassWithoutPackage = extendsClass
+							.substring(index + 1);
+				}
+
+				content = content.replaceAll("@extendsClassWithoutPackage",
+						extendsClassWithoutPackage);
+				content = content.replaceAll("@extendsClass", extendsClass);
+			}
+
+			StringBuilder imports = new StringBuilder();
+			for (String importClasseName : this.importClasseNames) {
+				imports.append("import ");
+				imports.append(importClasseName);
+				imports.append(";\r\n");
+			}
+
+			content = content.replaceAll("@import\r\n", imports.toString());
 
 			return content;
 
@@ -238,7 +272,14 @@ public class ExportToJavaManager {
 	}
 
 	private String getClassName(SqlType type) {
-		return type.getJavaClass().getSimpleName();
+		Class clazz = type.getJavaClass();
+
+		String name = clazz.getCanonicalName();
+		if (!name.startsWith("java.lang")) {
+			this.importClasseNames.add(name);
+		}
+
+		return clazz.getSimpleName();
 	}
 
 	private void writeOut(String dstPath, String content) throws IOException {
@@ -246,7 +287,7 @@ public class ExportToJavaManager {
 		File file = new File(dstPath);
 		file.getParentFile().mkdirs();
 
-		FileUtils.writeStringToFile(file, content, "UTF-8");
+		FileUtils.writeStringToFile(file, content, this.fileEncoding);
 	}
 
 }

@@ -29,6 +29,7 @@ public interface ImageKey {
 	public String EXPORT_TO_EXCEL = "EXPORT_TO_EXCEL";
 	public String EXPORT_TO_HTML = "EXPORT_TO_HTML";
 	public String EXPORT_TO_IMAGE = "EXPORT_TO_IMAGE";
+	public String EXPORT_TO_JAVA = "EXPORT_TO_JAVA";
 	public String FIND = "FIND";
 	public String FOREIGN_KEY = "FOREIGN_KEY";
 	public String GRID = "GRID";

@@ -60,6 +60,7 @@ import org.insightech.er.editor.view.action.dbexport.ExportToDictionaryAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToExcelAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToHtmlAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
+import org.insightech.er.editor.view.action.dbexport.ExportToJavaAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToTranslationDictionaryAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromDBAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromFileAction;
@@ -170,7 +171,6 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		this.propertySheetPage
 				.setPropertySourceProvider(new ERDiagramPropertySourceProvider());
 
-		
 	}
 
 	/**
@@ -224,8 +224,9 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 
 		MenuManager menuMgr = new ERDiagramPopupMenuManager(this
 				.getActionRegistry(), this.diagram);
-		
-		this.extensionLoaderAdapter.addERDiagramPopupMenu(menuMgr, this.getActionRegistry());
+
+		this.extensionLoaderAdapter.addERDiagramPopupMenu(menuMgr, this
+				.getActionRegistry());
 
 		viewer.setContextMenu(menuMgr);
 
@@ -331,6 +332,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 				new ExportToImageAction(this),
 				new ExportToExcelAction(this),
 				new ExportToHtmlAction(this),
+				new ExportToJavaAction(this),
 				new ExportToDDLAction(this),
 				new ExportToDictionaryAction(this),
 				new ExportToTranslationDictionaryAction(this),
@@ -374,7 +376,8 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		}
 
 		this.extensionLoaderAdapter = new ExtensionLoaderAdapter();
-		this.extensionLoaderAdapter.addActions(this, registry, selectionActionList);
+		this.extensionLoaderAdapter.addActions(this, registry,
+				selectionActionList);
 
 		IAction action = registry.getAction(SearchAction.ID);
 		this.addKeyHandler(action);

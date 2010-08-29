@@ -1084,8 +1084,12 @@ public class XMLLoader {
 					"image_output"));
 			exportSetting.setJavaOutput(this.getStringValue(element,
 					"java_output"));
-			exportSetting.setPackageName(this.getStringValue(element,
-					"package_name"));
+			exportSetting.setPackageName(Format.null2blank(this.getStringValue(
+					element, "package_name")));
+			exportSetting.setClassNameSuffix(Format.null2blank(this
+					.getStringValue(element, "class_name_suffix")));
+			exportSetting.setSrcFileEncoding(this.getStringValue(element,
+					"src_file_encoding"));
 			exportSetting.setPutERDiagramOnExcel(this.getBooleanValue(element,
 					"put_diagram_on_excel"));
 			exportSetting.setUseLogicalNameAsSheet(this.getBooleanValue(

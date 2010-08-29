@@ -16,8 +16,10 @@ public class ExportToJavaWithProgressManager extends ExportToJavaManager
 	private IProgressMonitor monitor;
 
 	public ExportToJavaWithProgressManager(String outputDir,
-			String packageName, ERDiagram diagram) {
-		super(outputDir, packageName, diagram);
+			String fileEncoding, String packageName, String classNameSuffix,
+			ERDiagram diagram) {
+		super(outputDir + "/src", fileEncoding, packageName, classNameSuffix,
+				null, diagram);
 	}
 
 	/**

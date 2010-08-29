@@ -5,7 +5,7 @@
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		@hashCode logic
+@hashCode logic
 		return result;
 	}
 
@@ -23,7 +23,7 @@
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		@PhysicalTableName@prefix other = (@PhysicalTableName@prefix) obj;
-		@equals logic
+		@PhysicalTableName@suffix other = (@PhysicalTableName@suffix) obj;
+@equals logic
 		return true;
 	}
