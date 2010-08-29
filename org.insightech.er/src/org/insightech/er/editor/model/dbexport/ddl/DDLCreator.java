@@ -966,6 +966,7 @@ public abstract class DDLCreator {
 		StringBuffer ddl = new StringBuffer();
 
 		ddl.append("DROP INDEX ");
+		ddl.append(this.getIfExistsOption());
 		ddl.append(filter(index.getName()));
 		if (this.semicolon) {
 			ddl.append(";");

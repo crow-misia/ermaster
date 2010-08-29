@@ -9,6 +9,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.persistent.impl.PersistentXmlImpl;
+import org.insightech.er.util.Format;
 
 public class DBUnitTestDataCreator extends TestDataCreator {
 
@@ -26,9 +27,16 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 		sb.append("\t\t<row>\r\n");
 
 		for (NormalColumn column : table.getExpandedColumns()) {
-			sb.append("\t\t\t<value>");
-			sb.append(PersistentXmlImpl.escape(data.get(column)));
-			sb.append("</value>\r\n");
+			String value = Format.null2blank(data.get(column));
+
+			if (value == null || "null".equals(value.toLowerCase())) {
+				sb.append("\t\t\t<null/>\r\n");
+
+			} else {
+				sb.append("\t\t\t<value>");
+				sb.append(PersistentXmlImpl.escape(value));
+				sb.append("</value>\r\n");
+			}
 		}
 
 		sb.append("\t\t</row>\r\n");
@@ -52,9 +60,15 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 				String value = this.getRepeatTestDataValue(i,
 						repeatTestDataDef, column);
 
-				sb.append("\t\t\t<value>");
-				sb.append(PersistentXmlImpl.escape(value));
-				sb.append("</value>\r\n");
+				if (value == null || "null".equals(value.toLowerCase())) {
+					sb.append("\t\t\t<null/>\r\n");
+
+				} else {
+					sb.append("\t\t\t<value>");
+					sb.append(PersistentXmlImpl.escape(value));
+					sb.append("</value>\r\n");
+
+				}
 			}
 
 			sb.append("\t\t</row>\r\n");

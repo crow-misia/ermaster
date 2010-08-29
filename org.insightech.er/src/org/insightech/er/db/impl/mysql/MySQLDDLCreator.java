@@ -258,6 +258,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		StringBuffer ddl = new StringBuffer();
 
 		ddl.append("DROP INDEX ");
+		ddl.append(this.getIfExistsOption());
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
 		ddl.append(filter(table.getNameWithSchema(this.getDiagram()

@@ -861,7 +861,7 @@ public class XMLLoader {
 			dataDef.setFrom(this.getIntValue(dataDefElement, "from"));
 			dataDef.setTo(this.getIntValue(dataDefElement, "to"));
 			dataDef.setIncrement(this.getIntValue(dataDefElement, "increment"));
-			dataDef.setSelects(this.getTagValues(dataDefElement, "selects"));
+			dataDef.setSelects(this.getTagValues(dataDefElement, "select"));
 
 			repeatTestData.setDataDef(column, dataDef);
 		}
