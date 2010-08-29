@@ -20,6 +20,10 @@ public class ExportSetting implements Serializable, Cloneable {
 
 	private String packageName;
 
+	private String classNameSuffix;
+
+	private String srcFileEncoding;
+
 	private boolean useLogicalNameAsSheet;
 
 	private boolean putERDiagramOnExcel;
@@ -174,6 +178,22 @@ public class ExportSetting implements Serializable, Cloneable {
 		this.packageName = packageName;
 	}
 
+	public String getClassNameSuffix() {
+		return classNameSuffix;
+	}
+
+	public void setClassNameSuffix(String classNameSuffix) {
+		this.classNameSuffix = classNameSuffix;
+	}
+
+	public String getSrcFileEncoding() {
+		return srcFileEncoding;
+	}
+
+	public void setSrcFileEncoding(String srcFileEncoding) {
+		this.srcFileEncoding = srcFileEncoding;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -187,6 +207,11 @@ public class ExportSetting implements Serializable, Cloneable {
 			if (other.categoryNameToExport != null)
 				return false;
 		} else if (!categoryNameToExport.equals(other.categoryNameToExport))
+			return false;
+		if (classNameSuffix == null) {
+			if (other.classNameSuffix != null)
+				return false;
+		} else if (!classNameSuffix.equals(other.classNameSuffix))
 			return false;
 		if (ddlOutput == null) {
 			if (other.ddlOutput != null)
@@ -224,6 +249,11 @@ public class ExportSetting implements Serializable, Cloneable {
 		} else if (!packageName.equals(other.packageName))
 			return false;
 		if (putERDiagramOnExcel != other.putERDiagramOnExcel)
+			return false;
+		if (srcFileEncoding == null) {
+			if (other.srcFileEncoding != null)
+				return false;
+		} else if (!srcFileEncoding.equals(other.srcFileEncoding))
 			return false;
 		if (useLogicalNameAsSheet != other.useLogicalNameAsSheet)
 			return false;

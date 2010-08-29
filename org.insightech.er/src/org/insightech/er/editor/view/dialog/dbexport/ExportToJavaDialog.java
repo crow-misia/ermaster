@@ -10,6 +10,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -20,25 +21,28 @@ import org.insightech.er.Activator;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
-import org.insightech.er.common.widgets.FileText;
+import org.insightech.er.common.widgets.DirectoryText;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.java.ExportToJavaWithProgressManager;
-import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.util.Format;
 
 public class ExportToJavaDialog extends AbstractDialog {
 
-	private FileText outputDirText;
+	private DirectoryText outputDirText;
 
 	private Text packageText;
+
+	private Text classNameSuffixText;
 
 	private ERDiagram diagram;
 
 	private IEditorPart editorPart;
 
 	private ExportSetting exportSetting;
+
+	private Combo fileEncodingCombo;
 
 	public ExportToJavaDialog(Shell parentShell, ERDiagram diagram,
 			IEditorPart editorPart) {
@@ -66,9 +70,13 @@ public class ExportToJavaDialog extends AbstractDialog {
 		GridData gridData = new GridData();
 		gridData.widthHint = 200;
 
-		CompositeFactory.createLabel(parent, "label.output.dir");
+		this.packageText = CompositeFactory.createText(this, parent,
+				"label.package.name", 2, false);
+		this.classNameSuffixText = CompositeFactory.createText(this, parent,
+				"label.class.name.suffix", 2, false);
 
-		this.outputDirText = new FileText(parent, SWT.BORDER, ".xls");
+		CompositeFactory.createLabel(parent, "label.output.dir");
+		this.outputDirText = new DirectoryText(parent, SWT.BORDER);
 		this.outputDirText.setLayoutData(gridData);
 
 		this.outputDirText.addModifyListener(new ModifyListener() {
@@ -77,6 +85,8 @@ public class ExportToJavaDialog extends AbstractDialog {
 			}
 		});
 
+		this.fileEncodingCombo = CompositeFactory.createFileEncodingCombo(
+				this.editorPart, this, parent, "label.output.file.encoding", 1);
 	}
 
 	@Override
@@ -90,9 +100,6 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 	@Override
 	protected void perfomeOK() throws InputException {
-		Category currentCategory = this.diagram.getCurrentCategory();
-		int currentCategoryIndex = this.diagram.getCurrentCategoryIndex();
-
 		InputStream stream = null;
 
 		try {
@@ -102,15 +109,20 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 			String outputDirPath = this.outputDirText.getFilePath();
 			String packageName = this.packageText.getText();
+			String classNameSuffix = this.classNameSuffixText.getText();
+			String fileEncoding = this.fileEncodingCombo.getText();
 
 			ExportToJavaWithProgressManager manager = new ExportToJavaWithProgressManager(
-					outputDirPath, packageName, diagram);
+					outputDirPath, fileEncoding, packageName, classNameSuffix,
+					diagram);
 			monitor.run(true, true, manager);
 
 			this.exportSetting = new ExportSetting();
 
 			this.exportSetting.setJavaOutput(outputDirPath);
 			this.exportSetting.setPackageName(packageName);
+			this.exportSetting.setClassNameSuffix(classNameSuffix);
+			this.exportSetting.setSrcFileEncoding(fileEncoding);
 
 			if (manager.getException() != null) {
 				throw manager.getException();
@@ -125,9 +137,6 @@ public class ExportToJavaDialog extends AbstractDialog {
 			Activator.showExceptionDialog(e);
 
 		} finally {
-			this.diagram.setCurrentCategory(currentCategory,
-					currentCategoryIndex);
-
 			if (stream != null) {
 				try {
 					stream.close();
@@ -155,14 +164,21 @@ public class ExportToJavaDialog extends AbstractDialog {
 		if ("".equals(outputDir)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
-			outputDir = file.getLocation().toOSString();
+			outputDir = file.getParent().getLocation().toOSString();
 		}
-		outputDir = outputDir.substring(0, outputDir.lastIndexOf(".")) + ".xls";
 
 		this.outputDirText.setText(outputDir);
 
 		this.packageText.setText(Format.null2blank(exportSetting
 				.getPackageName()));
+		this.classNameSuffixText.setText(Format.null2blank(exportSetting
+				.getClassNameSuffix()));
+
+		String srcFileEncoding = Format.null2blank(exportSetting
+				.getSrcFileEncoding());
+		if (!"".equals(srcFileEncoding)) {
+			this.fileEncodingCombo.setText(srcFileEncoding);
+		}
 	}
 
 	/**

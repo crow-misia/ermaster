@@ -868,6 +868,12 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("\t<package_name>").append(
 				escape(exportSetting.getPackageName())).append(
 				"</package_name>\n");
+		xml.append("\t<class_name_suffix>").append(
+				escape(exportSetting.getClassNameSuffix())).append(
+				"</class_name_suffix>\n");
+		xml.append("\t<src_file_encoding>").append(
+				escape(exportSetting.getSrcFileEncoding())).append(
+				"</src_file_encoding>\n");
 		xml.append("\t<put_diagram_on_excel>").append(
 				exportSetting.isPutERDiagramOnExcel()).append(
 				"</put_diagram_on_excel>\n");

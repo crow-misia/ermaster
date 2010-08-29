@@ -86,8 +86,8 @@ public class ExportToTestDataDialog extends AbstractDialog {
 		this.outputFileText = new FileText(parent, SWT.BORDER, "");
 		this.outputFileText.setLayoutData(gridData);
 
-		this.fileEncodingCombo = CompositeFactory.createFileEncodingCombo(this,
-				parent, "label.output.file.encoding", 1);
+		this.fileEncodingCombo = CompositeFactory.createFileEncodingCombo(
+				this.editorPart, this, parent, "label.output.file.encoding", 1);
 		CompositeFactory.filler(parent, 1);
 
 		CompositeFactory.filler(parent, 3);

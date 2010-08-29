@@ -20,6 +20,7 @@ import org.insightech.er.editor.view.action.dbexport.ExportToDictionaryAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToExcelAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToHtmlAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
+import org.insightech.er.editor.view.action.dbexport.ExportToJavaAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToTranslationDictionaryAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromDBAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromFileAction;
@@ -94,11 +95,11 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		final IAction copyAction = this.getAction(ActionFactory.COPY);
 		copyAction.setActionDefinitionId("org.eclipse.ui.edit.copy");
 		this.add(copyAction);
-		
+
 		final IAction pasteAction = this.getAction(ActionFactory.PASTE);
 		pasteAction.setActionDefinitionId("org.eclipse.ui.edit.paste");
 		this.add(pasteAction);
-		
+
 		this.add(this.getAction(ActionFactory.DELETE));
 		this.add(this.getAction(ActionFactory.SELECT_ALL));
 		this.add(this.getAction(EditAllAttributesAction.ID));
@@ -114,10 +115,10 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		this.add(this.getAction(SearchAction.ID));
 
 		this.add(new Separator());
-		
+
 		MenuManager displayMenu = new MenuManager(ResourceString
 				.getResourceString("label.display"));
-		
+
 		MenuManager viewModeMenu = new MenuManager(ResourceString
 				.getResourceString("label.view.mode"));
 		viewModeMenu.add(changeViewToPhysicalAction);
@@ -125,7 +126,6 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		viewModeMenu.add(changeViewToBothAction);
 
 		displayMenu.add(viewModeMenu);
-		
 
 		MenuManager notationMenu = new MenuManager(ResourceString
 				.getResourceString("label.notation"));
@@ -161,7 +161,7 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		displayMenu.add(changeStampAction);
 
 		this.add(displayMenu);
-		
+
 		this.add(new Separator());
 
 		MenuManager importMenu = new MenuManager(ResourceString
@@ -180,6 +180,7 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		exportMenu.add(this.getAction(ExportToDDLAction.ID));
 		exportMenu.add(this.getAction(ExportToDictionaryAction.ID));
 		exportMenu.add(this.getAction(ExportToTranslationDictionaryAction.ID));
+		exportMenu.add(this.getAction(ExportToJavaAction.ID));
 		exportMenu.add(new GroupMarker("export"));
 
 		this.add(exportMenu);

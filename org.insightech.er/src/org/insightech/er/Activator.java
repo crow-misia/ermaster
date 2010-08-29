@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
@@ -145,6 +146,8 @@ public class Activator extends AbstractUIPlugin {
 				loadImageDescriptor("icons/document-globe.png"));
 		reg.put(ImageKey.EXPORT_TO_IMAGE,
 				loadImageDescriptor("icons/document-image.png"));
+		reg.put(ImageKey.EXPORT_TO_JAVA,
+				loadImageDescriptor("icons/script-attribute-j.png"));
 		reg.put(ImageKey.FIND, loadImageDescriptor("icons/binocular.png"));
 		reg.put(ImageKey.FOREIGN_KEY,
 				loadImageDescriptor("icons/foreign_key.gif"));
@@ -334,6 +337,29 @@ public class Activator extends AbstractUIPlugin {
 		fileDialog.setFilterExtensions(filterExtensions);
 
 		return fileDialog.open();
+	}
+
+	/**
+	 * ディレクトリ選択ダイアログを表示します
+	 * 
+	 * @param filePath
+	 *            デフォルトのファイルパス
+	 * @return ディレクトリ選択ダイアログで選択されたディレクトリのパス
+	 */
+	public static String showDirectoryDialog(String filePath) {
+		String fileName = null;
+
+		if (filePath != null && !"".equals(filePath.trim())) {
+			File file = new File(filePath.trim());
+			fileName = file.getPath();
+		}
+
+		DirectoryDialog dialog = new DirectoryDialog(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getShell(), SWT.NONE);
+
+		dialog.setFilterPath(fileName);
+
+		return dialog.open();
 	}
 
 	public static void log(Throwable e) {

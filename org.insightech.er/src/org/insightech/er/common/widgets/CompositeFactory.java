@@ -5,6 +5,9 @@ import java.awt.Frame;
 import java.awt.Panel;
 import java.nio.charset.Charset;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -20,6 +23,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.insightech.er.ResourceString;
 import org.insightech.er.Resources;
 import org.insightech.er.common.dialog.AbstractDialog;
@@ -71,13 +76,24 @@ public class CompositeFactory {
 		return combo;
 	}
 
-	public static Combo createFileEncodingCombo(AbstractDialog dialog,
-			Composite composite, String title, int span) {
+	public static Combo createFileEncodingCombo(IEditorPart editorPart,
+			AbstractDialog dialog, Composite composite, String title, int span) {
 		Combo fileEncodingCombo = createReadOnlyCombo(dialog, composite, title,
 				span);
 
 		for (Charset charset : Charset.availableCharsets().values()) {
 			fileEncodingCombo.add(charset.displayName());
+		}
+
+		IFile file = ((IFileEditorInput) editorPart.getEditorInput()).getFile();
+		IProject project = file.getProject();
+
+		try {
+			Charset defautlCharset = Charset.forName(project
+					.getDefaultCharset());
+			fileEncodingCombo.setText(defautlCharset.displayName());
+
+		} catch (CoreException e) {
 		}
 
 		return fileEncodingCombo;

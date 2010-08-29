@@ -8,7 +8,6 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -25,7 +24,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
@@ -132,87 +130,26 @@ public class ExportToDDLDialog extends AbstractDialog {
 		GridData gridData = new GridData();
 		gridData.widthHint = 200;
 
-		Label label = new Label(parent, SWT.NONE);
-		label.setText(ResourceString
-				.getResourceString("label.tablespace.environment"));
+		this.environmentCombo = CompositeFactory.createReadOnlyCombo(this,
+				parent, "label.tablespace.environment", 2);
 
-		this.createEnvironmentCombo(parent);
+		CompositeFactory.createLabel(parent, "label.output.file");
+		this.outputFileText = new FileText(parent, SWT.BORDER, ".sql");
+		this.outputFileText.setLayoutData(gridData);
 
-		label = new Label(parent, SWT.NONE);
-		label.setText(ResourceString.getResourceString("label.output.file"));
+		this.fileEncodingCombo = CompositeFactory.createFileEncodingCombo(
+				this.editorPart, this, parent, "label.output.file.encoding", 2);
 
-		outputFileText = new FileText(parent, SWT.BORDER, ".sql");
-		outputFileText.setLayoutData(gridData);
-
-		label = new Label(parent, SWT.NONE);
-		label.setText(ResourceString
-				.getResourceString("label.output.file.encoding"));
-
-		this.createFileEncodingCombo(parent);
-
-		label = new Label(parent, SWT.NONE);
-		label.setText(ResourceString.getResourceString("label.category"));
-
-		this.createCategoryCombo(parent);
-
-		// this.createInlineCommentCheckboxGroup(parent);
+		this.categoryCombo = CompositeFactory.createReadOnlyCombo(this, parent,
+				"label.category", 2);
+		this.initCategoryCombo();
 
 		this.createCheckboxComposite(parent);
 
 		this.createCommentComposite(parent);
 	}
 
-	private void createEnvironmentCombo(Composite parent) {
-		GridData gridData = new GridData();
-		gridData.widthHint = 200;
-		gridData.horizontalSpan = 2;
-
-		this.environmentCombo = new Combo(parent, SWT.READ_ONLY);
-		this.environmentCombo.setLayoutData(gridData);
-		this.environmentCombo.setVisibleItemCount(20);
-	}
-
-	private void createFileEncodingCombo(Composite parent) {
-		GridData gridData = new GridData();
-		gridData.widthHint = 120;
-		gridData.horizontalSpan = 2;
-
-		this.fileEncodingCombo = new Combo(parent, SWT.DROP_DOWN);
-		this.fileEncodingCombo.setLayoutData(gridData);
-		this.fileEncodingCombo.setVisibleItemCount(20);
-
-		// Get project default encoding.
-		IFile file = ((IFileEditorInput) this.editorPart.getEditorInput())
-				.getFile();
-		IProject project = file.getProject();
-
-		Charset defautlCharset = null;
-		try {
-			defautlCharset = Charset.forName(project.getDefaultCharset());
-		} catch (CoreException e) {
-		}
-
-		int i = 0;
-
-		for (Charset charset : Charset.availableCharsets().values()) {
-			this.fileEncodingCombo.add(charset.displayName());
-
-			if (charset.equals(defautlCharset)) {
-				this.fileEncodingCombo.select(i);
-			}
-			i++;
-		}
-	}
-
-	private void createCategoryCombo(Composite parent) {
-		GridData gridData = new GridData();
-		gridData.widthHint = 120;
-		gridData.horizontalSpan = 2;
-
-		this.categoryCombo = new Combo(parent, SWT.READ_ONLY);
-		this.categoryCombo.setLayoutData(gridData);
-		this.categoryCombo.setVisibleItemCount(20);
-
+	private void initCategoryCombo() {
 		this.categoryCombo.add(ResourceString.getResourceString("label.all"));
 
 		for (Category category : this.diagram.getDiagramContents()
@@ -220,24 +157,6 @@ public class ExportToDDLDialog extends AbstractDialog {
 			this.categoryCombo.add(category.getName());
 		}
 	}
-
-	// private void createInlineCommentCheckboxGroup(Composite parent) {
-	// Group group = new Group(parent, SWT.NONE);
-	// GridData gridData = new GridData();
-	// gridData.horizontalAlignment = GridData.FILL;
-	// gridData.grabExcessHorizontalSpace = true;
-	// gridData.verticalAlignment = GridData.FILL;
-	// gridData.grabExcessVerticalSpace = true;
-	// group.setLayoutData(gridData);
-	//
-	// group.setText(ResourceString.getResourceString("label.inline.comment"));
-	//
-	// GridLayout layout = new GridLayout();
-	// layout.numColumns = 2;
-	// group.setLayout(layout);
-	//
-	//		
-	// }
 
 	private void createCheckboxComposite(Composite parent) {
 		GridData gridData = new GridData();
