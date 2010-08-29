@@ -8,6 +8,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
+import org.insightech.er.util.Format;
 
 public class SQLTestDataCreator extends TestDataCreator {
 
@@ -30,9 +31,17 @@ public class SQLTestDataCreator extends TestDataCreator {
 			}
 
 			sb.append(column.getPhysicalName());
-			valueSb.append("'");
-			valueSb.append(data.get(column));
-			valueSb.append("'");
+
+			String value = Format.null2blank(data.get(column));
+
+			if (value != null && !"null".equals(value.toLowerCase())) {
+				valueSb.append("'");
+				valueSb.append(value);
+				valueSb.append("'");
+
+			} else {
+				valueSb.append("null");
+			}
 
 			first = false;
 		}
@@ -72,10 +81,11 @@ public class SQLTestDataCreator extends TestDataCreator {
 				String value = this.getRepeatTestDataValue(i,
 						repeatTestDataDef, column);
 
-				if (value != null) {
+				if (value != null && !"null".equals(value.toLowerCase())) {
 					valueSb.append("'");
 					valueSb.append(value);
 					valueSb.append("'");
+
 				} else {
 					valueSb.append("null");
 				}

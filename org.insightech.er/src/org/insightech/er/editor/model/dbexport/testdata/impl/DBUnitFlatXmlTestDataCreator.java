@@ -9,6 +9,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.persistent.impl.PersistentXmlImpl;
+import org.insightech.er.util.Format;
 
 public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 
@@ -27,14 +28,18 @@ public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 		sb.append(table.getNameWithSchema(database));
 
 		for (NormalColumn column : table.getExpandedColumns()) {
-			sb.append(" ");
-			sb.append(column.getPhysicalName());
-			sb.append("=\"");
-			sb.append(PersistentXmlImpl.escape(data.get(column)));
-			sb.append("\"");
+			String value = Format.null2blank(data.get(column));
+			
+			if (value != null && !"null".equals(value.toLowerCase())) {
+				sb.append(" ");
+				sb.append(column.getPhysicalName());
+				sb.append("=\"");
+				sb.append(PersistentXmlImpl.escape(value));
+				sb.append("\"");
+			}
 		}
 
-		sb.append(">\r\n");
+		sb.append("/>\r\n");
 
 		return sb.toString();
 	}
@@ -49,21 +54,23 @@ public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 			sb.append(table.getNameWithSchema(database));
 
 			for (NormalColumn column : table.getExpandedColumns()) {
-				sb.append(" ");
-				sb.append(column.getPhysicalName());
-				sb.append("=\"");
-
 				RepeatTestDataDef repeatTestDataDef = repeatTestData
 						.getDataDef(column);
 
 				String value = this.getRepeatTestDataValue(i,
 						repeatTestDataDef, column);
 
-				sb.append(PersistentXmlImpl.escape(value));
-				sb.append("\"");
+				if (value != null && !"null".equals(value.toLowerCase())) {
+					sb.append(" ");
+					sb.append(column.getPhysicalName());
+					sb.append("=\"");
+
+					sb.append(PersistentXmlImpl.escape(value));
+					sb.append("\"");
+				}
 			}
 
-			sb.append(">\r\n");
+			sb.append("/>\r\n");
 		}
 
 		return sb.toString();
