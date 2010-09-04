@@ -65,6 +65,10 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 				dialog.resetTestDataNum();
 			}
 
+			public boolean isModified(int row, int column) {
+				return false;
+			}
+
 		});
 	}
 
@@ -123,10 +127,8 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 	private void initTable() {
 		this.editColumnTable.setVisible(false);
 
-		// データの削除
 		this.editColumnTable.removeData();
 
-		// ヘッダー
 		for (NormalColumn normalColumn : this.table.getExpandedColumns()) {
 			String name = normalColumn.getName();
 			String type = null;
@@ -142,7 +144,6 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 			this.editColumnTable.addColumnHeader(name + "\r\n" + type, 100);
 		}
 
-		// データ
 		for (Map<NormalColumn, String> data : directTestData.getDataList()) {
 			this.addTableItem(data);
 		}

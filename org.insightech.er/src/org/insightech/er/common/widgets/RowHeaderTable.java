@@ -84,6 +84,8 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 	private boolean editable;
 
+	private Color MODIFIED_COLOR = new Color(0xc7, 0xff, 0xb7);
+
 	public RowHeaderTable(int width, int height, final int rowHeaderWidth,
 			int rowHeight, boolean iconEnable, final boolean editable) {
 		this.editable = editable;
@@ -111,6 +113,27 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 				}
 
 				super.editingStopped(e);
+			}
+
+			@Override
+			public Component prepareRenderer(TableCellRenderer tcr, int row,
+					int column) {
+				Component c = super.prepareRenderer(tcr, row, column);
+
+				if (cellEditWorker != null) {
+					if (!table.isRowSelected(row)) {
+						if (cellEditWorker.isModified(row, column)) {
+							c.setBackground(MODIFIED_COLOR);
+
+						} else {
+							c.setBackground(null);
+						}
+
+					}
+
+				}
+
+				return c;
 			}
 
 			@Override
@@ -185,6 +208,8 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 			}
 
 		});
+
+		this.table.setAutoCreateColumnsFromModel(true);
 
 		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -271,7 +296,6 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 		this.table.setRowHeight(rowHeight);
 		this.table.setGridColor(new Color(230, 230, 230));
-
 		this.tableModel = new DefaultTableModel();
 		this.table.setModel(this.tableModel);
 
@@ -391,7 +415,6 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 	public void addRow(final String headerValue, final Object[] values) {
 		if (EventQueue.isDispatchThread()) {
-			tableModel.addRow(values);
 			if (listModel != null) {
 				listModel.addElement(headerValue);
 				if (listModel.size() >= 2) {
@@ -399,12 +422,12 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 							.valueOf(listModel.size() - 1));
 				}
 			}
+			tableModel.addRow(values);
 
 		} else {
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
-						tableModel.addRow(values);
 						if (listModel != null) {
 							listModel.addElement(headerValue);
 							if (listModel.size() >= 2) {
@@ -412,6 +435,8 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 										.valueOf(listModel.size() - 1));
 							}
 						}
+						tableModel.addRow(values);
+
 					}
 				});
 
@@ -428,7 +453,6 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 	public void addRow(final int row, final String headerValue,
 			final Object[] values) {
 		if (EventQueue.isDispatchThread()) {
-			tableModel.insertRow(row, values);
 			if (listModel != null) {
 				listModel.add(row, headerValue);
 				for (int i = row; i < listModel.getSize() - 1; i++) {
@@ -437,12 +461,12 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 				listModel.set(listModel.getSize() - 1, "+");
 			}
+			tableModel.insertRow(row, values);
 
 		} else {
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
-						tableModel.insertRow(row, values);
 						if (listModel != null) {
 							listModel.add(row, headerValue);
 							for (int i = row; i < listModel.getSize() - 1; i++) {
@@ -451,6 +475,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 							listModel.set(listModel.getSize() - 1, "+");
 						}
+						tableModel.insertRow(row, values);
 					}
 				});
 
@@ -531,11 +556,21 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 	}
 
 	public void removeData() {
-		if (this.listModel != null) {
-			this.listModel.removeAllElements();
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					if (listModel != null) {
+						listModel.removeAllElements();
+					}
+
+					tableModel.setRowCount(0);
+					tableModel.setColumnCount(0);
+				}
+			});
+
+		} catch (InterruptedException e) {
+		} catch (InvocationTargetException e) {
 		}
-		this.tableModel = new DefaultTableModel();
-		this.table.setModel(this.tableModel);
 
 		if (cellEditWorker != null) {
 			cellEditWorker.changeRowNum();

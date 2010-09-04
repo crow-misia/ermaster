@@ -290,7 +290,7 @@ public class TestDataManageDialog extends AbstractDialog {
 		exportTestDataDialog.open();
 	}
 
-	private void editTestData() {
+	private void editTestData(int selectedTableIndex) {
 		int targetIndex = this.testDataListWidget.getSelectionIndex();
 		if (targetIndex == -1) {
 			return;
@@ -300,7 +300,10 @@ public class TestDataManageDialog extends AbstractDialog {
 
 		TestDataDialog testDataDialog = new TestDataDialog(this.getShell(),
 				diagram, oldTestData);
-
+		if (selectedTableIndex != -1) {
+			testDataDialog.setSelectedTable(selectedTableIndex);
+		}
+		
 		if (testDataDialog.open() == IDialogConstants.OK_ID) {
 			TestData newTestData = testDataDialog.getTestData();
 
@@ -370,7 +373,7 @@ public class TestDataManageDialog extends AbstractDialog {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				editTestData();
+				editTestData(testDataTable.getSelectionIndex());
 			}
 		});
 
@@ -450,7 +453,18 @@ public class TestDataManageDialog extends AbstractDialog {
 			 */
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				editTestData();
+				editTestData(testDataTable.getSelectionIndex());
+			}
+		});
+		
+		this.testDataTable.addMouseListener(new MouseAdapter() {
+
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				editTestData(testDataTable.getSelectionIndex());
 			}
 		});
 

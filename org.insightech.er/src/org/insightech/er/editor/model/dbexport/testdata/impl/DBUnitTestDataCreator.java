@@ -57,7 +57,7 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 				RepeatTestDataDef repeatTestDataDef = repeatTestData
 						.getDataDef(column);
 
-				String value = this.getRepeatTestDataValue(i,
+				String value = this.getMergedRepeatTestDataValue(i,
 						repeatTestDataDef, column);
 
 				if (value == null || "null".equals(value.toLowerCase())) {

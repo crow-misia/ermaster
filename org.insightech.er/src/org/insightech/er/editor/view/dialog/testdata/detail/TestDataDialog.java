@@ -77,6 +77,8 @@ public class TestDataDialog extends AbstractDialog {
 	/** テストデータ名 */
 	private Text nameText;
 
+	private int selectedTableIndex = -1;
+
 	public ERDiagram getDiagram() {
 		return this.diagram;
 	}
@@ -276,6 +278,13 @@ public class TestDataDialog extends AbstractDialog {
 		}
 
 		initSelectedTableTable();
+
+		if (this.selectedTableIndex != -1) {
+			this.selectedTableTable.select(this.selectedTableIndex);
+			removeButton.setEnabled(true);
+			resetTabs();
+			this.selectedTableIndex = -1;
+		}
 	}
 
 	@Override
@@ -453,5 +462,9 @@ public class TestDataDialog extends AbstractDialog {
 
 	public TestData getTestData() {
 		return this.testData;
+	}
+
+	public void setSelectedTable(int selectedTableIndex) {
+		this.selectedTableIndex = selectedTableIndex;
 	}
 }

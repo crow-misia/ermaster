@@ -42,6 +42,10 @@ public class RowHeaderTableTest {
 			public void changeRowNum() {
 			}
 
+			public boolean isModified(int row, int column) {
+				return false;
+			}
+
 		});
 	}
 
