@@ -800,6 +800,19 @@ public class PersistentXmlImpl extends Persistent {
 				xml.append("\t<select>").append(escape(select)).append(
 						"</select>\n");
 			}
+			xml.append("\t<modified_values>\n");
+			for (Integer modifiedRow : repeatTestDataDef.getModifiedValues()
+					.keySet()) {
+				xml.append("\t\t<modified_value>\n");
+				xml.append("\t\t\t<row>").append(modifiedRow)
+						.append("</row>\n");
+				xml.append("\t\t\t<value>").append(
+						escape(repeatTestDataDef.getModifiedValues().get(
+								modifiedRow))).append("</value>\n");
+				xml.append("\t\t</modified_value>\n");
+			}
+			xml.append("\t</modified_values>\n");
+
 			xml.append("</data_def>\n");
 		}
 

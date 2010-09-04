@@ -863,6 +863,22 @@ public class XMLLoader {
 			dataDef.setIncrement(this.getIntValue(dataDefElement, "increment"));
 			dataDef.setSelects(this.getTagValues(dataDefElement, "select"));
 
+			Element modifiedValuesElement = this.getElement(dataDefElement,
+					"modified_values");
+			if (modifiedValuesElement != null) {
+				NodeList modifiedValueNodeList = modifiedValuesElement
+						.getElementsByTagName("modified_value");
+				
+				for (int j = 0; j < modifiedValueNodeList.getLength(); j++) {
+					Element modifiedValueNode = (Element) modifiedValueNodeList.item(j);
+
+					Integer row = this.getIntValue(modifiedValueNode, "row");
+					String value = this.getStringValue(modifiedValueNode, "value");
+					
+					dataDef.setModifiedValue(row, value);
+				}
+			}
+
 			repeatTestData.setDataDef(column, dataDef);
 		}
 	}

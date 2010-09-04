@@ -59,7 +59,7 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 	private void createEditTable(Composite composite) {
 		this.editColumnTable = CompositeFactory.createRowHeaderTable(composite,
 				TestDataDialog.WIDTH - 20, TestDataDialog.TABLE_HEIGHT, 75, 25,
-				2, true, false);
+				2, true, true);
 
 		this.editColumnTable.setCellEditWorker(new CellEditWorker() {
 
@@ -68,6 +68,42 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 
 			public void changeRowNum() {
 				dialog.resetTestDataNum();
+			}
+
+			public boolean isModified(int row, int column) {
+				TestDataCreator testDataCreator = new SQLTestDataCreator();
+				testDataCreator.init(dialog.getTestData());
+
+				if (column >= table.getExpandedColumns().size()) {
+					return false;
+				}
+
+				NormalColumn normalColumn = table.getExpandedColumns().get(
+						column);
+
+				RepeatTestDataDef dataDef = repeatTestData
+						.getDataDef(normalColumn);
+
+				String defaultValue = testDataCreator.getRepeatTestDataValue(
+						row, dataDef, normalColumn);
+				Object value = editColumnTable.getValueAt(row, column);
+
+				if (defaultValue == null) {
+					defaultValue = "null";
+				}
+				if (value == null) {
+					value = "null";
+				}
+
+				if (!defaultValue.equals(value)) {
+					dataDef.setModifiedValue(row, value.toString());
+					return true;
+
+				} else {
+					dataDef.removeModifiedValue(row);
+				}
+
+				return false;
 			}
 
 		});
@@ -129,38 +165,6 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 		this.initTable();
 	}
 
-	// private void saveTableData() {
-	// if (this.repeatTestData != null) {
-	// Map<NormalColumn, RepeatTestDataDef> dataDefMap = new
-	// HashMap<NormalColumn, RepeatTestDataDef>();
-	//
-	// List<NormalColumn> normalColumnList = this.table
-	// .getExpandedColumns();
-	//
-	// for (int column = 0; column < normalColumnList.size(); column++) {
-	// NormalColumn normalColumn = normalColumnList.get(column);
-	// RepeatPanelCellEditor cellEditor = (RepeatPanelCellEditor)
-	// this.editColumnTable
-	// .getCellEditor(column);
-	// if (cellEditor != null) {
-	// RepeatTestDataDef dataDef = cellEditor
-	// .getRepeatTestDataDef();
-	// dataDefMap.put(normalColumn, dataDef);
-	// }
-	// }
-	//
-	// this.repeatTestData.setDataDefMap(dataDefMap);
-	//
-	// String text = this.testDataNumText.getText();
-	// int num = 0;
-	// if (!text.equals("")) {
-	// num = Integer.parseInt(text);
-	// }
-	//
-	// this.repeatTestData.setTestDataNum(num);
-	// }
-	// }
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -193,6 +197,8 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 
 	public void initTableData() {
 		if (this.table != null) {
+			this.editColumnTable.setVisible(false);
+
 			TestDataCreator testDataCreator = new SQLTestDataCreator();
 			testDataCreator.init(dialog.getTestData());
 
@@ -212,13 +218,15 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 
 				for (NormalColumn column : this.table.getExpandedColumns()) {
 					values[columnIndex++] = testDataCreator
-							.getRepeatTestDataValue(i, repeatTestData
+							.getMergedRepeatTestDataValue(i, repeatTestData
 									.getDataDef(column), column);
 				}
 
 				this.editColumnTable.addRow(String.valueOf(this.editColumnTable
 						.getItemCount() + 1), values);
 			}
+
+			this.editColumnTable.setVisible(true);
 		}
 	}
 

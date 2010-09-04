@@ -1,5 +1,8 @@
 package org.insightech.er.editor.model.testdata;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.insightech.er.ResourceString;
 
 public class RepeatTestDataDef implements Cloneable {
@@ -29,6 +32,12 @@ public class RepeatTestDataDef implements Cloneable {
 	private int increment;
 
 	private String[] selects;
+
+	private Map<Integer, String> modifiedValues;
+
+	public RepeatTestDataDef() {
+		this.modifiedValues = new HashMap<Integer, String>();
+	}
 
 	public String getType() {
 		return type;
@@ -86,6 +95,18 @@ public class RepeatTestDataDef implements Cloneable {
 		this.selects = selects;
 	}
 
+	public void setModifiedValue(Integer row, String value) {
+		this.modifiedValues.put(row, value);
+	}
+	
+	public void removeModifiedValue(Integer row) {
+		this.modifiedValues.remove(row);
+	}
+
+	public Map<Integer, String> getModifiedValues() {
+		return this.modifiedValues;
+	}
+
 	@Override
 	public RepeatTestDataDef clone() {
 		try {
@@ -97,6 +118,9 @@ public class RepeatTestDataDef implements Cloneable {
 					clone.selects[i] = this.selects[i];
 				}
 			}
+
+			clone.modifiedValues = new HashMap<Integer, String>();
+			clone.modifiedValues.putAll(this.modifiedValues);
 
 			return clone;
 
