@@ -38,8 +38,6 @@ public class NodeElementSelectionEditPolicy extends ResizableEditPolicy {
 				nodeElementList.remove(currentElement);
 				nodeElementList.add((NodeElement) currentElement);
 				getHost().getRoot().getContents().refresh();
-				
-				System.out.println("*************");
 			}
 		}
 

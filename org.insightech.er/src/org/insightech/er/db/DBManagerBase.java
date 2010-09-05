@@ -35,10 +35,11 @@ public abstract class DBManagerBase implements DBManager {
 	}
 
 	public String getURL(String serverName, String dbName, int port) {
-		String url = this.getURL().replaceAll("<SERVER NAME>", serverName);
+		String temp = serverName.replaceAll("\\\\", "\\\\\\\\");
+		String url = this.getURL().replaceAll("<SERVER NAME>", temp);
 		url = url.replaceAll("<PORT>", String.valueOf(port));
 
-		String temp = dbName.replaceAll("\\\\", "\\\\\\\\");
+		temp = dbName.replaceAll("\\\\", "\\\\\\\\");
 		url = url.replaceAll("<DB NAME>", temp);
 
 		return url;

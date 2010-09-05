@@ -3,7 +3,7 @@
    <description url="http://ermaster.sourceforge.net/update-site/">
       update-site at sourceforge.net
    </description>
-   <feature url="features/org.insightech.er.feature_1.0.0.v20100429-1112.jar" id="org.insightech.er.feature" version="1.0.0.v20100429-1112">
+   <feature url="features/org.insightech.er.feature_1.0.0.v20100905-2210.jar" id="org.insightech.er.feature" version="1.0.0.v20100905-2210">
       <category name="ermaster"/>
    </feature>
    <category-def name="ermaster" label="ERMaster"/>

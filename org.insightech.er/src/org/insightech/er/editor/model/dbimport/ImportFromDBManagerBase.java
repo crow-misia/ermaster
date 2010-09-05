@@ -1050,8 +1050,55 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		return list;
 	}
 
-	abstract protected View importView(String schema, String viewName)
-			throws SQLException;
+	protected View importView(String schema, String viewName)
+			throws SQLException {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sql = getViewDefinitionSQL(schema);
+		if (sql == null) {
+			return null;
+		}
+
+		try {
+			stmt = this.con.prepareStatement(sql);
+
+			if (schema != null) {
+				stmt.setString(1, schema);
+				stmt.setString(2, viewName);
+
+			} else {
+				stmt.setString(1, viewName);
+
+			}
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				View view = new View();
+
+				view.setPhysicalName(viewName);
+				view.setLogicalName(this.translationResources
+						.translate(viewName));
+				String definitionSQL = rs.getString(1);
+				view.setSql(definitionSQL);
+				view.getTableViewProperties().setSchema(schema);
+
+				List<Column> columnList = this.getViewColumnList(definitionSQL);
+				view.setColumns(columnList);
+
+				return view;
+			}
+
+			return null;
+
+		} finally {
+			this.close(rs);
+			this.close(stmt);
+		}
+	}
+
+	protected abstract String getViewDefinitionSQL(String schema);
 
 	protected List<Column> getViewColumnList(String sql) {
 		List<Column> columnList = new ArrayList<Column>();
@@ -1137,14 +1184,17 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 			NormalColumn targetColumn = null;
 
-			if (tableName != null && columnName != null) {
-				tableName = tableName.toLowerCase();
+			if (columnName != null) {
+				if (tableName != null) {
+					tableName = tableName.toLowerCase();
+				}
 				columnName = columnName.toLowerCase();
 
 				for (ERTable table : this.importedTables) {
-					if (table.getPhysicalName() != null
-							&& tableName.equals(table.getPhysicalName()
-									.toLowerCase())) {
+					if (tableName == null
+							|| (table.getPhysicalName() != null && tableName
+									.equals(table.getPhysicalName()
+											.toLowerCase()))) {
 						for (NormalColumn column : table.getExpandedColumns()) {
 							if (column.getPhysicalName() != null
 									&& columnName.equals(column
@@ -1171,7 +1221,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 			} else {
 				word = new Word(columnAlias, this.translationResources
-						.translate(columnAlias), null, null, null, null);
+						.translate(columnAlias), null, new TypeData(null, null,
+						false, null, false, null), null, null);
 
 			}
 

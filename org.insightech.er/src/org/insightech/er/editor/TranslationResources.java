@@ -96,6 +96,7 @@ public class TranslationResources {
 
 			String value = line.substring(index + 1).trim();
 			this.translationMap.put(key, value);
+			this.translationMap.put(key.replaceAll("[aiueo]", ""), value);
 		}
 	}
 
