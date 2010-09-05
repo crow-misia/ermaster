@@ -115,6 +115,10 @@ public class ERDiagramPaletteRoot extends PaletteRoot {
 				.getImageDescriptor(ImageKey.CATEGORY), Activator
 				.getImageDescriptor(ImageKey.CATEGORY)));
 
+		group.add(new PaletteSeparator());
+
+		group.add(new InsertImageTool());
+
 		this.add(group);
 
 		this.setDefaultEntry(selectionToolEntry);

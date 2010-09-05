@@ -200,6 +200,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 				.getHeight());
 
 		Dimension minimumSize = this.figure.getMinimumSize();
+		
 		if (dimension.width != -1 && dimension.width < minimumSize.width) {
 			dimension.width = minimumSize.width;
 		}

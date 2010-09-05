@@ -36,6 +36,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.Location;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
+import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
 import org.insightech.er.editor.model.diagram_contents.element.node.model_properties.ModelProperties;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -868,13 +869,15 @@ public class XMLLoader {
 			if (modifiedValuesElement != null) {
 				NodeList modifiedValueNodeList = modifiedValuesElement
 						.getElementsByTagName("modified_value");
-				
+
 				for (int j = 0; j < modifiedValueNodeList.getLength(); j++) {
-					Element modifiedValueNode = (Element) modifiedValueNodeList.item(j);
+					Element modifiedValueNode = (Element) modifiedValueNodeList
+							.item(j);
 
 					Integer row = this.getIntValue(modifiedValueNode, "row");
-					String value = this.getStringValue(modifiedValueNode, "value");
-					
+					String value = this.getStringValue(modifiedValueNode,
+							"value");
+
 					dataDef.setModifiedValue(row, value);
 				}
 			}
@@ -1343,6 +1346,11 @@ public class XMLLoader {
 			} else if ("note".equals(node.getNodeName())) {
 				Note note = this.loadNote((Element) node, context);
 				contents.addNodeElement(note);
+
+			} else if ("image".equals(node.getNodeName())) {
+				InsertedImage insertedImage = this.loadInsertedImage(
+						(Element) node, context);
+				contents.addNodeElement(insertedImage);
 			}
 		}
 	}
@@ -1566,6 +1574,16 @@ public class XMLLoader {
 		this.loadNodeElement(note, element, context);
 
 		return note;
+	}
+
+	private InsertedImage loadInsertedImage(Element element, LoadContext context) {
+		InsertedImage insertedImage = new InsertedImage();
+
+		insertedImage
+				.setBase64EncodedData(this.getStringValue(element, "data"));
+		this.loadNodeElement(insertedImage, element, context);
+
+		return insertedImage;
 	}
 
 	private void loadNodeElement(NodeElement nodeElement, Element element,

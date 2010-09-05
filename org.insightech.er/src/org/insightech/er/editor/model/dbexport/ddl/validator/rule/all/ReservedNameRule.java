@@ -7,7 +7,6 @@ import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.validator.ValidateResult;
 import org.insightech.er.editor.model.dbexport.ddl.validator.rule.BaseRule;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
@@ -19,29 +18,25 @@ public class ReservedNameRule extends BaseRule {
 	public boolean validate(ERDiagram diagram) {
 		DBManager dbManager = DBManagerFactory.getDBManager(diagram);
 
-		for (NodeElement nodeElement : diagram.getDiagramContents()
-				.getContents()) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-				for (Index index : table.getIndexes()) {
-					String indexName = index.getName().toLowerCase();
+			for (Index index : table.getIndexes()) {
+				String indexName = index.getName().toLowerCase();
 
-					if (dbManager.isReservedWord(indexName)) {
-						ValidateResult validateResult = new ValidateResult();
-						validateResult
-								.setMessage(ResourceString
-										.getResourceString("error.validate.reserved.name")
-										+ " [INDEX] "
-										+ indexName
-										+ " ("
-										+ table.getLogicalName() + ")");
-						validateResult.setLocation(indexName);
-						validateResult.setSeverity(IMarker.SEVERITY_WARNING);
-						validateResult.setObject(index);
+				if (dbManager.isReservedWord(indexName)) {
+					ValidateResult validateResult = new ValidateResult();
+					validateResult.setMessage(ResourceString
+							.getResourceString("error.validate.reserved.name")
+							+ " [INDEX] "
+							+ indexName
+							+ " ("
+							+ table.getLogicalName() + ")");
+					validateResult.setLocation(indexName);
+					validateResult.setSeverity(IMarker.SEVERITY_WARNING);
+					validateResult.setObject(index);
 
-						this.addError(validateResult);
-					}
+					this.addError(validateResult);
 				}
 			}
 		}

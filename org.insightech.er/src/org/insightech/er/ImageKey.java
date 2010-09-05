@@ -37,6 +37,7 @@ public interface ImageKey {
 	public String GROUP = "GROUP";
 	public String HORIZONTAL_LINE = "HORIZONTAL_LINE";
 	public String HORIZONTAL_LINE_DISABLED = "HORIZONTAL_LINE_DISABLED";
+	public String IMAGE= "IMAGE";
 	public String INDEX = "INDEX";
 	public String LOCK_EDIT = "LOCK_EDIT";
 	public String MATCH_HEIGHT = "MATCH_HEIGHT";

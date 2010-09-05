@@ -13,8 +13,8 @@ import org.eclipse.gef.handles.ResizeHandle;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ViewableModel;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
-import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
+import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
+import org.insightech.er.editor.model.diagram_contents.element.node.model_properties.ModelProperties;
 import org.insightech.er.editor.view.figure.handle.ERDiagramMoveHandle;
 import org.insightech.er.editor.view.figure.handle.ERDiagramResizeHandle;
 
@@ -27,8 +27,8 @@ public class NodeElementSelectionEditPolicy extends ResizableEditPolicy {
 				.getSelectedEditParts();
 		if (selectedEditParts.size() == 1) {
 			ViewableModel currentElement = (ViewableModel) getHost().getModel();
-			if (currentElement instanceof Note
-					|| currentElement instanceof ERTable) {
+			if (!(currentElement instanceof Category)
+					&& !(currentElement instanceof ModelProperties)) {
 				ERDiagram diagram = (ERDiagram) getHost().getRoot()
 						.getContents().getModel();
 
@@ -38,6 +38,8 @@ public class NodeElementSelectionEditPolicy extends ResizableEditPolicy {
 				nodeElementList.remove(currentElement);
 				nodeElementList.add((NodeElement) currentElement);
 				getHost().getRoot().getContents().refresh();
+				
+				System.out.println("*************");
 			}
 		}
 

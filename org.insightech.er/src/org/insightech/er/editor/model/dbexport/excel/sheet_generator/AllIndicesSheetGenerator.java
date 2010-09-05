@@ -9,8 +9,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDefinition;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.util.POIUtils;
@@ -36,41 +34,33 @@ public class AllIndicesSheetGenerator extends IndexSheetGenerator {
 
 		HSSFSheet oldSheet = workbook.getSheetAt(sheetNo);
 
-		NodeSet nodeSet = null;
-
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
-
 		boolean first = true;
 
-		for (NodeElement nodeElement : nodeSet) {
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-			if (nodeElement instanceof ERTable) {
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
+			}
+			
+			for (Index index : table.getIndexes()) {
+				if (first) {
+					first = false;
 
-				ERTable table = (ERTable) nodeElement;
-
-				for (Index index : table.getIndexes()) {
-					if (first) {
-						first = false;
-
-					} else {
-						POIUtils.copyRow(oldSheet, newSheet,
-								loopDefinition.startLine - 1, oldSheet
-										.getLastRowNum(), newSheet
-										.getLastRowNum()
-										+ loopDefinition.spaceLine + 1);
-					}
-
-					this.setIndexData(workbook, newSheet, index);
-
-					newSheet.setRowBreak(newSheet.getLastRowNum()
-							+ loopDefinition.spaceLine);
-
-					monitor.worked(1);
+				} else {
+					POIUtils.copyRow(oldSheet, newSheet,
+							loopDefinition.startLine - 1, oldSheet
+									.getLastRowNum(), newSheet.getLastRowNum()
+									+ loopDefinition.spaceLine + 1);
 				}
+
+				this.setIndexData(workbook, newSheet, index);
+
+				newSheet.setRowBreak(newSheet.getLastRowNum()
+						+ loopDefinition.spaceLine);
+
+				monitor.worked(1);
 			}
 		}
 

@@ -9,8 +9,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDefinition;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.ColumnSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
@@ -45,27 +43,19 @@ public class ColumnSheetGenerator extends AbstractSheetGenerator {
 
 			int order = 1;
 
-			NodeSet nodeSet = null;
+			for (ERTable table : diagram.getDiagramContents().getContents()
+					.getTableSet()) {
 
-			if (diagram.getCurrentCategory() != null) {
-				nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-			} else {
-				nodeSet = diagram.getDiagramContents().getContents();
-			}
+				if (diagram.getCurrentCategory() != null
+						&& !diagram.getCurrentCategory().contains(table)) {
+					continue;
+				}
 
-			for (NodeElement nodeElement : nodeSet) {
-
-				if (nodeElement instanceof ERTable) {
-					ERTable table = (ERTable) nodeElement;
-
-					for (NormalColumn normalColumn : table.getExpandedColumns()) {
-						HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
-						this
-								.setColumnData(this.keywordsValueMap,
-										columnTemplate, row, normalColumn,
-										table, order);
-						order++;
-					}
+				for (NormalColumn normalColumn : table.getExpandedColumns()) {
+					HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
+					this.setColumnData(this.keywordsValueMap, columnTemplate,
+							row, normalColumn, table, order);
+					order++;
 				}
 			}
 
