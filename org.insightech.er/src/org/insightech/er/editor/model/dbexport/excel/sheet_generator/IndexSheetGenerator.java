@@ -9,8 +9,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDefinition;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
@@ -41,31 +39,24 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 			Map<String, LoopDefinition> loopDefinitionMap) {
 		this.clear();
 
-		NodeSet nodeSet = null;
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
+			}
 
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
+			for (Index index : table.getIndexes()) {
+				String name = index.getName();
 
-		for (NodeElement nodeElement : nodeSet) {
+				HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo,
+						name, sheetNameMap);
 
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+				sheetObjectMap.put(workbook.getSheetName(workbook
+						.getSheetIndex(newSheet)), index);
 
-				for (Index index : table.getIndexes()) {
-					String name = index.getName();
-
-					HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo,
-							name, sheetNameMap);
-
-					sheetObjectMap.put(workbook.getSheetName(workbook
-							.getSheetIndex(newSheet)), index);
-
-					this.setIndexData(workbook, newSheet, index);
-					monitor.worked(1);
-				}
+				this.setIndexData(workbook, newSheet, index);
+				monitor.worked(1);
 			}
 		}
 	}
@@ -154,13 +145,13 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 	public int count(ERDiagram diagram) {
 		int count = 0;
 
-		for (NodeElement nodeElement : diagram.getDiagramContents()
-				.getContents()) {
-
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
-				count += table.getIndexes().size();
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
 			}
+			count += table.getIndexes().size();
 		}
 
 		return count;

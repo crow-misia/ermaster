@@ -158,6 +158,7 @@ public class Activator extends AbstractUIPlugin {
 				loadImageDescriptor("icons/horizontal_line.gif"));
 		reg.put(ImageKey.HORIZONTAL_LINE_DISABLED,
 				loadImageDescriptor("icons/horizontal_line_disabled.gif"));
+		reg.put(ImageKey.IMAGE, loadImageDescriptor("icons/image--plus.png"));
 		reg.put(ImageKey.INDEX, loadImageDescriptor("icons/index.gif"));
 		reg.put(ImageKey.LOCK_EDIT,
 				loadImageDescriptor("icons/lock--pencil.png"));

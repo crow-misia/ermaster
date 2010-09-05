@@ -11,8 +11,6 @@ import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditPart;
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
@@ -36,13 +34,10 @@ public class IndexSetOutlineEditPart extends AbstractOutlineEditPart {
 		ERDiagram diagram = this.getDiagram();
 		Category category = this.getCurrentCategory();
 
-		NodeSet nodeSet = diagram.getDiagramContents().getContents();
-		for (NodeElement element : nodeSet) {
-			if (category == null || category.contains(element)) {
-				if (element instanceof ERTable) {
-					ERTable table = (ERTable) element;
-					children.addAll(table.getIndexes());
-				}
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
+			if (category == null || category.contains(table)) {
+				children.addAll(table.getIndexes());
 			}
 		}
 

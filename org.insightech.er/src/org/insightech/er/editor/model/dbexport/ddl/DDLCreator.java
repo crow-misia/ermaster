@@ -10,8 +10,6 @@ import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
@@ -168,28 +166,23 @@ public abstract class DDLCreator {
 	private String getDropIndexes(ERDiagram diagram) {
 		StringBuffer ddl = new StringBuffer();
 
-		NodeSet nodeSet = null;
-
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
-
 		boolean first = true;
 
-		for (NodeElement nodeElement : nodeSet) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-				for (Index index : table.getIndexes()) {
-					if (first) {
-						ddl.append("\r\n/* Drop Indexes */\r\n\r\n");
-						first = false;
-					}
-					ddl.append(this.getDropDDL(index, table));
-					ddl.append("\r\n");
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
+			}
+
+			for (Index index : table.getIndexes()) {
+				if (first) {
+					ddl.append("\r\n/* Drop Indexes */\r\n\r\n");
+					first = false;
 				}
+				ddl.append(this.getDropDDL(index, table));
+				ddl.append("\r\n");
 			}
 		}
 
@@ -206,28 +199,23 @@ public abstract class DDLCreator {
 
 		Set<TableView> doneTables = new HashSet<TableView>();
 
-		NodeSet nodeSet = null;
-
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
-
 		boolean first = true;
 
-		for (NodeElement nodeElement : nodeSet) {
-			if (nodeElement instanceof ERTable) {
-				TableView table = (TableView) nodeElement;
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-				if (first) {
-					ddl.append("\r\n/* Drop Tables */\r\n\r\n");
-					first = false;
-				}
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
+			}
 
-				if (!doneTables.contains(table)) {
-					ddl.append(this.getDropDDL(table, doneTables));
-				}
+			if (first) {
+				ddl.append("\r\n/* Drop Tables */\r\n\r\n");
+				first = false;
+			}
+
+			if (!doneTables.contains(table)) {
+				ddl.append(this.getDropDDL(table, doneTables));
 			}
 		}
 
@@ -305,31 +293,26 @@ public abstract class DDLCreator {
 	private String getCreateTables(ERDiagram diagram) {
 		StringBuffer ddl = new StringBuffer();
 
-		NodeSet nodeSet = null;
-
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
-
 		boolean first = true;
 
-		for (NodeElement nodeElement : nodeSet) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-				if (first) {
-					ddl.append("\r\n/* Create Tables */\r\n\r\n");
-					first = false;
-				}
-
-				ddl.append(this.getDDL(table));
-				ddl.append("\r\n");
-				ddl.append("\r\n");
-				ddl.append("\r\n");
-				ddl.append(this.getTableSettingDDL(table));
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
 			}
+
+			if (first) {
+				ddl.append("\r\n/* Create Tables */\r\n\r\n");
+				first = false;
+			}
+
+			ddl.append(this.getDDL(table));
+			ddl.append("\r\n");
+			ddl.append("\r\n");
+			ddl.append("\r\n");
+			ddl.append(this.getTableSettingDDL(table));
 		}
 
 		return ddl.toString();
@@ -338,30 +321,25 @@ public abstract class DDLCreator {
 	private String getCreateForeignKeys(ERDiagram diagram) {
 		StringBuffer ddl = new StringBuffer();
 
-		NodeSet nodeSet = null;
-
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
-
 		boolean first = true;
 
-		for (NodeElement nodeElement : nodeSet) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-				for (Relation relation : table.getOutgoingRelations()) {
-					if (first) {
-						ddl.append("\r\n/* Create Foreign Keys */\r\n\r\n");
-						first = false;
-					}
-					ddl.append(this.getDDL(relation));
-					ddl.append("\r\n");
-					ddl.append("\r\n");
-					ddl.append("\r\n");
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
+			}
+
+			for (Relation relation : table.getOutgoingRelations()) {
+				if (first) {
+					ddl.append("\r\n/* Create Foreign Keys */\r\n\r\n");
+					first = false;
 				}
+				ddl.append(this.getDDL(relation));
+				ddl.append("\r\n");
+				ddl.append("\r\n");
+				ddl.append("\r\n");
 			}
 		}
 
@@ -371,28 +349,23 @@ public abstract class DDLCreator {
 	private String getCreateIndexes(ERDiagram diagram) {
 		StringBuffer ddl = new StringBuffer();
 
-		NodeSet nodeSet = null;
-
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
-
 		boolean first = true;
 
-		for (NodeElement nodeElement : nodeSet) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-				for (Index index : table.getIndexes()) {
-					if (first) {
-						ddl.append("\r\n/* Create Indexes */\r\n\r\n");
-						first = false;
-					}
-					ddl.append(this.getDDL(index, table));
-					ddl.append("\r\n");
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
+			}
+
+			for (Index index : table.getIndexes()) {
+				if (first) {
+					ddl.append("\r\n/* Create Indexes */\r\n\r\n");
+					first = false;
 				}
+				ddl.append(this.getDDL(index, table));
+				ddl.append("\r\n");
 			}
 		}
 
@@ -486,31 +459,26 @@ public abstract class DDLCreator {
 	private String getCreateComment(ERDiagram diagram) {
 		StringBuffer ddl = new StringBuffer();
 
-		NodeSet nodeSet = null;
-
-		if (diagram.getCurrentCategory() != null) {
-			nodeSet = diagram.getCurrentCategory().getContentsAsNodeSet();
-		} else {
-			nodeSet = diagram.getDiagramContents().getContents();
-		}
-
 		boolean first = true;
 
-		for (NodeElement nodeElement : nodeSet) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
-				List<String> commentDDLList = this.getCommentDDL(table);
+		for (ERTable table : diagram.getDiagramContents().getContents()
+				.getTableSet()) {
 
-				if (!commentDDLList.isEmpty()) {
-					if (first) {
-						ddl.append("\r\n/* Comments */\r\n\r\n");
-						first = false;
-					}
+			if (diagram.getCurrentCategory() != null
+					&& !diagram.getCurrentCategory().contains(table)) {
+				continue;
+			}
+			List<String> commentDDLList = this.getCommentDDL(table);
 
-					for (String commentDDL : commentDDLList) {
-						ddl.append(commentDDL);
-						ddl.append("\r\n");
-					}
+			if (!commentDDLList.isEmpty()) {
+				if (first) {
+					ddl.append("\r\n/* Comments */\r\n\r\n");
+					first = false;
+				}
+
+				for (String commentDDL : commentDDLList) {
+					ddl.append(commentDDL);
+					ddl.append("\r\n");
 				}
 			}
 		}

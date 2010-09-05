@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.insightech.er.editor.model.AbstractModel;
+import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
+import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImageSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.NoteSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -25,10 +27,17 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 
 	private ViewSet viewSet;
 
+	private List<NodeElement> nodeElementList;
+
+	private InsertedImageSet insertedImageSet;
+
 	public NodeSet() {
 		this.tableSet = new TableSet();
 		this.viewSet = new ViewSet();
 		this.noteSet = new NoteSet();
+		this.insertedImageSet = new InsertedImageSet();
+
+		this.nodeElementList = new ArrayList<NodeElement>();
 	}
 
 	public void addNodeElement(NodeElement nodeElement) {
@@ -40,7 +49,13 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 
 		} else if (nodeElement instanceof Note) {
 			this.noteSet.add((Note) nodeElement);
+
+		} else if (nodeElement instanceof InsertedImage) {
+			this.insertedImageSet.add((InsertedImage) nodeElement);
+
 		}
+
+		this.nodeElementList.add(nodeElement);
 
 		this.firePropertyChange(PROPERTY_CHANGE_CONTENTS, null, null);
 	}
@@ -54,45 +69,36 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 
 		} else if (nodeElement instanceof Note) {
 			this.noteSet.remove((Note) nodeElement);
+
+		} else if (nodeElement instanceof InsertedImage) {
+			this.insertedImageSet.remove((InsertedImage) nodeElement);
+
 		}
+
+		this.nodeElementList.remove(nodeElement);
 
 		this.firePropertyChange(PROPERTY_CHANGE_CONTENTS, null, null);
 	}
 
 	public boolean contains(NodeElement nodeElement) {
-		if (nodeElement instanceof ERTable) {
-			return this.tableSet.getList().contains((ERTable) nodeElement);
-
-		} else if (nodeElement instanceof View) {
-			return this.viewSet.getList().contains((View) nodeElement);
-
-		} else if (nodeElement instanceof Note) {
-			return this.noteSet.getList().contains((Note) nodeElement);
-		}
-
-		return false;
+		return this.nodeElementList.contains(nodeElement);
 	}
 
 	public void clear() {
 		this.tableSet.getList().clear();
 		this.viewSet.getList().clear();
 		this.noteSet.getList().clear();
+		this.insertedImageSet.getList().clear();
+
+		this.nodeElementList.clear();
 	}
 
 	public boolean isEmpty() {
-		return this.tableSet.getList().isEmpty()
-				&& this.viewSet.getList().isEmpty()
-				&& this.noteSet.getList().isEmpty();
+		return this.nodeElementList.isEmpty();
 	}
 
 	public List<NodeElement> getNodeElementList() {
-		List<NodeElement> nodeElementList = new ArrayList<NodeElement>();
-
-		nodeElementList.addAll(this.tableSet.getList());
-		nodeElementList.addAll(this.viewSet.getList());
-		nodeElementList.addAll(this.noteSet.getList());
-
-		return nodeElementList;
+		return this.nodeElementList;
 	}
 
 	public List<TableView> getTableViewList() {
@@ -103,7 +109,7 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 
 		return nodeElementList;
 	}
-	
+
 	public Iterator<NodeElement> iterator() {
 		return this.getNodeElementList().iterator();
 	}
@@ -120,4 +126,7 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 		return tableSet;
 	}
 
+	public InsertedImageSet getInsertedImageSet() {
+		return insertedImageSet;
+	}
 }

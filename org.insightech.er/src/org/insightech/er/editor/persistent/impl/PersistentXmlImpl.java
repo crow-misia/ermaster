@@ -27,6 +27,7 @@ import org.insightech.er.editor.model.diagram_contents.element.connection.Relati
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
+import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
 import org.insightech.er.editor.model.diagram_contents.element.node.model_properties.ModelProperties;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -1053,6 +1054,9 @@ public class PersistentXmlImpl extends Persistent {
 			} else if (content instanceof View) {
 				subxml = this.createXML((View) content, context);
 
+			} else if (content instanceof InsertedImage) {
+				subxml = this.createXML((InsertedImage) content, context);
+
 			}
 
 			xml.append(tab(subxml));
@@ -1219,6 +1223,21 @@ public class PersistentXmlImpl extends Persistent {
 				"</text>\n");
 
 		xml.append("</note>\n");
+
+		return xml.toString();
+	}
+
+	private String createXML(InsertedImage insertedImage,
+			PersistentContext context) {
+		StringBuilder xml = new StringBuilder();
+
+		xml.append("<image>\n");
+
+		xml.append(tab(this.createXMLNodeElement(insertedImage, context)));
+		xml.append("\t<data>").append(insertedImage.getBase64EncodedData())
+				.append("</data>\n");
+
+		xml.append("</image>\n");
 
 		return xml.toString();
 	}

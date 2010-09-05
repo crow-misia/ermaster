@@ -6,6 +6,7 @@ import org.insightech.er.editor.controller.editpart.element.connection.CommentCo
 import org.insightech.er.editor.controller.editpart.element.connection.RelationEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.CategoryEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.ERTableEditPart;
+import org.insightech.er.editor.controller.editpart.element.node.InsertedImageEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.ModelPropertiesEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.NoteEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.ViewEditPart;
@@ -17,6 +18,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.CommentConnection;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
+import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
 import org.insightech.er.editor.model.diagram_contents.element.node.model_properties.ModelProperties;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -69,6 +71,9 @@ public class ERDiagramEditPartFactory implements EditPartFactory {
 
 		} else if (model instanceof ColumnGroup) {
 			editPart = new GroupColumnEditPart();
+
+		} else if (model instanceof InsertedImage) {
+			editPart = new InsertedImageEditPart();
 
 		}
 

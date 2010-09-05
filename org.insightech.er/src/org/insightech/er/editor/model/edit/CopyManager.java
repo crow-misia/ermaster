@@ -393,24 +393,20 @@ public class CopyManager {
 			columnGroupMap.put(columnGroup, newColumnGroup);
 		}
 
-		for (NodeElement nodeElement : copyDiagramContents.getContents()) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+		for (TableView tableView : copyDiagramContents.getContents()
+				.getTableViewList()) {
+			List<Column> newColumns = new ArrayList<Column>();
 
-				List<Column> newColumns = new ArrayList<Column>();
+			for (Column column : tableView.getColumns()) {
+				if (column instanceof ColumnGroup) {
+					newColumns.add(columnGroupMap.get((ColumnGroup) column));
 
-				for (Column column : table.getColumns()) {
-					if (column instanceof ColumnGroup) {
-						newColumns
-								.add(columnGroupMap.get((ColumnGroup) column));
-
-					} else {
-						newColumns.add(column);
-					}
+				} else {
+					newColumns.add(column);
 				}
-
-				table.setColumns(newColumns);
 			}
+
+			tableView.setColumns(newColumns);
 		}
 	}
 
@@ -425,18 +421,15 @@ public class CopyManager {
 			wordMap.put(word, newWord);
 		}
 
-		for (NodeElement nodeElement : copyDiagramContents.getContents()) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
+		for (TableView tableView : copyDiagramContents.getContents()
+				.getTableViewList()) {
+			for (NormalColumn normalColumn : tableView.getNormalColumns()) {
+				Word oldWord = normalColumn.getWord();
+				if (oldWord != null) {
+					Word newWord = wordMap.get(oldWord);
+					normalColumn.setWord(newWord);
 
-				for (NormalColumn normalColumn : table.getNormalColumns()) {
-					Word oldWord = normalColumn.getWord();
-					if (oldWord != null) {
-						Word newWord = wordMap.get(oldWord);
-						normalColumn.setWord(newWord);
-
-						copyDictionary.add(normalColumn);
-					}
+					copyDictionary.add(normalColumn);
 				}
 			}
 		}
@@ -469,16 +462,14 @@ public class CopyManager {
 			copyTablespaceSet.addTablespace(newTablespace);
 		}
 
-		for (NodeElement nodeElement : copyDiagramContents.getContents()) {
-			if (nodeElement instanceof ERTable) {
-				ERTable table = (ERTable) nodeElement;
-				TableViewProperties tableProperties = table
-						.getTableViewProperties();
-				Tablespace oldTablespace = tableProperties.getTableSpace();
+		for (TableView tableView : copyDiagramContents.getContents()
+				.getTableViewList()) {
+			TableViewProperties tableProperties = tableView
+					.getTableViewProperties();
+			Tablespace oldTablespace = tableProperties.getTableSpace();
 
-				Tablespace newTablespace = tablespaceMap.get(oldTablespace);
-				tableProperties.setTableSpace(newTablespace);
-			}
+			Tablespace newTablespace = tablespaceMap.get(oldTablespace);
+			tableProperties.setTableSpace(newTablespace);
 		}
 
 		TableViewProperties defaultTableProperties = copyDiagramContents

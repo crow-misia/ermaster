@@ -66,7 +66,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 	}
 
 	protected DBObjectSet preImport() throws Exception {
-		String fileName = this.getSaveFilePath(this.getEditorPart());
+		String fileName = this.getLoadFilePath(this.getEditorPart());
 		if (fileName == null) {
 			return null;
 		}
@@ -101,7 +101,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 				.getActiveWorkbenchWindow().getShell(), diagram, dbObjectSet);
 	}
 
-	protected String getSaveFilePath(IEditorPart editorPart) {
+	protected String getLoadFilePath(IEditorPart editorPart) {
 
 		IFile file = ((IFileEditorInput) editorPart.getEditorInput()).getFile();
 

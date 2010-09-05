@@ -7,7 +7,6 @@ import org.insightech.er.editor.controller.editpart.element.node.IResizable;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.Location;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
@@ -113,18 +112,6 @@ public class Category extends NodeElement implements IResizable,
 
 	public List<NodeElement> getContents() {
 		return nodeElementList;
-	}
-
-	public NodeSet getContentsAsNodeSet() {
-		NodeSet nodeSet = new NodeSet();
-
-		if (this.nodeElementList != null) {
-			for (NodeElement nodeElement : this.nodeElementList) {
-				nodeSet.addNodeElement(nodeElement);
-			}
-		}
-
-		return nodeSet;
 	}
 
 	public List<ERTable> getTableContents() {
