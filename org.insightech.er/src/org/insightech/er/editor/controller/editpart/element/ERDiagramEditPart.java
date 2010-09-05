@@ -92,7 +92,7 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 			modelChildren.addAll(diagram.getChangeTrackingList()
 					.getRemovedNodeElementSet());
 		}
-System.out.println(modelChildren);
+
 		return modelChildren;
 	}
 

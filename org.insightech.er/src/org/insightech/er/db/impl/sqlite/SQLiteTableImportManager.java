@@ -9,13 +9,14 @@ import java.util.Map;
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
-import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 
 public class SQLiteTableImportManager extends ImportFromDBManagerBase {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected View importView(String schema, String viewName)
-			throws SQLException {
+	protected String getViewDefinitionSQL(String schema) {
 		return null;
 	}
 

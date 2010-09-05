@@ -15,7 +15,6 @@ import org.insightech.er.editor.model.dbimport.DBObject;
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
-import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 
@@ -102,44 +101,13 @@ public class OracleTableImportManager extends ImportFromDBManagerBase {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected View importView(String schema, String viewName)
-			throws SQLException {
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
+	protected String getViewDefinitionSQL(String schema) {
+		if (schema != null) {
+			return "SELECT TEXT FROM ALL_VIEWS WHERE OWNER = ? AND VIEW_NAME = ?";
 
-		try {
-			if (schema != null) {
-				stmt = this.con
-						.prepareStatement("SELECT TEXT FROM ALL_VIEWS WHERE OWNER = ? AND VIEW_NAME = ?");
-				stmt.setString(1, schema);
-				stmt.setString(2, viewName);
+		} else {
+			return "SELECT TEXT FROM ALL_VIEWS WHERE VIEW_NAME = ?";
 
-			} else {
-				stmt = this.con
-						.prepareStatement("SELECT TEXT FROM ALL_VIEWS WHERE VIEW_NAME = ?");
-				stmt.setString(1, viewName);
-
-			}
-
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				View view = new View();
-
-				view.setPhysicalName(viewName);
-				view.setLogicalName(this.translationResources
-						.translate(viewName));
-				view.setSql(rs.getString("TEXT"));
-				view.getTableViewProperties().setSchema(schema);
-
-				return view;
-			}
-
-			return null;
-
-		} finally {
-			this.close(rs);
-			this.close(stmt);
 		}
 	}
 

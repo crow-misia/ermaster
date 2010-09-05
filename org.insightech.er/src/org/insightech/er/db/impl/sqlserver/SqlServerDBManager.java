@@ -36,7 +36,7 @@ public class SqlServerDBManager extends DBManagerBase {
 	 */
 	@Override
 	protected String getURL() {
-		return "jdbc:sqlserver://<SERVER NAME>\\<DB NAME>:<PORT>";
+		return "jdbc:sqlserver://<SERVER NAME>:<PORT>;database=<DB NAME>";
 	}
 
 	public int getDefaultPort() {
