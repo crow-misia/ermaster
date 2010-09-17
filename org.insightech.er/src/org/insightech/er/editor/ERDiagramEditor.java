@@ -1,12 +1,14 @@
 package org.insightech.er.editor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
@@ -45,6 +47,7 @@ import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
+import org.insightech.er.Activator;
 import org.insightech.er.Resources;
 import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPartFactory;
 import org.insightech.er.editor.controller.editpart.element.PagableFreeformRootEditPart;
@@ -112,7 +115,7 @@ import org.insightech.er.editor.view.outline.ERDiagramOutlinePage;
 import org.insightech.er.editor.view.outline.ERDiagramOutlinePopupMenuManager;
 import org.insightech.er.editor.view.property_source.ERDiagramPropertySourceProvider;
 import org.insightech.er.editor.view.tool.ERDiagramPaletteRoot;
-import org.insightech.er.extention.ExtensionLoaderAdapter;
+import org.insightech.er.extention.ExtensionLoader;
 
 /**
  * TODO ON UPDATE、ON DELETE のプルダウンを設定できるものだけに制限する<br>
@@ -139,7 +142,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 
 	private PropertySheetPage propertySheetPage;
 
-	private ExtensionLoaderAdapter extensionLoaderAdapter;
+	private ExtensionLoader extensionLoader;
 
 	private boolean isDirty;
 
@@ -171,6 +174,11 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		this.propertySheetPage
 				.setPropertySourceProvider(new ERDiagramPropertySourceProvider());
 
+		try {
+			this.extensionLoader = new ExtensionLoader(this);
+		} catch (CoreException e) {
+			Activator.showExceptionDialog(e);
+		}
 	}
 
 	/**
@@ -225,7 +233,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		MenuManager menuMgr = new ERDiagramPopupMenuManager(this
 				.getActionRegistry(), this.diagram);
 
-		this.extensionLoaderAdapter.addERDiagramPopupMenu(menuMgr, this
+		this.extensionLoader.addERDiagramPopupMenu(menuMgr, this
 				.getActionRegistry());
 
 		viewer.setContextMenu(menuMgr);
@@ -302,66 +310,71 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		ActionRegistry registry = this.getActionRegistry();
 		List<String> selectionActionList = this.getSelectionActions();
 
-		IAction[] selectionActions = new IAction[] {
-				new ChangeViewToLogicalAction(this),
-				new ChangeViewToPhysicalAction(this),
-				new ChangeViewToBothAction(this),
-				new ChangeToIENotationAction(this),
-				new ChangeToIDEF1XNotationAction(this),
-				new ChangeNotationLevelToColumnAction(this),
-				new ChangeNotationLevelToExcludeTypeAction(this),
-				new ChangeNotationLevelToDetailAction(this),
-				new ChangeNotationLevelToOnlyTitleAction(this),
-				new ChangeNotationLevelToOnlyKeyAction(this),
-				new ChangeNotationExpandGroupAction(this),
-				new ChangeDesignToFunnyAction(this),
-				new ChangeDesignToFrameAction(this),
-				new ChangeDesignToSimpleAction(this),
-				new ChangeCapitalAction(this),
-				new ChangeStampAction(this),
-				new GroupManageAction(this),
-				new ChangeTrackingAction(this),
-				new OptionSettingAction(this),
-				new CategoryManageAction(this),
-				new ChangeFreeLayoutAction(this),
-				new ChangeShowReferredTablesAction(this),
-				new TranslationManageAction(this),
-				new TestDataCreateAction(this),
-				new ImportFromDBAction(this),
-				new ImportFromFileAction(this),
-				new ExportToImageAction(this),
-				new ExportToExcelAction(this),
-				new ExportToHtmlAction(this),
-				new ExportToJavaAction(this),
-				new ExportToDDLAction(this),
-				new ExportToDictionaryAction(this),
-				new ExportToTranslationDictionaryAction(this),
-				new PageSettingAction(this),
-				new EditAllAttributesAction(this),
-				new DirectEditAction((IWorkbenchPart) this),
-				new ERDiagramAlignmentAction((IWorkbenchPart) this,
-						PositionConstants.LEFT),
-				new ERDiagramAlignmentAction((IWorkbenchPart) this,
-						PositionConstants.CENTER),
-				new ERDiagramAlignmentAction((IWorkbenchPart) this,
-						PositionConstants.RIGHT),
-				new ERDiagramAlignmentAction((IWorkbenchPart) this,
-						PositionConstants.TOP),
-				new ERDiagramAlignmentAction((IWorkbenchPart) this,
-						PositionConstants.MIDDLE),
-				new ERDiagramAlignmentAction((IWorkbenchPart) this,
-						PositionConstants.BOTTOM),
-				new ERDiagramMatchWidthAction(this),
-				new ERDiagramMatchHeightAction(this),
-				new HorizontalLineAction(this), new VerticalLineAction(this),
-				new RightAngleLineAction(this), new DefaultLineAction(this),
-				new CopyAction(this), new PasteAction(this),
-				new SearchAction(this), new ResizeModelAction(this),
-				new PrintImageAction(this),
-				new DeleteWithoutUpdateAction(this),
-				new SelectAllContentsAction(this) };
+		List<IAction> actionList = new ArrayList<IAction>(Arrays
+				.asList(new IAction[] {
+						new ChangeViewToLogicalAction(this),
+						new ChangeViewToPhysicalAction(this),
+						new ChangeViewToBothAction(this),
+						new ChangeToIENotationAction(this),
+						new ChangeToIDEF1XNotationAction(this),
+						new ChangeNotationLevelToColumnAction(this),
+						new ChangeNotationLevelToExcludeTypeAction(this),
+						new ChangeNotationLevelToDetailAction(this),
+						new ChangeNotationLevelToOnlyTitleAction(this),
+						new ChangeNotationLevelToOnlyKeyAction(this),
+						new ChangeNotationExpandGroupAction(this),
+						new ChangeDesignToFunnyAction(this),
+						new ChangeDesignToFrameAction(this),
+						new ChangeDesignToSimpleAction(this),
+						new ChangeCapitalAction(this),
+						new ChangeStampAction(this),
+						new GroupManageAction(this),
+						new ChangeTrackingAction(this),
+						new OptionSettingAction(this),
+						new CategoryManageAction(this),
+						new ChangeFreeLayoutAction(this),
+						new ChangeShowReferredTablesAction(this),
+						new TranslationManageAction(this),
+						new TestDataCreateAction(this),
+						new ImportFromDBAction(this),
+						new ImportFromFileAction(this),
+						new ExportToImageAction(this),
+						new ExportToExcelAction(this),
+						new ExportToHtmlAction(this),
+						new ExportToJavaAction(this),
+						new ExportToDDLAction(this),
+						new ExportToDictionaryAction(this),
+						new ExportToTranslationDictionaryAction(this),
+						new PageSettingAction(this),
+						new EditAllAttributesAction(this),
+						new DirectEditAction((IWorkbenchPart) this),
+						new ERDiagramAlignmentAction((IWorkbenchPart) this,
+								PositionConstants.LEFT),
+						new ERDiagramAlignmentAction((IWorkbenchPart) this,
+								PositionConstants.CENTER),
+						new ERDiagramAlignmentAction((IWorkbenchPart) this,
+								PositionConstants.RIGHT),
+						new ERDiagramAlignmentAction((IWorkbenchPart) this,
+								PositionConstants.TOP),
+						new ERDiagramAlignmentAction((IWorkbenchPart) this,
+								PositionConstants.MIDDLE),
+						new ERDiagramAlignmentAction((IWorkbenchPart) this,
+								PositionConstants.BOTTOM),
+						new ERDiagramMatchWidthAction(this),
+						new ERDiagramMatchHeightAction(this),
+						new HorizontalLineAction(this),
+						new VerticalLineAction(this),
+						new RightAngleLineAction(this),
+						new DefaultLineAction(this), new CopyAction(this),
+						new PasteAction(this), new SearchAction(this),
+						new ResizeModelAction(this),
+						new PrintImageAction(this),
+						new DeleteWithoutUpdateAction(this),
+						new SelectAllContentsAction(this) }));
 
-		for (IAction action : selectionActions) {
+		actionList.addAll(this.extensionLoader.createExtendedActions());
+
+		for (IAction action : actionList) {
 			if (action instanceof SelectionAction) {
 				IAction originalAction = registry.getAction(action.getId());
 
@@ -374,10 +387,6 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 			registry.registerAction(action);
 
 		}
-
-		this.extensionLoaderAdapter = new ExtensionLoaderAdapter();
-		this.extensionLoaderAdapter.addActions(this, registry,
-				selectionActionList);
 
 		IAction action = registry.getAction(SearchAction.ID);
 		this.addKeyHandler(action);
