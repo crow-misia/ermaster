@@ -6,9 +6,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.LinkedHashMap;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
@@ -20,7 +23,8 @@ public class TranslationResources {
 	private Map<String, String> translationMap;
 
 	public TranslationResources(TranslationSetting translationSettings) {
-		this.translationMap = new LinkedHashMap<String, String>();
+		this.translationMap = new TreeMap<String, String>(
+				new TranslationResourcesComparator());
 
 		String defaultFileName = ResourceString
 				.getResourceString("label.translation.default");
@@ -96,7 +100,11 @@ public class TranslationResources {
 
 			String value = line.substring(index + 1).trim();
 			this.translationMap.put(key, value);
-			this.translationMap.put(key.replaceAll("[aiueo]", ""), value);
+
+			key = key.replaceAll("[aiueo]", "");
+			if (key.length() > 1) {
+				this.translationMap.put(key, value);
+			}
 		}
 	}
 
@@ -111,8 +119,11 @@ public class TranslationResources {
 		for (Entry<String, String> entry : translationMap.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue();
-			str = str.replaceAll("\\_*" + key + "\\_*", value);
-			str = str.replaceAll("\\_*" + key.toUpperCase() + "\\_*", value);
+
+			Pattern p = Pattern.compile("_*" + Pattern.quote(key) + "_*",
+					Pattern.CASE_INSENSITIVE);
+			Matcher m = p.matcher(str);
+			str = m.replaceAll(value);
 		}
 
 		return str;
@@ -120,5 +131,20 @@ public class TranslationResources {
 
 	public boolean contains(String key) {
 		return this.translationMap.containsKey(key);
+	}
+
+	/**
+	 * ’·‚¢‡‚É•À‚×‚éB“¯‚¶’·‚³‚È‚ç«‘‡B‚½‚¾‚µ [A-Z] ‚æ‚è [_] ‚ğ—Dæ‚·‚éB
+	 */
+	private class TranslationResourcesComparator implements Comparator<String> {
+
+		public int compare(String o1, String o2) {
+			int diff = o2.length() - o1.length();
+			if (diff != 0) {
+				return diff;
+			} else {
+				return o1.replace('_', ' ').compareTo(o2.replace('_', ' '));
+			}
+		}
 	}
 }

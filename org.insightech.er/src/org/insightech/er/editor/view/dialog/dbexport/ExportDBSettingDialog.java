@@ -92,6 +92,8 @@ public class ExportDBSettingDialog extends AbstractDBSettingDialog {
 	 */
 	@Override
 	protected void perfomeOK() throws InputException {
+		this.setCurrentSetting();
+		
 		String db = this.getDBSName();
 		DBManager manager = DBManagerFactory.getDBManager(db);
 

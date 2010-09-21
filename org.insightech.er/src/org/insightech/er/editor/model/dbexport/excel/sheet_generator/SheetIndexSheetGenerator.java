@@ -93,7 +93,7 @@ public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 							value = objectModel.getName();
 							HSSFHyperlink link = new HSSFHyperlink(
 									HSSFHyperlink.LINK_DOCUMENT);
-							link.setAddress(sheetName + "!A1");
+							link.setAddress("'" + sheetName + "'!A1");
 							cell.setHyperlink(link);
 
 							if (linkCellFont == null) {

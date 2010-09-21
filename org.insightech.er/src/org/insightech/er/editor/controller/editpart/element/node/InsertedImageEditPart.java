@@ -6,10 +6,18 @@ import org.apache.commons.codec.binary.Base64;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
+import org.insightech.er.Activator;
 import org.insightech.er.editor.controller.editpolicy.element.node.NodeElementComponentEditPolicy;
+import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
+import org.insightech.er.editor.view.dialog.element.InsertedImageDialog;
 import org.insightech.er.editor.view.figure.InsertedImageFigure;
 
 public class InsertedImageEditPart extends NodeElementEditPart implements
@@ -58,4 +66,32 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 		super.createEditPolicies();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void performRequest(Request request) {
+		try {
+			InsertedImage insertedImage = (InsertedImage) this.getModel();
+			ERDiagram diagram = this.getDiagram();
+
+			if (request.getType().equals(RequestConstants.REQ_OPEN)) {
+				InsertedImageDialog dialog = new InsertedImageDialog(PlatformUI
+						.getWorkbench().getActiveWorkbenchWindow().getShell(),
+						insertedImage);
+
+				if (dialog.open() == IDialogConstants.OK_ID) {
+//					CompoundCommand command = createChangeTablePropertyCommand(
+//							diagram, table, copyTable);
+//
+//					this.getViewer().getEditDomain().getCommandStack().execute(
+//							command.unwrap());
+				}
+			}
+		} catch (Exception e) {
+			Activator.showExceptionDialog(e);
+		}
+		
+		super.performRequest(request);
+	}
 }
