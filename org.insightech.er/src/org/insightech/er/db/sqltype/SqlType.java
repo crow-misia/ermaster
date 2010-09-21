@@ -27,6 +27,28 @@ public class SqlType implements Serializable {
 	public static final SqlType NUMERIC = new SqlType("numeric", true,
 			Integer.class);
 
+	public static final SqlType CHARACTER_N = new SqlType("character(n)",
+			false, String.class);
+
+	public static final SqlType VARCHAR_N = new SqlType("varchar(n)", false,
+			String.class);
+
+	public static final SqlType INTEGER = new SqlType("integer", true,
+			Integer.class);
+
+	public static final SqlType LONG = new SqlType("long", false, Long.class);
+
+	public static final SqlType FLOAT = new SqlType("float", true, Float.class);
+
+	public static final SqlType FLOAT_P = new SqlType("float(p)", true,
+			Float.class);
+
+	public static final SqlType FLOAT_M_D = new SqlType("float(m,d)", true,
+			Float.class);
+
+	public static final SqlType DOUBLE_PRECISION = new SqlType(
+			"double precision", false, Double.class);
+
 	public static final SqlType ALERT_TYPE = new SqlType("alert_type", false,
 			Object.class);
 
@@ -60,9 +82,6 @@ public class SqlType implements Serializable {
 
 	public static final SqlType BOX = new SqlType("box", false, Object.class);
 
-	public static final SqlType CHARACTER_N = new SqlType("character(n)",
-			false, String.class);
-
 	public static final SqlType CIDR = new SqlType("cidr", false, Object.class);
 
 	public static final SqlType CIRCLE = new SqlType("circle", false,
@@ -78,26 +97,12 @@ public class SqlType implements Serializable {
 	public static final SqlType DECIMAL_P_S = new SqlType("decimal(p,s)", true,
 			Double.class);
 
-	public static final SqlType DOUBLE_PRECISION = new SqlType(
-			"double precision", false, Double.class);
-
 	public static final SqlType ENUM = new SqlType("enum", false, Object.class);
-
-	public static final SqlType FLOAT = new SqlType("float", true, Float.class);
-
-	public static final SqlType FLOAT_P = new SqlType("float(p)", true,
-			Float.class);
-
-	public static final SqlType FLOAT_M_D = new SqlType("float(m,d)", true,
-			Float.class);
 
 	public static final SqlType GRAPHIC = new SqlType("graphic(n)", false,
 			Object.class);
 
 	public static final SqlType INET = new SqlType("inet", false, Object.class);
-
-	public static final SqlType INTEGER = new SqlType("integer", true,
-			Integer.class);
 
 	public static final SqlType INTERVAL_YEAR_TO_MONTH = new SqlType(
 			"interval year to month", false, Integer.class);
@@ -112,8 +117,6 @@ public class SqlType implements Serializable {
 			"interval day to second(p)", false, Integer.class);
 
 	public static final SqlType LINE = new SqlType("line", false, Object.class);
-
-	public static final SqlType LONG = new SqlType("long", false, Long.class);
 
 	public static final SqlType LONG_BLOB = new SqlType("longblob", false,
 			Blob.class);
@@ -212,9 +215,6 @@ public class SqlType implements Serializable {
 			false, Blob.class);
 
 	public static final SqlType VARCHAR = new SqlType("varchar", false,
-			String.class);
-
-	public static final SqlType VARCHAR_N = new SqlType("varchar(n)", false,
 			String.class);
 
 	public static final SqlType VARGRAPHIC = new SqlType("vargraphic(n)",
