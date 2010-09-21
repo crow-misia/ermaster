@@ -16,11 +16,8 @@ public class HSQLDBSqlTypeManager extends SqlTypeManagerBase {
 		if (type.equals(SqlType.BIG_SERIAL)) {
 			return "bigserial";
 		}
-		if (type.equals(SqlType.BINARY_DOUBLE)) {
-			return "float8";
-		}
-		if (type.equals(SqlType.BINARY_FLOAT)) {
-			return "float8";
+		if (type.equals(SqlType.CHARACTER_N)) {
+			return "char(n)";
 		}
 		if (type.equals(SqlType.BINARY_N)) {
 			return "char(n)";
@@ -40,9 +37,6 @@ public class HSQLDBSqlTypeManager extends SqlTypeManagerBase {
 		if (type.equals(SqlType.BOX)) {
 			return "box";
 		}
-		if (type.equals(SqlType.CHARACTER_N)) {
-			return "char(n)";
-		}
 		if (type.equals(SqlType.CIDR)) {
 			return "cidr";
 		}
@@ -61,13 +55,19 @@ public class HSQLDBSqlTypeManager extends SqlTypeManagerBase {
 		if (type.equals(SqlType.DECIMAL_P_S)) {
 			return "decimal(p,s)";
 		}
+		if (type.equals(SqlType.FLOAT_P)) {
+			return "float8";
+		}
+		if (type.equals(SqlType.BINARY_DOUBLE)) {
+			return "float8";
+		}
+		if (type.equals(SqlType.BINARY_FLOAT)) {
+			return "float8";
+		}
 		if (type.equals(SqlType.DOUBLE_PRECISION)) {
 			return "float8";
 		}
 		if (type.equals(SqlType.FLOAT)) {
-			return "float8";
-		}
-		if (type.equals(SqlType.FLOAT_P)) {
 			return "float8";
 		}
 		if (type.equals(SqlType.FLOAT_M_D)) {
@@ -199,14 +199,14 @@ public class HSQLDBSqlTypeManager extends SqlTypeManagerBase {
 		if (type.equals(SqlType.TINY_TEXT)) {
 			return "text";
 		}
+		if (type.equals(SqlType.VARCHAR_N)) {
+			return "varchar(n)";
+		}
 		if (type.equals(SqlType.VARBINARY_N)) {
 			return "varchar(n)";
 		}
 		if (type.equals(SqlType.VARCHAR)) {
 			return "varchar";
-		}
-		if (type.equals(SqlType.VARCHAR_N)) {
-			return "varchar(n)";
 		}
 		if (type.equals(SqlType.VARGRAPHIC)) {
 			return "vargraphic(n)";
