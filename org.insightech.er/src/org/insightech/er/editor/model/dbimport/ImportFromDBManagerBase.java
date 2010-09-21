@@ -105,6 +105,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		public String description;
 
 		public String constraint;
+
+		public String enumData;
 	}
 
 	private static class ForeignKeyData {
@@ -229,6 +231,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				columnData.defaultValue = columnSet.getString("COLUMN_DEF");
 				columnData.description = columnSet.getString("REMARKS");
 
+				this.cashOtherColumnData(tableName, columnData);
+
 				cash.put(columnData.columnName, columnData);
 
 				if (monitor != null && monitor.isCanceled()) {
@@ -241,6 +245,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				columnSet.close();
 			}
 		}
+	}
+
+	protected void cashOtherColumnData(String tableName, ColumnData columnData)
+			throws SQLException {
 	}
 
 	protected void cashTableComment(IProgressMonitor monitor)
@@ -704,7 +712,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				logicalName = this.translationResources.translate(columnName);
 			}
 
-			String args = null;
+			String args = columnData.enumData;
 
 			TypeData typeData = new TypeData(length, decimal, array,
 					arrayDimension, unsigned, args);

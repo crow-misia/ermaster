@@ -13,6 +13,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
@@ -21,6 +22,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -92,7 +95,7 @@ public class ListenerAppender {
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
-				//text.clearSelection();
+				// text.clearSelection();
 				super.focusLost(e);
 			}
 		});
@@ -317,5 +320,31 @@ public class ListenerAppender {
 			}
 
 		});
+	}
+
+	public static void addModifyListener(final Scale scale,
+			final Spinner spinner, final AbstractDialog dialog) {
+		if (dialog != null) {
+			spinner.addSelectionListener(new SelectionAdapter() {
+				
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					int value = spinner.getSelection();
+					scale.setSelection(value);
+					dialog.validate();
+				}
+			});
+
+			scale.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					int value = scale.getSelection();
+					spinner.setSelection(value);
+					dialog.validate();
+				}
+
+			});
+		}
 	}
 }

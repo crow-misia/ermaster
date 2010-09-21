@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -30,6 +32,39 @@ import org.insightech.er.Resources;
 import org.insightech.er.common.dialog.AbstractDialog;
 
 public class CompositeFactory {
+
+	public static Scale createScale(AbstractDialog dialog, Composite composite,
+			String title) {
+		return createScale(dialog, composite, title, 1);
+	}
+
+	public static Scale createScale(AbstractDialog dialog, Composite composite,
+			String title, int span) {
+		if (title != null) {
+			Label label = new Label(composite, SWT.RIGHT);
+			label.setText(ResourceString.getResourceString(title));
+		}
+
+		GridData scaleGridData = new GridData();
+		scaleGridData.horizontalSpan = span;
+		
+		Scale scale = new Scale(composite, SWT.NONE);
+		scale.setLayoutData(scaleGridData);
+
+		GridData spinnerGridData = new GridData();
+		spinnerGridData.horizontalAlignment = GridData.FILL;
+		spinnerGridData.grabExcessHorizontalSpace = true;
+
+		Spinner spinner = new Spinner(composite, SWT.RIGHT | SWT.BORDER);
+		scale.setLayoutData(spinnerGridData);
+
+		Label label = new Label(composite, SWT.NONE);
+		label.setText("%");
+		
+		ListenerAppender.addModifyListener(scale, spinner, dialog);
+
+		return scale;
+	}
 
 	public static Combo createReadOnlyCombo(AbstractDialog dialog,
 			Composite composite, String title) {
