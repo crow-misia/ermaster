@@ -323,14 +323,14 @@ public class ListenerAppender {
 	}
 
 	public static void addModifyListener(final Scale scale,
-			final Spinner spinner, final AbstractDialog dialog) {
+			final Spinner spinner, final int diff, final AbstractDialog dialog) {
 		if (dialog != null) {
 			spinner.addSelectionListener(new SelectionAdapter() {
 				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					int value = spinner.getSelection();
-					scale.setSelection(value);
+					scale.setSelection(value - diff);
 					dialog.validate();
 				}
 			});
@@ -340,7 +340,7 @@ public class ListenerAppender {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					int value = scale.getSelection();
-					spinner.setSelection(value);
+					spinner.setSelection(value + diff);
 					dialog.validate();
 				}
 

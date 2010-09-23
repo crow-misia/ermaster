@@ -3,11 +3,8 @@ package org.insightech.er.editor.controller.editpart.element.node;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.RequestConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.ui.PlatformUI;
-import org.insightech.er.Activator;
 import org.insightech.er.editor.controller.command.common.ChangeModelPropertiesCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.model_properties.ModelProperties;
@@ -95,31 +92,23 @@ public class ModelPropertiesEditPart extends NodeElementEditPart implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void performRequest(Request request) {
-		try {
-			ERDiagram diagram = this.getDiagram();
+	public void performRequestOpen() {
+		ERDiagram diagram = this.getDiagram();
 
-			if (request.getType().equals(RequestConstants.REQ_OPEN)) {
-				ModelProperties copyModelProperties = (ModelProperties) diagram
-						.getDiagramContents().getSettings()
-						.getModelProperties().clone();
+		ModelProperties copyModelProperties = (ModelProperties) diagram
+				.getDiagramContents().getSettings().getModelProperties()
+				.clone();
 
-				ModelPropertiesDialog dialog = new ModelPropertiesDialog(
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-								.getShell(), copyModelProperties);
+		ModelPropertiesDialog dialog = new ModelPropertiesDialog(PlatformUI
+				.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				copyModelProperties);
 
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					ChangeModelPropertiesCommand command = new ChangeModelPropertiesCommand(
-							diagram, copyModelProperties);
+		if (dialog.open() == IDialogConstants.OK_ID) {
+			ChangeModelPropertiesCommand command = new ChangeModelPropertiesCommand(
+					diagram, copyModelProperties);
 
-					this.getViewer().getEditDomain().getCommandStack().execute(
-							command);
-				}
-			}
-		} catch (Exception e) {
-			Activator.showExceptionDialog(e);
+			this.getViewer().getEditDomain().getCommandStack().execute(command);
 		}
-		super.performRequest(request);
 	}
 
 	/**

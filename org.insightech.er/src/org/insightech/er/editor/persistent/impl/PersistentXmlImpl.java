@@ -1236,6 +1236,14 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append(tab(this.createXMLNodeElement(insertedImage, context)));
 		xml.append("\t<data>").append(insertedImage.getBase64EncodedData())
 				.append("</data>\n");
+		xml.append("\t<hue>").append(insertedImage.getHue()).append("</hue>\n");
+		xml.append("\t<saturation>").append(insertedImage.getSaturation())
+				.append("</saturation>\n");
+		xml.append("\t<brightness>").append(insertedImage.getBrightness())
+				.append("</brightness>\n");
+		xml.append("\t<fix_aspect_ratio>").append(
+				insertedImage.isFixAspectRatio()).append(
+				"</fix_aspect_ratio>\n");
 
 		xml.append("</image>\n");
 

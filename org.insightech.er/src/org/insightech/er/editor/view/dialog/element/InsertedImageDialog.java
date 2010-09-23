@@ -2,19 +2,25 @@ package org.insightech.er.editor.view.dialog.element;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.widgets.CompositeFactory;
+import org.insightech.er.common.widgets.SpinnerWithScale;
 import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
 
 public class InsertedImageDialog extends AbstractDialog {
 
-	private Scale brightnessScale;
+	private SpinnerWithScale hueSpinner;
 
-	private Button fixRateCheckbox;
+	private SpinnerWithScale saturationSpinner;
+
+	private SpinnerWithScale brightnessSpinner;
+
+	private Button fixAspectRatioCheckbox;
 
 	private InsertedImage insertedImage;
+
+	private InsertedImage newInsertedImage;
 
 	public InsertedImageDialog(Shell parentShell, InsertedImage insertedImage) {
 		super(parentShell, 4);
@@ -27,14 +33,18 @@ public class InsertedImageDialog extends AbstractDialog {
 	 */
 	@Override
 	protected void initialize(Composite composite) {
-		this.brightnessScale = CompositeFactory.createScale(this, composite,
-				"label.brightness");
-		this.brightnessScale.setMinimum(0);
-		this.brightnessScale.setMaximum(100);
-		this.brightnessScale.setPageIncrement(10);
+		this.hueSpinner = CompositeFactory.createSpinnerWithScale(this,
+				composite, "label.image.hue", "", 0, 360);
+		// this.hueScale.setPageIncrement(10);
 
-		this.fixRateCheckbox = CompositeFactory.createCheckbox(this, composite,
-				"label.fix.image.rate", 3);
+		this.saturationSpinner = CompositeFactory.createSpinnerWithScale(this,
+				composite, "label.image.saturation", -100, 100);
+
+		this.brightnessSpinner = CompositeFactory.createSpinnerWithScale(this,
+				composite, "label.image.brightness", -100, 100);
+
+		this.fixAspectRatioCheckbox = CompositeFactory.createCheckbox(this,
+				composite, "label.image.fix.aspect.ratio", 3);
 	}
 
 	/**
@@ -42,6 +52,15 @@ public class InsertedImageDialog extends AbstractDialog {
 	 */
 	@Override
 	protected String getErrorMessage() {
+		this.insertedImage.setHue(this.hueSpinner.getSelection());
+		this.insertedImage.setSaturation(this.saturationSpinner.getSelection());
+		this.insertedImage.setBrightness(this.brightnessSpinner.getSelection());
+
+		this.insertedImage.setFixAspectRatio(this.fixAspectRatioCheckbox
+				.getSelection());
+
+		this.insertedImage.setDirty();
+
 		return null;
 	}
 
@@ -50,7 +69,14 @@ public class InsertedImageDialog extends AbstractDialog {
 	 */
 	@Override
 	protected void perfomeOK() {
-
+		this.newInsertedImage = new InsertedImage();
+		this.newInsertedImage.setHue(this.hueSpinner.getSelection());
+		this.newInsertedImage.setSaturation(this.saturationSpinner
+				.getSelection());
+		this.newInsertedImage.setBrightness(this.brightnessSpinner
+				.getSelection());
+		this.newInsertedImage.setFixAspectRatio(this.fixAspectRatioCheckbox
+				.getSelection());
 	}
 
 	@Override
@@ -60,6 +86,15 @@ public class InsertedImageDialog extends AbstractDialog {
 
 	@Override
 	protected void setData() {
-
+		this.hueSpinner.setSelection(this.insertedImage.getHue());
+		this.saturationSpinner.setSelection(this.insertedImage.getSaturation());
+		this.brightnessSpinner.setSelection(this.insertedImage.getBrightness());
+		this.fixAspectRatioCheckbox.setSelection(this.insertedImage
+				.isFixAspectRatio());
 	}
+
+	public InsertedImage getNewInsertedImage() {
+		return newInsertedImage;
+	}
+
 }

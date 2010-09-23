@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
+import org.insightech.er.Activator;
 import org.insightech.er.Resources;
 import org.insightech.er.editor.controller.editpart.DeleteableEditPart;
 import org.insightech.er.editor.controller.editpart.element.AbstractModelEditPart;
@@ -200,7 +201,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 				.getHeight());
 
 		Dimension minimumSize = this.figure.getMinimumSize();
-		
+
 		if (dimension.width != -1 && dimension.width < minimumSize.width) {
 			dimension.width = minimumSize.width;
 		}
@@ -279,4 +280,20 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 		super.setSelected(value);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void performRequest(Request request) {
+		try {
+			performRequestOpen();
+
+		} catch (Exception e) {
+			Activator.showExceptionDialog(e);
+		}
+
+		super.performRequest(request);
+	}
+
+	abstract protected void performRequestOpen();
 }
