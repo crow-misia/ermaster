@@ -87,4 +87,8 @@ public class CategoryEditPart extends NodeElementEditPart implements IResizable 
 
 		super.createEditPolicies();
 	}
+
+	@Override
+	protected void performRequestOpen() {
+	}
 }

@@ -13,7 +13,20 @@ public class InsertedImage extends NodeElement {
 
 	private static final long serialVersionUID = -2035035973213266486L;
 
+	public static final String PROPERTY_CHANGE_IMAGE = "image";
+
 	private String base64EncodedData;
+
+	/** 0Å@Å`Å@360 */
+	private int hue;
+
+	/** -100Å@Å`Å@+100 */
+	private int saturation;
+
+	/** -100Å@Å`Å@+100 */
+	private int brightness;
+
+	private boolean fixAspectRatio;
 
 	public String getBase64EncodedData() {
 		return base64EncodedData;
@@ -58,5 +71,41 @@ public class InsertedImage extends NodeElement {
 				}
 			}
 		}
+	}
+
+	public int getHue() {
+		return hue;
+	}
+
+	public void setHue(int hue) {
+		this.hue = hue;
+	}
+
+	public int getSaturation() {
+		return saturation;
+	}
+
+	public void setSaturation(int saturation) {
+		this.saturation = saturation;
+	}
+
+	public int getBrightness() {
+		return brightness;
+	}
+
+	public void setBrightness(int brightness) {
+		this.brightness = brightness;
+	}
+
+	public boolean isFixAspectRatio() {
+		return fixAspectRatio;
+	}
+
+	public void setFixAspectRatio(boolean fixAspectRatio) {
+		this.fixAspectRatio = fixAspectRatio;
+	}
+
+	public void setDirty() {
+		this.firePropertyChange(PROPERTY_CHANGE_IMAGE, null, null);
 	}
 }

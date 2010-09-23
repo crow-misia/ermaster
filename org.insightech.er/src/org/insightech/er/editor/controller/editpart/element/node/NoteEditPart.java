@@ -77,10 +77,7 @@ public class NoteEditPart extends NodeElementEditPart implements IResizable {
 		if (request.getType().equals(RequestConstants.REQ_DIRECT_EDIT)
 				|| request.getType().equals(RequestConstants.REQ_OPEN)) {
 			performDirectEdit();
-			return;
 		}
-
-		super.performRequest(request);
 	}
 
 	private void performDirectEdit() {
@@ -90,5 +87,9 @@ public class NoteEditPart extends NodeElementEditPart implements IResizable {
 		}
 
 		this.editManager.show();
+	}
+
+	@Override
+	protected void performRequestOpen() {
 	}
 }

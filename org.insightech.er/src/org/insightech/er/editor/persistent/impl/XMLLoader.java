@@ -1581,6 +1581,12 @@ public class XMLLoader {
 
 		insertedImage
 				.setBase64EncodedData(this.getStringValue(element, "data"));
+		insertedImage.setHue(this.getIntValue(element, "hue"));
+		insertedImage.setSaturation(this.getIntValue(element, "saturation"));
+		insertedImage.setBrightness(this.getIntValue(element, "brightness"));
+		insertedImage.setFixAspectRatio(this.getBooleanValue(element,
+				"fix_aspect_ratio"));
+
 		this.loadNodeElement(insertedImage, element, context);
 
 		return insertedImage;

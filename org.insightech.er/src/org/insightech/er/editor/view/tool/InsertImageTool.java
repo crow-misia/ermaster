@@ -15,8 +15,8 @@ import org.insightech.er.editor.model.diagram_contents.element.node.image.Insert
 public class InsertImageTool extends CreationToolEntry {
 
 	public InsertImageTool() {
-		super(ResourceString.getResourceString("label.image"), ResourceString
-				.getResourceString("label.image"), new SimpleFactory(
+		super(ResourceString.getResourceString("label.image.insert"), ResourceString
+				.getResourceString("label.image.insert"), new SimpleFactory(
 				InsertedImage.class), Activator
 				.getImageDescriptor(ImageKey.IMAGE), Activator
 				.getImageDescriptor(ImageKey.IMAGE));

@@ -33,37 +33,54 @@ import org.insightech.er.common.dialog.AbstractDialog;
 
 public class CompositeFactory {
 
-	public static Scale createScale(AbstractDialog dialog, Composite composite,
-			String title) {
-		return createScale(dialog, composite, title, 1);
+	public static SpinnerWithScale createSpinnerWithScale(
+			AbstractDialog dialog, Composite composite, String title,
+			int minimum, int maximum) {
+		return createSpinnerWithScale(dialog, composite, title, "%", minimum,
+				maximum);
 	}
 
-	public static Scale createScale(AbstractDialog dialog, Composite composite,
-			String title, int span) {
+	public static SpinnerWithScale createSpinnerWithScale(
+			AbstractDialog dialog, Composite composite, String title,
+			String unit, int minimum, int maximum) {
 		if (title != null) {
 			Label label = new Label(composite, SWT.RIGHT);
 			label.setText(ResourceString.getResourceString(title));
 		}
 
 		GridData scaleGridData = new GridData();
-		scaleGridData.horizontalSpan = span;
-		
-		Scale scale = new Scale(composite, SWT.NONE);
+
+		final Scale scale = new Scale(composite, SWT.NONE);
 		scale.setLayoutData(scaleGridData);
 
-		GridData spinnerGridData = new GridData();
-		spinnerGridData.horizontalAlignment = GridData.FILL;
-		spinnerGridData.grabExcessHorizontalSpace = true;
+		int diff = 0;
 
+		if (minimum < 0) {
+			scale.setMinimum(0);
+			scale.setMaximum(-minimum + maximum);
+			diff = minimum;
+
+		} else {
+			scale.setMinimum(minimum);
+			scale.setMaximum(maximum);
+
+		}
+
+		scale.setPageIncrement((maximum - minimum) / 10);
+
+		GridData spinnerGridData = new GridData();
+		
 		Spinner spinner = new Spinner(composite, SWT.RIGHT | SWT.BORDER);
-		scale.setLayoutData(spinnerGridData);
+		spinner.setLayoutData(spinnerGridData);
+		spinner.setMinimum(minimum);
+		spinner.setMaximum(maximum);
 
 		Label label = new Label(composite, SWT.NONE);
-		label.setText("%");
-		
-		ListenerAppender.addModifyListener(scale, spinner, dialog);
+		label.setText(unit);
 
-		return scale;
+		ListenerAppender.addModifyListener(scale, spinner, diff, dialog);
+
+		return new SpinnerWithScale(spinner, scale, diff);
 	}
 
 	public static Combo createReadOnlyCombo(AbstractDialog dialog,

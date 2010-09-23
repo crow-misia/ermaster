@@ -1,8 +1,6 @@
 package org.insightech.er.editor.controller.editpart.element.node;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.ui.PlatformUI;
@@ -47,31 +45,23 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void performRequest(Request request) {
-		try {
-			ERTable table = (ERTable) this.getModel();
-			ERDiagram diagram = this.getDiagram();
+	public void performRequestOpen() {
+		ERTable table = (ERTable) this.getModel();
+		ERDiagram diagram = this.getDiagram();
 
-			if (request.getType().equals(RequestConstants.REQ_OPEN)) {
-				ERTable copyTable = table.copyData();
+		ERTable copyTable = table.copyData();
 
-				TableDialog dialog = new TableDialog(PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getShell(), this
-						.getViewer(), copyTable, diagram.getDiagramContents()
-						.getGroups());
+		TableDialog dialog = new TableDialog(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getShell(), this.getViewer(),
+				copyTable, diagram.getDiagramContents().getGroups());
 
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					CompoundCommand command = createChangeTablePropertyCommand(
-							diagram, table, copyTable);
+		if (dialog.open() == IDialogConstants.OK_ID) {
+			CompoundCommand command = createChangeTablePropertyCommand(diagram,
+					table, copyTable);
 
-					this.getViewer().getEditDomain().getCommandStack().execute(
-							command.unwrap());
-				}
-			}
-		} catch (Exception e) {
-			Activator.showExceptionDialog(e);
+			this.getViewer().getEditDomain().getCommandStack().execute(
+					command.unwrap());
 		}
-		super.performRequest(request);
 	}
 
 	public static CompoundCommand createChangeTablePropertyCommand(
@@ -144,8 +134,7 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 				if (autoIncrementColumn == null
 						|| ((CopyColumn) autoIncrementColumn)
 								.getOriginalColumn() != oldAutoIncrementColumn) {
-					String oldTableName = table
-					.getPhysicalName();
+					String oldTableName = table.getPhysicalName();
 					String columnName = oldAutoIncrementColumn
 							.getPhysicalName();
 
