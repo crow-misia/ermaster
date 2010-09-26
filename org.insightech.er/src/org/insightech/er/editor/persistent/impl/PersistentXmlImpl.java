@@ -57,6 +57,7 @@ import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.PageSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.settings.TranslationSetting;
+import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 import org.insightech.er.editor.model.testdata.DirectTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
@@ -679,16 +680,8 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("\t<name>").append(escape(testData.getName())).append(
 				"</name>\n");
-		xml.append("\t<export_format>").append(testData.getExportFormat())
-				.append("</export_format>\n");
-		xml.append("\t<export_order>").append(testData.getExportFormat())
+		xml.append("\t<export_order>").append(testData.getExportOrder())
 				.append("</export_order>\n");
-		xml.append("\t<export_file_path>").append(
-				escape(testData.getExportFilePath())).append(
-				"</export_file_path>\n");
-		xml.append("\t<export_file_encoding>").append(
-				escape(testData.getExportFileEncoding())).append(
-				"</export_file_encoding>\n");
 
 		Map<ERTable, TableTestData> tableTestDataMap = testData
 				.getTableTestDataMap();
@@ -950,7 +943,31 @@ public class PersistentXmlImpl extends Persistent {
 				Format.null2blank(ddlTarget.commentReplaceString)).append(
 				"</comment_replace_string>\n");
 
+		xml.append(tab(this.createXML(exportSetting.getExportTestDataSetting(),
+				context)));
+
 		xml.append("</export_setting>\n");
+
+		return xml.toString();
+	}
+
+	private String createXML(ExportTestDataSetting exportTestDataSetting,
+			PersistentContext context) {
+		StringBuilder xml = new StringBuilder();
+
+		xml.append("<export_testdata_setting>\n");
+
+		xml.append("\t<file_encoding>").append(
+				escape(exportTestDataSetting.getExportFileEncoding())).append(
+				"</file_encoding>\n");
+		xml.append("\t<file_path>").append(
+				escape(exportTestDataSetting.getExportFilePath())).append(
+				"</file_path>\n");
+		xml.append("\t<format>")
+				.append(exportTestDataSetting.getExportFormat()).append(
+						"</format>\n");
+
+		xml.append("</export_testdata_setting>\n");
 
 		return xml.toString();
 	}

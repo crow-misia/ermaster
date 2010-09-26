@@ -3,7 +3,6 @@ package org.insightech.er.editor.model.dbexport.testdata.impl;
 import java.util.Map;
 
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.dbexport.testdata.TestDataCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
@@ -11,7 +10,7 @@ import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.persistent.impl.PersistentXmlImpl;
 import org.insightech.er.util.Format;
 
-public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
+public class DBUnitFlatXmlTestDataCreator extends AbstractTextTestDataCreator {
 
 	private String encoding;
 
@@ -20,7 +19,7 @@ public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 	}
 
 	@Override
-	protected String getDirectTestData(ERTable table,
+	protected void writeDirectTestData(ERTable table,
 			Map<NormalColumn, String> data, String database) {
 		StringBuilder sb = new StringBuilder();
 
@@ -29,7 +28,7 @@ public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 
 		for (NormalColumn column : table.getExpandedColumns()) {
 			String value = Format.null2blank(data.get(column));
-			
+
 			if (value != null && !"null".equals(value.toLowerCase())) {
 				sb.append(" ");
 				sb.append(column.getPhysicalName());
@@ -41,11 +40,11 @@ public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 
 		sb.append("/>\r\n");
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
-	protected String getRepeatTestData(ERTable table,
+	protected void writeRepeatTestData(ERTable table,
 			RepeatTestData repeatTestData, String database) {
 		StringBuilder sb = new StringBuilder();
 
@@ -73,7 +72,7 @@ public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 			sb.append("/>\r\n");
 		}
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
@@ -93,13 +92,16 @@ public class DBUnitFlatXmlTestDataCreator extends TestDataCreator {
 	}
 
 	@Override
-	protected String getTableHeader(ERDiagram diagram, ERTable table) {
-		return "";
+	protected void writeTableHeader(ERDiagram diagram, ERTable table) {
 	}
 
 	@Override
-	protected String getTableFooter(ERTable table) {
-		return "";
+	protected void writeTableFooter(ERTable table) {
+	}
+
+	@Override
+	protected String getFileExtention() {
+		return ".xml";
 	}
 
 }

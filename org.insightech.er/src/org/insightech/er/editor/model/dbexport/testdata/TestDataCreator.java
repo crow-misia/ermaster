@@ -1,5 +1,6 @@
 package org.insightech.er.editor.model.dbexport.testdata;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,9 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.insightech.er.Activator;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
+import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 import org.insightech.er.editor.model.testdata.DirectTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
@@ -17,6 +20,10 @@ import org.insightech.er.editor.model.testdata.TableTestData;
 import org.insightech.er.editor.model.testdata.TestData;
 
 public abstract class TestDataCreator {
+
+	protected ERDiagram diagram;
+
+	protected ExportTestDataSetting exportTestDataSetting;
 
 	protected TestData testData;
 
@@ -29,57 +36,6 @@ public abstract class TestDataCreator {
 		this.testData = testData;
 		this.valueListMap = new HashMap<NormalColumn, List<String>>();
 	}
-
-	public String getTestData(ERDiagram diagram) {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(this.getHeader());
-
-		for (Map.Entry<ERTable, TableTestData> entry : this.testData
-				.getTableTestDataMap().entrySet()) {
-			ERTable table = entry.getKey();
-
-			TableTestData tableTestData = entry.getValue();
-
-			DirectTestData directTestData = tableTestData.getDirectTestData();
-			RepeatTestData repeatTestData = tableTestData.getRepeatTestData();
-
-			sb.append(this.getTableHeader(diagram, table));
-
-			if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
-				for (Map<NormalColumn, String> data : directTestData
-						.getDataList()) {
-					sb.append(this.getDirectTestData(table, data, diagram
-							.getDatabase()));
-				}
-
-				sb.append(this.getRepeatTestData(table, repeatTestData, diagram
-						.getDatabase()));
-
-			} else {
-				sb.append(this.getRepeatTestData(table, repeatTestData, diagram
-						.getDatabase()));
-
-				for (Map<NormalColumn, String> data : directTestData
-						.getDataList()) {
-					sb.append(this.getDirectTestData(table, data, diagram
-							.getDatabase()));
-				}
-			}
-
-			sb.append(this.getTableFooter(table));
-		}
-
-		sb.append(this.getFooter());
-
-		return sb.toString();
-	}
-
-	protected abstract String getDirectTestData(ERTable table,
-			Map<NormalColumn, String> data, String database);
-
-	protected abstract String getRepeatTestData(ERTable table,
-			RepeatTestData repeatTestData, String database);
 
 	public String getMergedRepeatTestDataValue(int count,
 			RepeatTestDataDef repeatTestDataDef, NormalColumn column) {
@@ -232,12 +188,80 @@ public abstract class TestDataCreator {
 		return valueList;
 	}
 
-	protected abstract String getHeader();
+	final public void write(ExportTestDataSetting exportTestDataSetting,
+			ERDiagram diagram) throws IOException {
+		this.exportTestDataSetting = exportTestDataSetting;
+		this.diagram = diagram;
 
-	protected abstract String getFooter();
+		try {
+			this.openFile();
 
-	protected abstract String getTableHeader(ERDiagram diagram, ERTable table);
+			this.write();
 
-	protected abstract String getTableFooter(ERTable table);
+			Activator.showMessageDialog("dialog.message.export.finish");
 
+		} finally {
+			this.closeFile();
+		}
+	}
+
+	protected abstract void openFile() throws IOException;
+
+	protected void write() throws IOException {
+		for (Map.Entry<ERTable, TableTestData> entry : this.testData
+				.getTableTestDataMap().entrySet()) {
+			ERTable table = entry.getKey();
+
+			if (skipTable(table)) {
+				continue;
+			}
+
+			TableTestData tableTestData = entry.getValue();
+
+			DirectTestData directTestData = tableTestData.getDirectTestData();
+			RepeatTestData repeatTestData = tableTestData.getRepeatTestData();
+
+			this.writeTableHeader(diagram, table);
+
+			if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
+				for (Map<NormalColumn, String> data : directTestData
+						.getDataList()) {
+					this
+							.writeDirectTestData(table, data, diagram
+									.getDatabase());
+				}
+
+				this.writeRepeatTestData(table, repeatTestData, diagram
+						.getDatabase());
+
+			} else {
+				this.writeRepeatTestData(table, repeatTestData, diagram
+						.getDatabase());
+
+				for (Map<NormalColumn, String> data : directTestData
+						.getDataList()) {
+					this
+							.writeDirectTestData(table, data, diagram
+									.getDatabase());
+				}
+			}
+
+			this.writeTableFooter(table);
+		}
+
+	}
+
+	protected abstract boolean skipTable(ERTable table);
+
+	protected abstract void writeTableHeader(ERDiagram diagram, ERTable table);
+
+	protected abstract void writeTableFooter(ERTable table);
+
+	protected abstract void writeDirectTestData(ERTable table,
+			Map<NormalColumn, String> data, String database);
+
+	protected abstract void writeRepeatTestData(ERTable table,
+			RepeatTestData repeatTestData, String database);
+
+	protected abstract void closeFile() throws IOException;
 }

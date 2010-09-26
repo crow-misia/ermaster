@@ -15,6 +15,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -285,11 +286,13 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 	 */
 	@Override
 	public void performRequest(Request request) {
-		try {
-			performRequestOpen();
+		if (request.getType().equals(RequestConstants.REQ_OPEN)) {
+			try {
+				performRequestOpen();
 
-		} catch (Exception e) {
-			Activator.showExceptionDialog(e);
+			} catch (Exception e) {
+				Activator.showExceptionDialog(e);
+			}
 		}
 
 		super.performRequest(request);

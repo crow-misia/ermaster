@@ -7,6 +7,8 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
@@ -21,6 +23,7 @@ import org.insightech.er.editor.view.action.dbexport.ExportToExcelAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToHtmlAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToJavaAction;
+import org.insightech.er.editor.view.action.dbexport.ExportToTestDataAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToTranslationDictionaryAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromDBAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromFileAction;
@@ -57,6 +60,9 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 
 	public ERDiagramPopupMenuManager(ActionRegistry actionRegistry,
 			final ERDiagram diagram) {
+		ISharedImages sharedImages = PlatformUI.getWorkbench()
+				.getSharedImages();
+
 		this.actionRegistry = actionRegistry;
 
 		final IAction changeViewToPhysicalAction = getAction(ChangeViewToPhysicalAction.ID);
@@ -165,7 +171,8 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		this.add(new Separator());
 
 		MenuManager importMenu = new MenuManager(ResourceString
-				.getResourceString("action.title.import"), "Import");
+				.getResourceString("action.title.import"), sharedImages
+				.getImageDescriptor("IMG_ETOOL_IMPORT_WIZ"), "Import");
 
 		importMenu.add(this.getAction(ImportFromDBAction.ID));
 		importMenu.add(this.getAction(ImportFromFileAction.ID));
@@ -173,13 +180,16 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		this.add(importMenu);
 
 		MenuManager exportMenu = new MenuManager(ResourceString
-				.getResourceString("action.title.export"), "Export");
+				.getResourceString("action.title.export"), sharedImages
+				.getImageDescriptor("IMG_ETOOL_EXPORT_WIZ"), "Export");
+
 		exportMenu.add(this.getAction(ExportToImageAction.ID));
 		exportMenu.add(this.getAction(ExportToExcelAction.ID));
 		exportMenu.add(this.getAction(ExportToHtmlAction.ID));
 		exportMenu.add(this.getAction(ExportToDDLAction.ID));
 		exportMenu.add(this.getAction(ExportToDictionaryAction.ID));
 		exportMenu.add(this.getAction(ExportToTranslationDictionaryAction.ID));
+		exportMenu.add(this.getAction(ExportToTestDataAction.ID));
 		exportMenu.add(this.getAction(ExportToJavaAction.ID));
 		exportMenu.add(new GroupMarker("export"));
 
