@@ -30,6 +30,7 @@ public interface ImageKey {
 	public String EXPORT_TO_HTML = "EXPORT_TO_HTML";
 	public String EXPORT_TO_IMAGE = "EXPORT_TO_IMAGE";
 	public String EXPORT_TO_JAVA = "EXPORT_TO_JAVA";
+	public String EXPORT_TO_TEST_DATA = "EXPORT_TO_TEST_DATA";
 	public String FIND = "FIND";
 	public String FOREIGN_KEY = "FOREIGN_KEY";
 	public String GRID = "GRID";
@@ -56,6 +57,7 @@ public interface ImageKey {
 	public String TABLE = "TABLE";
 	public String TABLE_NEW = "TABLE_NEW";
 	public String TABLESPACE = "TABLESPACE";
+	public String TEST_DATA = "TEST_DATA";
 	public String TITLEBAR_BACKGROUND = "TITLEBAR_BACKGROUND";
 	public String TOOLTIP = "TOOLTIP";
 	public String TRIGGER = "TRIGGER";

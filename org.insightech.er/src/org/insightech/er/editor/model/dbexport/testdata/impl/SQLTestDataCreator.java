@@ -3,17 +3,16 @@ package org.insightech.er.editor.model.dbexport.testdata.impl;
 import java.util.Map;
 
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.dbexport.testdata.TestDataCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.util.Format;
 
-public class SQLTestDataCreator extends TestDataCreator {
+public class SQLTestDataCreator extends AbstractTextTestDataCreator {
 
 	@Override
-	protected String getDirectTestData(ERTable table,
+	protected void writeDirectTestData(ERTable table,
 			Map<NormalColumn, String> data, String database) {
 		StringBuilder sb = new StringBuilder();
 
@@ -51,11 +50,11 @@ public class SQLTestDataCreator extends TestDataCreator {
 
 		sb.append(");\r\n");
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
-	protected String getRepeatTestData(ERTable table,
+	protected void writeRepeatTestData(ERTable table,
 			RepeatTestData repeatTestData, String database) {
 		StringBuilder sb = new StringBuilder();
 
@@ -99,7 +98,7 @@ public class SQLTestDataCreator extends TestDataCreator {
 			sb.append(");\r\n");
 		}
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
@@ -113,24 +112,28 @@ public class SQLTestDataCreator extends TestDataCreator {
 	}
 
 	@Override
-	protected String getTableHeader(ERDiagram diagram, ERTable table) {
+	protected void writeTableHeader(ERDiagram diagram, ERTable table) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("-- ");
 		sb.append(table.getLogicalName());
 		sb.append("\r\n");
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
-	protected String getTableFooter(ERTable table) {
+	protected void writeTableFooter(ERTable table) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\r\n");
 		sb.append("\r\n");
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
+	@Override
+	protected String getFileExtention() {
+		return ".sql";
+	}
 }

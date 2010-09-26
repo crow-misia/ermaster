@@ -13,20 +13,16 @@ public class TestData implements Cloneable, Comparable<TestData> {
 	
 	public static final int EXPORT_FORMT_DBUNIT_FLAT_XML = 2;
 
+	public static final int EXPORT_FORMT_DBUNIT_XLS = 3;
+
 	public static final int EXPORT_ORDER_DIRECT_TO_REPEAT = 0;
 	
 	public static final int EXPORT_ORDER_REPEAT_TO_DIRECT = 1;
 	
 	private String name;
 
-	private int exportFormat;
-
 	private int exportOrder;
 	
-	private String exportFilePath;
-
-	private String exportFileEncoding;
-
 	private Map<ERTable, TableTestData> tableTestDataMap;
 
 	public TestData() {
@@ -41,13 +37,7 @@ public class TestData implements Cloneable, Comparable<TestData> {
 		this.name = name;
 	}
 
-	public int getExportFormat() {
-		return exportFormat;
-	}
-
-	public void setExportFormat(int exportFormat) {
-		this.exportFormat = exportFormat;
-	}
+	
 
 	public int getExportOrder() {
 		return exportOrder;
@@ -57,21 +47,7 @@ public class TestData implements Cloneable, Comparable<TestData> {
 		this.exportOrder = exportOrder;
 	}
 
-	public String getExportFilePath() {
-		return exportFilePath;
-	}
-
-	public String getExportFileEncoding() {
-		return exportFileEncoding;
-	}
-
-	public void setExportFileEncoding(String exportFileEncoding) {
-		this.exportFileEncoding = exportFileEncoding;
-	}
-
-	public void setExportFilePath(String exportFilePath) {
-		this.exportFilePath = exportFilePath;
-	}
+	
 
 	public Map<ERTable, TableTestData> getTableTestDataMap() {
 		return tableTestDataMap;
@@ -120,9 +96,6 @@ public class TestData implements Cloneable, Comparable<TestData> {
 		TestData clone = new TestData();
 
 		clone.name = this.name;
-		clone.exportFileEncoding = this.exportFileEncoding;
-		clone.exportFilePath = this.exportFilePath;
-		clone.exportFormat = this.exportFormat;
 		clone.exportOrder = this.exportOrder;
 
 		for (Map.Entry<ERTable, TableTestData> entry : this.tableTestDataMap

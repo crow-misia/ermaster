@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.settings;
 import java.io.Serializable;
 
 import org.insightech.er.editor.model.dbexport.ddl.DDLTarget;
+import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 
 public class ExportSetting implements Serializable, Cloneable {
 
@@ -30,7 +31,18 @@ public class ExportSetting implements Serializable, Cloneable {
 
 	private String categoryNameToExport;
 
+	private ExportTestDataSetting exportTestDataSetting = new ExportTestDataSetting();
+
 	private DDLTarget ddlTarget = new DDLTarget();
+
+	public ExportTestDataSetting getExportTestDataSetting() {
+		return exportTestDataSetting;
+	}
+
+	public void setExportTestDataSetting(
+			ExportTestDataSetting exportTestDataSetting) {
+		this.exportTestDataSetting = exportTestDataSetting;
+	}
 
 	public DDLTarget getDdlTarget() {
 		return ddlTarget;
@@ -233,6 +245,11 @@ public class ExportSetting implements Serializable, Cloneable {
 				return false;
 		} else if (!excelTemplate.equals(other.excelTemplate))
 			return false;
+		if (exportTestDataSetting == null) {
+			if (other.exportTestDataSetting != null)
+				return false;
+		} else if (!exportTestDataSetting.equals(other.exportTestDataSetting))
+			return false;
 		if (imageOutput == null) {
 			if (other.imageOutput != null)
 				return false;
@@ -269,7 +286,9 @@ public class ExportSetting implements Serializable, Cloneable {
 			ExportSetting setting = (ExportSetting) super.clone();
 
 			setting.setDdlTarget(this.ddlTarget.clone());
-
+			setting
+					.setExportTestDataSetting(this.exportTestDataSetting
+							.clone());
 			return setting;
 
 		} catch (CloneNotSupportedException e) {

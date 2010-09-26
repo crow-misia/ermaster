@@ -64,6 +64,7 @@ import org.insightech.er.editor.view.action.dbexport.ExportToExcelAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToHtmlAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToJavaAction;
+import org.insightech.er.editor.view.action.dbexport.ExportToTestDataAction;
 import org.insightech.er.editor.view.action.dbexport.ExportToTranslationDictionaryAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromDBAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromFileAction;
@@ -345,6 +346,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 						new ExportToDDLAction(this),
 						new ExportToDictionaryAction(this),
 						new ExportToTranslationDictionaryAction(this),
+						new ExportToTestDataAction(this),
 						new PageSettingAction(this),
 						new EditAllAttributesAction(this),
 						new DirectEditAction((IWorkbenchPart) this),

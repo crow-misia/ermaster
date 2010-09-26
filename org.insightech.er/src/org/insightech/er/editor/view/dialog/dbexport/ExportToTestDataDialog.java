@@ -1,10 +1,8 @@
 package org.insightech.er.editor.view.dialog.dbexport;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -21,6 +19,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.insightech.er.Activator;
@@ -28,16 +28,20 @@ import org.insightech.er.ResourceString;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
-import org.insightech.er.common.widgets.FileText;
+import org.insightech.er.common.widgets.DirectoryText;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.testdata.TestDataCreator;
 import org.insightech.er.editor.model.dbexport.testdata.impl.DBUnitFlatXmlTestDataCreator;
 import org.insightech.er.editor.model.dbexport.testdata.impl.DBUnitTestDataCreator;
+import org.insightech.er.editor.model.dbexport.testdata.impl.DBUnitXLSTestDataCreator;
 import org.insightech.er.editor.model.dbexport.testdata.impl.SQLTestDataCreator;
+import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 import org.insightech.er.editor.model.testdata.TestData;
 import org.insightech.er.util.Check;
 
 public class ExportToTestDataDialog extends AbstractDialog {
+
+	private Table testDataTable;
 
 	private Button formatSqlRadio;
 
@@ -45,27 +49,33 @@ public class ExportToTestDataDialog extends AbstractDialog {
 
 	private Button formatDBUnitFlatXmlRadio;
 
-	private Button repeatToDirectRadio;
+	private Button formatDBUnitXlsRadio;
 
-	private Button directToRepeatRadio;
-
-	private FileText outputFileText;
+	private DirectoryText outputDirectoryText;
 
 	private Combo fileEncodingCombo;
-
-	private TestData testData;
 
 	private ERDiagram diagram;
 
 	private IEditorPart editorPart;
 
+	private List<TestData> testDataList;
+
+	private int targetIndex;
+
+	private ExportTestDataSetting exportTestDataSetting;
+
 	public ExportToTestDataDialog(Shell parentShell, IEditorPart editorPart,
-			ERDiagram diagram, TestData testData) {
+			ERDiagram diagram, List<TestData> testDataList, int targetIndex) {
 		super(parentShell, 3);
 
-		this.testData = testData;
+		this.testDataList = testDataList;
+		this.targetIndex = targetIndex;
 		this.editorPart = editorPart;
 		this.diagram = diagram;
+
+		this.exportTestDataSetting = diagram.getDiagramContents().getSettings()
+				.getExportSetting().getExportTestDataSetting().clone();
 	}
 
 	/**
@@ -73,24 +83,34 @@ public class ExportToTestDataDialog extends AbstractDialog {
 	 */
 	@Override
 	protected void initialize(Composite parent) {
+		this.createTestDataTableGroup(parent);
 		this.createFormatGroup(parent);
-		this.createOutputOrderGroup(parent);
+		this.createFileGroup(parent);
+	}
 
-		CompositeFactory.filler(parent, 3);
+	private void createTestDataTableGroup(Composite parent) {
+		GridData groupGridData = new GridData();
+		groupGridData.horizontalAlignment = GridData.FILL;
+		groupGridData.grabExcessHorizontalSpace = true;
+		groupGridData.horizontalSpan = 3;
 
-		CompositeFactory.createLabel(parent, "label.output.file");
+		GridLayout groupLayout = new GridLayout();
+		groupLayout.marginWidth = 5;
+		groupLayout.marginHeight = 5;
 
-		GridData gridData = new GridData();
-		gridData.widthHint = 200;
+		Group group = new Group(parent, SWT.NONE);
+		group.setText(ResourceString.getResourceString("label.testdata.list"));
+		group.setLayoutData(groupGridData);
+		group.setLayout(groupLayout);
 
-		this.outputFileText = new FileText(parent, SWT.BORDER, "");
-		this.outputFileText.setLayoutData(gridData);
+		this.testDataTable = new Table(group, SWT.CHECK | SWT.BORDER);
 
-		this.fileEncodingCombo = CompositeFactory.createFileEncodingCombo(
-				this.editorPart, this, parent, "label.output.file.encoding", 1);
-		CompositeFactory.filler(parent, 1);
-
-		CompositeFactory.filler(parent, 3);
+		GridData tableGridData = new GridData();
+		tableGridData.horizontalAlignment = GridData.FILL;
+		tableGridData.grabExcessHorizontalSpace = true;
+		tableGridData.horizontalSpan = 3;
+		tableGridData.heightHint = 80;
+		this.testDataTable.setLayoutData(tableGridData);
 	}
 
 	private void createFormatGroup(Composite parent) {
@@ -114,91 +134,54 @@ public class ExportToTestDataDialog extends AbstractDialog {
 				formatGroup, "label.dbunit");
 		this.formatDBUnitFlatXmlRadio = CompositeFactory.createRadio(this,
 				formatGroup, "label.dbunit.flat.xml");
+		this.formatDBUnitXlsRadio = CompositeFactory.createRadio(this,
+				formatGroup, "label.dbunit.xls");
 	}
 
-	private void createOutputOrderGroup(Composite parent) {
+	private void createFileGroup(Composite parent) {
 		GridData groupGridData = new GridData();
 		groupGridData.horizontalAlignment = GridData.FILL;
 		groupGridData.grabExcessHorizontalSpace = true;
 		groupGridData.horizontalSpan = 3;
 
 		GridLayout groupLayout = new GridLayout();
-		groupLayout.marginWidth = 15;
-		groupLayout.marginHeight = 15;
+		groupLayout.marginWidth = 5;
+		groupLayout.marginHeight = 5;
+		groupLayout.numColumns = 3;
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(ResourceString.getResourceString("label.output.order"));
 		group.setLayoutData(groupGridData);
 		group.setLayout(groupLayout);
 
-		this.directToRepeatRadio = CompositeFactory.createRadio(this, group,
-				"label.output.order.direct.to.repeat");
-		this.repeatToDirectRadio = CompositeFactory.createRadio(this, group,
-				"label.output.order.repeat.to.direct");
-	}
+		CompositeFactory.createLabel(group, "label.output.dir");
+		this.outputDirectoryText = new DirectoryText(group, SWT.BORDER);
 
-	@Override
-	protected void addListener() {
-		super.addListener();
+		GridData layoutData = new GridData();
+		layoutData.widthHint = 200;
+		this.outputDirectoryText.setLayoutData(layoutData);
 
-		this.formatSqlRadio.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				outputFileText.setFilterExtension(".sql");
-
-				String path = outputFileText.getFilePath();
-
-				if (path != null && path.endsWith(".xml")) {
-					path = path.substring(0, path.length() - ".xml".length());
-					path += ".sql";
-					outputFileText.setText(path);
-				}
-			}
-
-		});
-
-		this.formatDBUnitRadio.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				outputFileText.setFilterExtension(".xml");
-
-				String path = outputFileText.getFilePath();
-
-				if (path != null && path.endsWith(".sql")) {
-					path = path.substring(0, path.length() - ".sql".length());
-					path += ".xml";
-					outputFileText.setText(path);
-				}
-			}
-
-		});
-
-		this.formatDBUnitFlatXmlRadio
-				.addSelectionListener(new SelectionAdapter() {
-
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						outputFileText.setFilterExtension(".xml");
-
-						String path = outputFileText.getFilePath();
-
-						if (path != null && path.endsWith(".sql")) {
-							path = path.substring(0, path.length()
-									- ".sql".length());
-							path += ".xml";
-							outputFileText.setText(path);
-						}
-					}
-
-				});
+		this.fileEncodingCombo = CompositeFactory.createFileEncodingCombo(
+				this.editorPart, this, group, "label.output.file.encoding", 1);
+		CompositeFactory.filler(group, 1);
 	}
 
 	@Override
 	protected String getErrorMessage() {
-		if (this.outputFileText.isBlank()) {
-			return "error.output.file.is.empty";
+		boolean itemChecked = false;
+
+		for (TableItem item : this.testDataTable.getItems()) {
+			if (item.getChecked()) {
+				itemChecked = true;
+				break;
+			}
+		}
+
+		if (!itemChecked) {
+			return "error.testdata.not.selected";
+		}
+
+		if (this.outputDirectoryText.isBlank()) {
+			return "error.output.dir.is.empty";
 		}
 
 		return null;
@@ -207,74 +190,72 @@ public class ExportToTestDataDialog extends AbstractDialog {
 	@Override
 	protected void perfomeOK() throws InputException {
 		if (this.formatSqlRadio.getSelection()) {
-			this.testData.setExportFormat(TestData.EXPORT_FORMT_SQL);
+			this.exportTestDataSetting
+					.setExportFormat(TestData.EXPORT_FORMT_SQL);
 
 		} else if (this.formatDBUnitRadio.getSelection()) {
-			this.testData.setExportFormat(TestData.EXPORT_FORMT_DBUNIT);
+			this.exportTestDataSetting
+					.setExportFormat(TestData.EXPORT_FORMT_DBUNIT);
 
 		} else if (this.formatDBUnitFlatXmlRadio.getSelection()) {
-			this.testData
+			this.exportTestDataSetting
 					.setExportFormat(TestData.EXPORT_FORMT_DBUNIT_FLAT_XML);
 
-		}
-
-		if (this.repeatToDirectRadio.getSelection()) {
-			this.testData
-					.setExportOrder(TestData.EXPORT_ORDER_REPEAT_TO_DIRECT);
-
-		} else if (this.directToRepeatRadio.getSelection()) {
-			this.testData
-					.setExportOrder(TestData.EXPORT_ORDER_DIRECT_TO_REPEAT);
+		} else if (this.formatDBUnitXlsRadio.getSelection()) {
+			this.exportTestDataSetting
+					.setExportFormat(TestData.EXPORT_FORMT_DBUNIT_XLS);
 
 		}
 
-		this.testData.setExportFilePath(this.outputFileText.getFilePath());
-		this.testData.setExportFileEncoding(this.fileEncodingCombo.getText());
+		this.exportTestDataSetting.setExportFilePath(this.outputDirectoryText
+				.getFilePath());
+		this.exportTestDataSetting.setExportFileEncoding(this.fileEncodingCombo
+				.getText());
 
-		this.exportTestData();
+		try {
+			for (int i = 0; i < this.testDataTable.getItemCount(); i++) {
+				TableItem item = this.testDataTable.getItem(i);
+				if (item.getChecked()) {
+					this.exportTestData(testDataList.get(i));
+				}
+			}
+
+		} catch (IOException e) {
+			Activator.showExceptionDialog(e);
+		}
 
 		this.refreshProject();
 	}
 
-	private void exportTestData() {
-		PrintWriter out = null;
+	private void exportTestData(TestData testData) throws IOException,
+			InputException {
+		TestDataCreator testDataCreator = null;
 
-		try {
-			TestDataCreator testDataCreator = null;
+		if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT) {
+			testDataCreator = new DBUnitTestDataCreator(
+					this.exportTestDataSetting.getExportFileEncoding());
 
-			if (this.testData.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT) {
-				testDataCreator = new DBUnitTestDataCreator(this.testData
-						.getExportFileEncoding());
+		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
+			testDataCreator = new DBUnitFlatXmlTestDataCreator(
+					this.exportTestDataSetting.getExportFileEncoding());
 
-			} else if (this.testData.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
-				testDataCreator = new DBUnitFlatXmlTestDataCreator(
-						this.testData.getExportFileEncoding());
+		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_SQL) {
+			testDataCreator = new SQLTestDataCreator();
 
-			} else {
-				testDataCreator = new SQLTestDataCreator();
+		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_XLS) {
+			testDataCreator = new DBUnitXLSTestDataCreator();
 
-			}
+		}
 
-			testDataCreator.init(this.testData);
+		testDataCreator.init(testData);
 
-			File file = new File(this.testData.getExportFilePath());
-			file.getParentFile().mkdirs();
+		File dir = new File(this.exportTestDataSetting.getExportFilePath()
+				+ File.separator);
+		if (dir.isDirectory() || dir.mkdirs()) {
+			testDataCreator.write(this.exportTestDataSetting, diagram);
 
-			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(this.testData.getExportFilePath()),
-					this.testData.getExportFileEncoding())));
-
-			out.println(testDataCreator.getTestData(this.diagram));
-
-			Activator.showMessageDialog("dialog.message.export.finish");
-
-		} catch (Exception e) {
-			Activator.showExceptionDialog(e);
-
-		} finally {
-			if (out != null) {
-				out.close();
-			}
+		} else {
+			throw new InputException("error.output.dir.can.not.be.made");
 		}
 	}
 
@@ -283,50 +264,47 @@ public class ExportToTestDataDialog extends AbstractDialog {
 	 */
 	@Override
 	protected void setData() {
-		String extension = null;
+		for (TestData testData : this.testDataList) {
+			TableItem tableItem = new TableItem(this.testDataTable, SWT.NONE);
 
-		if (this.testData.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT) {
+			tableItem.setText(0, testData.getName());
+		}
+
+		if (this.targetIndex >= 0) {
+			this.testDataTable.getItem(this.targetIndex).setChecked(true);
+		}
+
+		if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT) {
 			this.formatDBUnitRadio.setSelection(true);
-			extension = ".xml";
 
-		} else if (this.testData.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
+		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
 			this.formatDBUnitFlatXmlRadio.setSelection(true);
-			extension = ".xml";
+
+		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_XLS) {
+			this.formatDBUnitXlsRadio.setSelection(true);
 
 		} else {
 			this.formatSqlRadio.setSelection(true);
-			extension = ".sql";
 
 		}
 
-		if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
-			this.directToRepeatRadio.setSelection(true);
+		String outputDirectoryPath = this.exportTestDataSetting
+				.getExportFilePath();
 
-		} else {
-			this.repeatToDirectRadio.setSelection(true);
-
-		}
-
-		this.outputFileText.setFilterExtension(extension);
-
-		String outputFilePath = this.testData.getExportFilePath();
-
-		if (Check.isEmpty(outputFilePath)) {
+		if (Check.isEmpty(outputDirectoryPath)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
-			outputFilePath = file.getLocation().toOSString();
+			outputDirectoryPath = file.getLocation().toOSString();
 
-			outputFilePath = outputFilePath.substring(0, outputFilePath
-					.lastIndexOf(File.separator))
-					+ File.separator
-					+ "testdata"
-					+ File.separator
-					+ this.testData.getName() + extension;
+			outputDirectoryPath = outputDirectoryPath.substring(0,
+					outputDirectoryPath.lastIndexOf(File.separator))
+					+ File.separator + "testdata";
 		}
 
-		this.outputFileText.setText(outputFilePath);
+		this.outputDirectoryText.setText(outputDirectoryPath);
 
-		String outputFileEncoding = this.testData.getExportFileEncoding();
+		String outputFileEncoding = this.exportTestDataSetting
+				.getExportFileEncoding();
 
 		if (Check.isEmpty(outputFileEncoding)) {
 			outputFileEncoding = "UTF-8";
@@ -365,4 +343,23 @@ public class ExportToTestDataDialog extends AbstractDialog {
 			Activator.showExceptionDialog(e);
 		}
 	}
+
+	@Override
+	protected void addListener() {
+		super.addListener();
+
+		this.testDataTable.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				validate();
+			}
+
+		});
+	}
+
+	public ExportTestDataSetting getExportTestDataSetting() {
+		return exportTestDataSetting;
+	}
+
 }

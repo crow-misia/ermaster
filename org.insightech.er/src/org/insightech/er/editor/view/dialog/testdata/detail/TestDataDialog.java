@@ -53,6 +53,10 @@ public class TestDataDialog extends AbstractDialog {
 	/** テストデータ作成テーブル */
 	private Table selectedTableTable;
 
+	private Button repeatToDirectRadio;
+
+	private Button directToRepeatRadio;
+
 	/*---------- タブパネル -----------*/
 
 	/** タブフォルダー */
@@ -217,6 +221,8 @@ public class TestDataDialog extends AbstractDialog {
 		bottomGridData.horizontalAlignment = GridData.FILL;
 		bottomGridData.widthHint = WIDTH;
 
+		this.createOutputOrderGroup(composite);
+		
 		// タブ
 		this.tabFolder = new TabFolder(composite, SWT.NONE);
 		this.tabFolder.setLayoutData(bottomGridData);
@@ -231,6 +237,27 @@ public class TestDataDialog extends AbstractDialog {
 
 	}
 
+	private void createOutputOrderGroup(Composite parent) {
+		GridData groupGridData = new GridData();
+		groupGridData.horizontalAlignment = GridData.FILL;
+		groupGridData.grabExcessHorizontalSpace = true;
+		
+		GridLayout groupLayout = new GridLayout();
+		groupLayout.marginWidth = 15;
+		groupLayout.marginHeight = 15;
+
+		Group group = new Group(parent, SWT.NONE);
+		group.setText(ResourceString.getResourceString("label.output.order"));
+		group.setLayoutData(groupGridData);
+		group.setLayout(groupLayout);
+
+		this.directToRepeatRadio = CompositeFactory.createRadio(this, group,
+				"label.output.order.direct.to.repeat");
+		this.repeatToDirectRadio = CompositeFactory.createRadio(this, group,
+				"label.output.order.repeat.to.direct");
+	}
+
+	
 	private void initSelectedTableTable() {
 		// テーブル一覧
 		this.selectedTableTable.removeAll();
@@ -285,6 +312,14 @@ public class TestDataDialog extends AbstractDialog {
 			resetTabs();
 			this.selectedTableIndex = -1;
 		}
+
+		if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
+			this.directToRepeatRadio.setSelection(true);
+
+		} else {
+			this.repeatToDirectRadio.setSelection(true);
+
+		}
 	}
 
 	@Override
@@ -321,6 +356,14 @@ public class TestDataDialog extends AbstractDialog {
 		String text = this.nameText.getText().trim();
 
 		this.testData.setName(text);
+
+		if (this.repeatToDirectRadio.getSelection()) {
+			testData.setExportOrder(TestData.EXPORT_ORDER_REPEAT_TO_DIRECT);
+
+		} else if (this.directToRepeatRadio.getSelection()) {
+			testData.setExportOrder(TestData.EXPORT_ORDER_DIRECT_TO_REPEAT);
+
+		}
 
 		for (ValidatableTabWrapper tab : this.tabWrapperList) {
 			tab.perfomeOK();

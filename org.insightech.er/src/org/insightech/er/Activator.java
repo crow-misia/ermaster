@@ -147,7 +147,9 @@ public class Activator extends AbstractUIPlugin {
 		reg.put(ImageKey.EXPORT_TO_IMAGE,
 				loadImageDescriptor("icons/document-image.png"));
 		reg.put(ImageKey.EXPORT_TO_JAVA,
-				loadImageDescriptor("icons/script-attribute-j.png"));
+				loadImageDescriptor("icons/page_white_cup.png"));
+		reg.put(ImageKey.EXPORT_TO_TEST_DATA,
+				loadImageDescriptor("icons/tables--arrow.png"));
 		reg.put(ImageKey.FIND, loadImageDescriptor("icons/binocular.png"));
 		reg.put(ImageKey.FOREIGN_KEY,
 				loadImageDescriptor("icons/foreign_key.gif"));
@@ -186,6 +188,8 @@ public class Activator extends AbstractUIPlugin {
 		reg.put(ImageKey.TABLE, loadImageDescriptor("icons/table.gif"));
 		reg.put(ImageKey.TABLE_NEW, loadImageDescriptor("icons/table_new.gif"));
 		reg.put(ImageKey.TABLESPACE, loadImageDescriptor("icons/database.png"));
+		reg.put(ImageKey.TEST_DATA,
+				loadImageDescriptor("icons/tables--pencil.png"));
 		reg.put(ImageKey.TOOLTIP, loadImageDescriptor("icons/ui-tooltip.png"));
 		reg.put(ImageKey.TRIGGER,
 				loadImageDescriptor("icons/arrow-turn-000-left.png"));

@@ -3,7 +3,6 @@ package org.insightech.er.editor.model.dbexport.testdata.impl;
 import java.util.Map;
 
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.dbexport.testdata.TestDataCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
@@ -11,7 +10,7 @@ import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.persistent.impl.PersistentXmlImpl;
 import org.insightech.er.util.Format;
 
-public class DBUnitTestDataCreator extends TestDataCreator {
+public class DBUnitTestDataCreator extends AbstractTextTestDataCreator {
 
 	private String encoding;
 
@@ -20,7 +19,7 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 	}
 
 	@Override
-	protected String getDirectTestData(ERTable table,
+	protected void writeDirectTestData(ERTable table,
 			Map<NormalColumn, String> data, String database) {
 		StringBuilder sb = new StringBuilder();
 
@@ -41,11 +40,11 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 
 		sb.append("\t\t</row>\r\n");
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
-	protected String getRepeatTestData(ERTable table,
+	protected void writeRepeatTestData(ERTable table,
 			RepeatTestData repeatTestData, String database) {
 		StringBuilder sb = new StringBuilder();
 
@@ -74,7 +73,7 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 			sb.append("\t\t</row>\r\n");
 		}
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 	}
 
 	@Override
-	protected String getTableHeader(ERDiagram diagram, ERTable table) {
+	protected void writeTableHeader(ERDiagram diagram, ERTable table) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\t<table name=\"");
@@ -107,12 +106,17 @@ public class DBUnitTestDataCreator extends TestDataCreator {
 			sb.append("</column>\r\n");
 		}
 
-		return sb.toString();
+		out.print(sb.toString());
 	}
 
 	@Override
-	protected String getTableFooter(ERTable table) {
-		return "\t</table>\r\n";
+	protected void writeTableFooter(ERTable table) {
+		out.print("\t</table>\r\n");
+	}
+
+	@Override
+	protected String getFileExtention() {
+		return ".xml";
 	}
 
 }

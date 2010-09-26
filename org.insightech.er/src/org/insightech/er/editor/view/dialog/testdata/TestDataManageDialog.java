@@ -278,14 +278,10 @@ public class TestDataManageDialog extends AbstractDialog {
 
 	private void exportTestData() {
 		int targetIndex = this.testDataListWidget.getSelectionIndex();
-		if (targetIndex == -1) {
-			return;
-		}
-
-		TestData testData = this.testDataList.get(targetIndex);
 
 		ExportToTestDataDialog exportTestDataDialog = new ExportToTestDataDialog(
-				this.getShell(), this.editorPart, this.diagram, testData);
+				this.getShell(), this.editorPart, this.diagram, testDataList,
+				targetIndex);
 
 		exportTestDataDialog.open();
 	}
@@ -303,7 +299,7 @@ public class TestDataManageDialog extends AbstractDialog {
 		if (selectedTableIndex != -1) {
 			testDataDialog.setSelectedTable(selectedTableIndex);
 		}
-		
+
 		if (testDataDialog.open() == IDialogConstants.OK_ID) {
 			TestData newTestData = testDataDialog.getTestData();
 
@@ -456,7 +452,7 @@ public class TestDataManageDialog extends AbstractDialog {
 				editTestData(testDataTable.getSelectionIndex());
 			}
 		});
-		
+
 		this.testDataTable.addMouseListener(new MouseAdapter() {
 
 			/**

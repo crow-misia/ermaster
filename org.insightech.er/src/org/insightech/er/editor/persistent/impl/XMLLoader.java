@@ -68,6 +68,7 @@ import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.PageSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.settings.TranslationSetting;
+import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 import org.insightech.er.editor.model.testdata.DirectTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
@@ -773,12 +774,7 @@ public class XMLLoader {
 			LoadContext context) {
 
 		testData.setName(this.getStringValue(element, "name"));
-		testData.setExportFormat(this.getIntValue(element, "export_format"));
 		testData.setExportOrder(this.getIntValue(element, "export_order"));
-		testData.setExportFilePath(this.getStringValue(element,
-				"export_file_path"));
-		testData.setExportFileEncoding(this.getStringValue(element,
-				"export_file_encoding"));
 
 		NodeList nodeList = element.getElementsByTagName("table_test_data");
 
@@ -1160,6 +1156,24 @@ public class XMLLoader {
 					.getBooleanValue(element, "comment_replace_line_feed");
 			exportSetting.getDdlTarget().commentReplaceString = this
 					.getStringValue(element, "comment_replace_string");
+
+			this.loadExportTestDataSetting(exportSetting
+					.getExportTestDataSetting(), element, context);
+		}
+	}
+
+	private void loadExportTestDataSetting(
+			ExportTestDataSetting exportTestDataSetting, Element parent,
+			LoadContext context) {
+		Element element = this.getElement(parent, "export_testdata_setting");
+
+		if (element != null) {
+			exportTestDataSetting.setExportFileEncoding(this.getStringValue(
+					element, "file_encoding"));
+			exportTestDataSetting.setExportFilePath(this.getStringValue(
+					element, "file_path"));
+			exportTestDataSetting.setExportFormat(this.getIntValue(element,
+					"format"));
 		}
 	}
 
