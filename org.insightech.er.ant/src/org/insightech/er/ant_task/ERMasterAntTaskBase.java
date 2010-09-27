@@ -9,6 +9,8 @@ import java.io.InputStream;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.insightech.er.ResourceString;
+import org.insightech.er.common.exception.InputException;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.persistent.Persistent;
 
@@ -59,6 +61,10 @@ public abstract class ERMasterAntTaskBase extends Task {
 			this.log("Output beginning...");
 			this.doTask(diagram);
 			this.log("Output finish!");
+
+		} catch (InputException e) {
+			throw new BuildException(ResourceString.getResourceString(e
+					.getMessage()));
 
 		} catch (BuildException e) {
 			throw e;

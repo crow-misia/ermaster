@@ -216,9 +216,12 @@ public class ExportToTestDataDialog extends AbstractDialog {
 			for (int i = 0; i < this.testDataTable.getItemCount(); i++) {
 				TableItem item = this.testDataTable.getItem(i);
 				if (item.getChecked()) {
-					this.exportTestData(testDataList.get(i));
+					exportTestData(this.diagram, this.exportTestDataSetting,
+							testDataList.get(i));
 				}
 			}
+
+			Activator.showMessageDialog("dialog.message.export.finish");
 
 		} catch (IOException e) {
 			Activator.showExceptionDialog(e);
@@ -227,32 +230,35 @@ public class ExportToTestDataDialog extends AbstractDialog {
 		this.refreshProject();
 	}
 
-	private void exportTestData(TestData testData) throws IOException,
-			InputException {
+	public static void exportTestData(ERDiagram diagram,
+			ExportTestDataSetting exportTestDataSetting, TestData testData)
+			throws IOException, InputException {
 		TestDataCreator testDataCreator = null;
 
-		if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT) {
-			testDataCreator = new DBUnitTestDataCreator(
-					this.exportTestDataSetting.getExportFileEncoding());
+		int format = exportTestDataSetting.getExportFormat();
 
-		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
+		if (format == TestData.EXPORT_FORMT_DBUNIT) {
+			testDataCreator = new DBUnitTestDataCreator(exportTestDataSetting
+					.getExportFileEncoding());
+
+		} else if (format == TestData.EXPORT_FORMT_DBUNIT_FLAT_XML) {
 			testDataCreator = new DBUnitFlatXmlTestDataCreator(
-					this.exportTestDataSetting.getExportFileEncoding());
+					exportTestDataSetting.getExportFileEncoding());
 
-		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_SQL) {
+		} else if (format == TestData.EXPORT_FORMT_SQL) {
 			testDataCreator = new SQLTestDataCreator();
 
-		} else if (this.exportTestDataSetting.getExportFormat() == TestData.EXPORT_FORMT_DBUNIT_XLS) {
+		} else if (format == TestData.EXPORT_FORMT_DBUNIT_XLS) {
 			testDataCreator = new DBUnitXLSTestDataCreator();
 
 		}
 
 		testDataCreator.init(testData);
 
-		File dir = new File(this.exportTestDataSetting.getExportFilePath()
+		File dir = new File(exportTestDataSetting.getExportFilePath()
 				+ File.separator);
 		if (dir.isDirectory() || dir.mkdirs()) {
-			testDataCreator.write(this.exportTestDataSetting, diagram);
+			testDataCreator.write(exportTestDataSetting, diagram);
 
 		} else {
 			throw new InputException("error.output.dir.can.not.be.made");
