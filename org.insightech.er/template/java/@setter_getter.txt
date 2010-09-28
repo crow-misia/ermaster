@@ -1,5 +1,5 @@
 	/**
-	 * @logicalColumnName ‚ğİ’è‚µ‚Ü‚·.
+	 * java.template.setter.description.
 	 * 
 	 * @param @physicalColumnName
 	 *            @logicalColumnName
@@ -9,7 +9,7 @@
 	}
 
 	/**
-	 * @logicalColumnName ‚ğæ“¾‚µ‚Ü‚·.
+	 * java.template.getter.description.
 	 * 
 	 * @return @logicalColumnName
 	 */
