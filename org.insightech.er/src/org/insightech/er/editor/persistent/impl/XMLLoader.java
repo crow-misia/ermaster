@@ -68,6 +68,7 @@ import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.PageSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.settings.TranslationSetting;
+import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
 import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 import org.insightech.er.editor.model.testdata.DirectTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
@@ -1097,14 +1098,6 @@ public class XMLLoader {
 					"excel_template"));
 			exportSetting.setImageOutput(this.getStringValue(element,
 					"image_output"));
-			exportSetting.setJavaOutput(this.getStringValue(element,
-					"java_output"));
-			exportSetting.setPackageName(Format.null2blank(this.getStringValue(
-					element, "package_name")));
-			exportSetting.setClassNameSuffix(Format.null2blank(this
-					.getStringValue(element, "class_name_suffix")));
-			exportSetting.setSrcFileEncoding(this.getStringValue(element,
-					"src_file_encoding"));
 			exportSetting.setPutERDiagramOnExcel(this.getBooleanValue(element,
 					"put_diagram_on_excel"));
 			exportSetting.setUseLogicalNameAsSheet(this.getBooleanValue(
@@ -1157,8 +1150,28 @@ public class XMLLoader {
 			exportSetting.getDdlTarget().commentReplaceString = this
 					.getStringValue(element, "comment_replace_string");
 
+			this.loadExportJavaSetting(exportSetting.getExportJavaSetting(),
+					element, context);
 			this.loadExportTestDataSetting(exportSetting
 					.getExportTestDataSetting(), element, context);
+		}
+	}
+
+	private void loadExportJavaSetting(ExportJavaSetting exportJavaSetting,
+			Element parent, LoadContext context) {
+		Element element = this.getElement(parent, "export_java_setting");
+
+		if (element != null) {
+			exportJavaSetting.setJavaOutput(this.getStringValue(element,
+					"java_output"));
+			exportJavaSetting.setPackageName(Format.null2blank(this
+					.getStringValue(element, "package_name")));
+			exportJavaSetting.setClassNameSuffix(Format.null2blank(this
+					.getStringValue(element, "class_name_suffix")));
+			exportJavaSetting.setSrcFileEncoding(this.getStringValue(element,
+					"src_file_encoding"));
+			exportJavaSetting.setWithHibernate(this.getBooleanValue(element,
+					"with_hibernate"));
 		}
 	}
 
