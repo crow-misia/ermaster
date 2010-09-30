@@ -10,6 +10,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -26,6 +27,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.java.ExportToJavaWithProgressManager;
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
+import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
 import org.insightech.er.util.Format;
 
 public class ExportToJavaDialog extends AbstractDialog {
@@ -35,6 +37,8 @@ public class ExportToJavaDialog extends AbstractDialog {
 	private Text packageText;
 
 	private Text classNameSuffixText;
+
+	private Button withHibernateButton;
 
 	private ERDiagram diagram;
 
@@ -87,6 +91,9 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 		this.fileEncodingCombo = CompositeFactory.createFileEncodingCombo(
 				this.editorPart, this, parent, "label.output.file.encoding", 1);
+
+		this.withHibernateButton = CompositeFactory.createCheckbox(this,
+				parent, "label.with.hibernate", 2);
 	}
 
 	@Override
@@ -111,18 +118,21 @@ public class ExportToJavaDialog extends AbstractDialog {
 			String packageName = this.packageText.getText();
 			String classNameSuffix = this.classNameSuffixText.getText();
 			String fileEncoding = this.fileEncodingCombo.getText();
-
-			ExportToJavaWithProgressManager manager = new ExportToJavaWithProgressManager(
-					outputDirPath, fileEncoding, packageName, classNameSuffix,
-					diagram);
-			monitor.run(true, true, manager);
+			boolean withHibernate = this.withHibernateButton.getSelection();
 
 			this.exportSetting = new ExportSetting();
+			ExportJavaSetting exportJavaSetting = this.exportSetting
+					.getExportJavaSetting();
 
-			this.exportSetting.setJavaOutput(outputDirPath);
-			this.exportSetting.setPackageName(packageName);
-			this.exportSetting.setClassNameSuffix(classNameSuffix);
-			this.exportSetting.setSrcFileEncoding(fileEncoding);
+			exportJavaSetting.setJavaOutput(outputDirPath);
+			exportJavaSetting.setPackageName(packageName);
+			exportJavaSetting.setClassNameSuffix(classNameSuffix);
+			exportJavaSetting.setSrcFileEncoding(fileEncoding);
+			exportJavaSetting.setWithHibernate(withHibernate);
+
+			ExportToJavaWithProgressManager manager = new ExportToJavaWithProgressManager(
+					exportJavaSetting, diagram);
+			monitor.run(true, true, manager);
 
 			if (manager.getException() != null) {
 				throw manager.getException();
@@ -157,7 +167,8 @@ public class ExportToJavaDialog extends AbstractDialog {
 	@Override
 	protected void setData() {
 		Settings settings = this.diagram.getDiagramContents().getSettings();
-		ExportSetting exportSetting = settings.getExportSetting();
+		ExportJavaSetting exportSetting = settings.getExportSetting()
+				.getExportJavaSetting();
 
 		String outputDir = Format.null2blank(exportSetting.getJavaOutput());
 
@@ -179,6 +190,8 @@ public class ExportToJavaDialog extends AbstractDialog {
 		if (!"".equals(srcFileEncoding)) {
 			this.fileEncodingCombo.setText(srcFileEncoding);
 		}
+
+		this.withHibernateButton.setSelection(exportSetting.isWithHibernate());
 	}
 
 	/**

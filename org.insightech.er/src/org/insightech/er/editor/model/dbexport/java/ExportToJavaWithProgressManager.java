@@ -7,6 +7,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
+import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
 
 public class ExportToJavaWithProgressManager extends ExportToJavaManager
 		implements IRunnableWithProgress {
@@ -15,11 +16,9 @@ public class ExportToJavaWithProgressManager extends ExportToJavaManager
 
 	private IProgressMonitor monitor;
 
-	public ExportToJavaWithProgressManager(String outputDir,
-			String fileEncoding, String packageName, String classNameSuffix,
+	public ExportToJavaWithProgressManager(ExportJavaSetting exportJavaSetting,
 			ERDiagram diagram) {
-		super(outputDir + "/src", fileEncoding, packageName, classNameSuffix,
-				null, diagram);
+		super(exportJavaSetting, diagram);
 	}
 
 	/**

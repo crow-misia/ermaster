@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.settings;
 import java.io.Serializable;
 
 import org.insightech.er.editor.model.dbexport.ddl.DDLTarget;
+import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
 import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 
 public class ExportSetting implements Serializable, Cloneable {
@@ -17,23 +18,25 @@ public class ExportSetting implements Serializable, Cloneable {
 
 	private String ddlOutput;
 
-	private String javaOutput;
-
-	private String packageName;
-
-	private String classNameSuffix;
-
-	private String srcFileEncoding;
-
 	private boolean useLogicalNameAsSheet;
 
 	private boolean putERDiagramOnExcel;
 
 	private String categoryNameToExport;
 
+	private ExportJavaSetting exportJavaSetting = new ExportJavaSetting();
+
 	private ExportTestDataSetting exportTestDataSetting = new ExportTestDataSetting();
 
 	private DDLTarget ddlTarget = new DDLTarget();
+
+	public ExportJavaSetting getExportJavaSetting() {
+		return exportJavaSetting;
+	}
+
+	public void setExportJavaSetting(ExportJavaSetting exportJavaSetting) {
+		this.exportJavaSetting = exportJavaSetting;
+	}
 
 	public ExportTestDataSetting getExportTestDataSetting() {
 		return exportTestDataSetting;
@@ -174,38 +177,6 @@ public class ExportSetting implements Serializable, Cloneable {
 		this.ddlOutput = ddlOutput;
 	}
 
-	public String getJavaOutput() {
-		return javaOutput;
-	}
-
-	public void setJavaOutput(String javaOutput) {
-		this.javaOutput = javaOutput;
-	}
-
-	public String getPackageName() {
-		return packageName;
-	}
-
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
-
-	public String getClassNameSuffix() {
-		return classNameSuffix;
-	}
-
-	public void setClassNameSuffix(String classNameSuffix) {
-		this.classNameSuffix = classNameSuffix;
-	}
-
-	public String getSrcFileEncoding() {
-		return srcFileEncoding;
-	}
-
-	public void setSrcFileEncoding(String srcFileEncoding) {
-		this.srcFileEncoding = srcFileEncoding;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -219,11 +190,6 @@ public class ExportSetting implements Serializable, Cloneable {
 			if (other.categoryNameToExport != null)
 				return false;
 		} else if (!categoryNameToExport.equals(other.categoryNameToExport))
-			return false;
-		if (classNameSuffix == null) {
-			if (other.classNameSuffix != null)
-				return false;
-		} else if (!classNameSuffix.equals(other.classNameSuffix))
 			return false;
 		if (ddlOutput == null) {
 			if (other.ddlOutput != null)
@@ -245,6 +211,11 @@ public class ExportSetting implements Serializable, Cloneable {
 				return false;
 		} else if (!excelTemplate.equals(other.excelTemplate))
 			return false;
+		if (exportJavaSetting == null) {
+			if (other.exportJavaSetting != null)
+				return false;
+		} else if (!exportJavaSetting.equals(other.exportJavaSetting))
+			return false;
 		if (exportTestDataSetting == null) {
 			if (other.exportTestDataSetting != null)
 				return false;
@@ -255,22 +226,7 @@ public class ExportSetting implements Serializable, Cloneable {
 				return false;
 		} else if (!imageOutput.equals(other.imageOutput))
 			return false;
-		if (javaOutput == null) {
-			if (other.javaOutput != null)
-				return false;
-		} else if (!javaOutput.equals(other.javaOutput))
-			return false;
-		if (packageName == null) {
-			if (other.packageName != null)
-				return false;
-		} else if (!packageName.equals(other.packageName))
-			return false;
 		if (putERDiagramOnExcel != other.putERDiagramOnExcel)
-			return false;
-		if (srcFileEncoding == null) {
-			if (other.srcFileEncoding != null)
-				return false;
-		} else if (!srcFileEncoding.equals(other.srcFileEncoding))
 			return false;
 		if (useLogicalNameAsSheet != other.useLogicalNameAsSheet)
 			return false;
@@ -286,6 +242,7 @@ public class ExportSetting implements Serializable, Cloneable {
 			ExportSetting setting = (ExportSetting) super.clone();
 
 			setting.setDdlTarget(this.ddlTarget.clone());
+			setting.setExportJavaSetting(this.exportJavaSetting.clone());
 			setting
 					.setExportTestDataSetting(this.exportTestDataSetting
 							.clone());
