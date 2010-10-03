@@ -88,9 +88,9 @@ public abstract class ERDiagramConnectionEditPart extends
 						containsSource = true;
 
 					} else if (categorySettings.isShowReferredTables()) {
-						for (NodeElement referredElement : sourceModel
-								.getReferredElementList()) {
-							if (category.contains(referredElement)) {
+						for (NodeElement referringElement : sourceModel
+								.getReferringElementList()) {
+							if (category.contains(referringElement)) {
 								containsSource = true;
 								break;
 							}
@@ -102,9 +102,9 @@ public abstract class ERDiagramConnectionEditPart extends
 							this.figure.setVisible(true);
 
 						} else if (categorySettings.isShowReferredTables()) {
-							for (NodeElement referredElement : targetModel
-									.getReferredElementList()) {
-								if (category.contains(referredElement)) {
+							for (NodeElement referringElement : targetModel
+									.getReferringElementList()) {
+								if (category.contains(referringElement)) {
 									this.figure.setVisible(true);
 									break;
 								}

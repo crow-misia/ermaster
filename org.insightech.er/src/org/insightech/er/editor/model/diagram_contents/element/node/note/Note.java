@@ -44,15 +44,15 @@ public class Note extends NodeElement implements Comparable<Note> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<NodeElement> getReferredElementList() {
-		List<NodeElement> referredElementList = super.getReferredElementList();
+	public List<NodeElement> getReferringElementList() {
+		List<NodeElement> referringElementList = super.getReferringElementList();
 
 		for (ConnectionElement connectionElement : this.getIncomings()) {
 			NodeElement sourceElement = connectionElement.getSource();
-			referredElementList.add(sourceElement);
+			referringElementList.add(sourceElement);
 		}
 
-		return referredElementList;
+		return referringElementList;
 	}
 
 	public String getDescription() {

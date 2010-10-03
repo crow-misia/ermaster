@@ -291,12 +291,12 @@ public class ExportToJavaManager {
 	private String replacePropertiesInfo(String content, ERTable table,
 			String compositeIdClassName) throws IOException {
 		return replacePropertiesInfo(content, table,
-				table.getExpandedColumns(), table.getReferredElementList(),
+				table.getExpandedColumns(), table.getReferringElementList(),
 				compositeIdClassName);
 	}
 
 	private String replacePropertiesInfo(String content, ERTable table,
-			List<NormalColumn> columns, List<NodeElement> referedElementList,
+			List<NormalColumn> columns, List<NodeElement> referringElementList,
 			String compositeIdClassName) throws IOException {
 		StringBuilder properties = new StringBuilder();
 		StringBuilder setterGetters = new StringBuilder();
@@ -316,10 +316,10 @@ public class ExportToJavaManager {
 			}
 		}
 
-		if (referedElementList != null) {
-			for (NodeElement referredElement : referedElementList) {
-				if (referredElement instanceof TableView) {
-					TableView tableView = (TableView) referredElement;
+		if (referringElementList != null) {
+			for (NodeElement referringElement : referringElementList) {
+				if (referringElement instanceof TableView) {
+					TableView tableView = (TableView) referringElement;
 
 					this.addContent(properties, SET_PROPERTIES, tableView);
 					this.addContent(setterGetters, SETTER_GETTER_ADDER,

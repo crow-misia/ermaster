@@ -98,18 +98,30 @@ public abstract class NodeElement extends ViewableModel implements ObjectModel {
 		this.firePropertyChange(PROPERTY_CHANGE_OUTGOING, null, null);
 	}
 
-	public List<NodeElement> getReferredElementList() {
-		List<NodeElement> referredElementList = new ArrayList<NodeElement>();
+	public List<NodeElement> getReferringElementList() {
+		List<NodeElement> referringElementList = new ArrayList<NodeElement>();
 
 		for (ConnectionElement connectionElement : this.getOutgoings()) {
 			NodeElement targetElement = connectionElement.getTarget();
 
-			referredElementList.add(targetElement);
+			referringElementList.add(targetElement);
 		}
 
-		return referredElementList;
+		return referringElementList;
 	}
 
+	public List<NodeElement> getReferedElementList() {
+		List<NodeElement> referedElementList = new ArrayList<NodeElement>();
+
+		for (ConnectionElement connectionElement : this.getIncomings()) {
+			NodeElement sourceElement = connectionElement.getSource();
+
+			referedElementList.add(sourceElement);
+		}
+
+		return referedElementList;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

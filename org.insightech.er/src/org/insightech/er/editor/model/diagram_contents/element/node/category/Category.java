@@ -89,9 +89,9 @@ public class Category extends NodeElement implements IResizable,
 					.getSettings().getCategorySetting();
 
 			if (categorySettings.isShowReferredTables()) {
-				for (NodeElement refferedElement : nodeElement
-						.getReferredElementList()) {
-					if (this.contains(refferedElement)) {
+				for (NodeElement referringElement : nodeElement
+						.getReferringElementList()) {
+					if (this.contains(referringElement)) {
 						isVisible = true;
 						break;
 					}
