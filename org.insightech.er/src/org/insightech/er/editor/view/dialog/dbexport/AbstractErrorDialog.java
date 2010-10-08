@@ -30,7 +30,7 @@ public abstract class AbstractErrorDialog extends Dialog {
 		Composite composite = (Composite) super.createDialogArea(parent);
 
 		this.textArea = CompositeFactory.createTextArea(null, composite, this
-				.getMessage(), 400, 200, 1, false);
+				.getMessage(), 400, 200, 1, false, false);
 
 		composite.setLayout(new GridLayout());
 

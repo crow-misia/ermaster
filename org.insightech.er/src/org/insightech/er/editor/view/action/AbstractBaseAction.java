@@ -10,7 +10,6 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.insightech.er.Activator;
 import org.insightech.er.editor.ERDiagramEditor;
@@ -94,7 +93,7 @@ public abstract class AbstractBaseAction extends Action {
 		return null;
 	}
 
-	protected IEditorPart getEditorPart() {
+	protected ERDiagramEditor getEditorPart() {
 		return this.editor;
 	}
 }

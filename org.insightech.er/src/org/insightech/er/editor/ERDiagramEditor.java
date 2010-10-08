@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,6 +42,7 @@ import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.ide.IGotoMarker;
@@ -538,4 +540,13 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		return super.isDirty();
 	}
 
+	public String getProjectFilePath(String extention) {
+		IFile file = ((IFileEditorInput) this.getEditorInput())
+				.getFile();
+		String filePath = file.getLocation().toOSString();
+		filePath = filePath.substring(0, filePath.lastIndexOf("."))
+				+ extention;
+		
+		return filePath;
+	}
 }
