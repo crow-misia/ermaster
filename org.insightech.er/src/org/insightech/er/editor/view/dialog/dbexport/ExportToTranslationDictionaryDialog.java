@@ -140,7 +140,8 @@ public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 	protected void perfomeOK() throws InputException {
 		String fileName = this.dictionaryNameText.getText().trim();
 		File file = new File(PreferenceInitializer.getTranslationPath(fileName));
-
+		file.getParentFile().mkdirs();
+		
 		BufferedWriter writer = null;
 
 		try {
@@ -149,7 +150,7 @@ public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 
 			for (TableItem tableItem : this.dictionaryTable.getItems()) {
 				writer.write(tableItem.getText(0));
-				writer.write("=");
+				writer.write(",");
 				writer.write(tableItem.getText(1));
 				writer.write("\r\n");
 			}

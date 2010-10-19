@@ -41,6 +41,7 @@ public class TranslationResources {
 
 						try {
 							in = new FileInputStream(file);
+							System.out.println(in);
 							load(in);
 
 						} catch (IOException e) {
