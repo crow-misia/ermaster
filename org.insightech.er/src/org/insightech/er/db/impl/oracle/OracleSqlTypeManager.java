@@ -408,7 +408,7 @@ public class OracleSqlTypeManager extends SqlTypeManagerBase {
 		return new SqlType[] { SqlType.BOX, SqlType.CIDR, SqlType.CIRCLE,
 				SqlType.ENUM, SqlType.GRAPHIC, SqlType.INET, SqlType.LINE,
 				SqlType.LSEG, SqlType.MACADDR, SqlType.MONEY, SqlType.PATH,
-				SqlType.POINT, SqlType.POLYGON, SqlType.SET,
+				SqlType.POINT, SqlType.POLYGON, SqlType.SET, SqlType.UUID,
 				SqlType.VARGRAPHIC, SqlType.XML };
 	}
 

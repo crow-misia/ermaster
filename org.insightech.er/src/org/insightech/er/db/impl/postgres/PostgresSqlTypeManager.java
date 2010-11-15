@@ -196,6 +196,9 @@ public class PostgresSqlTypeManager extends SqlTypeManagerBase {
 		if (type.equals(SqlType.TINY_TEXT)) {
 			return "text";
 		}
+		if (type.equals(SqlType.UUID)) {
+			return "uuid";
+		}
 		if (type.equals(SqlType.VARBINARY_N)) {
 			return "varchar(n)";
 		}
