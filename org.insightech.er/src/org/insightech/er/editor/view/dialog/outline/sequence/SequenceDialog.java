@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.insightech.er.Resources;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
@@ -60,7 +61,7 @@ public class SequenceDialog extends AbstractDialog {
 		this.cycleCheckBox = CompositeFactory.createCheckbox(this, composite,
 				"Cycle", 2);
 		this.descriptionText = CompositeFactory.createTextArea(this, composite,
-				"label.description", -1, 100, 1, true);
+				"label.description", Resources.DESCRIPTION_WIDTH, 100, 1, true);
 	}
 
 	@Override

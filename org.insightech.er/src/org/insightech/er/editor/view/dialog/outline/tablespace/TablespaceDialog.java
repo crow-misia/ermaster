@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.insightech.er.Resources;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.editor.model.ERDiagram;
@@ -52,10 +53,12 @@ public abstract class TablespaceDialog extends AbstractDialog {
 
 	@Override
 	protected void initialize(Composite composite) {
-		this.environmentCombo = CompositeFactory.createReadOnlyCombo(this, composite,
-				"label.tablespace.environment", this.getNumColumns() - 1);
+		this.environmentCombo = CompositeFactory.createReadOnlyCombo(this,
+				composite, "label.tablespace.environment",
+				this.getNumColumns() - 1);
 		this.nameText = CompositeFactory.createText(this, composite,
-				"label.tablespace.name", this.getNumColumns() - 1, false);
+				"label.tablespace.name", this.getNumColumns() - 1,
+				Resources.DESCRIPTION_WIDTH, false);
 	}
 
 	@Override

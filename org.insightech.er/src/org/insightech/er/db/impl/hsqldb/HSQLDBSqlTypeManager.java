@@ -256,7 +256,8 @@ public class HSQLDBSqlTypeManager extends SqlTypeManagerBase {
 
 	public SqlType[] getUnsupportedType() {
 		return new SqlType[] { SqlType.ALERT_TYPE, SqlType.ANYDATA,
-				SqlType.ENUM, SqlType.SET, SqlType.YEAR_2, SqlType.YEAR_4 };
+				SqlType.ENUM, SqlType.SET, SqlType.UUID, SqlType.YEAR_2,
+				SqlType.YEAR_4 };
 	}
 
 }

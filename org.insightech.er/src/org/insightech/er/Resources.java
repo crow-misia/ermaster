@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Display;
 public class Resources {
 
 	public static final int BUTTON_WIDTH = 60;
+	
+	public static final int DESCRIPTION_WIDTH = 400;
 
 	public static Color PINK = new Color(Display.getCurrent(), 255, 0, 255);
 

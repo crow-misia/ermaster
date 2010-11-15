@@ -211,6 +211,9 @@ public class SqlType implements Serializable {
 	public static final SqlType TINY_TEXT = new SqlType("tinytext", false,
 			String.class);
 
+	public static final SqlType UUID = new SqlType("uuid", false,
+			String.class);
+
 	public static final SqlType VARBINARY_N = new SqlType("varbinary(n)",
 			false, Blob.class);
 

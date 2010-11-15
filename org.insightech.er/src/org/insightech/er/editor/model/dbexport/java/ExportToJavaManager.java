@@ -384,8 +384,13 @@ public class ExportToJavaManager {
 
 	private String replaceClassInfo(String content, String classDescription,
 			String className, String classNameSufix) {
-		content = content.replaceAll("@package", this.exportJavaSetting
-				.getPackageName());
+		if (Check.isEmptyTrim(this.exportJavaSetting.getPackageName())) {
+			content = content.replaceAll("package @package;\r\n\r\n", "");
+
+		} else {
+			content = content.replaceAll("@package", this.exportJavaSetting
+					.getPackageName());
+		}
 
 		content = content.replaceAll("@classDescription", classDescription);
 		content = content.replaceAll("@PhysicalTableName", className);

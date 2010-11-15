@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.action.dbimport;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -75,20 +77,35 @@ public class ImportFromFileAction extends AbstractImportAction {
 
 		Path path = new Path(fileName);
 
-		IFile file = ResourcesPlugin.getWorkspace().getRoot()
-				.getFileForLocation(path);
-		if (file == null || !file.exists()) {
-			Activator.showErrorDialog("error.import.file");
-			return null;
+		InputStream in = null;
+
+		try {
+			IFile file = ResourcesPlugin.getWorkspace().getRoot()
+					.getFileForLocation(path);
+			
+			if (file == null || !file.exists()) {
+				File realFile = path.toFile();
+				if (realFile == null || !realFile.exists()) {
+					Activator.showErrorDialog("error.import.file");
+					return null;
+				}
+
+				in = new FileInputStream(realFile);
+
+			} else {
+				if (!file.isSynchronized(IResource.DEPTH_ONE)) {
+					file.refreshLocal(IResource.DEPTH_ONE,
+							new NullProgressMonitor());
+				}
+
+				in = file.getContents();
+			}
+
+			this.loadedDiagram = persistent.load(in);
+
+		} finally {
+			in.close();
 		}
-
-		if (!file.isSynchronized(IResource.DEPTH_ONE)) {
-			file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-		}
-
-		InputStream in = file.getContents();
-
-		this.loadedDiagram = persistent.load(in);
 
 		return this.getAllObjects(loadedDiagram);
 	}
@@ -342,7 +359,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 
 		this.importedNodeElements = copyList.getNodeElementList();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */

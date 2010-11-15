@@ -206,8 +206,8 @@ public class StandardSQLSqlTypeManager extends SqlTypeManagerBase {
 				SqlType.INTERVAL_DAY_TO_SECOND,
 				SqlType.INTERVAL_DAY_TO_SECOND_P, SqlType.LINE, SqlType.LSEG,
 				SqlType.MACADDR, SqlType.MONEY, SqlType.PATH, SqlType.POINT,
-				SqlType.POLYGON, SqlType.SET, SqlType.VARGRAPHIC, SqlType.XML,
-				SqlType.YEAR_2, SqlType.YEAR_4 };
+				SqlType.POLYGON, SqlType.SET, SqlType.UUID, SqlType.VARGRAPHIC,
+				SqlType.XML, SqlType.YEAR_2, SqlType.YEAR_4 };
 	}
 
 }

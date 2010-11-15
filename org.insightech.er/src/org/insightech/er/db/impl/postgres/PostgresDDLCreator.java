@@ -13,6 +13,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
+import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 import org.insightech.er.util.Check;
 
 public class PostgresDDLCreator extends DDLCreator {
@@ -58,7 +59,7 @@ public class PostgresDDLCreator extends DDLCreator {
 
 		String tableComment = this.filterComment(table.getLogicalName(), table
 				.getDescription(), false);
-		
+
 		if (!Check.isEmpty(tableComment)) {
 			StringBuffer ddl = new StringBuffer();
 
@@ -81,7 +82,7 @@ public class PostgresDDLCreator extends DDLCreator {
 
 				String comment = this.filterComment(normalColumn
 						.getLogicalName(), normalColumn.getDescription(), true);
-				
+
 				if (!Check.isEmpty(comment)) {
 					StringBuffer ddl = new StringBuffer();
 
@@ -105,8 +106,9 @@ public class PostgresDDLCreator extends DDLCreator {
 
 				for (NormalColumn normalColumn : columnGroup.getColumns()) {
 					String comment = this.filterComment(normalColumn
-							.getLogicalName(), normalColumn.getDescription(), true);
-					
+							.getLogicalName(), normalColumn.getDescription(),
+							true);
+
 					if (!Check.isEmpty(comment)) {
 						StringBuffer ddl = new StringBuffer();
 
@@ -227,6 +229,35 @@ public class PostgresDDLCreator extends DDLCreator {
 		if (!first) {
 			ddl.append("\r\n");
 			ddl.append("\r\n");
+		}
+
+		return ddl.toString();
+	}
+
+	@Override
+	public String getDropDDL(Trigger trigger) {
+		StringBuffer ddl = new StringBuffer();
+
+		ddl.append("DROP TRIGGER ");
+		ddl.append(this.getIfExistsOption());
+		ddl.append(filter(this.getNameWithSchema(trigger.getSchema(), trigger
+				.getName())));
+		ddl.append(" ON ");
+
+		int onIndex = trigger.getSql().toUpperCase().indexOf(" ON ");
+		String tableName = null;
+
+		if (onIndex != -1) {
+			tableName = trigger.getSql().substring(onIndex + 4);
+
+		} else {
+			tableName = "";
+		}
+
+		ddl.append(tableName);
+
+		if (this.semicolon) {
+			ddl.append(";");
 		}
 
 		return ddl.toString();
