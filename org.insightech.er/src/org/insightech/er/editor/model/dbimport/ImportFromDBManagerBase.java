@@ -123,6 +123,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		private String targetSchemaName;
 
 		private String targetColumnName;
+
+		private short updateRule;
+
+		private short deleteRule;
 	}
 
 	protected static class PrimaryKeyData {
@@ -460,7 +464,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		try {
 			stmt = con.createStatement();
 
-			rs = stmt.executeQuery("SELECT 1 FROM " + tableNameWithSchema);
+			rs = stmt.executeQuery("SELECT * FROM " + tableNameWithSchema);
 			ResultSetMetaData md = rs.getMetaData();
 
 			for (int i = 0; i < md.getColumnCount(); i++) {
@@ -814,6 +818,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 						.getString("FKTABLE_NAME");
 				foreignKeyData.targetColumnName = foreignKeySet
 						.getString("FKCOLUMN_NAME");
+				foreignKeyData.updateRule = foreignKeySet
+						.getShort("UPDATE_RULE");
+				foreignKeyData.deleteRule = foreignKeySet
+						.getShort("DELETE_RULE");
 
 				if (this.isCyclicForeignKye(foreignKeyData)) {
 					continue;
@@ -893,6 +901,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 						.getString("FKTABLE_SCHEM");
 				foreignKeyData.targetColumnName = foreignKeySet
 						.getString("FKCOLUMN_NAME");
+				foreignKeyData.updateRule = foreignKeySet
+						.getShort("UPDATE_RULE");
+				foreignKeyData.deleteRule = foreignKeySet
+						.getShort("DELETE_RULE");
 
 				foreignKeyList.add(foreignKeyData);
 			}
@@ -1017,7 +1029,41 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		relation.setName(representativeData.name);
 		relation.setSource(source);
 		relation.setTargetWithoutForeignKey(target);
+		
+		String onUpdateAction = null;
+		if (representativeData.updateRule == DatabaseMetaData.importedKeyCascade) {
+			onUpdateAction = "CASCADE";
+		} else 		if (representativeData.updateRule == DatabaseMetaData.importedKeyRestrict) {
+			onUpdateAction = "RESTRICT";
+		} else if (representativeData.updateRule == DatabaseMetaData.importedKeyNoAction) {
+			onUpdateAction = "NO ACTION";
+		} else if (representativeData.updateRule == DatabaseMetaData.importedKeySetDefault) {
+			onUpdateAction = "SET DEFAULT";
+		} else if (representativeData.updateRule == DatabaseMetaData.importedKeySetNull) {
+			onUpdateAction = "SET NULL";
+		} else {
+			onUpdateAction = "";
+		}
 
+		relation.setOnUpdateAction(onUpdateAction);
+
+		String onDeleteAction = null;
+		if (representativeData.deleteRule == DatabaseMetaData.importedKeyCascade) {
+			onDeleteAction = "CASCADE";
+		} else 		if (representativeData.deleteRule == DatabaseMetaData.importedKeyRestrict) {
+			onDeleteAction = "RESTRICT";
+		} else if (representativeData.deleteRule == DatabaseMetaData.importedKeyNoAction) {
+			onDeleteAction = "NO ACTION";
+		} else if (representativeData.deleteRule == DatabaseMetaData.importedKeySetDefault) {
+			onDeleteAction = "SET DEFAULT";
+		} else if (representativeData.deleteRule == DatabaseMetaData.importedKeySetNull) {
+			onDeleteAction = "SET NULL";
+		} else {
+			onDeleteAction = "";
+		}
+
+		relation.setOnDeleteAction(onDeleteAction);
+		
 		for (Map.Entry<NormalColumn, NormalColumn> entry : referenceMap
 				.entrySet()) {
 			entry.getValue().addReference(entry.getKey(), relation);

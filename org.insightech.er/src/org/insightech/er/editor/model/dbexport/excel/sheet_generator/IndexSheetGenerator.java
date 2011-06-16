@@ -27,7 +27,7 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 
 	private ColumnTemplate columnTemplate;
 
-	private void clear() {
+	protected void clear() {
 		this.columnTemplate = null;
 	}
 

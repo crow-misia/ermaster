@@ -32,7 +32,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 
 	private ColumnTemplate fkColumnTemplate;
 
-	private void clear() {
+	protected void clear() {
 		this.columnTemplate = null;
 		this.fkColumnTemplate = null;
 	}
