@@ -20,7 +20,8 @@ public class AllViewSheetGenerator extends ViewSheetGenerator {
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
 			Map<String, LoopDefinition> loopDefinitionMap) {
-
+		this.clear();
+		
 		LoopDefinition loopDefinition = loopDefinitionMap.get(this
 				.getTemplateSheetName());
 
