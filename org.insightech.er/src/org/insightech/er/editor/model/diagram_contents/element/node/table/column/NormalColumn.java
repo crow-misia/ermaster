@@ -392,6 +392,7 @@ public class NormalColumn extends Column {
 			if (!relation.isReferenceForPK()) {
 				for (NormalColumn foreignKeyColumn : relation
 						.getForeignKeyColumns()) {
+					
 					for (NormalColumn referencedColumn : foreignKeyColumn.referencedColumnList) {
 						if (referencedColumn == this) {
 							isRefered = true;

@@ -1080,6 +1080,10 @@ public class XMLLoader {
 
 			ModelProperties modelProperties = settings.getModelProperties();
 			this.loadModelProperties(modelProperties, element);
+			
+			this.loadTableProperties((TableProperties) settings
+					.getTableViewProperties(), element, context);
+
 		}
 	}
 

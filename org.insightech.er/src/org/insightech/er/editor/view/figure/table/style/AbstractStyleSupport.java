@@ -98,7 +98,7 @@ public abstract class AbstractStyleSupport implements StyleSupport {
 			} else if (isNotNull) {
 				text.append(" (NN)");
 
-			} else if (isNotNull) {
+			} else if (uniqueKey) {
 				text.append(" (U)");
 			}
 		}
