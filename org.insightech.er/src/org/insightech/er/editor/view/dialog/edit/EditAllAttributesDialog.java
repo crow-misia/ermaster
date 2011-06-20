@@ -209,17 +209,17 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		columnForeignKey.setWidth(KEY_WIDTH);
 		columnForeignKey.setAlignment(SWT.CENTER);
 
-		TableColumn columnUnique = new TableColumn(this.attributeTable,
-				SWT.NONE);
-		columnUnique.setWidth(UNIQUE_KEY_WIDTH);
-		columnUnique.setText(ResourceString
-				.getResourceString("label.unique.key"));
-
 		TableColumn columnNotNull = new TableColumn(this.attributeTable,
 				SWT.NONE);
 		columnNotNull.setWidth(NOT_NULL_WIDTH);
 		columnNotNull.setText(ResourceString
 				.getResourceString("label.not.null"));
+
+		TableColumn columnUnique = new TableColumn(this.attributeTable,
+				SWT.NONE);
+		columnUnique.setWidth(UNIQUE_KEY_WIDTH);
+		columnUnique.setText(ResourceString
+				.getResourceString("label.unique.key"));
 
 		this.tableEditor = new TableEditor(this.attributeTable);
 		this.tableEditor.grabHorizontal = true;

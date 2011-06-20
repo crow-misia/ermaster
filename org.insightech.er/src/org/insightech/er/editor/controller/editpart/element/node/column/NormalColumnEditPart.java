@@ -68,7 +68,8 @@ public class NormalColumnEditPart extends ColumnEditPart {
 
 			if ((notationLevel == Settings.NOTATION_LEVLE_KEY)
 					&& !normalColumn.isPrimaryKey()
-					&& !normalColumn.isForeignKey()) {
+					&& !normalColumn.isForeignKey()
+					&& !normalColumn.isReferedStrictly()) {
 				columnFigure.clearLabel();
 				return;
 			}

@@ -157,7 +157,8 @@ public abstract class TableViewEditPart extends NodeElementEditPart implements
 					for (NormalColumn normalColumn : columnGroup.getColumns()) {
 						if (notationLevel == Settings.NOTATION_LEVLE_KEY
 								&& !normalColumn.isPrimaryKey()
-								&& !normalColumn.isForeignKey()) {
+								&& !normalColumn.isForeignKey()
+								&& !normalColumn.isReferedStrictly()) {
 							continue;
 						}
 
@@ -186,7 +187,8 @@ public abstract class TableViewEditPart extends NodeElementEditPart implements
 				NormalColumn normalColumn = (NormalColumn) removedColumn;
 				if (notationLevel == Settings.NOTATION_LEVLE_KEY
 						&& !normalColumn.isPrimaryKey()
-						&& !normalColumn.isForeignKey()) {
+						&& !normalColumn.isForeignKey()
+						&& !normalColumn.isReferedStrictly()) {
 					continue;
 				}
 

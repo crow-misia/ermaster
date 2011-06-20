@@ -254,8 +254,22 @@ public class MySQLDDLCreator extends DDLCreator {
 	}
 	
 	@Override
+	public String getDropDDL(ERDiagram diagram) {
+		StringBuilder ddl = new StringBuilder();
+		ddl.append("SET SESSION FOREIGN_KEY_CHECKS=0");
+		if (this.semicolon) {
+			ddl.append(";");
+		}
+		ddl.append("\r\n");
+
+		ddl.append(super.getDropDDL(diagram));
+		
+		return ddl.toString();
+	}
+
+	@Override
 	public String getDropDDL(Index index, ERTable table) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP INDEX ");
 		ddl.append(this.getIfExistsOption());
