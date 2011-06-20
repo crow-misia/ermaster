@@ -2,6 +2,8 @@ package org.insightech.er.db.impl.postgres;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.insightech.er.db.impl.postgres.tablespace.PostgresTablespaceProperties;
 import org.insightech.er.db.sqltype.SqlType;
@@ -17,6 +19,9 @@ import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigg
 import org.insightech.er.util.Check;
 
 public class PostgresDDLCreator extends DDLCreator {
+
+	private static final Pattern DROP_TRIGGER_TABLE_PATTERN = Pattern
+			.compile(".*\\s[oO][nN]\\s+(.+)\\s.*");
 
 	public PostgresDDLCreator(ERDiagram diagram, boolean semicolon) {
 		super(diagram, semicolon);
@@ -236,25 +241,17 @@ public class PostgresDDLCreator extends DDLCreator {
 
 	@Override
 	public String getDropDDL(Trigger trigger) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP TRIGGER ");
 		ddl.append(this.getIfExistsOption());
-		ddl.append(filter(this.getNameWithSchema(trigger.getSchema(), trigger
-				.getName())));
+		ddl.append(filter(trigger.getName()));
 		ddl.append(" ON ");
 
-		int onIndex = trigger.getSql().toUpperCase().indexOf(" ON ");
-		String tableName = null;
-
-		if (onIndex != -1) {
-			tableName = trigger.getSql().substring(onIndex + 4);
-
-		} else {
-			tableName = "";
+		Matcher matcher = DROP_TRIGGER_TABLE_PATTERN.matcher(trigger.getSql());
+		if (matcher.find()) {
+			ddl.append(matcher.group(1));
 		}
-
-		ddl.append(tableName);
 
 		if (this.semicolon) {
 			ddl.append(";");
