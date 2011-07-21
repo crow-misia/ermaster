@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.dbimport.DBObject;
@@ -22,6 +24,15 @@ public class OracleTableImportManager extends ImportFromDBManagerBase {
 
 	private static Logger logger = Logger
 			.getLogger(OracleTableImportManager.class.getName());
+
+	private static final Pattern INTERVAL_YEAR_TO_MONTH_PATTERN = Pattern
+			.compile("interval year\\((.)\\) to month");
+
+	private static final Pattern INTERVAL_DAY_TO_SECCOND_PATTERN = Pattern
+			.compile("interval day\\((.)\\) to second\\((.)\\)");
+
+	private static final Pattern TIMESTAMP_PATTERN = Pattern
+			.compile("timestamp\\((.)\\).*");
 
 	/**
 	 * {@inheritDoc}
@@ -304,6 +315,72 @@ public class OracleTableImportManager extends ImportFromDBManagerBase {
 		// }
 
 		return list;
+	}
+
+	@Override
+	protected ColumnData createColumnData(ResultSet columnSet)
+			throws SQLException {
+		ColumnData columnData = super.createColumnData(columnSet);
+		String type = columnData.type.toLowerCase();
+
+		if (type.equals("number")) {
+			if (columnData.size == 22 && columnData.decimalDegits == 0) {
+				columnData.size = 0;
+			}
+
+		} else if (type.equals("float")) {
+			if (columnData.size == 126 && columnData.decimalDegits == 0) {
+				columnData.size = 0;
+			}
+
+		} else if (type.equals("urowid")) {
+			if (columnData.size == 4000) {
+				columnData.size = 0;
+			}
+
+		} else if (type.equals("anydata")) {
+			columnData.size = 0;
+
+		} else {
+			Matcher yearToMonthMatcber = INTERVAL_YEAR_TO_MONTH_PATTERN
+					.matcher(columnData.type);
+			Matcher dayToSecondMatcber = INTERVAL_DAY_TO_SECCOND_PATTERN
+					.matcher(columnData.type);
+			Matcher timestampMatcber = TIMESTAMP_PATTERN
+					.matcher(columnData.type);
+
+			if (yearToMonthMatcber.matches()) {
+				columnData.type = "interval year to month";
+
+				if (columnData.size == 2) {
+					columnData.size = 0;
+				}
+
+			} else if (dayToSecondMatcber.matches()) {
+				columnData.type = "interval day to second";
+
+				if (columnData.size == 2 && columnData.decimalDegits == 6) {
+					columnData.size = 0;
+					columnData.decimalDegits = 0;
+				}
+
+			} else if (timestampMatcber.matches()) {
+				columnData.type = columnData.type.replaceAll("\\(.\\)", "");
+				columnData.size = 0;
+
+				if (columnData.decimalDegits == 6) {
+					columnData.size = 0;
+
+				} else {
+					columnData.size = columnData.decimalDegits;
+				}
+
+				columnData.decimalDegits = 0;
+			}
+
+		}
+
+		return columnData;
 	}
 
 }

@@ -104,4 +104,15 @@ public class HSQLDBDBManager extends DBManagerBase {
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT_TIMESTAMP" };
 	}
+	
+	@Override
+	public List<String> getSystemSchemaList() {
+		List<String> list = new ArrayList<String>();
+
+		list.add("information_schema");
+		list.add("system_lobs");
+
+		return list;
+	}
+
 }

@@ -79,7 +79,8 @@ public class NormalColumn extends Column {
 	 * @param from
 	 * @param referencedColumn
 	 * @param relation
-	 * @param primaryKey 主キーかどうか
+	 * @param primaryKey
+	 *            主キーかどうか
 	 */
 	public NormalColumn(NormalColumn from, NormalColumn referencedColumn,
 			Relation relation, boolean primaryKey) {
@@ -183,10 +184,11 @@ public class NormalColumn extends Column {
 		if (this.getFirstReferencedColumn() != null) {
 			SqlType type = this.getFirstReferencedColumn().getType();
 
-			if (SqlType.SERIAL.equals(type)) {
-				return SqlType.INTEGER;
-			} else if (SqlType.BIG_SERIAL.equals(type)) {
-				return SqlType.BIGINT;
+			if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_SERIAL).equals(type)) {
+				return SqlType.valueOfId(SqlType.SQL_TYPE_ID_INTEGER);
+			} else if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_SERIAL)
+					.equals(type)) {
+				return SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_INT);
 			}
 
 			return type;
@@ -392,7 +394,7 @@ public class NormalColumn extends Column {
 			if (!relation.isReferenceForPK()) {
 				for (NormalColumn foreignKeyColumn : relation
 						.getForeignKeyColumns()) {
-					
+
 					for (NormalColumn referencedColumn : foreignKeyColumn.referencedColumnList) {
 						if (referencedColumn == this) {
 							isRefered = true;
@@ -461,14 +463,7 @@ public class NormalColumn extends Column {
 	}
 
 	public boolean isFullTextIndexable() {
-		if (SqlType.CHARACTER_N.equals(this.getType())
-				|| SqlType.VARCHAR.equals(this.getType())
-				|| SqlType.VARCHAR_N.equals(this.getType())
-				|| SqlType.TEXT.equals(this.getType())) {
-			return true;
-		}
-
-		return false;
+		return this.getType().isFullTextIndexable();
 	}
 
 	public static void copyData(NormalColumn from, NormalColumn to) {

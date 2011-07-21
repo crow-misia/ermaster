@@ -103,4 +103,21 @@ public class SqlServerDBManager extends DBManagerBase {
 	public String[] getCurrentTimeValue() {
 		return new String[] { "GETDATE()", "CURRENT_TIMESTAMP" };
 	}
+	
+	@Override
+	public List<String> getSystemSchemaList() {
+		List<String> list = new ArrayList<String>();
+		
+		list.add("db_accessadmin");
+		list.add("db_backupoperator");
+		list.add("db_datareader");
+		list.add("db_datawriter");
+		list.add("db_ddladmin");
+		list.add("db_denydatareader");
+		list.add("db_denydatawriter");
+		list.add("db_owner");
+		list.add("db_securityadmin");
+		
+		return list;
+	}
 }

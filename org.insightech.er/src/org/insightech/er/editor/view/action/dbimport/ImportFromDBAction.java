@@ -93,7 +93,8 @@ public class ImportFromDBAction extends AbstractImportAction {
 							SelectImportedSchemaDialog selectDialog = new SelectImportedSchemaDialog(
 									PlatformUI.getWorkbench()
 											.getActiveWorkbenchWindow()
-											.getShell(), diagram, schemaList,
+											.getShell(), diagram,
+									this.dbSetting.getDbsystem(), schemaList,
 									selectedSchemaList);
 
 							dialogResult = selectDialog.open();
@@ -162,7 +163,9 @@ public class ImportFromDBAction extends AbstractImportAction {
 							}
 
 						} catch (InvocationTargetException e1) {
+							Activator.showExceptionDialog(e1);
 						} catch (InterruptedException e1) {
+							Activator.showExceptionDialog(e1);
 						}
 
 						this.showData();

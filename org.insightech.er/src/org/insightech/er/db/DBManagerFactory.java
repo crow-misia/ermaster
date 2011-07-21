@@ -29,7 +29,6 @@ public class DBManagerFactory {
 		new PostgresDBManager();
 		new SQLiteDBManager();
 		new SqlServerDBManager();
-		new StandardSQLDBManager();
 	}
 
 	static void addDB(DBManager manager) {

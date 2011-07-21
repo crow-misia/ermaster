@@ -18,6 +18,7 @@ import org.eclipse.ui.dialogs.ContainerCheckedTreeViewer;
 import org.insightech.er.ResourceString;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
+import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.StringObjectModel;
 
@@ -31,12 +32,17 @@ public class SelectImportedSchemaDialog extends AbstractDialog {
 
 	private List<String> resultSelectedSchemas;
 
+	private String importDB;
+
 	public SelectImportedSchemaDialog(Shell parentShell, ERDiagram diagram,
-			List<String> schemaList, List<String> selectedSchemaList) {
+			String importDB, List<String> schemaList,
+			List<String> selectedSchemaList) {
 		super(parentShell);
 
 		this.schemaList = schemaList;
 		this.selectedSchemaList = selectedSchemaList;
+		this.resultSelectedSchemas = new ArrayList<String>();
+		this.importDB = importDB;
 	}
 
 	/**
@@ -110,7 +116,7 @@ public class SelectImportedSchemaDialog extends AbstractDialog {
 	protected void perfomeOK() throws InputException {
 		Object[] selectedNodes = this.viewer.getCheckedElements();
 
-		this.resultSelectedSchemas = new ArrayList<String>();
+		this.resultSelectedSchemas.clear();
 
 		for (int i = 0; i < selectedNodes.length; i++) {
 			Object value = ((TreeNode) selectedNodes[i]).getValue();
@@ -139,32 +145,37 @@ public class SelectImportedSchemaDialog extends AbstractDialog {
 
 	@Override
 	protected void setData() {
-		List<TreeNode> treeNodeList = createTreeNodeList();
+		List<TreeNode> treeNodeList = this.createTreeNodeList();
 
 		TreeNode[] treeNodes = treeNodeList.toArray(new TreeNode[treeNodeList
 				.size()]);
 		this.viewer.setInput(treeNodes);
 
+		List<TreeNode> checkedList = new ArrayList<TreeNode>();
+
+		TreeNode[] schemaNodes = treeNodes[0].getChildren();
+
 		if (this.selectedSchemaList.isEmpty()) {
-			this.viewer.setCheckedElements(treeNodes);
-
-		} else {
-			List<TreeNode> checkedList = new ArrayList<TreeNode>();
-
-			TreeNode[] schemaNodes = treeNodes[0].getChildren();
-
 			for (TreeNode schemaNode : schemaNodes) {
-				for (String selectedSchema : this.selectedSchemaList) {
-					if (schemaNode.getValue().equals(selectedSchema)) {
-						checkedList.add(schemaNode);
-						break;
-					}
+				if (!DBManagerFactory.getDBManager(this.importDB)
+						.getSystemSchemaList().contains(
+								String.valueOf(schemaNode.getValue())
+										.toLowerCase())) {
+					checkedList.add(schemaNode);
 				}
 			}
 
-			this.viewer.setCheckedElements(checkedList
-					.toArray(new TreeNode[checkedList.size()]));
+		} else {
+			for (TreeNode schemaNode : schemaNodes) {
+				if (this.selectedSchemaList.contains(schemaNode.getValue())) {
+					checkedList.add(schemaNode);
+				}
+			}
+
 		}
+
+		this.viewer.setCheckedElements(checkedList
+				.toArray(new TreeNode[checkedList.size()]));
 
 		this.viewer.expandAll();
 	}
@@ -192,7 +203,7 @@ public class SelectImportedSchemaDialog extends AbstractDialog {
 	}
 
 	public List<String> getSelectedSchemas() {
-		return resultSelectedSchemas;
+		return this.resultSelectedSchemas;
 	}
 
 }

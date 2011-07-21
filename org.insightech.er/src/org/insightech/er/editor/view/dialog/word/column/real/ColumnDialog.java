@@ -199,8 +199,8 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 
 		if (selectedType != null) {
 			if (PostgresDBManager.ID.equals(this.diagram.getDatabase())) {
-				if (SqlType.BIG_SERIAL.equals(selectedType)
-						|| SqlType.SERIAL.equals(selectedType)) {
+				if (SqlType.SQL_TYPE_ID_BIG_SERIAL.equals(selectedType.getId())
+						|| SqlType.SQL_TYPE_ID_SERIAL.equals(selectedType.getId())) {
 					this.autoIncrementSettingButton.setEnabled(true);
 				} else {
 					this.autoIncrementSettingButton.setEnabled(false);

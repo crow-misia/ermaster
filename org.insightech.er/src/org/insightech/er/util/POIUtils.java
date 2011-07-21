@@ -172,11 +172,17 @@ public class POIUtils {
 
 	public static String getCellValue(HSSFSheet sheet, int r, int c) {
 		HSSFRow row = sheet.getRow(r);
+		
 		if (row == null) {
 			return null;
 		}
+		
 		HSSFCell cell = row.getCell(c);
-
+		
+		if (cell == null) {
+			return null;
+		}
+		
 		HSSFRichTextString cellValue = cell.getRichStringCellValue();
 
 		return cellValue.toString();
@@ -196,6 +202,32 @@ public class POIUtils {
 		return (int) cell.getNumericCellValue();
 	}
 
+	public static boolean getBooleanCellValue(HSSFSheet sheet, int r, int c) {
+		HSSFRow row = sheet.getRow(r);
+		
+		if (row == null) {
+			return false;
+		}
+		
+		HSSFCell cell = row.getCell(c);
+		
+		if (cell == null) {
+			return false;
+		}
+		
+		return cell.getBooleanCellValue();
+	}
+
+	public static short getCellColor(HSSFSheet sheet, int r, int c) {
+		HSSFRow row = sheet.getRow(r);
+		if (row == null) {
+			return -1;
+		}
+		HSSFCell cell = row.getCell(c);
+
+		return cell.getCellStyle().getFillForegroundColor();
+	}
+
 	public static void setCellValue(HSSFSheet sheet, CellLocation location,
 			String value) {
 		HSSFRow row = sheet.getRow(location.r);
@@ -203,7 +235,6 @@ public class POIUtils {
 
 		HSSFRichTextString text = new HSSFRichTextString(value);
 		cell.setCellValue(text);
-
 	}
 
 	/**

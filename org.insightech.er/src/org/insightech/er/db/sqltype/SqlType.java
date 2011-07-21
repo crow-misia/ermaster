@@ -1,13 +1,14 @@
 package org.insightech.er.db.sqltype;
 
 import java.io.Serializable;
-import java.sql.Blob;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,247 +23,44 @@ public class SqlType implements Serializable {
 
 	private static final long serialVersionUID = -8273043043893517634L;
 
+	public static final String SQL_TYPE_ID_SERIAL = "serial";
+
+	public static final String SQL_TYPE_ID_BIG_SERIAL = "bigserial";
+
+	public static final String SQL_TYPE_ID_INTEGER = "integer";
+
+	public static final String SQL_TYPE_ID_BIG_INT = "bigint";
+
+	private static final Pattern NEED_LENGTH_PATTERN = Pattern
+			.compile(".+\\([a-zA-Z][,\\)].*");
+
+	private static final Pattern NEED_DECIMAL_PATTERN1 = Pattern
+			.compile(".+\\([a-zA-Z],[a-zA-Z]\\)");
+
+	private static final Pattern NEED_DECIMAL_PATTERN2 = Pattern
+			.compile(".+\\([a-zA-Z]\\).*\\([a-zA-Z]\\)");
+
 	private static final List<SqlType> SQL_TYPE_LIST = new ArrayList<SqlType>();
-
-	public static final SqlType NUMERIC = new SqlType("numeric", true,
-			Integer.class);
-
-	public static final SqlType CHARACTER_N = new SqlType("character(n)",
-			false, String.class);
-
-	public static final SqlType VARCHAR_N = new SqlType("varchar(n)", false,
-			String.class);
-
-	public static final SqlType INTEGER = new SqlType("integer", true,
-			Integer.class);
-
-	public static final SqlType LONG = new SqlType("long", false, Long.class);
-
-	public static final SqlType FLOAT = new SqlType("float", true, Float.class);
-
-	public static final SqlType FLOAT_P = new SqlType("float(p)", true,
-			Float.class);
-
-	public static final SqlType FLOAT_M_D = new SqlType("float(m,d)", true,
-			Float.class);
-
-	public static final SqlType DOUBLE_PRECISION = new SqlType(
-			"double precision", false, Double.class);
-
-	public static final SqlType ALERT_TYPE = new SqlType("alert_type", false,
-			Object.class);
-
-	public static final SqlType ANYDATA = new SqlType("anydata", false,
-			Object.class);
-
-	public static final SqlType BIGINT = new SqlType("bigint", true, Long.class);
-
-	public static final SqlType BIG_SERIAL = new SqlType("bigserial", true,
-			Long.class);
-
-	public static final SqlType BINARY_DOUBLE = new SqlType("binary_double",
-			true, Double.class);
-
-	public static final SqlType BINARY_FLOAT = new SqlType("binary_float",
-			true, Float.class);
-
-	public static final SqlType BINARY_N = new SqlType("binary(n)", false,
-			Blob.class);
-
-	public static final SqlType BIT_N = new SqlType("bit(n)", true,
-			Object.class);
-
-	public static final SqlType BIT_VARYING_N = new SqlType("bit varying(n)",
-			true, Object.class);
-
-	public static final SqlType BLOB = new SqlType("blob", false, Blob.class);
-
-	public static final SqlType BOOLEAN = new SqlType("boolean", false,
-			Boolean.class);
-
-	public static final SqlType BOX = new SqlType("box", false, Object.class);
-
-	public static final SqlType CIDR = new SqlType("cidr", false, Object.class);
-
-	public static final SqlType CIRCLE = new SqlType("circle", false,
-			Object.class);
-
-	public static final SqlType CLOB = new SqlType("clob", false, String.class);
-
-	public static final SqlType DATE = new SqlType("date", false, Date.class);
-
-	public static final SqlType DATE_TIME = new SqlType("datetime", false,
-			Date.class);
-
-	public static final SqlType DECIMAL_P_S = new SqlType("decimal(p,s)", true,
-			Double.class);
-
-	public static final SqlType ENUM = new SqlType("enum", false, Object.class);
-
-	public static final SqlType GRAPHIC = new SqlType("graphic(n)", false,
-			Object.class);
-
-	public static final SqlType INET = new SqlType("inet", false, Object.class);
-
-	public static final SqlType INTERVAL_YEAR_TO_MONTH = new SqlType(
-			"interval year to month", false, Integer.class);
-
-	public static final SqlType INTERVAL_DAY_TO_SECOND = new SqlType(
-			"interval day to second", false, Integer.class);
-
-	public static final SqlType INTERVAL_YEAR_TO_MONTH_P = new SqlType(
-			"interval year to month(p)", false, Integer.class);
-
-	public static final SqlType INTERVAL_DAY_TO_SECOND_P = new SqlType(
-			"interval day to second(p)", false, Integer.class);
-
-	public static final SqlType LINE = new SqlType("line", false, Object.class);
-
-	public static final SqlType LONG_BLOB = new SqlType("longblob", false,
-			Blob.class);
-
-	public static final SqlType LONG_RAW = new SqlType("long raw", false,
-			Blob.class);
-
-	public static final SqlType LONG_TEXT = new SqlType("longtext", false,
-			String.class);
-
-	public static final SqlType LSEG = new SqlType("lseg", false, Object.class);
-
-	public static final SqlType MACADDR = new SqlType("macaddr", false,
-			Object.class);
-
-	public static final SqlType MEDIUM_BLOB = new SqlType("mediumblob", false,
-			Blob.class);
-
-	public static final SqlType MEDIUM_INT = new SqlType("mediumint", true,
-			Integer.class);
-
-	public static final SqlType MEDIUM_TEXT = new SqlType("mediumtext", false,
-			String.class);
-
-	public static final SqlType MONEY = new SqlType("money", false,
-			Object.class);
-
-	public static final SqlType NCHAR_N = new SqlType("nchar(n)", false,
-			String.class);
-
-	public static final SqlType NCLOB = new SqlType("nclob", false,
-			String.class);
-
-	public static final SqlType NUMERIC_P_S = new SqlType("numeric(p,s)", true,
-			Double.class);
-
-	public static final SqlType NVARCHAR_N = new SqlType("nvarchar(n)", false,
-			String.class);
-
-	public static final SqlType PATH = new SqlType("path", false, Object.class);
-
-	public static final SqlType POINT = new SqlType("point", false,
-			Object.class);
-
-	public static final SqlType POLYGON = new SqlType("polygon", false,
-			Object.class);
-
-	public static final SqlType REAL = new SqlType("real", true, Double.class);
-
-	public static final SqlType REAL_M_D = new SqlType("real(m,d)", true,
-			Double.class);
-
-	public static final SqlType SERIAL = new SqlType("serial", true,
-			Integer.class);
-
-	public static final SqlType SET = new SqlType("set", false, Object.class);
-
-	public static final SqlType SMALLINT = new SqlType("smallint", true,
-			Short.class);
-
-	public static final SqlType TEXT = new SqlType("text", false, String.class);
-
-	public static final SqlType TIME = new SqlType("time", false, Time.class);
-
-	public static final SqlType TIME_P = new SqlType("time(p)", false,
-			Time.class);
-
-	public static final SqlType TIME_WITH_TIME_ZONE = new SqlType(
-			"time with time zone", false, Time.class);
-
-	public static final SqlType TIME_WITH_TIME_ZONE_P = new SqlType(
-			"time(p) with time zone", false, Time.class);
-
-	public static final SqlType TIMESTAMP = new SqlType("timestamp", false,
-			Date.class);
-
-	public static final SqlType TIMESTAMP_P = new SqlType("timestamp(p)",
-			false, Date.class);
-
-	public static final SqlType TIMESTAMP_WITH_TIME_ZONE = new SqlType(
-			"timestamp with time zone", false, Date.class);
-
-	public static final SqlType TIMESTAMP_WITH_TIME_ZONE_P = new SqlType(
-			"timestamp(p) with time zone", false, Date.class);
-
-	public static final SqlType TINY_BLOB = new SqlType("tinyblob", false,
-			Blob.class);
-
-	public static final SqlType TINY_INT = new SqlType("tinyint", true,
-			Byte.class);
-
-	public static final SqlType TINY_TEXT = new SqlType("tinytext", false,
-			String.class);
-
-	public static final SqlType UUID = new SqlType("uuid", false,
-			String.class);
-
-//	public static final SqlType VARBINARY_MAX = new SqlType("varbinary(max)",
-//	false, Blob.class);
-	
-	public static final SqlType VARBINARY_N = new SqlType("varbinary(n)",
-			false, Blob.class);
-
-	public static final SqlType VARCHAR = new SqlType("varchar", false,
-			String.class);
-
-	public static final SqlType VARGRAPHIC = new SqlType("vargraphic(n)",
-			false, Object.class);
-
-	public static final SqlType XML = new SqlType("xml", false, Object.class);
-
-	public static final SqlType YEAR_2 = new SqlType("year(2)", false,
-			Integer.class);
-
-	public static final SqlType YEAR_4 = new SqlType("year(4)", false,
-			Integer.class);
 
 	private String name;
 
-	private boolean number;
-
 	private Class javaClass;
 
-	private static Map<String, Map<TypeKey, SqlType>> databaseSqlTypeMap = new HashMap<String, Map<TypeKey, SqlType>>();
+	private boolean needArgs;
+
+	boolean fullTextIndexable;
+
+	private static Map<String, Map<TypeKey, SqlType>> dbSqlTypeMap = new HashMap<String, Map<TypeKey, SqlType>>();
+
+	private static Map<String, Map<SqlType, String>> dbAliasMap = new HashMap<String, Map<SqlType, String>>();
 
 	static {
-		for (String database : DBManagerFactory.getAllDBList()) {
-			Map<TypeKey, SqlType> sqlTypeMap = new HashMap<TypeKey, SqlType>();
+		try {
+			SqlTypeFactory.load();
 
-			for (SqlType sqlType : SQL_TYPE_LIST) {
-
-				String alias = sqlType.getAlias(database);
-				if (alias != null) {
-					alias = alias.replaceAll("\\(\\.+\\)", "");
-				}
-
-				TypeKey typeKey = new TypeKey(alias, 0);
-				if (!sqlTypeMap.containsKey(typeKey)) {
-					sqlTypeMap.put(typeKey, sqlType);
-				}
-			}
-
-			SqlTypeManager manager = getSqlTypeManager(database);
-			sqlTypeMap.putAll(manager.getSqlTypeMap());
-
-			databaseSqlTypeMap.put(database, sqlTypeMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ExceptionInInitializerError(e);
 		}
 	}
 
@@ -328,12 +126,34 @@ public class SqlType implements Serializable {
 
 	}
 
-	private SqlType(String name, boolean number, Class javaClass) {
+	public SqlType(String name, Class javaClass, boolean needArgs,
+			boolean fullTextIndexable) {
 		this.name = name;
-		this.number = number;
 		this.javaClass = javaClass;
+		this.needArgs = needArgs;
+		this.fullTextIndexable = fullTextIndexable;
 
 		SQL_TYPE_LIST.add(this);
+	}
+
+	public static void setDBAliasMap(
+			Map<String, Map<SqlType, String>> dbAliasMap,
+			Map<String, Map<TypeKey, SqlType>> dbSqlTypeMap) {
+		SqlType.dbAliasMap = dbAliasMap;
+		SqlType.dbSqlTypeMap = dbSqlTypeMap;
+	}
+
+	public void addToSqlTypeMap(String typeKeyId, String database) {
+		int size = 0;
+
+		if (!this.isUnsupported(database)) {
+			if (this.isNeedLength(database)) {
+				size = 1;
+			}
+			TypeKey typeKey = new TypeKey(typeKeyId, size);
+			Map<TypeKey, SqlType> sqlTypeMap = dbSqlTypeMap.get(database);
+			sqlTypeMap.put(typeKey, this);
+		}
 	}
 
 	public String getId() {
@@ -341,7 +161,15 @@ public class SqlType implements Serializable {
 	}
 
 	public Class getJavaClass() {
-		return javaClass;
+		return this.javaClass;
+	}
+
+	public boolean doesNeedArgs() {
+		return this.needArgs;
+	}
+
+	public boolean isFullTextIndexable() {
+		return this.fullTextIndexable;
 	}
 
 	protected static List<SqlType> getAllSqlType() {
@@ -349,7 +177,13 @@ public class SqlType implements Serializable {
 	}
 
 	public static SqlType valueOf(String database, String alias) {
-		return valueOf(database, alias, 0);
+		int size = 0;
+
+		if (alias.indexOf("(") != -1) {
+			size = 1;
+		}
+
+		return valueOf(database, alias, size);
 	}
 
 	public static SqlType valueOf(String database, String alias, int size) {
@@ -357,19 +191,21 @@ public class SqlType implements Serializable {
 			return null;
 		}
 
-		Map<TypeKey, SqlType> sqlTypeMap = databaseSqlTypeMap.get(database);
+		Map<TypeKey, SqlType> sqlTypeMap = dbSqlTypeMap.get(database);
 
+		// decimal(19,4) = money 等に対応
 		TypeKey typeKey = new TypeKey(alias, size);
 		SqlType sqlType = sqlTypeMap.get(typeKey);
 
 		if (sqlType == null) {
-			alias = alias.replaceAll("\\(\\d*\\)", "");
+			alias = alias.replaceAll("\\(.*\\)", "");
 			alias = alias.replaceAll(" UNSIGNED", "");
 
 			typeKey = new TypeKey(alias, size);
 			sqlType = sqlTypeMap.get(typeKey);
 
 			if (sqlType == null) {
+				// db import の場合に、サイズが取得されていても、指定はできないケースがある
 				typeKey = new TypeKey(alias, 0);
 				sqlType = sqlTypeMap.get(typeKey);
 			}
@@ -394,50 +230,43 @@ public class SqlType implements Serializable {
 	}
 
 	public boolean isNeedLength(String database) {
-		SqlTypeManager manager = getSqlTypeManager(database);
+		String alias = this.getAlias(database);
+		if (alias == null) {
+			return false;
+		}
 
-		SqlType[] types = manager.getNeedLengthType();
+		Matcher matcher = NEED_LENGTH_PATTERN.matcher(alias);
 
-		for (int i = 0; i < types.length; i++) {
-			if (this.equals(types[i])) {
-				return true;
-			}
+		if (matcher.matches()) {
+			return true;
 		}
 
 		return false;
 	}
 
 	public boolean isNeedDecimal(String database) {
-		SqlTypeManager manager = getSqlTypeManager(database);
+		String alias = this.getAlias(database);
+		if (alias == null) {
+			return false;
+		}
 
-		SqlType[] types = manager.getNeedDecimalType();
+		Matcher matcher = NEED_DECIMAL_PATTERN1.matcher(alias);
 
-		for (int i = 0; i < types.length; i++) {
-			if (this.equals(types[i])) {
-				return true;
-			}
+		if (matcher.matches()) {
+			return true;
+		}
+
+		matcher = NEED_DECIMAL_PATTERN2.matcher(alias);
+
+		if (matcher.matches()) {
+			return true;
 		}
 
 		return false;
 	}
 
 	public boolean isTimestamp() {
-		if (this == SqlType.TIMESTAMP) {
-			return true;
-		}
-		if (this == SqlType.TIMESTAMP_P) {
-			return true;
-		}
-		if (this == SqlType.TIMESTAMP_WITH_TIME_ZONE) {
-			return true;
-		}
-		if (this == SqlType.TIMESTAMP_WITH_TIME_ZONE_P) {
-			return true;
-		}
-		if (this == SqlType.DATE_TIME) {
-			return true;
-		}
-		if (this == SqlType.DATE) {
+		if (this.javaClass == Date.class) {
 			return true;
 		}
 
@@ -445,30 +274,37 @@ public class SqlType implements Serializable {
 	}
 
 	public boolean isNumber() {
-		return this.number;
+		if (Number.class.isAssignableFrom(this.javaClass)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static List<String> getAliasList(String database) {
-		SqlTypeManager manager = getSqlTypeManager(database);
-		return manager.getAliasList();
+		Map<SqlType, String> aliasMap = dbAliasMap.get(database);
+
+		Set<String> aliases = new LinkedHashSet<String>();
+
+		for (Entry<SqlType, String> entry : aliasMap.entrySet()) {
+			String alias = entry.getValue();
+			aliases.add(alias);
+		}
+
+		return new ArrayList<String>(aliases);
 	}
 
 	public String getAlias(String database) {
-		SqlTypeManager manager = getSqlTypeManager(database);
+		Map<SqlType, String> aliasMap = dbAliasMap.get(database);
 
-		return manager.getAlias(this);
+		return aliasMap.get(this);
 	}
 
 	public boolean isUnsupported(String database) {
-		SqlTypeManager manager = getSqlTypeManager(database);
-		SqlType[] unsupportedTypes = manager.getUnsupportedType();
+		String alias = this.getAlias(database);
 
-		if (unsupportedTypes != null) {
-			for (SqlType type : unsupportedTypes) {
-				if (type.equals(this)) {
-					return true;
-				}
-			}
+		if (alias == null) {
+			return true;
 		}
 
 		return false;
@@ -500,12 +336,9 @@ public class SqlType implements Serializable {
 		return this.getId();
 	}
 
-	private static SqlTypeManager getSqlTypeManager(String database) {
-		return DBManagerFactory.getDBManager(database).getSqlTypeManager();
-
-	}
-
 	public static void main(String[] args) {
+		int maxIdLength = 37;
+
 		StringBuilder msg = new StringBuilder();
 
 		msg.append("\n");
@@ -518,7 +351,7 @@ public class SqlType implements Serializable {
 		msg.append(str);
 
 		for (String db : dbList) {
-			int spaceLength = 20 - str.length();
+			int spaceLength = maxIdLength - str.length();
 			if (spaceLength < 4) {
 				spaceLength = 4;
 			}
@@ -539,7 +372,7 @@ public class SqlType implements Serializable {
 
 		for (SqlType type : list) {
 			builder.append(type.name);
-			int spaceLength = 20 - type.name.length();
+			int spaceLength = maxIdLength - type.name.length();
 			if (spaceLength < 4) {
 				spaceLength = 4;
 			}
@@ -553,7 +386,7 @@ public class SqlType implements Serializable {
 
 				if (alias != null) {
 					builder.append(type.getAlias(db));
-					spaceLength = 20 - type.getAlias(db).length();
+					spaceLength = maxIdLength - type.getAlias(db).length();
 					if (spaceLength < 4) {
 						spaceLength = 4;
 					}
@@ -566,7 +399,7 @@ public class SqlType implements Serializable {
 						errorCount++;
 					}
 
-					spaceLength = 20 - "□□□□□□".length();
+					spaceLength = maxIdLength - "□□□□□□".length();
 					if (spaceLength < 4) {
 						spaceLength = 4;
 					}
@@ -581,8 +414,6 @@ public class SqlType implements Serializable {
 
 		int errorCount2 = 0;
 		int errorCount3 = 0;
-
-		Pattern p = Pattern.compile(".*\\([a-z].*");
 
 		for (String db : dbList) {
 			msg.append("-- for " + db + "\n");
@@ -632,6 +463,8 @@ public class SqlType implements Serializable {
 						errorCount3++;
 						msg.append("×3");
 					}
+				} else if (type.doesNeedArgs()) {
+					str = alias + "('1')";
 
 				} else {
 					str = alias;
@@ -639,9 +472,11 @@ public class SqlType implements Serializable {
 
 				if (str != null) {
 
-					Matcher m = p.matcher(str);
+					Matcher m1 = NEED_LENGTH_PATTERN.matcher(str);
+					Matcher m2 = NEED_DECIMAL_PATTERN1.matcher(str);
+					Matcher m3 = NEED_DECIMAL_PATTERN2.matcher(str);
 
-					if (m.matches()) {
+					if (m1.matches() || m2.matches() || m3.matches()) {
 						errorCount2++;
 						msg.append("×2");
 					}

@@ -200,7 +200,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			}
 
 			if (this.argsText != null) {
-				if (SqlType.ENUM.equals(sqlType) || SqlType.SET.equals(sqlType)) {
+				if (sqlType.doesNeedArgs()) {
 					argsText.setEnabled(true);
 				} else {
 					argsText.setEnabled(false);
@@ -267,8 +267,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			}
 
 			if (this.argsText != null) {
-				if (SqlType.ENUM.equals(selectedType)
-						|| SqlType.SET.equals(selectedType)) {
+				if (selectedType.doesNeedArgs()) {
 					argsText.setEnabled(true);
 				} else {
 					argsText.setEnabled(false);
@@ -406,8 +405,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		if (this.argsText != null) {
 			text = argsText.getText();
 
-			if (SqlType.ENUM.equals(selectedType)
-					|| SqlType.SET.equals(selectedType)) {
+			if (selectedType.doesNeedArgs()) {
 				if (text.equals("")) {
 					return "error.column.type.enum.set";
 				}

@@ -102,4 +102,25 @@ public class OracleDBManager extends DBManagerBase {
 	public String[] getCurrentTimeValue() {
 		return new String[] { "SYSDATE" };
 	}
+
+	@Override
+	public List<String> getSystemSchemaList() {
+		List<String> list = new ArrayList<String>();
+
+		list.add("anonymous");
+		list.add("ctxsys");
+		list.add("dbsnmp");
+		list.add("dip");
+		list.add("flows_020100");
+		list.add("flows_files");
+		list.add("hr");
+		list.add("mdsys");
+		list.add("outln");
+		list.add("sys");
+		list.add("system");
+		list.add("tsmsys");
+		list.add("xdb");
+
+		return list;
+	}
 }
