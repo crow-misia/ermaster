@@ -53,37 +53,85 @@ public class MySQLTableImportManager extends ImportFromDBManagerBase {
 	}
 
 	@Override
-	protected void cashOtherColumnData(String tableName, ColumnData columnData)
-			throws SQLException {
-		if ((SqlType.ENUM.getId().equalsIgnoreCase(columnData.type) || SqlType.SET
-				.getId().equalsIgnoreCase(columnData.type))) {
+	protected void cashOtherColumnData(String tableName, String schema,
+			ColumnData columnData) throws SQLException {
+		String tableNameWithSchema = this.dbSetting.getTableNameWithSchema(
+				tableName, schema);
 
-			String type = columnData.type.toLowerCase();
-			PreparedStatement ps = null;
-			ResultSet rs = null;
+		SqlType sqlType = SqlType.valueOfId(columnData.type);
 
-			try {
-				ps = con.prepareStatement("SHOW COLUMNS FROM `" + tableName
-						+ "` LIKE ?");
+		if (sqlType != null && sqlType.doesNeedArgs()) {
+			String restrictType = this.getRestrictType(tableNameWithSchema,
+					columnData);
 
-				ps.setString(1, columnData.columnName);
-				rs = ps.executeQuery();
+			Pattern p = Pattern.compile(columnData.type.toLowerCase()
+					+ "\\((.*)\\)");
+			Matcher m = p.matcher(restrictType);
 
-				if (rs.next()) {
-					Pattern p = Pattern.compile(type + "\\((.*)\\)");
-					Matcher m = p.matcher(rs.getString("Type"));
-					if (m.matches()) {
-						columnData.enumData = m.group(1);
-					}
-				}
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (ps != null) {
-					ps.close();
-				}
+			if (m.matches()) {
+				columnData.enumData = m.group(1);
+			}
+
+		} else if (columnData.type.equals("year")) {
+			String restrictType = this.getRestrictType(tableNameWithSchema,
+					columnData);
+			columnData.type = restrictType;
+		}
+	}
+
+	private String getRestrictType(String tableNameWithSchema,
+			ColumnData columnData) throws SQLException {
+		String type = null;
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = con.prepareStatement("SHOW COLUMNS FROM `"
+					+ tableNameWithSchema + "` LIKE ?");
+
+			ps.setString(1, columnData.columnName);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				type = rs.getString("Type");
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
 			}
 		}
+
+		return type;
+	}
+
+	@Override
+	protected ColumnData createColumnData(ResultSet columnSet)
+			throws SQLException {
+		ColumnData columnData = super.createColumnData(columnSet);
+		String type = columnData.type.toLowerCase();
+
+		if (type.startsWith("decimal")) {
+			if (columnData.size == 10 && columnData.decimalDegits == 0) {
+				columnData.size = 0;
+			}
+
+		} else if (type.startsWith("double")) {
+			if (columnData.size == 22 && columnData.decimalDegits == 0) {
+				columnData.size = 0;
+			}
+
+		} else if (type.startsWith("float")) {
+			if (columnData.size == 12 && columnData.decimalDegits == 0) {
+				columnData.size = 0;
+			}
+
+		}
+
+		return columnData;
 	}
 }

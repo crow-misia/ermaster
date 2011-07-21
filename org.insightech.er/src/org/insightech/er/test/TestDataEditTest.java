@@ -35,13 +35,13 @@ public class TestDataEditTest {
 		table.setLogicalName("table1");
 		TypeData typeData = new TypeData(null, null, false, null, false, null);
 
-		Word word1 = new Word("a", "a", SqlType.BIGINT, typeData, null,
+		Word word1 = new Word("a", "a", SqlType.valueOfId("bigint"), typeData, null,
 				MySQLDBManager.ID);
 
 		NormalColumn column1 = new NormalColumn(word1, true, true, true, true,
 				null, null, null);
 
-		Word word2 = new Word("a", "a", SqlType.BIGINT, typeData, null,
+		Word word2 = new Word("a", "a", SqlType.valueOfId("bigint"), typeData, null,
 				MySQLDBManager.ID);
 		NormalColumn column2 = new NormalColumn(word2, true, true, true, true,
 				null, null, null);

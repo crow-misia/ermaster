@@ -193,11 +193,17 @@ public abstract class DBManagerBase implements DBManager {
 		DatabaseMetaData metaData = con.getMetaData();
 		ResultSet rs = metaData.getSchemas();
 
-		while(rs.next()) {
+		while (rs.next()) {
 			schemaList.add(rs.getString(1));
 		}
-		
+
 		return schemaList;
+	}
+
+	public List<String> getSystemSchemaList() {
+		List<String> list = new ArrayList<String>();
+
+		return list;
 	}
 
 }

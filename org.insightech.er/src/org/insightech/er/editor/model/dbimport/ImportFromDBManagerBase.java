@@ -51,6 +51,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 	private static Logger logger = Logger
 			.getLogger(ImportFromDBManagerBase.class.getName());
 
+	private static final boolean LOG_SQL_TYPE = false;
+
 	protected Connection con;
 
 	private DatabaseMetaData metaData;
@@ -107,6 +109,14 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		public String constraint;
 
 		public String enumData;
+
+		@Override
+		public String toString() {
+			return "ColumnData [columnName=" + columnName + ", type=" + type
+					+ ", size=" + size + ", decimalDegits=" + decimalDegits
+					+ "]";
+		}
+
 	}
 
 	private static class ForeignKeyData {
@@ -190,8 +200,9 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		} catch (Exception e) {
 			logger.log(Level.WARNING, e.getMessage(), e);
 			this.exception = e;
-		}
 
+		}
+		
 		monitor.done();
 	}
 
@@ -212,30 +223,23 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				tableName = columnSet.getString("TABLE_NAME");
 				String schema = columnSet.getString("TABLE_SCHEM");
 
-				tableName = this.dbSetting.getTableNameWithSchema(tableName,
-						schema);
+				String tableNameWithSchema = this.dbSetting
+						.getTableNameWithSchema(tableName, schema);
 
 				if (monitor != null) {
-					monitor.subTask("reading : " + tableName);
+					monitor.subTask("reading : " + tableNameWithSchema);
 				}
 
 				Map<String, ColumnData> cash = this.columnDataCash
-						.get(tableName);
+						.get(tableNameWithSchema);
 				if (cash == null) {
 					cash = new LinkedHashMap<String, ColumnData>();
-					this.columnDataCash.put(tableName, cash);
+					this.columnDataCash.put(tableNameWithSchema, cash);
 				}
 
-				ColumnData columnData = new ColumnData();
-				columnData.columnName = columnSet.getString("COLUMN_NAME");
-				columnData.type = columnSet.getString("TYPE_NAME");
-				columnData.size = columnSet.getInt("COLUMN_SIZE");
-				columnData.decimalDegits = columnSet.getInt("DECIMAL_DIGITS");
-				columnData.nullable = columnSet.getInt("NULLABLE");
-				columnData.defaultValue = columnSet.getString("COLUMN_DEF");
-				columnData.description = columnSet.getString("REMARKS");
+				ColumnData columnData = this.createColumnData(columnSet);
 
-				this.cashOtherColumnData(tableName, columnData);
+				this.cashOtherColumnData(tableName, schema, columnData);
 
 				cash.put(columnData.columnName, columnData);
 
@@ -251,8 +255,22 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		}
 	}
 
-	protected void cashOtherColumnData(String tableName, ColumnData columnData)
+	protected ColumnData createColumnData(ResultSet columnSet)
 			throws SQLException {
+		ColumnData columnData = new ColumnData();
+		columnData.columnName = columnSet.getString("COLUMN_NAME");
+		columnData.type = columnSet.getString("TYPE_NAME").toLowerCase();
+		columnData.size = columnSet.getInt("COLUMN_SIZE");
+		columnData.decimalDegits = columnSet.getInt("DECIMAL_DIGITS");
+		columnData.nullable = columnSet.getInt("NULLABLE");
+		columnData.defaultValue = columnSet.getString("COLUMN_DEF");
+		columnData.description = columnSet.getString("REMARKS");
+
+		return columnData;
+	}
+
+	protected void cashOtherColumnData(String tableName, String schema,
+			ColumnData columnData) throws SQLException {
 	}
 
 	protected void cashTableComment(IProgressMonitor monitor)
@@ -311,13 +329,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			return null;
 
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-
-			if (stmt != null) {
-				stmt.close();
-			}
+			this.close(rs);
+			this.close(stmt);
 		}
 	}
 
@@ -416,12 +429,14 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 		table.setDescription(this.tableCommentMap.get(tableNameWithSchema));
 
-		List<PrimaryKeyData> primaryKeys = this.getPrimaryKeys(table, metaData);
+		List<PrimaryKeyData> primaryKeys = this.getPrimaryKeys(table,
+				this.metaData);
 		if (!primaryKeys.isEmpty()) {
 			table.setPrimaryKeyName(getConstraintName(primaryKeys.get(0)));
 		}
 
-		List<Index> indexes = this.getIndexes(table, metaData, primaryKeys);
+		List<Index> indexes = this
+				.getIndexes(table, this.metaData, primaryKeys);
 
 		List<Column> columns = this.getColumns(tableNameWithSchema, tableName,
 				schema, indexes, primaryKeys, autoIncrementColumnName);
@@ -475,13 +490,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (stmt != null) {
-				stmt.close();
-			}
-
+			this.close(rs);
+			this.close(stmt);
 		}
 
 		return autoIncrementColumnName;
@@ -551,9 +561,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		} catch (SQLException e) {
 			throw e;
 		} finally {
-			if (indexSet != null) {
-				indexSet.close();
-			}
+			this.close(indexSet);
 		}
 
 		for (Iterator<Index> iter = indexes.iterator(); iter.hasNext();) {
@@ -615,9 +623,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 
 		} finally {
-			if (primaryKeySet != null) {
-				primaryKeySet.close();
-			}
+			this.close(primaryKeySet);
 		}
 
 		return primaryKeys;
@@ -672,8 +678,9 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			SqlType sqlType = SqlType.valueOf(this.dbSetting.getDbsystem(),
 					type, size);
 
-			if (sqlType == null) {
-				logger.info(columnName + ": " + type + ", " + size);
+			if (sqlType == null || LOG_SQL_TYPE) {
+				logger.info(columnName + ": " + type + ", " + size + ", "
+						+ columnData.decimalDegits);
 			}
 
 			int decimalDegits = columnData.decimalDegits;
@@ -685,9 +692,12 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 
 			String defaultValue = Format.null2blank(columnData.defaultValue);
-			if (SqlType.SERIAL.equals(sqlType)
-					|| SqlType.BIG_SERIAL.equals(sqlType)) {
-				defaultValue = "";
+			if (sqlType != null) {
+				if (SqlType.SQL_TYPE_ID_SERIAL.equals(sqlType.getId())
+						|| SqlType.SQL_TYPE_ID_BIG_SERIAL.equals(sqlType
+								.getId())) {
+					defaultValue = "";
+				}
 			}
 
 			String description = Format.null2blank(columnData.description);
@@ -845,9 +855,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			tableForeignKeyDataMap = null;
 
 		} finally {
-			if (foreignKeySet != null) {
-				foreignKeySet.close();
-			}
+			this.close(foreignKeySet);
 		}
 	}
 
@@ -922,9 +930,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 
 		} finally {
-			if (foreignKeySet != null) {
-				foreignKeySet.close();
-			}
+			this.close(foreignKeySet);
 		}
 	}
 
@@ -1029,11 +1035,11 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		relation.setName(representativeData.name);
 		relation.setSource(source);
 		relation.setTargetWithoutForeignKey(target);
-		
+
 		String onUpdateAction = null;
 		if (representativeData.updateRule == DatabaseMetaData.importedKeyCascade) {
 			onUpdateAction = "CASCADE";
-		} else 		if (representativeData.updateRule == DatabaseMetaData.importedKeyRestrict) {
+		} else if (representativeData.updateRule == DatabaseMetaData.importedKeyRestrict) {
 			onUpdateAction = "RESTRICT";
 		} else if (representativeData.updateRule == DatabaseMetaData.importedKeyNoAction) {
 			onUpdateAction = "NO ACTION";
@@ -1050,7 +1056,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		String onDeleteAction = null;
 		if (representativeData.deleteRule == DatabaseMetaData.importedKeyCascade) {
 			onDeleteAction = "CASCADE";
-		} else 		if (representativeData.deleteRule == DatabaseMetaData.importedKeyRestrict) {
+		} else if (representativeData.deleteRule == DatabaseMetaData.importedKeyRestrict) {
 			onDeleteAction = "RESTRICT";
 		} else if (representativeData.deleteRule == DatabaseMetaData.importedKeyNoAction) {
 			onDeleteAction = "NO ACTION";
@@ -1063,7 +1069,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		}
 
 		relation.setOnDeleteAction(onDeleteAction);
-		
+
 		for (Map.Entry<NormalColumn, NormalColumn> entry : referenceMap
 				.entrySet()) {
 			entry.getValue().addReference(entry.getKey(), relation);
@@ -1161,13 +1167,22 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		int selectIndex = upperSql.indexOf("SELECT ");
 		int fromIndex = upperSql.indexOf(" FROM ");
 
-		if (selectIndex == -1 || fromIndex == -1) {
+		if (selectIndex == -1) {
 			return null;
 		}
 
-		String columnsPart = sql.substring(selectIndex + "SELECT ".length(),
-				fromIndex);
-		String fromPart = sql.substring(fromIndex + " FROM ".length());
+		String columnsPart = null;
+		String fromPart = null;
+
+		if (fromIndex != -1) {
+			columnsPart = sql.substring(selectIndex + "SELECT ".length(),
+					fromIndex);
+			fromPart = sql.substring(fromIndex + " FROM ".length());
+
+		} else {
+			columnsPart = sql.substring(selectIndex + "SELECT ".length());
+			fromPart = "";
+		}
 
 		int whereIndex = fromPart.toUpperCase().indexOf(" WHERE ");
 

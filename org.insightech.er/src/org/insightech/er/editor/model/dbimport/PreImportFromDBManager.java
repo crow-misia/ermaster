@@ -43,13 +43,13 @@ public abstract class PreImportFromDBManager {
 
 	public void run() {
 		try {
-			this.importObjects.addAll(this.importObjects("TABLE",
+			this.importObjects.addAll(this.importObjects(new String[] {"TABLE", "SYSTEM TABLE", "SYSTEM TOAST TABLE", "TEMPORARY TABLE"},
 					DBObject.TYPE_TABLE));
-			this.importObjects.addAll(this.importObjects("SEQUENCE",
+			this.importObjects.addAll(this.importObjects(new String[] {"SEQUENCE"},
 					DBObject.TYPE_SEQUENCE));
-			this.importObjects.addAll(this.importObjects("VIEW",
+			this.importObjects.addAll(this.importObjects(new String[] {"VIEW", "SYSTEM VIEW"},
 					DBObject.TYPE_VIEW));
-			this.importObjects.addAll(this.importObjects("TRIGGER",
+			this.importObjects.addAll(this.importObjects(new String[] {"TRIGGER"},
 					DBObject.TYPE_TRIGGER));
 
 		} catch (Exception e) {
@@ -58,7 +58,7 @@ public abstract class PreImportFromDBManager {
 		}
 	}
 
-	private List<DBObject> importObjects(String type, String dbObjectType)
+	private List<DBObject> importObjects(String[] types, String dbObjectType)
 			throws SQLException {
 		List<DBObject> list = new ArrayList<DBObject>();
 
@@ -71,7 +71,7 @@ public abstract class PreImportFromDBManager {
 		for (String schemaPattern : this.schemaList) {
 			try {
 				resultSet = metaData.getTables(null, schemaPattern, null,
-						new String[] { type });
+						types);
 
 				while (resultSet.next()) {
 					String schema = resultSet.getString("TABLE_SCHEM");
@@ -95,6 +95,7 @@ public abstract class PreImportFromDBManager {
 			} finally {
 				if (resultSet != null) {
 					resultSet.close();
+					resultSet = null;
 				}
 
 			}
@@ -112,7 +113,7 @@ public abstract class PreImportFromDBManager {
 
 		try {
 			stmt = con.createStatement();
-
+			
 			rs = stmt.executeQuery("SELECT 1 FROM "
 					+ this.getTableNameWithSchema(schema, tableName));
 

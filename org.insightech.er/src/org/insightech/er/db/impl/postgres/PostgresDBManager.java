@@ -102,4 +102,15 @@ public class PostgresDBManager extends DBManagerBase {
 	public String[] getCurrentTimeValue() {
 		return new String[] {"CURRENT_TIMESTAMP", "now()"};
 	}
+
+	@Override
+	public List<String> getSystemSchemaList() {
+		List<String> list = new ArrayList<String>();
+		
+		list.add("information_schema");
+		list.add("pg_catalog");
+		list.add("pg_toast_temp_1");
+		
+		return list;
+	}
 }

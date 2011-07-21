@@ -103,4 +103,24 @@ public class DB2DBManager extends DBManagerBase {
 		return new String[] { "CURRENT TIMESTAMP" };
 	}
 
+	@Override
+	public List<String> getSystemSchemaList() {
+		List<String> list = new ArrayList<String>();
+
+		list.add("nullid");
+		list.add("sqlj");
+		list.add("syscat");
+		list.add("sysfun");
+		list.add("sysibm");
+		list.add("sysibmadm");
+		list.add("sysibminternal");
+		list.add("sysibmts");
+		list.add("sysproc");
+		list.add("syspublic");
+		list.add("sysstat");
+		list.add("systools");
+
+		return list;
+	}
+
 }

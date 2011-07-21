@@ -67,4 +67,6 @@ public interface DBManager {
 
 	public List<String> getImportSchemaList(Connection con) throws SQLException;
 
+	public List<String> getSystemSchemaList();
+
 }

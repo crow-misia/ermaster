@@ -13,36 +13,45 @@ public class Format {
 
 		if (sqlType != null) {
 			type = sqlType.getAlias(database);
+			if (type != null) {
+				if (typeData.getLength() != null
+						&& typeData.getDecimal() != null) {
+					type = type.replaceAll("\\(.,.\\)", "("
+							+ typeData.getLength() + ","
+							+ typeData.getDecimal() + ")");
 
-			if (typeData.getLength() != null && typeData.getDecimal() != null) {
-				type = type.replaceAll("\\(.,.\\)", "(" + typeData.getLength()
-						+ "," + typeData.getDecimal() + ")");
+					type = type.replaceFirst("\\([a-z]\\)",
+							"(" + typeData.getLength() + ")").replaceFirst(
+							"\\([a-z]\\)", "(" + typeData.getDecimal() + ")");
 
-			} else if (typeData.getLength() != null) {
-				String len = null;
+				} else if (typeData.getLength() != null) {
+					String len = null;
 
-				if ("BLOB".equalsIgnoreCase(type)) {
+					if ("BLOB".equalsIgnoreCase(type)) {
+						len = getFileSizeStr(typeData.getLength().longValue());
+					} else {
+						len = String.valueOf(typeData.getLength());
+					}
 
-					len = getFileSizeStr(typeData.getLength().longValue());
-				} else {
-					len = String.valueOf(typeData.getLength());
+					type = type.replaceAll("\\(.\\)", "(" + len + ")");
+
 				}
 
-				type = type.replaceAll("\\(.\\)", "(" + len + ")");
+				if (typeData.isArray() && PostgresDBManager.ID.equals(database)) {
+					type += "[" + typeData.getArrayDimension() + "]";
+				}
 
-			}
+				if (sqlType.isNumber() && typeData.isUnsigned()
+						&& MySQLDBManager.ID.equals(database)) {
+					type += " unsigned";
+				}
 
-			if (typeData.isArray() && PostgresDBManager.ID.equals(database)) {
-				type += "[" + typeData.getArrayDimension() + "]";
-			}
+				if (sqlType.doesNeedArgs()) {
+					type += "(" + typeData.getArgs() + ")";
+				}
 
-			if (sqlType.isNumber() && typeData.isUnsigned()
-					&& MySQLDBManager.ID.equals(database)) {
-				type += " unsigned";
-			}
-
-			if (SqlType.ENUM.equals(sqlType) || SqlType.SET.equals(sqlType)) {
-				type += "(" + typeData.getArgs() + ")";
+			} else {
+				type = "";
 			}
 
 		} else {
