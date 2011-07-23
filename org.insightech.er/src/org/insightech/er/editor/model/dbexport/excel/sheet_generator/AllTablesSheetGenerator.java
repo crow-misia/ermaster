@@ -27,7 +27,7 @@ public class AllTablesSheetGenerator extends TableSheetGenerator {
 		LoopDefinition loopDefinition = loopDefinitionMap.get(this
 				.getTemplateSheetName());
 
-		HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo,
+		HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
 				loopDefinition.sheetName, sheetNameMap);
 
 		sheetObjectMap.put(workbook.getSheetName(workbook

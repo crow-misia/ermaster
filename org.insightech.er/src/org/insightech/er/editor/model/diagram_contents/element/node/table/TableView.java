@@ -307,7 +307,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 			// 関連がPKを参照している場合
 			if (relation.isReferenceForPK()) {
 				// 参照するテーブル
-				ERTable targetTable = (ERTable) relation.getTarget();
+				TableView targetTable = relation.getTargetTableView();
 
 				// 外部キーリスト
 				List<NormalColumn> foreignKeyColumns = relation
@@ -365,13 +365,13 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 				}
 
 				if (isPrimaryChanged) {
-					List<NormalColumn> nextNewPrimaryKeyColumns = targetTable
+					List<NormalColumn> nextNewPrimaryKeyColumns = ((ERTable) targetTable)
 							.getPrimaryKeys();
 
 					this.setTargetTableRelation(targetTable,
 							nextNewPrimaryKeyColumns);
 				}
-				
+
 				targetTable.setDirty();
 			}
 		}

@@ -49,7 +49,7 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 			for (Index index : table.getIndexes()) {
 				String name = index.getName();
 
-				HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo,
+				HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
 						name, sheetNameMap);
 
 				sheetObjectMap.put(workbook.getSheetName(workbook

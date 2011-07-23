@@ -49,7 +49,7 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 			Map<String, LoopDefinition> loopDefinitionMap) {
 		for (Trigger trigger : diagram.getDiagramContents().getTriggerSet()) {
 			String name = trigger.getName();
-			HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo, name,
+			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook

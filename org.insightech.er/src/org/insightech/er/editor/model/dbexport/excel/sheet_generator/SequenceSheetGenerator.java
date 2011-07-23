@@ -74,7 +74,7 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 		for (Sequence sequence : diagram.getDiagramContents().getSequenceSet()) {
 			String name = sequence.getName();
 
-			HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo, name,
+			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook

@@ -46,6 +46,9 @@ public class SqlTypeFactory {
 				HSSFRow row = sheet.getRow(rowNum);
 
 				String sqlTypeId = POIUtils.getCellValue(sheet, rowNum, 0);
+				if (Check.isEmpty(sqlTypeId)) {
+					break;
+				}
 				Class javaClass = Class.forName(POIUtils.getCellValue(sheet,
 						rowNum, 1));
 				boolean needArgs = POIUtils.getBooleanCellValue(sheet, rowNum,
