@@ -1,39 +1,40 @@
 package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFHyperlink;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
+import org.insightech.er.editor.model.StringObjectModel;
 import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDefinition;
+import org.insightech.er.editor.model.tracking.ChangeTracking;
 import org.insightech.er.util.POIUtils;
 import org.insightech.er.util.POIUtils.CellLocation;
 
-public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
+public class HistorySheetGenerator extends AbstractSheetGenerator {
 
-	// シートタイプ
-	private static final String KEYWORD_SHEET_TYPE = "$SHTT";
+	// 更新日
+	private static final String KEYWORD_DATE = "$DATE";
 
-	// 名前
-	private static final String KEYWORD_NAME = "$NAM";
+	// 変更内容
+	private static final String KEYWORD_CONTENTS = "$CON";
 
-	// 説明
-	private static final String KEYWORD_DESCRIPTION = "$DSC";
+	// 日付フォーマット
+	private static final String KEYWORD_DATE_FORMAT = "$FMT";
 
 	// シート名
 	private static final String KEYWORD_SHEET_NAME = "$SHTN";
 
-	private static final String[] FIND_KEYWORDS_LIST = { KEYWORD_SHEET_TYPE,
-			KEYWORD_NAME, KEYWORD_DESCRIPTION };
+	private static final String[] FIND_KEYWORDS_LIST = { KEYWORD_DATE,
+			KEYWORD_CONTENTS };
 
 	/**
 	 * {@inheritDoc}
@@ -45,13 +46,19 @@ public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
 			Map<String, LoopDefinition> loopDefinitionMap) {
 
-		HSSFSheet sheet = workbook.getSheetAt(sheetNo);
+		String sheetName = this.getSheetName();
 
-		this.setSheetListData(workbook, sheet, sheetObjectMap, diagram);
+		HSSFSheet newSheet = createNewSheet(workbook, sheetNo, sheetName,
+				sheetNameMap);
+
+		sheetObjectMap.put(workbook.getSheetName(workbook
+				.getSheetIndex(newSheet)), new StringObjectModel(sheetName));
+
+		this.setHistoryListData(workbook, newSheet, sheetObjectMap, diagram);
 		monitor.worked(1);
 	}
 
-	public void setSheetListData(HSSFWorkbook workbook, HSSFSheet sheet,
+	public void setHistoryListData(HSSFWorkbook workbook, HSSFSheet sheet,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram) {
 		CellLocation cellLocation = POIUtils
 				.findCell(sheet, FIND_KEYWORDS_LIST);
@@ -67,11 +74,8 @@ public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 			HSSFFont linkCellFont = null;
 			int linkCol = -1;
 
-			for (Map.Entry<String, ObjectModel> entry : sheetObjectMap
-					.entrySet()) {
-				String sheetName = entry.getKey();
-				ObjectModel objectModel = entry.getValue();
-
+			for (ChangeTracking changeTracking : diagram
+					.getChangeTrackingList().getList()) {
 				HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
 
 				for (int columnNum : columnTemplate.columnTemplateMap.keySet()) {
@@ -84,30 +88,21 @@ public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 						value = String.valueOf(order);
 
 					} else {
-						if (KEYWORD_SHEET_TYPE.equals(template)) {
-							value = ResourceString
-									.getResourceString("label.object.type."
-											+ objectModel.getObjectType());
+						if (KEYWORD_DATE.equals(template)) {
+							DateFormat format = new SimpleDateFormat(
+									this.keywordsValueMap
+											.get(KEYWORD_DATE_FORMAT));
+							try {
+								value = format.format(changeTracking
+										.getUpdatedDate());
 
-						} else if (KEYWORD_NAME.equals(template)) {
-							value = sheetName;
-							HSSFHyperlink link = new HSSFHyperlink(
-									HSSFHyperlink.LINK_DOCUMENT);
-							link.setAddress("'" + sheetName + "'!A1");
-							cell.setHyperlink(link);
-
-							if (linkCellFont == null) {
-								linkCol = columnNum;
-
-								linkCellFont = POIUtils.copyFont(workbook, cell
-										.getCellStyle().getFont(workbook));
-
-								linkCellFont.setColor(HSSFColor.BLUE.index);
-								linkCellFont.setUnderline(HSSFFont.U_SINGLE);
+							} catch (Exception e) {
+								value = changeTracking.getUpdatedDate()
+										.toString();
 							}
 
-						} else if (KEYWORD_DESCRIPTION.equals(template)) {
-							value = objectModel.getDescription();
+						} else if (KEYWORD_CONTENTS.equals(template)) {
+							value = changeTracking.getComment();
 						}
 
 						HSSFRichTextString text = new HSSFRichTextString(value);
@@ -134,7 +129,7 @@ public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 		String name = this.keywordsValueMap.get(KEYWORD_SHEET_NAME);
 
 		if (name == null) {
-			name = "List of sheets";
+			name = "dialog.title.change.tracking";
 		}
 
 		return name;
@@ -145,18 +140,18 @@ public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 	 */
 	@Override
 	public String getTemplateSheetName() {
-		return "sheet_index_template";
+		return "history_template";
 	}
 
 	@Override
 	public String[] getKeywords() {
-		return new String[] { KEYWORD_SHEET_TYPE, KEYWORD_NAME,
-				KEYWORD_DESCRIPTION, KEYWORD_ORDER, KEYWORD_SHEET_NAME };
+		return new String[] { KEYWORD_DATE, KEYWORD_CONTENTS, KEYWORD_ORDER,
+				KEYWORD_DATE_FORMAT, KEYWORD_SHEET_NAME };
 	}
 
 	@Override
 	public int getKeywordsColumnNo() {
-		return 24;
+		return 28;
 	}
 
 	@Override

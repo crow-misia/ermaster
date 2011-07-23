@@ -26,6 +26,7 @@ import org.insightech.er.editor.model.dbexport.excel.sheet_generator.AllTriggerS
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.AllViewSheetGenerator;
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.CategorySheetGenerator;
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.ColumnSheetGenerator;
+import org.insightech.er.editor.model.dbexport.excel.sheet_generator.HistorySheetGenerator;
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.IndexSheetGenerator;
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.PictureSheetGenerator;
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.SequenceSheetGenerator;
@@ -61,6 +62,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		SHHET_GENERATOR_LIST.add(new AllViewSheetGenerator());
 		SHHET_GENERATOR_LIST.add(new AllTriggerSheetGenerator());
 		SHHET_GENERATOR_LIST.add(new CategorySheetGenerator());
+		SHHET_GENERATOR_LIST.add(new HistorySheetGenerator());
 	}
 
 	public static class LoopDefinition {
@@ -150,6 +152,9 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		HSSFWorkbook workbook = this.loadTemplateWorkbook(this.template,
 				this.diagram);
 
+		// ファイルを開いていた際の書き込みエラーを早く出すために一旦ここで書き込み処理を行う
+		POIUtils.writeExcelFile(excelFile, workbook);
+
 		int count = this.countSheetFromTemplate(workbook, this.diagram);
 		monitor.beginTask(ResourceString
 				.getResourceString("dialog.message.export.excel"), count);
@@ -167,6 +172,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		if (workbook.getNumberOfSheets() > 0) {
 			workbook.getSheetAt(0).setSelected(true);
 			workbook.setActiveSheet(0);
+			workbook.setFirstVisibleTab(0);
 		}
 
 		POIUtils.writeExcelFile(excelFile, workbook);
@@ -239,60 +245,57 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 			boolean useLogicalNameAsSheetName) throws InterruptedException {
 		int originalSheetNum = workbook.getNumberOfSheets();
 
-		int sheetNo = 0;
 		int sheetIndexSheetNo = -1;
 
-		while (sheetNo < originalSheetNum) {
-			String templateSheetName = workbook.getSheetName(sheetNo);
+		while (originalSheetNum > 0) {
+			String templateSheetName = workbook.getSheetName(0);
 
 			AbstractSheetGenerator sheetGenerator = this
 					.getSheetGenerator(templateSheetName);
 
 			if (sheetGenerator != null) {
-				sheetGenerator.generate(monitor, workbook, sheetNo,
+				sheetGenerator.generate(monitor, workbook, 0,
 						useLogicalNameAsSheetName, this.sheetNameMap,
 						this.sheetObjectMap, diagram, loopDefinitionMap);
-				workbook.removeSheetAt(sheetNo);
-				originalSheetNum--;
+				workbook.removeSheetAt(0);
 
 			} else {
-				// ER図の貼り付け
-				HSSFSheet sheet = workbook.getSheetAt(sheetNo);
-				this.pictureSheetGenerator.setImage(workbook, sheet);
+				if (!isExcludeTarget(templateSheetName)) {
+					HSSFSheet sheet = workbook.getSheetAt(0);
+					moveSheet(workbook, 0);
 
-				if (this.sheetIndexSheetGenerator.getTemplateSheetName()
-						.equals(templateSheetName)) {
-					sheetIndexSheetNo = sheetNo;
+					this.sheetObjectMap.put(templateSheetName,
+							new StringObjectModel(templateSheetName));
 
-					String name = this.sheetIndexSheetGenerator.getSheetName();
+					// ER図の貼り付け
+					this.pictureSheetGenerator.setImage(workbook, sheet);
 
-					workbook.setSheetName(sheetNo,
-							this.sheetIndexSheetGenerator.decideSheetName(name,
-									sheetNameMap));
+					if (this.sheetIndexSheetGenerator.getTemplateSheetName()
+							.equals(templateSheetName)) {
+						sheetIndexSheetNo = workbook.getNumberOfSheets()
+								- originalSheetNum;
 
-					sheetObjectMap.put(workbook.getSheetName(sheetNo),
-							new StringObjectModel(workbook
-									.getSheetName(sheetNo)));
+						String name = this.sheetIndexSheetGenerator
+								.getSheetName();
 
-				} else if (!isExcludeTarget(templateSheetName)) {
-					this.sheetObjectMap.put(workbook.getSheetName(sheetNo),
-							new StringObjectModel(workbook
-									.getSheetName(sheetNo)));
+						workbook.setSheetName(workbook.getNumberOfSheets() - 1,
+								AbstractSheetGenerator.decideSheetName(name,
+										sheetNameMap));
+					}
+
+				} else {
+					workbook.removeSheetAt(0);
 				}
-
-				sheetNo++;
 
 				monitor.worked(1);
 			}
+
+			originalSheetNum--;
 
 			if (monitor.isCanceled()) {
 				throw new InterruptedException("Cancel has been requested.");
 			}
 		}
-
-		// 必要なくなったシートの削除
-		workbook.removeSheetAt(workbook.getSheetIndex(WORDS_SHEET_NAME));
-		workbook.removeSheetAt(workbook.getSheetIndex(LOOPS_SHEET_NAME));
 
 		// シート一覧の作成
 		if (sheetIndexSheetNo != -1) {
@@ -303,6 +306,21 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		}
 	}
 
+	public static HSSFSheet moveSheet(HSSFWorkbook workbook, int sheetNo) {
+		HSSFSheet oldSheet = workbook.getSheetAt(sheetNo);
+		String sheetName = oldSheet.getSheetName();
+		
+		HSSFSheet newSheet = workbook.cloneSheet(sheetNo);
+		int newSheetNo = workbook.getSheetIndex(newSheet);
+		
+		workbook.removeSheetAt(sheetNo);
+
+		workbook.setSheetName(newSheetNo - 1, sheetName);
+
+		return newSheet;
+	}
+
+	
 	private int countSheetFromTemplate(HSSFWorkbook workbook, ERDiagram diagram) {
 		int count = 0;
 

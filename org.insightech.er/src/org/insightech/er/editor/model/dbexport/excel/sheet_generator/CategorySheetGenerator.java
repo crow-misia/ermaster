@@ -38,7 +38,7 @@ public class CategorySheetGenerator extends TableSheetGenerator {
 
 		for (Category category : diagram.getDiagramContents().getSettings()
 				.getCategorySetting().getSelectedCategories()) {
-			HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo,
+			HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
 					category.getName(), sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook
@@ -82,7 +82,7 @@ public class CategorySheetGenerator extends TableSheetGenerator {
 		}
 
 		if (!allTables.isEmpty()) {
-			HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo,
+			HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
 					loopDefinition.sheetName, sheetNameMap);
 
 			boolean first = true;

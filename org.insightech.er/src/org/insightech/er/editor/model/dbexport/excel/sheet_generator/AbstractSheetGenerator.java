@@ -10,7 +10,7 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -131,7 +131,7 @@ public abstract class AbstractSheetGenerator {
 		public HSSFCellStyle style32;
 		public HSSFCellStyle style33;
 	}
-	
+
 	protected Map<String, String> buildKeywordsValueMap(HSSFSheet wordsSheet,
 			int columnNo, String[] keywords) {
 		Map<String, String> keywordsValueMap = new HashMap<String, String>();
@@ -434,7 +434,8 @@ public abstract class AbstractSheetGenerator {
 
 			for (int i = 0; i < columnTemplate.middleRowCellStyleList.size(); i++) {
 				HSSFCell cell = row.getCell(firstColNum + i);
-				if (cell != null) {
+				if (cell != null
+						&& columnTemplate.middleRowCellStyleList.get(i) != null) {
 					cell.setCellStyle(columnTemplate.middleRowCellStyleList
 							.get(i));
 				}
@@ -496,18 +497,18 @@ public abstract class AbstractSheetGenerator {
 		}
 	}
 
-	protected HSSFSheet createNewSheet(HSSFWorkbook workbook, int sheetNo,
+	public static HSSFSheet createNewSheet(HSSFWorkbook workbook, int sheetNo,
 			String name, Map<String, Integer> sheetNameMap) {
 		HSSFSheet sheet = workbook.cloneSheet(sheetNo);
 		int newSheetNo = workbook.getSheetIndex(sheet);
 
-		workbook.setSheetName(newSheetNo, this.decideSheetName(name,
+		workbook.setSheetName(newSheetNo, decideSheetName(name,
 				sheetNameMap));
 
 		return sheet;
 	}
 
-	public String decideSheetName(String name, Map<String, Integer> sheetNameMap) {
+	public static String decideSheetName(String name, Map<String, Integer> sheetNameMap) {
 		if (name.length() > MAX_SHEET_NAME_LENGTH) {
 			name = name.substring(0, MAX_SHEET_NAME_LENGTH);
 		}

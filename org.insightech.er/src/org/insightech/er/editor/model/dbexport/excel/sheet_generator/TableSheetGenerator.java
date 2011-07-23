@@ -87,7 +87,7 @@ public class TableSheetGenerator extends AbstractSheetGenerator {
 				name = table.getPhysicalName();
 			}
 
-			HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo, name,
+			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook
@@ -166,8 +166,8 @@ public class TableSheetGenerator extends AbstractSheetGenerator {
 				}
 			}
 
-			this.setCellStyle(fkColumnTemplate, sheet, fkCellLocation.r, rowNum
-					- fkCellLocation.r, templateRow.getFirstCellNum());
+			this.setCellStyle(this.fkColumnTemplate, sheet, fkCellLocation.r,
+					rowNum - fkCellLocation.r, templateRow.getFirstCellNum());
 		}
 
 		this.setIndexMatrix(workbook, sheet, table);

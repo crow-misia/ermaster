@@ -63,7 +63,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 				name = view.getPhysicalName();
 			}
 
-			HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo, name,
+			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook
@@ -140,8 +140,9 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 			for (NormalColumn normalColumn : view.getExpandedColumns()) {
 				if (normalColumn.isForeignKey()) {
 					HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
-					this.setColumnData(this.keywordsValueMap, columnTemplate,
-							row, normalColumn, view, order);
+					this.setColumnData(this.keywordsValueMap,
+							this.fkColumnTemplate, row, normalColumn, view,
+							order);
 					order++;
 				}
 			}

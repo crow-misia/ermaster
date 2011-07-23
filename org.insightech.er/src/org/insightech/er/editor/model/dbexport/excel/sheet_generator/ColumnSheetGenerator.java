@@ -81,7 +81,7 @@ public class ColumnSheetGenerator extends AbstractSheetGenerator {
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
 			Map<String, LoopDefinition> loopDefinitionMap) {
 		String name = this.getSheetName();
-		HSSFSheet newSheet = this.createNewSheet(workbook, sheetNo, name,
+		HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
 				sheetNameMap);
 
 		sheetObjectMap.put(workbook.getSheetName(workbook
