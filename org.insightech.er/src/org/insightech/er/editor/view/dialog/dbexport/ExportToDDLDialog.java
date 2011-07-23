@@ -1,14 +1,19 @@
 package org.insightech.er.editor.view.dialog.dbexport;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -28,7 +33,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.common.dialog.AbstractDialog;
@@ -104,6 +111,10 @@ public class ExportToDDLDialog extends AbstractDialog {
 
 	private Text commentReplaceString;
 
+	private Button openAfterSavedButton;
+
+	private ExportSetting exportSetting;
+
 	public ExportToDDLDialog(Shell parentShell, ERDiagram diagram,
 			IEditorPart editorPart, GraphicalViewer viewer) {
 		super(parentShell, 3);
@@ -147,6 +158,14 @@ public class ExportToDDLDialog extends AbstractDialog {
 		this.createCheckboxComposite(parent);
 
 		this.createCommentComposite(parent);
+
+		GridData optionCheckGridData = new GridData();
+		optionCheckGridData.horizontalSpan = 3;
+
+		this.openAfterSavedButton = new Button(parent, SWT.CHECK);
+		this.openAfterSavedButton.setText(ResourceString
+				.getResourceString("label.open.after.saved"));
+		this.openAfterSavedButton.setLayoutData(optionCheckGridData);
 	}
 
 	private void initCategoryCombo() {
@@ -370,12 +389,14 @@ public class ExportToDDLDialog extends AbstractDialog {
 		ddlTarget.commentValueLogicalNameDescription = this.commentValueLogicalNameDescription
 				.getSelection();
 
-		ExportSetting exportSetting = this.diagram.getDiagramContents()
-				.getSettings().getExportSetting();
+		boolean openAfterSaved = this.openAfterSavedButton.getSelection();
 
-		exportSetting.setDdlOutput(saveFilePath);
-		exportSetting.setDdlTarget(ddlTarget);
-		exportSetting.setCategoryNameToExport(this.categoryCombo.getText());
+		this.exportSetting = new ExportSetting();
+
+		this.exportSetting.setDdlOutput(saveFilePath);
+		this.exportSetting.setDdlTarget(ddlTarget);
+		this.exportSetting.setCategoryNameToExport(this.categoryCombo.getText());
+		this.exportSetting.setOpenAfterSaved(openAfterSaved);
 
 		Validator validator = new Validator();
 
@@ -425,6 +446,21 @@ public class ExportToDDLDialog extends AbstractDialog {
 
 			if (out != null) {
 				out.close();
+			}
+		}
+
+		if (openAfterSaved) {
+			try {
+				File fileToOpen = new File(saveFilePath);
+				URI uri = URIUtil.fromString(fileToOpen.toURL().toString());
+
+				IWorkbenchPage page = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage();
+				IFileStore fileStore = EFS.getStore(uri);
+				IDE.openEditorOnFileStore(page, fileStore);
+
+			} catch (Exception e) {
+				Activator.showExceptionDialog(e);
 			}
 		}
 	}
@@ -517,6 +553,9 @@ public class ExportToDDLDialog extends AbstractDialog {
 				&& !ddlTarget.commentValueLogicalNameDescription) {
 			this.commentValueDescription.setSelection(true);
 		}
+
+		this.openAfterSavedButton
+				.setSelection(exportSetting.isOpenAfterSaved());
 	}
 
 	/**
@@ -535,5 +574,9 @@ public class ExportToDDLDialog extends AbstractDialog {
 	 */
 	private String getEncoding() throws CoreException {
 		return this.fileEncodingCombo.getText();
+	}
+
+	public ExportSetting getExportSetting() {
+		return this.exportSetting;
 	}
 }

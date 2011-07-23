@@ -1106,6 +1106,8 @@ public class XMLLoader {
 					"put_diagram_on_excel"));
 			exportSetting.setUseLogicalNameAsSheet(this.getBooleanValue(
 					element, "use_logical_name_as_sheet"));
+			exportSetting.setOpenAfterSaved(this.getBooleanValue(
+					element, "open_after_saved"));
 
 			exportSetting.getDdlTarget().createComment = this.getBooleanValue(
 					element, "create_comment");

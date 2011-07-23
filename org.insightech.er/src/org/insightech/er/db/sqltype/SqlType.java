@@ -2,6 +2,7 @@ package org.insightech.er.db.sqltype;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -291,7 +292,11 @@ public class SqlType implements Serializable {
 			aliases.add(alias);
 		}
 
-		return new ArrayList<String>(aliases);
+		List<String> list = new ArrayList<String>(aliases);
+		
+		Collections.sort(list);
+		
+		return list;
 	}
 
 	public String getAlias(String database) {

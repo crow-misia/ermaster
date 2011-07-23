@@ -876,6 +876,9 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("\t<use_logical_name_as_sheet>").append(
 				exportSetting.isUseLogicalNameAsSheet()).append(
 				"</use_logical_name_as_sheet>\n");
+		xml.append("\t<open_after_saved>").append(
+				exportSetting.isOpenAfterSaved()).append(
+				"</open_after_saved>\n");
 
 		DDLTarget ddlTarget = exportSetting.getDdlTarget();
 
