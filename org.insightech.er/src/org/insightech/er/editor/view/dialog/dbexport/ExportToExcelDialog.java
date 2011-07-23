@@ -5,12 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
@@ -25,8 +27,11 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.common.dialog.AbstractDialog;
@@ -56,6 +61,8 @@ public class ExportToExcelDialog extends AbstractDialog {
 	private Button useLogicalNameAsSheetNameButton;
 
 	private Button outputImageButton;
+
+	private Button openAfterSavedButton;
 
 	private ERDiagram diagram;
 
@@ -135,6 +142,11 @@ public class ExportToExcelDialog extends AbstractDialog {
 		this.outputImageButton.setText(ResourceString
 				.getResourceString("label.output.image.to.excel"));
 		this.outputImageButton.setLayoutData(optionCheckGridData);
+
+		this.openAfterSavedButton = new Button(parent, SWT.CHECK);
+		this.openAfterSavedButton.setText(ResourceString
+				.getResourceString("label.open.after.saved"));
+		this.openAfterSavedButton.setLayoutData(optionCheckGridData);
 	}
 
 	private void createTemplateCombo(Composite parent) {
@@ -239,6 +251,19 @@ public class ExportToExcelDialog extends AbstractDialog {
 					imageBuffer, excelPictureType);
 			monitor.run(true, true, manager);
 
+			boolean openAfterSaved = this.openAfterSavedButton.getSelection();
+
+			if (openAfterSaved) {
+				File fileToOpen = new File(outputExcelFilePath);
+				URI uri = URIUtil.fromString(fileToOpen.toURL().toString());
+
+				IWorkbenchPage page = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage();
+
+				IDE.openEditor(page, uri,
+						IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID, true);
+			}
+
 			this.exportSetting = new ExportSetting();
 
 			this.exportSetting.setExcelOutput(outputExcelFilePath);
@@ -252,6 +277,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 
 			this.exportSetting.setCategoryNameToExport(this.categoryCombo
 					.getText());
+			this.exportSetting.setOpenAfterSaved(openAfterSaved);
 
 			if (manager.getException() != null) {
 				throw manager.getException();
@@ -417,10 +443,14 @@ public class ExportToExcelDialog extends AbstractDialog {
 			}
 		}
 
-		this.useLogicalNameAsSheetNameButton.setSelection(settings
-				.getExportSetting().isUseLogicalNameAsSheet());
-		this.outputImageButton.setSelection(settings.getExportSetting()
+		ExportSetting exportSetting = settings.getExportSetting();
+
+		this.useLogicalNameAsSheetNameButton.setSelection(exportSetting
+				.isUseLogicalNameAsSheet());
+		this.outputImageButton.setSelection(exportSetting
 				.isPutERDiagramOnExcel());
+		this.openAfterSavedButton
+				.setSelection(exportSetting.isOpenAfterSaved());
 	}
 
 	protected List<String> parseString(String stringList) {

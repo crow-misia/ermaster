@@ -22,6 +22,8 @@ public class ExportSetting implements Serializable, Cloneable {
 
 	private boolean putERDiagramOnExcel;
 
+	private boolean openAfterSaved;
+
 	private String categoryNameToExport;
 
 	private ExportJavaSetting exportJavaSetting = new ExportJavaSetting();
@@ -150,6 +152,14 @@ public class ExportSetting implements Serializable, Cloneable {
 		this.putERDiagramOnExcel = putERDiagramOnExcel;
 	}
 
+	public boolean isOpenAfterSaved() {
+		return openAfterSaved;
+	}
+
+	public void setOpenAfterSaved(boolean openAfterSaved) {
+		this.openAfterSaved = openAfterSaved;
+	}
+
 	/**
 	 * categoryNameToExportÇéÊìæÇµÇ‹Ç∑ÅB
 	 * 
@@ -225,6 +235,8 @@ public class ExportSetting implements Serializable, Cloneable {
 			if (other.imageOutput != null)
 				return false;
 		} else if (!imageOutput.equals(other.imageOutput))
+			return false;
+		if (openAfterSaved != other.openAfterSaved)
 			return false;
 		if (putERDiagramOnExcel != other.putERDiagramOnExcel)
 			return false;
