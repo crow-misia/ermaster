@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.insightech.er"/>
+	<classpathentry kind="lib" path="/org.insightech.er/lib/poi-3.7-20101029.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
