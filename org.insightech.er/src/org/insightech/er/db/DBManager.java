@@ -1,5 +1,6 @@
 package org.insightech.er.db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -68,5 +69,7 @@ public interface DBManager {
 	public List<String> getImportSchemaList(Connection con) throws SQLException;
 
 	public List<String> getSystemSchemaList();
+
+	public BigDecimal getSequenceMaxValue();
 
 }

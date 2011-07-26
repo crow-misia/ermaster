@@ -1,6 +1,7 @@
 package org.insightech.er.editor.model.dbimport;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -202,7 +203,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			this.exception = e;
 
 		}
-		
+
 		monitor.done();
 	}
 
@@ -306,7 +307,6 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				sequenceName);
 
 		try {
-			logger.info("SELECT * FROM " + sequenceNameWithSchema);
 			stmt = this.con.prepareStatement("SELECT * FROM "
 					+ sequenceNameWithSchema);
 			rs = stmt.executeQuery();
@@ -318,7 +318,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				sequence.setSchema(schema);
 				sequence.setIncrement(rs.getInt("INCREMENT_BY"));
 				sequence.setMinValue(rs.getLong("MIN_VALUE"));
-				sequence.setMaxValue(rs.getLong("MAX_VALUE"));
+
+				BigDecimal maxValue = rs.getBigDecimal("MAX_VALUE");
+				
+				sequence.setMaxValue(maxValue);
 				sequence.setStart(rs.getLong("LAST_VALUE"));
 				sequence.setCache(rs.getInt("CACHE_VALUE"));
 				sequence.setCycle(rs.getBoolean("IS_CYCLED"));

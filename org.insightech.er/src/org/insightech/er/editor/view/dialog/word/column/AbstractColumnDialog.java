@@ -104,7 +104,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		int numColumns = this.getCompositeNumColumns();
 
 		this.wordCombo = CompositeFactory.createReadOnlyCombo(null, composite,
-				"label.word", numColumns - 1 - 4);
+				"label.word", numColumns - 1 - 4, -1);
 		this.createWordFilter(composite);
 		this.wordCombo.setVisibleItemCount(20);
 

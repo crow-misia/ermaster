@@ -142,7 +142,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 		gridData.widthHint = 200;
 
 		this.environmentCombo = CompositeFactory.createReadOnlyCombo(this,
-				parent, "label.tablespace.environment", 2);
+				parent, "label.tablespace.environment", 2, -1);
 
 		CompositeFactory.createLabel(parent, "label.output.file");
 		this.outputFileText = new FileText(parent, SWT.BORDER, ".sql");
@@ -152,7 +152,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 				this.editorPart, this, parent, "label.output.file.encoding", 2);
 
 		this.categoryCombo = CompositeFactory.createReadOnlyCombo(this, parent,
-				"label.category", 2);
+				"label.category", 2, -1);
 		this.initCategoryCombo();
 
 		this.createCheckboxComposite(parent);
@@ -395,7 +395,8 @@ public class ExportToDDLDialog extends AbstractDialog {
 
 		this.exportSetting.setDdlOutput(saveFilePath);
 		this.exportSetting.setDdlTarget(ddlTarget);
-		this.exportSetting.setCategoryNameToExport(this.categoryCombo.getText());
+		this.exportSetting
+				.setCategoryNameToExport(this.categoryCombo.getText());
 		this.exportSetting.setOpenAfterSaved(openAfterSaved);
 
 		Validator validator = new Validator();

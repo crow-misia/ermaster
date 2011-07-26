@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.oracle;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,5 +123,9 @@ public class OracleDBManager extends DBManagerBase {
 		list.add("xdb");
 
 		return list;
+	}
+
+	public BigDecimal getSequenceMaxValue() {
+		return new BigDecimal("9999999999999999999999999999");
 	}
 }

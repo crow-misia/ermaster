@@ -1,5 +1,7 @@
 package org.insightech.er.editor.model.diagram_contents.not_element.sequence;
 
+import java.math.BigDecimal;
+
 import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.WithSchemaModel;
 
@@ -13,13 +15,23 @@ public class Sequence extends WithSchemaModel implements ObjectModel {
 
 	private Long minValue;
 
-	private Long maxValue;
+	private BigDecimal maxValue;
 
 	private Long start;
 
 	private Integer cache;
 
 	private boolean cycle;
+
+	private boolean order;
+
+	private String dataType;
+
+	private int decimalSize;
+
+	public String getObjectType() {
+		return "sequence";
+	}
 
 	public Integer getCache() {
 		return cache;
@@ -45,11 +57,11 @@ public class Sequence extends WithSchemaModel implements ObjectModel {
 		this.increment = increment;
 	}
 
-	public Long getMaxValue() {
+	public BigDecimal getMaxValue() {
 		return maxValue;
 	}
 
-	public void setMaxValue(Long maxValue) {
+	public void setMaxValue(BigDecimal maxValue) {
 		this.maxValue = maxValue;
 	}
 
@@ -88,7 +100,28 @@ public class Sequence extends WithSchemaModel implements ObjectModel {
 		this.description = description;
 	}
 
-	public String getObjectType() {
-		return "sequence";
+	public String getDataType() {
+		return dataType;
 	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
+
+	public int getDecimalSize() {
+		return decimalSize;
+	}
+
+	public void setDecimalSize(int decimalSize) {
+		this.decimalSize = decimalSize;
+	}
+
+	public boolean isOrder() {
+		return order;
+	}
+
+	public void setOrder(boolean order) {
+		this.order = order;
+	}
+
 }

@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.hsqldb;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,6 +114,10 @@ public class HSQLDBDBManager extends DBManagerBase {
 		list.add("system_lobs");
 
 		return list;
+	}
+
+	public BigDecimal getSequenceMaxValue() {
+		return null;
 	}
 
 }

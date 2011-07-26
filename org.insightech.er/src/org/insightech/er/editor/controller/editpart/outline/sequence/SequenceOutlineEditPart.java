@@ -41,22 +41,27 @@ public class SequenceOutlineEditPart extends AbstractOutlineEditPart implements
 	 */
 	@Override
 	public void performRequest(Request request) {
-		Sequence sequence = (Sequence) this.getModel();
-		ERDiagram diagram = this.getDiagram();
+		try {
+			Sequence sequence = (Sequence) this.getModel();
+			ERDiagram diagram = this.getDiagram();
 
-		if (request.getType().equals(RequestConstants.REQ_OPEN)) {
-			SequenceDialog dialog = new SequenceDialog(PlatformUI
-					.getWorkbench().getActiveWorkbenchWindow().getShell(),
-					sequence);
+			if (request.getType().equals(RequestConstants.REQ_OPEN)) {
+				SequenceDialog dialog = new SequenceDialog(PlatformUI
+						.getWorkbench().getActiveWorkbenchWindow().getShell(),
+						sequence, diagram);
 
-			if (dialog.open() == IDialogConstants.OK_ID) {
-				EditSequenceCommand command = new EditSequenceCommand(diagram,
-						sequence, dialog.getResult());
-				this.execute(command);
+				if (dialog.open() == IDialogConstants.OK_ID) {
+					EditSequenceCommand command = new EditSequenceCommand(
+							diagram, sequence, dialog.getResult());
+					this.execute(command);
+				}
 			}
-		}
 
-		super.performRequest(request);
+			super.performRequest(request);
+			
+		} catch (Exception e) {
+			Activator.showExceptionDialog(e);
+		}
 	}
 
 	/**

@@ -55,7 +55,7 @@ public abstract class TablespaceDialog extends AbstractDialog {
 	protected void initialize(Composite composite) {
 		this.environmentCombo = CompositeFactory.createReadOnlyCombo(this,
 				composite, "label.tablespace.environment",
-				this.getNumColumns() - 1);
+				this.getNumColumns() - 1, -1);
 		this.nameText = CompositeFactory.createText(this, composite,
 				"label.tablespace.name", this.getNumColumns() - 1,
 				Resources.DESCRIPTION_WIDTH, false);

@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.sqlserver;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,5 +120,9 @@ public class SqlServerDBManager extends DBManagerBase {
 		list.add("db_securityadmin");
 		
 		return list;
+	}
+
+	public BigDecimal getSequenceMaxValue() {
+		return null;
 	}
 }

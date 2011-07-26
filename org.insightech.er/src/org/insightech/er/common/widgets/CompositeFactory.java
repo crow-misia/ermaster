@@ -85,11 +85,11 @@ public class CompositeFactory {
 
 	public static Combo createReadOnlyCombo(AbstractDialog dialog,
 			Composite composite, String title) {
-		return createReadOnlyCombo(dialog, composite, title, 1);
+		return createReadOnlyCombo(dialog, composite, title, 1, -1);
 	}
 
 	public static Combo createReadOnlyCombo(AbstractDialog dialog,
-			Composite composite, String title, int span) {
+			Composite composite, String title, int span, int width) {
 		if (title != null) {
 			Label label = new Label(composite, SWT.RIGHT);
 			label.setText(ResourceString.getResourceString(title));
@@ -97,8 +97,14 @@ public class CompositeFactory {
 
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = span;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
+
+		if (width > 0) {
+			gridData.widthHint = width;
+
+		} else {
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.grabExcessHorizontalSpace = true;
+		}
 
 		Combo combo = new Combo(composite, SWT.READ_ONLY);
 		combo.setLayoutData(gridData);
@@ -131,7 +137,7 @@ public class CompositeFactory {
 	public static Combo createFileEncodingCombo(IEditorPart editorPart,
 			AbstractDialog dialog, Composite composite, String title, int span) {
 		Combo fileEncodingCombo = createReadOnlyCombo(dialog, composite, title,
-				span);
+				span, -1);
 
 		for (Charset charset : Charset.availableCharsets().values()) {
 			fileEncodingCombo.add(charset.displayName());
