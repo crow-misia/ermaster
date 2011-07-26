@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.db2;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,6 +122,10 @@ public class DB2DBManager extends DBManagerBase {
 		list.add("systools");
 
 		return list;
+	}
+
+	public BigDecimal getSequenceMaxValue() {
+		return null;
 	}
 
 }

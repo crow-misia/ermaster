@@ -1,6 +1,7 @@
 package org.insightech.er.editor.persistent.impl;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -369,6 +370,17 @@ public class XMLLoader {
 		}
 	}
 
+	private BigDecimal getBigDecimalValue(Element element, String tagname) {
+		String value = this.getStringValue(element, tagname);
+
+		try {
+			return new BigDecimal(value);
+		} catch (Exception e) {
+		}
+
+		return BigDecimal.ZERO;
+	}
+
 	private double getDoubleValue(Element element, String tagname) {
 		NodeList nodeList = element.getElementsByTagName(tagname);
 
@@ -522,11 +534,14 @@ public class XMLLoader {
 		sequence.setSchema(this.getStringValue(element, "schema"));
 		sequence.setIncrement(this.getIntegerValue(element, "increment"));
 		sequence.setMinValue(this.getLongValue(element, "min_value"));
-		sequence.setMaxValue(this.getLongValue(element, "max_value"));
+		sequence.setMaxValue(this.getBigDecimalValue(element, "max_value"));
 		sequence.setStart(this.getLongValue(element, "start"));
 		sequence.setCache(this.getIntegerValue(element, "cache"));
 		sequence.setCycle(this.getBooleanValue(element, "cycle"));
+		sequence.setOrder(this.getBooleanValue(element, "order"));
 		sequence.setDescription(this.getStringValue(element, "description"));
+		sequence.setDataType(this.getStringValue(element, "data_type"));
+		sequence.setDecimalSize(this.getIntValue(element, "decimal_size"));
 
 		return sequence;
 	}
@@ -1080,7 +1095,7 @@ public class XMLLoader {
 
 			ModelProperties modelProperties = settings.getModelProperties();
 			this.loadModelProperties(modelProperties, element);
-			
+
 			this.loadTableProperties((TableProperties) settings
 					.getTableViewProperties(), element, context);
 
@@ -1106,8 +1121,8 @@ public class XMLLoader {
 					"put_diagram_on_excel"));
 			exportSetting.setUseLogicalNameAsSheet(this.getBooleanValue(
 					element, "use_logical_name_as_sheet"));
-			exportSetting.setOpenAfterSaved(this.getBooleanValue(
-					element, "open_after_saved"));
+			exportSetting.setOpenAfterSaved(this.getBooleanValue(element,
+					"open_after_saved"));
 
 			exportSetting.getDdlTarget().createComment = this.getBooleanValue(
 					element, "create_comment");

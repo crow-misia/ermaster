@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.sqlite;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,4 +105,9 @@ public class SQLiteDBManager extends DBManagerBase {
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT_TIMESTAMP" };
 	}
+	
+	public BigDecimal getSequenceMaxValue() {
+		return BigDecimal.ZERO;
+	}
+
 }

@@ -27,7 +27,7 @@ public class CreateSequenceAction extends AbstractOutlineBaseAction {
 		ERDiagram diagram = this.getDiagram();
 
 		SequenceDialog dialog = new SequenceDialog(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getShell(), null);
+				.getActiveWorkbenchWindow().getShell(), null, diagram);
 
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			CreateSequenceCommand command = new CreateSequenceCommand(diagram,

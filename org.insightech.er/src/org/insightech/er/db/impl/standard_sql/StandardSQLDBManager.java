@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.standard_sql;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,5 +97,9 @@ public class StandardSQLDBManager extends DBManagerBase {
 
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT_TIMESTAMP" };
+	}
+
+	public BigDecimal getSequenceMaxValue() {
+		return null;
 	}
 }

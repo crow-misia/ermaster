@@ -420,8 +420,14 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("\t<cache>").append(Format.toString(sequence.getCache()))
 				.append("</cache>\n");
 		xml.append("\t<cycle>").append(sequence.isCycle()).append("</cycle>\n");
+		xml.append("\t<order>").append(sequence.isOrder()).append("</order>\n");
 		xml.append("\t<description>").append(escape(sequence.getDescription()))
 				.append("</description>\n");
+		xml.append("\t<data_type>").append(escape(sequence.getDataType()))
+				.append("</data_type>\n");
+		xml.append("\t<decimal_size>").append(
+				Format.toString(sequence.getDecimalSize())).append(
+				"</decimal_size>\n");
 
 		xml.append("</sequence>\n");
 

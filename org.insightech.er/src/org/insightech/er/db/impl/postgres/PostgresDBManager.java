@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.postgres;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,17 +101,21 @@ public class PostgresDBManager extends DBManagerBase {
 	}
 
 	public String[] getCurrentTimeValue() {
-		return new String[] {"CURRENT_TIMESTAMP", "now()"};
+		return new String[] { "CURRENT_TIMESTAMP", "now()" };
 	}
 
 	@Override
 	public List<String> getSystemSchemaList() {
 		List<String> list = new ArrayList<String>();
-		
+
 		list.add("information_schema");
 		list.add("pg_catalog");
 		list.add("pg_toast_temp_1");
-		
+
 		return list;
+	}
+
+	public BigDecimal getSequenceMaxValue() {
+		return BigDecimal.valueOf(Long.MAX_VALUE);
 	}
 }

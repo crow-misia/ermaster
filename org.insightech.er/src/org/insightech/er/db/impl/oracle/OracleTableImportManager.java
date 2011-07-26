@@ -156,7 +156,7 @@ public class OracleTableImportManager extends ImportFromDBManagerBase {
 				BigDecimal minValue = rs.getBigDecimal("MIN_VALUE");
 				sequence.setMinValue(minValue.longValue());
 				BigDecimal maxValue = rs.getBigDecimal("MAX_VALUE");
-				sequence.setMaxValue(maxValue.longValue());
+				sequence.setMaxValue(maxValue);
 				BigDecimal lastNumber = rs.getBigDecimal("LAST_NUMBER");
 				sequence.setStart(lastNumber.longValue());
 				sequence.setCache(rs.getInt("CACHE_SIZE"));

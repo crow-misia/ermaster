@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.mysql;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,5 +104,9 @@ public class MySQLDBManager extends DBManagerBase {
 
 	public String[] getCurrentTimeValue() {
 		return new String[] {"NOW(), SYSDATE()"};
+	}
+
+	public BigDecimal getSequenceMaxValue() {
+		return null;
 	}
 }

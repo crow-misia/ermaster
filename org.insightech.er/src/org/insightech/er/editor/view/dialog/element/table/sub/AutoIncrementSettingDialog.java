@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.element.table.sub;
 
+import java.math.BigDecimal;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -93,7 +95,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 
 			if (!text.equals("")) {
 				try {
-					Long.parseLong(text);
+					new BigDecimal(text);
 
 				} catch (NumberFormatException e) {
 					return "error.sequence.maxValue.degit";
@@ -139,7 +141,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 
 		Integer increment = null;
 		Long minValue = null;
-		Long maxValue = null;
+		BigDecimal maxValue = null;
 		Long start = null;
 		Integer cache = null;
 
@@ -158,7 +160,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 		if (maxValueText != null) {
 			text = maxValueText.getText();
 			if (!text.equals("")) {
-				maxValue = Long.valueOf(text);
+				maxValue = new BigDecimal(text);
 			}
 		}
 
@@ -179,7 +181,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 		this.result.setMaxValue(maxValue);
 		this.result.setStart(start);
 		this.result.setCache(cache);
-		
+
 		if (cycleCheckBox != null) {
 			this.result.setCycle(this.cycleCheckBox.getSelection());
 		}

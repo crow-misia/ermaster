@@ -26,7 +26,7 @@ public abstract class PreImportFromDBManager {
 
 	private DBObjectSet importObjects;
 
-	private List<String> schemaList;
+	protected List<String> schemaList;
 
 	private Exception exception;
 
@@ -43,19 +43,35 @@ public abstract class PreImportFromDBManager {
 
 	public void run() {
 		try {
-			this.importObjects.addAll(this.importObjects(new String[] {"TABLE", "SYSTEM TABLE", "SYSTEM TOAST TABLE", "TEMPORARY TABLE"},
-					DBObject.TYPE_TABLE));
-			this.importObjects.addAll(this.importObjects(new String[] {"SEQUENCE"},
-					DBObject.TYPE_SEQUENCE));
-			this.importObjects.addAll(this.importObjects(new String[] {"VIEW", "SYSTEM VIEW"},
-					DBObject.TYPE_VIEW));
-			this.importObjects.addAll(this.importObjects(new String[] {"TRIGGER"},
-					DBObject.TYPE_TRIGGER));
+			this.importObjects.addAll(this.importTables());
+			this.importObjects.addAll(this.importSequences());
+			this.importObjects.addAll(this.importViews());
+			this.importObjects.addAll(this.importTriggers());
 
 		} catch (Exception e) {
 			logger.log(Level.WARNING, e.getMessage(), e);
 			this.exception = e;
 		}
+	}
+
+	protected List<DBObject> importTables() throws SQLException {
+		return this.importObjects(new String[] { "TABLE", "SYSTEM TABLE",
+				"SYSTEM TOAST TABLE", "TEMPORARY TABLE" }, DBObject.TYPE_TABLE);
+	}
+
+	protected List<DBObject> importSequences() throws SQLException {
+		return this.importObjects(new String[] { "SEQUENCE" },
+				DBObject.TYPE_SEQUENCE);
+	}
+
+	protected List<DBObject> importViews() throws SQLException {
+		return this.importObjects(new String[] { "VIEW", "SYSTEM VIEW" },
+				DBObject.TYPE_VIEW);
+	}
+
+	protected List<DBObject> importTriggers() throws SQLException {
+		return this.importObjects(new String[] { "TRIGGER" },
+				DBObject.TYPE_TRIGGER);
 	}
 
 	private List<DBObject> importObjects(String[] types, String dbObjectType)
@@ -67,11 +83,11 @@ public abstract class PreImportFromDBManager {
 		if (this.schemaList.isEmpty()) {
 			this.schemaList.add(null);
 		}
-		
+
 		for (String schemaPattern : this.schemaList) {
 			try {
-				resultSet = metaData.getTables(null, schemaPattern, null,
-						types);
+				resultSet = metaData
+						.getTables(null, schemaPattern, null, types);
 
 				while (resultSet.next()) {
 					String schema = resultSet.getString("TABLE_SCHEM");
@@ -113,7 +129,7 @@ public abstract class PreImportFromDBManager {
 
 		try {
 			stmt = con.createStatement();
-			
+
 			rs = stmt.executeQuery("SELECT 1 FROM "
 					+ this.getTableNameWithSchema(schema, tableName));
 
