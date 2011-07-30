@@ -52,7 +52,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	private String generatePackageFrameTable(ERDiagram diagram)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/package-frame/package-frame_row_template.html");
@@ -109,7 +109,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	private String generatePackageSummaryTable(ERDiagram diagram)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/package-summary/package-summary_row_template.html");
@@ -175,7 +175,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	protected String generateAttributeTable(ERDiagram diagram,
 			List<NormalColumn> normalColumnList) throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/attribute_row_template.html");
@@ -207,7 +207,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	public String generateAttributeDetailTable(ERDiagram diagram,
 			List<NormalColumn> normalColumnList) throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/attribute_detail_row_template.html");
@@ -246,7 +246,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	public String generateUsedTableTable(List<TableView> tableList)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/use_table_row_template.html");
@@ -266,7 +266,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 	public String generateIndexAttributeTable(ERTable table,
 			List<NormalColumn> normalColumnList, List<Boolean> descs)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/index_attribute_row_template.html");
@@ -307,7 +307,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	protected String generateForeignKeyTable(List<NormalColumn> foreignKeyList)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/foreign_key_row_template.html");
@@ -341,7 +341,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	protected String generateReferenceKeyTable(List<NormalColumn> foreignKeyList)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/foreign_key_row_template.html");
@@ -375,7 +375,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 	public String generateIndexSummaryTable(List<Index> indexList)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/index_summary_row_template.html");
@@ -413,7 +413,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		String headerTemplate = ExportToHtmlManager
 				.getTemplate("types/index_matrix/index_matrix_header_column_template.html");
 
-		StringBuffer header = new StringBuffer();
+		StringBuilder header = new StringBuilder();
 
 		for (Index index : indexList) {
 			String name = index.getName();
@@ -430,11 +430,11 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		String dataColumnTemplate = ExportToHtmlManager
 				.getTemplate("types/index_matrix/index_matrix_data_column_template.html");
 
-		StringBuffer body = new StringBuffer();
+		StringBuilder body = new StringBuilder();
 
 		for (NormalColumn normalColumn : normalColumnList) {
 			String name = normalColumn.getName();
-			StringBuffer rowContent = new StringBuffer();
+			StringBuilder rowContent = new StringBuilder();
 
 			for (Index index : indexList) {
 				int no = 1;
@@ -476,7 +476,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		String headerTemplate = ExportToHtmlManager
 				.getTemplate("types/complex_unique_key_matrix/complex_unique_key_matrix_header_column_template.html");
 
-		StringBuffer header = new StringBuffer();
+		StringBuilder header = new StringBuilder();
 
 		for (ComplexUniqueKey complexUniqueKey : complexUniqueKeyList) {
 			String name = Format
@@ -494,12 +494,12 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		String dataColumnTemplate = ExportToHtmlManager
 				.getTemplate("types/complex_unique_key_matrix/complex_unique_key_matrix_data_column_template.html");
 
-		StringBuffer body = new StringBuffer();
+		StringBuilder body = new StringBuilder();
 
 		if (!complexUniqueKeyList.isEmpty()) {
 			for (NormalColumn normalColumn : normalColumnList) {
 				String name = normalColumn.getName();
-				StringBuffer rowContent = new StringBuffer();
+				StringBuilder rowContent = new StringBuilder();
 
 				for (ComplexUniqueKey complexUniqueKey : complexUniqueKeyList) {
 					int no = 1;

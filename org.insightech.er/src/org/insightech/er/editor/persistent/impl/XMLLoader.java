@@ -378,7 +378,7 @@ public class XMLLoader {
 		} catch (Exception e) {
 		}
 
-		return BigDecimal.ZERO;
+		return null;
 	}
 
 	private double getDoubleValue(Element element, String tagname) {
@@ -1006,7 +1006,9 @@ public class XMLLoader {
 				.getBooleanValue(element, "unique_key"), this.getBooleanValue(
 				element, "auto_increment"), this.getStringValue(element,
 				"default_value"), this.getStringValue(element, "constraint"),
-				this.getStringValue(element, "unique_key_name"));
+				this.getStringValue(element, "unique_key_name"), this
+						.getStringValue(element, "character_set"), this
+						.getStringValue(element, "collation"));
 
 		Element autoIncrementSettingElement = this.getElement(element,
 				"sequence");

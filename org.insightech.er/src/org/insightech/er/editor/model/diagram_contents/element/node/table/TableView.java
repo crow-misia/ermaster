@@ -418,7 +418,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 	}
 
 	public String getNameWithSchema(String database) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		DBManager dbManager = DBManagerFactory.getDBManager(database);
 

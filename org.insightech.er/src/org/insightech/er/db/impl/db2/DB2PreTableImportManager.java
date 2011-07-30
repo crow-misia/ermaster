@@ -26,7 +26,7 @@ public class DB2PreTableImportManager extends PreImportFromDBManager {
 			try {
 				if (schemaPattern == null) {
 					stmt = con
-							.prepareStatement("SELECT SEQSCHEMA, SEQNAME, OWNER FROM SYSCAT.SEQUENCES");
+							.prepareStatement("SELECT SEQSCHEMA, SEQNAME FROM SYSCAT.SEQUENCES");
 
 				} else {
 					stmt = con

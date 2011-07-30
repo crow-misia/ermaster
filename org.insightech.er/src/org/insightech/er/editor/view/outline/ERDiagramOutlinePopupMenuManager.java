@@ -15,6 +15,8 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.actions.ActionFactory;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
+import org.insightech.er.db.DBManager;
+import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.controller.editpart.outline.group.GroupSetOutlineEditPart;
 import org.insightech.er.editor.controller.editpart.outline.sequence.SequenceSetOutlineEditPart;
 import org.insightech.er.editor.controller.editpart.outline.table.TableOutlineEditPart;
@@ -107,8 +109,19 @@ public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 
 								if (!clazz.isInstance(editPart)) {
 									enabled(actionId, false);
+									
 								} else {
-									enabled(actionId, true);
+									if (CreateSequenceAction.ID
+											.equals(actionId)
+											&& !DBManagerFactory.getDBManager(
+													diagram).isSupported(
+													DBManager.SUPPORT_SEQUENCE)) {
+										enabled(actionId, false);
+
+									} else {
+										enabled(actionId, true);
+
+									}
 								}
 							}
 						}

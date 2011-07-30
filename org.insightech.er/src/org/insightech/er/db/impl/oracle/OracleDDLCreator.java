@@ -32,7 +32,7 @@ public class OracleDDLCreator extends DDLCreator {
 				.getDescription(), false);
 
 		if (!Check.isEmpty(tableComment)) {
-			StringBuffer ddl = new StringBuffer();
+			StringBuilder ddl = new StringBuilder();
 
 			ddl.append("COMMENT ON TABLE ");
 			ddl.append(filter(table.getNameWithSchema(this.getDiagram()
@@ -55,7 +55,7 @@ public class OracleDDLCreator extends DDLCreator {
 						.getLogicalName(), normalColumn.getDescription(), true);
 
 				if (!Check.isEmpty(comment)) {
-					StringBuffer ddl = new StringBuffer();
+					StringBuilder ddl = new StringBuilder();
 
 					ddl.append("COMMENT ON COLUMN ");
 					ddl.append(filter(table.getNameWithSchema(this.getDiagram()
@@ -81,7 +81,7 @@ public class OracleDDLCreator extends DDLCreator {
 							true);
 
 					if (!Check.isEmpty(comment)) {
-						StringBuffer ddl = new StringBuffer();
+						StringBuilder ddl = new StringBuilder();
 
 						ddl.append("COMMENT ON COLUMN ");
 						ddl.append(filter(table.getNameWithSchema(this
@@ -109,7 +109,7 @@ public class OracleDDLCreator extends DDLCreator {
 	 */
 	@Override
 	public String getDDL(Relation relation) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("ALTER TABLE ");
 		ddl.append(filter(relation.getTargetTableView().getNameWithSchema(
@@ -179,7 +179,7 @@ public class OracleDDLCreator extends DDLCreator {
 		OracleTablespaceProperties tablespaceProperties = (OracleTablespaceProperties) tablespace
 				.getProperties(this.environment, this.getDiagram());
 
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("CREATE TABLESPACE ");
 		ddl.append(filter(tablespace.getName()));
@@ -280,11 +280,20 @@ public class OracleDDLCreator extends DDLCreator {
 
 	@Override
 	public String getDDL(Sequence sequence) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
+
+		String description = sequence.getDescription();
+		if (this.semicolon && !Check.isEmpty(description)
+				&& this.ddlTarget.inlineTableComment) {
+			ddl.append("-- ");
+			ddl.append(description.replaceAll("\n", "\n-- "));
+			ddl.append("\r\n");
+		}
 
 		ddl.append("CREATE ");
 		ddl.append("SEQUENCE ");
-		ddl.append(filter(sequence.getName()));
+		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
+				.getName())));
 		if (sequence.getIncrement() != null) {
 			ddl.append(" INCREMENT BY ");
 			ddl.append(sequence.getIncrement());

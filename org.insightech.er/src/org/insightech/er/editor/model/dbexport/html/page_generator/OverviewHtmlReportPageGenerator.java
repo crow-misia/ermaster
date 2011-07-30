@@ -42,7 +42,7 @@ public class OverviewHtmlReportPageGenerator {
 	private String generateFrameTable(
 			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("overview/overview-frame_row_template.html");
@@ -88,7 +88,7 @@ public class OverviewHtmlReportPageGenerator {
 
 	private String generateImageMap(Map<TableView, Location> tableLocationMap)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		if (tableLocationMap != null) {
 			String template = ExportToHtmlManager
@@ -116,7 +116,7 @@ public class OverviewHtmlReportPageGenerator {
 	private String generateSummaryTable(
 			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("overview/overview-summary_row_template.html");
@@ -147,7 +147,7 @@ public class OverviewHtmlReportPageGenerator {
 	private String generateAllClassesTable(ERDiagram diagram,
 			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("allclasses_row_template.html");

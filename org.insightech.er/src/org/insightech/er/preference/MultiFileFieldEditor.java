@@ -39,7 +39,7 @@ public class MultiFileFieldEditor extends FileFieldEditor {
 			return null;
 		}
 
-		StringBuffer ret = new StringBuffer();
+		StringBuilder ret = new StringBuilder();
 		for (int i = 0; i < d.length; i++) {
 			ret.append(d[i].getAbsolutePath());
 			ret.append(";");

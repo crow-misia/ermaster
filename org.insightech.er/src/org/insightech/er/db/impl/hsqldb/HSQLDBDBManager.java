@@ -70,7 +70,7 @@ public class HSQLDBDBManager extends DBManagerBase {
 
 	@Override
 	protected int[] getSupportItems() {
-		return new int[] {};
+		return new int[] { SUPPORT_SCHEMA, SUPPORT_SEQUENCE };
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -105,7 +105,7 @@ public class HSQLDBDBManager extends DBManagerBase {
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT_TIMESTAMP" };
 	}
-	
+
 	@Override
 	public List<String> getSystemSchemaList() {
 		List<String> list = new ArrayList<String>();

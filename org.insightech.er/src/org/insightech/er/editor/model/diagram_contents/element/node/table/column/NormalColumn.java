@@ -39,6 +39,10 @@ public class NormalColumn extends Column {
 
 	private Sequence autoIncrementSetting;
 
+	private String characterSet;
+
+	private String collation;
+
 	/** 親が2つある外部キーは、通常ないが、親の大元が同じ参照キーの場合はありえる. */
 	private List<NormalColumn> referencedColumnList = new ArrayList<NormalColumn>();
 
@@ -46,11 +50,12 @@ public class NormalColumn extends Column {
 
 	public NormalColumn(Word word, boolean notNull, boolean primaryKey,
 			boolean uniqueKey, boolean autoIncrement, String defaultValue,
-			String constraint, String uniqueKeyName) {
+			String constraint, String uniqueKeyName, String characterSet,
+			String collation) {
 		this.word = word;
 
 		this.init(notNull, primaryKey, uniqueKey, autoIncrement, defaultValue,
-				constraint, uniqueKeyName);
+				constraint, uniqueKeyName, characterSet, collation);
 
 		this.autoIncrementSetting = new Sequence();
 	}
@@ -65,7 +70,7 @@ public class NormalColumn extends Column {
 
 		this.init(from.notNull, from.primaryKey, from.uniqueKey,
 				from.autoIncrement, from.defaultValue, from.constraint,
-				from.uniqueKeyName);
+				from.uniqueKeyName, from.characterSet, from.collation);
 
 		this.word = from.word;
 
@@ -99,7 +104,7 @@ public class NormalColumn extends Column {
 
 	protected void init(boolean notNull, boolean primaryKey, boolean uniqueKey,
 			boolean autoIncrement, String defaultValue, String constraint,
-			String uniqueKeyName) {
+			String uniqueKeyName, String characterSet, String collation) {
 
 		this.notNull = notNull;
 		this.primaryKey = primaryKey;
@@ -110,6 +115,9 @@ public class NormalColumn extends Column {
 		this.constraint = constraint;
 
 		this.uniqueKeyName = uniqueKeyName;
+
+		this.characterSet = characterSet;
+		this.collation = collation;
 	}
 
 	public NormalColumn getFirstReferencedColumn() {
@@ -231,6 +239,23 @@ public class NormalColumn extends Column {
 
 	public String getUniqueKeyName() {
 		return uniqueKeyName;
+	}
+
+	
+	public String getCharacterSet() {
+		return characterSet;
+	}
+
+	public void setCharacterSet(String characterSet) {
+		this.characterSet = characterSet;
+	}
+
+	public String getCollation() {
+		return collation;
+	}
+
+	public void setCollation(String collation) {
+		this.collation = collation;
 	}
 
 	/**
@@ -469,7 +494,8 @@ public class NormalColumn extends Column {
 	public static void copyData(NormalColumn from, NormalColumn to) {
 		to.init(from.isNotNull(), from.isPrimaryKey(), from.isUniqueKey(), from
 				.isAutoIncrement(), from.getDefaultValue(), from
-				.getConstraint(), from.uniqueKeyName);
+				.getConstraint(), from.uniqueKeyName, from.characterSet,
+				from.collation);
 
 		to.autoIncrementSetting = (Sequence) from.autoIncrementSetting.clone();
 
@@ -540,7 +566,7 @@ public class NormalColumn extends Column {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(super.toString());
 		sb.append(", physicalName:" + this.getPhysicalName());
 		sb.append(", logicalName:" + this.getLogicalName());
@@ -609,6 +635,8 @@ public class NormalColumn extends Column {
 		to.setUniqueKey(this.isUniqueKey());
 		to.setPrimaryKey(this.isPrimaryKey());
 		to.setAutoIncrement(this.isAutoIncrement());
+		to.setCharacterSet(this.getCharacterSet());
+		to.setCollation(this.getCollation());
 	}
 
 	public List<NormalColumn> getReferencedColumnList() {

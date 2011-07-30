@@ -75,7 +75,7 @@ public class GlobalGroupSet {
 
 						NormalColumn column = new NormalColumn(word, notNull,
 								false, unique, false, defaultValue, constraint,
-								null);
+								null, null, null);
 
 						columnGroup.addColumn(column);
 					}

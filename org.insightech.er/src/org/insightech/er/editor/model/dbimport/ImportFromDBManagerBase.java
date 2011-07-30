@@ -320,7 +320,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				sequence.setMinValue(rs.getLong("MIN_VALUE"));
 
 				BigDecimal maxValue = rs.getBigDecimal("MAX_VALUE");
-				
+
 				sequence.setMaxValue(maxValue);
 				sequence.setStart(rs.getLong("LAST_VALUE"));
 				sequence.setCache(rs.getInt("CACHE_VALUE"));
@@ -747,7 +747,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			// TODO UNIQUE KEY の制約名が取得できていない
 
 			NormalColumn column = new NormalColumn(word, notNull, primaryKey,
-					uniqueKey, autoIncrement, defaultValue, constraint, null);
+					uniqueKey, autoIncrement, defaultValue, constraint, null,
+					null, null);
 
 			columns.add(column);
 		}
@@ -1212,6 +1213,13 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				tableAlias = tableName.substring(asIndex + 1).trim();
 				tableName = tableName.substring(0, asIndex).trim();
 
+				// schema.tablename の場合、schema を無視して考える
+				// TODO schema を考慮して考えた方がよい
+				int dotIndex = tableName.indexOf(".");
+				if (dotIndex != -1) {
+					tableName = tableName.substring(dotIndex + 1);
+				}
+
 				aliasTableMap.put(tableAlias, tableName);
 			}
 		}
@@ -1243,6 +1251,13 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				String aliasTableName = columnName.substring(0, dotIndex);
 				columnName = columnName.substring(dotIndex + 1);
 
+				// schema.tablename.columnname の場合
+				dotIndex = columnName.indexOf(".");
+				if (dotIndex != -1) {
+					aliasTableName = columnName.substring(0, dotIndex);
+					columnName = columnName.substring(dotIndex + 1);
+				}
+
 				tableName = aliasTableMap.get(aliasTableName);
 
 				if (tableName == null) {
@@ -1262,56 +1277,80 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				}
 				columnName = columnName.toLowerCase();
 
-				for (ERTable table : this.importedTables) {
-					if (tableName == null
-							|| (table.getPhysicalName() != null && tableName
-									.equals(table.getPhysicalName()
-											.toLowerCase()))) {
-						for (NormalColumn column : table.getExpandedColumns()) {
-							if (column.getPhysicalName() != null
-									&& columnName.equals(column
-											.getPhysicalName().toLowerCase())) {
-								targetColumn = column;
+				if (!"*".equals(columnName)) {
+					for (ERTable table : this.importedTables) {
+						if (tableName == null
+								|| (table.getPhysicalName() != null && tableName
+										.equals(table.getPhysicalName()
+												.toLowerCase()))) {
+							for (NormalColumn column : table
+									.getExpandedColumns()) {
+								if (column.getPhysicalName() != null
+										&& columnName.equals(column
+												.getPhysicalName()
+												.toLowerCase())) {
+									targetColumn = column;
 
+									break;
+								}
+							}
+
+							if (targetColumn != null) {
 								break;
 							}
 						}
 
-						if (targetColumn != null) {
-							break;
-						}
 					}
 
+					this.addColumnToView(columnList, targetColumn, columnAlias);
+
+				} else {
+					for (ERTable table : this.importedTables) {
+						if (tableName == null
+								|| (table.getPhysicalName() != null && tableName
+										.equals(table.getPhysicalName()
+												.toLowerCase()))) {
+							for (NormalColumn column : table
+									.getExpandedColumns()) {
+								this.addColumnToView(columnList, column, null);
+							}
+						}
+					}
 				}
 			}
-
-			Word word = null;
-
-			if (targetColumn != null) {
-				word = new Word(targetColumn.getWord());
-				word.setPhysicalName(columnAlias);
-
-			} else {
-				word = new Word(columnAlias, this.translationResources
-						.translate(columnAlias), null, new TypeData(null, null,
-						false, null, false, null), null, null);
-
-			}
-
-			UniqueWord uniqueWord = new UniqueWord(word);
-
-			if (this.dictionary.get(uniqueWord) != null) {
-				word = this.dictionary.get(uniqueWord);
-			} else {
-				this.dictionary.put(uniqueWord, word);
-			}
-
-			NormalColumn column = new NormalColumn(word, false, false, false,
-					false, null, null, null);
-			columnList.add(column);
 		}
 
 		return columnList;
+	}
+
+	private void addColumnToView(List<Column> columnList,
+			NormalColumn targetColumn, String columnAlias) {
+		Word word = null;
+
+		if (targetColumn != null) {
+			word = new Word(targetColumn.getWord());
+			if (columnAlias != null) {
+				word.setPhysicalName(columnAlias);
+			}
+
+		} else {
+			word = new Word(columnAlias, this.translationResources
+					.translate(columnAlias), null, new TypeData(null, null,
+					false, null, false, null), null, null);
+
+		}
+
+		UniqueWord uniqueWord = new UniqueWord(word);
+
+		if (this.dictionary.get(uniqueWord) != null) {
+			word = this.dictionary.get(uniqueWord);
+		} else {
+			this.dictionary.put(uniqueWord, word);
+		}
+
+		NormalColumn column = new NormalColumn(word, false, false, false,
+				false, null, null, null, null, null);
+		columnList.add(column);
 	}
 
 	public List<Tablespace> getImportedTablespaces() {

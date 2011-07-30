@@ -42,7 +42,8 @@ public class DBSelectTabWrapper extends ValidatableTabWrapper {
 
 		this.databaseCombo = CompositeFactory.createReadOnlyCombo(null, this,
 				"label.database");
-
+		this.databaseCombo.setVisibleItemCount(10);
+		
 		for (String db : DBManagerFactory.getAllDBList()) {
 			this.databaseCombo.add(db);
 		}

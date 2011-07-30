@@ -2,6 +2,7 @@ package org.insightech.er.db.impl.mysql;
 
 import java.util.List;
 
+import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
 import org.insightech.er.editor.model.ERDiagram;
@@ -40,7 +41,7 @@ public class MySQLDDLCreator extends DDLCreator {
 			characterSet = commonTableProperties.getCharacterSet();
 		}
 
-		StringBuffer postDDL = new StringBuffer();
+		StringBuilder postDDL = new StringBuilder();
 		if (engine != null && !engine.equals("")) {
 			postDDL.append(" ENGINE = ");
 			postDDL.append(engine);
@@ -72,9 +73,68 @@ public class MySQLDDLCreator extends DDLCreator {
 	 */
 	@Override
 	protected String getColulmnDDL(NormalColumn normalColumn) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
-		ddl.append(super.getColulmnDDL(normalColumn));
+		String description = normalColumn.getDescription();
+		if (this.semicolon && !Check.isEmpty(description)
+				&& this.ddlTarget.inlineColumnComment) {
+			ddl.append("\t-- ");
+			ddl.append(description.replaceAll("\n", "\n\t-- "));
+			ddl.append("\r\n");
+		}
+
+		ddl.append("\t");
+		ddl.append(filter(normalColumn.getPhysicalName()));
+		ddl.append(" ");
+
+		ddl.append(filter(Format.formatType(normalColumn.getType(),
+				normalColumn.getTypeData(), this.getDiagram().getDatabase())));
+
+		if (!Check.isEmpty(normalColumn.getCharacterSet())) {
+			ddl.append(" CHARACTER SET ");
+			ddl.append(normalColumn.getCharacterSet());
+
+			if (!Check.isEmpty(normalColumn.getCollation())) {
+				ddl.append(" COLLATE ");
+				ddl.append(normalColumn.getCollation());
+			}
+		}
+
+		if (!Check.isEmpty(normalColumn.getDefaultValue())) {
+			String defaultValue = normalColumn.getDefaultValue();
+			if (ResourceString.getResourceString("label.current.date.time")
+					.equals(defaultValue)) {
+				defaultValue = this.getDBManager().getCurrentTimeValue()[0];
+			}
+
+			ddl.append(" DEFAULT ");
+			if (this.doesNeedQuoteDefaultValue(normalColumn)) {
+				ddl.append("'");
+				ddl.append(Format.escapeSQL(defaultValue));
+				ddl.append("'");
+
+			} else {
+				ddl.append(defaultValue);
+			}
+		}
+
+		if (normalColumn.isNotNull()) {
+			ddl.append(" NOT NULL");
+		}
+
+		if (normalColumn.isUniqueKey()) {
+			if (!Check.isEmpty(normalColumn.getUniqueKeyName())) {
+				ddl.append(" CONSTRAINT ");
+				ddl.append(normalColumn.getUniqueKeyName());
+			}
+			ddl.append(" UNIQUE");
+		}
+
+		String constraint = Format.null2blank(normalColumn.getConstraint());
+		if (!"".equals(constraint)) {
+			ddl.append(" ");
+			ddl.append(constraint);
+		}
 
 		if (normalColumn.isAutoIncrement()) {
 			ddl.append(" AUTO_INCREMENT");
@@ -113,7 +173,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		MySQLTablespaceProperties tablespaceProperties = (MySQLTablespaceProperties) tablespace
 				.getProperties(this.environment, this.getDiagram());
 
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("CREATE TABLESPACE ");
 		ddl.append(filter(tablespace.getName()));
@@ -189,7 +249,7 @@ public class MySQLDDLCreator extends DDLCreator {
 
 	@Override
 	public String getDDL(Index index, ERTable table) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		String description = index.getDescription();
 		if (this.semicolon && !Check.isEmpty(description)
@@ -252,7 +312,7 @@ public class MySQLDDLCreator extends DDLCreator {
 
 		return ddl.toString();
 	}
-	
+
 	@Override
 	public String getDropDDL(ERDiagram diagram) {
 		StringBuilder ddl = new StringBuilder();
@@ -263,7 +323,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append("\r\n");
 
 		ddl.append(super.getDropDDL(diagram));
-		
+
 		return ddl.toString();
 	}
 
@@ -277,7 +337,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(" ON ");
 		ddl.append(filter(table.getNameWithSchema(this.getDiagram()
 				.getDatabase())));
-		
+
 		if (this.semicolon) {
 			ddl.append(";");
 		}

@@ -34,7 +34,7 @@ public class UninputTablespaceRule extends TablespaceRule {
 
 	protected String getMessageSuffix(Tablespace tablespace,
 			Environment environment) {
-		StringBuffer suffix = new StringBuffer();
+		StringBuilder suffix = new StringBuilder();
 		suffix.append(" ");
 		suffix.append(ResourceString
 				.getResourceString("error.tablespace.suffix.1"));

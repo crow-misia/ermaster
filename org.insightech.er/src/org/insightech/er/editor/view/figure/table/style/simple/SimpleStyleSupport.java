@@ -70,7 +70,7 @@ public class SimpleStyleSupport extends AbstractStyleSupport {
 		Label label = this.createColumnLabel();
 		label.setForegroundColor(this.getTextColor());
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 		text.append(this.getColumnText(viewMode, physicalName, logicalName,
 				type, isNotNull, uniqueKey, detail, displayType));
 

@@ -49,7 +49,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDropDDL(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		if (this.ddlTarget.dropIndex) {
 			ddl.append(this.getDropIndexes(diagram));
@@ -63,7 +63,9 @@ public abstract class DDLCreator {
 		if (this.ddlTarget.dropTable) {
 			ddl.append(this.getDropTables(diagram));
 		}
-		if (this.ddlTarget.dropSequence) {
+		if (this.ddlTarget.dropSequence
+				&& DBManagerFactory.getDBManager(diagram).isSupported(
+						DBManager.SUPPORT_SEQUENCE)) {
 			ddl.append(this.getDropSequences(diagram));
 		}
 		if (this.ddlTarget.dropTablespace) {
@@ -74,7 +76,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getDropTablespaces(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -97,7 +99,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getDropSequences(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -119,7 +121,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getDropViews(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -142,7 +144,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getDropTriggers(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -164,7 +166,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getDropIndexes(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -195,7 +197,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getDropTables(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		Set<TableView> doneTables = new HashSet<TableView>();
 
@@ -228,12 +230,14 @@ public abstract class DDLCreator {
 	}
 
 	public String getCreateDDL(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		if (this.ddlTarget.createTablespace) {
 			ddl.append(this.getCreateTablespaces(diagram));
 		}
-		if (this.ddlTarget.createSequence) {
+		if (this.ddlTarget.createSequence
+				&& DBManagerFactory.getDBManager(diagram).isSupported(
+						DBManager.SUPPORT_SEQUENCE)) {
 			ddl.append(this.getCreateSequences(diagram));
 		}
 		if (this.ddlTarget.createTable) {
@@ -258,7 +262,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getCreateTablespaces(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -291,7 +295,7 @@ public abstract class DDLCreator {
 	abstract protected String getDDL(Tablespace object);
 
 	private String getCreateTables(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -319,7 +323,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getCreateForeignKeys(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -347,7 +351,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getCreateIndexes(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -378,7 +382,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getCreateViews(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -402,7 +406,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getCreateTriggers(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -425,7 +429,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getCreateSequences(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -457,7 +461,7 @@ public abstract class DDLCreator {
 	}
 
 	private String getCreateComment(ERDiagram diagram) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
@@ -609,7 +613,7 @@ public abstract class DDLCreator {
 	}
 
 	protected String getColulmnDDL(NormalColumn normalColumn) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		String description = normalColumn.getDescription();
 		if (this.semicolon && !Check.isEmpty(description)
@@ -700,7 +704,7 @@ public abstract class DDLCreator {
 			tableSpace = commonTableProperties.getTableSpace();
 		}
 
-		StringBuffer postDDL = new StringBuffer();
+		StringBuilder postDDL = new StringBuilder();
 
 		if (tableSpace != null) {
 			postDDL.append(" TABLESPACE ");
@@ -711,7 +715,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDDL(Index index, ERTable table) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		String description = index.getDescription();
 		if (this.semicolon && !Check.isEmpty(description)
@@ -774,7 +778,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDDL(Relation relation) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("ALTER TABLE ");
 		ddl.append(filter(relation.getTargetTableView().getNameWithSchema(
@@ -834,7 +838,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDDL(View view) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		String description = view.getDescription();
 		if (this.semicolon && !Check.isEmpty(description)
@@ -862,7 +866,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDDL(Trigger trigger) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		String description = trigger.getDescription();
 		if (this.semicolon && !Check.isEmpty(description)
@@ -886,7 +890,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDDL(Sequence sequence) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
 		if (this.semicolon && !Check.isEmpty(description)
@@ -931,7 +935,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDropDDL(Index index, ERTable table) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP INDEX ");
 		ddl.append(this.getIfExistsOption());
@@ -944,7 +948,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDropDDL(TableView table, Set<TableView> doneTables) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		doneTables.add(table);
 
@@ -972,7 +976,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDropDDL(View view) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP VIEW ");
 		ddl.append(this.getIfExistsOption());
@@ -985,7 +989,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDropDDL(Trigger trigger) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP TRIGGER ");
 		ddl.append(this.getIfExistsOption());
@@ -998,7 +1002,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDropDDL(Tablespace tablespace) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP ");
 		ddl.append("TABLESPACE ");
@@ -1012,7 +1016,7 @@ public abstract class DDLCreator {
 	}
 
 	public String getDropDDL(Sequence sequence) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP ");
 		ddl.append("SEQUENCE ");
@@ -1049,7 +1053,7 @@ public abstract class DDLCreator {
 	}
 
 	protected String getNameWithSchema(String schema, String name) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		if (Check.isEmpty(schema)) {
 			schema = this.getDiagram().getDiagramContents().getSettings()
