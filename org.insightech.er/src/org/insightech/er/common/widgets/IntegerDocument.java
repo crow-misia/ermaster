@@ -30,7 +30,7 @@ public class IntegerDocument extends PlainDocument {
 				newValue = str;
 			} else {
 				String currentContent = getText(0, length);
-				StringBuffer currentBuffer = new StringBuffer(currentContent);
+				StringBuilder currentBuffer = new StringBuilder(currentContent);
 				currentBuffer.insert(offset, str);
 				newValue = currentBuffer.toString();
 			}

@@ -98,6 +98,7 @@ public abstract class PreImportFromDBManager {
 							this.getAutoIncrementColumnName(con, schema, name);
 
 						} catch (SQLException e) {
+							e.printStackTrace();
 							// テーブル情報が取得できない場合（他のユーザの所有物などの場合）、
 							// このテーブルは使用しない。
 							continue;

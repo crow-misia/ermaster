@@ -70,7 +70,7 @@ public class SqlTypeFactory {
 						if (!Check.isEmpty(key)) {
 							sqlType.addToSqlTypeMap(key, dbId);
 						}
-						
+
 					} else {
 						Map<SqlType, String> aliasMap = dbAliasMap.get(dbId);
 
@@ -84,7 +84,9 @@ public class SqlTypeFactory {
 
 							aliasMap.put(sqlType, alias);
 
-							sqlType.addToSqlTypeMap(alias, dbId);
+							if (POIUtils.getCellColor(sheet, rowNum, colNum) == HSSFColor.SKY_BLUE.index) {
+								sqlType.addToSqlTypeMap(alias, dbId);
+							}
 						}
 					}
 				}

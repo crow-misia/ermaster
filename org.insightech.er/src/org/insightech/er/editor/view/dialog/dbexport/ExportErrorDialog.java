@@ -22,7 +22,7 @@ public class ExportErrorDialog extends AbstractErrorDialog {
 
 	@Override
 	protected String getData() {
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		for (ValidateResult errorMessage : this.errorList) {
 			text.append(errorMessage.getMessage());

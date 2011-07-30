@@ -2,7 +2,10 @@ package org.insightech.er.db.impl.mysql;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 import org.insightech.er.db.DBManagerBase;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
@@ -19,6 +22,9 @@ import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Ta
 public class MySQLDBManager extends DBManagerBase {
 
 	public static final String ID = "MySQL";
+
+	private static final ResourceBundle CHARACTER_SET_RESOURCE = ResourceBundle
+			.getBundle("mysql_characterset");
 
 	public String getId() {
 		return ID;
@@ -103,10 +109,41 @@ public class MySQLDBManager extends DBManagerBase {
 	}
 
 	public String[] getCurrentTimeValue() {
-		return new String[] {"NOW(), SYSDATE()"};
+		return new String[] { "NOW(), SYSDATE()" };
 	}
 
 	public BigDecimal getSequenceMaxValue() {
 		return null;
+	}
+
+	public static List<String> getCharacterSetList() {
+		List<String> list = new ArrayList<String>();
+
+		Enumeration<String> keys = CHARACTER_SET_RESOURCE.getKeys();
+
+		while (keys.hasMoreElements()) {
+			list.add(keys.nextElement());
+		}
+
+		return list;
+	}
+
+	public static List<String> getCollationList(String characterset) {
+		List<String> list = new ArrayList<String>();
+
+		if (characterset != null) {
+			String values = CHARACTER_SET_RESOURCE.getString(characterset);
+
+			if (values != null) {
+				StringTokenizer tokenizer = new StringTokenizer(values);
+
+				while (tokenizer.hasMoreElements()) {
+					String token = tokenizer.nextToken().trim();
+					list.add(token);
+				}
+			}
+		}
+
+		return list;
 	}
 }

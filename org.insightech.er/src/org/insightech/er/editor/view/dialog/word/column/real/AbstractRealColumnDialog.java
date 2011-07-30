@@ -138,7 +138,8 @@ public abstract class AbstractRealColumnDialog extends AbstractColumnDialog {
 
 		this.returnColumn = new NormalColumn(this.returnWord, notNullCheck
 				.getSelection(), false, uniqueKeyCheck.getSelection(), false,
-				defaultText.getText(), constraintText.getText(), null);
+				defaultText.getText(), constraintText.getText(), null, null,
+				null);
 	}
 
 	@Override
@@ -156,7 +157,7 @@ public abstract class AbstractRealColumnDialog extends AbstractColumnDialog {
 				this.defaultText.add(ResourceString
 						.getResourceString("label.current.date.time"));
 				this.defaultText.setText(defaultValue);
-				
+
 			} else {
 				if (!ResourceString
 						.getResourceString("label.current.date.time").equals(

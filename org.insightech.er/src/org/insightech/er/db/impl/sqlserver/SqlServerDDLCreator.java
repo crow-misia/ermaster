@@ -19,7 +19,7 @@ public class SqlServerDDLCreator extends DDLCreator {
 	 */
 	@Override
 	protected String getColulmnDDL(NormalColumn normalColumn) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append(super.getColulmnDDL(normalColumn));
 
@@ -54,7 +54,7 @@ public class SqlServerDDLCreator extends DDLCreator {
 		DB2TablespaceProperties tablespaceProperties = (DB2TablespaceProperties) tablespace
 				.getProperties(this.environment, this.getDiagram());
 
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("CREATE ");
 		if (!Check.isEmpty(tablespaceProperties.getType())) {

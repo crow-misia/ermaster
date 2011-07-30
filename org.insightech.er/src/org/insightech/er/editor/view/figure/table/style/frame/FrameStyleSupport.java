@@ -75,7 +75,7 @@ public class FrameStyleSupport extends AbstractStyleSupport {
 
 		label.setForegroundColor(this.getTextColor());
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 		text.append(this.getColumnText(viewMode, physicalName, logicalName,
 				type, isNotNull, uniqueKey, detail, displayType));
 

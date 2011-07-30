@@ -71,7 +71,8 @@ public class PostgresDBManager extends DBManagerBase {
 
 	@Override
 	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_AUTO_INCREMENT_SETTING, SUPPORT_SCHEMA };
+		return new int[] { SUPPORT_AUTO_INCREMENT_SETTING, SUPPORT_SCHEMA,
+				SUPPORT_SEQUENCE };
 	}
 
 	public ImportFromDBManager getTableImportManager() {

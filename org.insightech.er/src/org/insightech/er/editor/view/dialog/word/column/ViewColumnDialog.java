@@ -48,7 +48,7 @@ public class ViewColumnDialog extends AbstractColumnDialog {
 		super.perfomeOK();
 
 		this.returnColumn = new NormalColumn(this.returnWord, false, false,
-				false, false, null, null, null);
+				false, false, null, null, null, null, null);
 	}
 
 }

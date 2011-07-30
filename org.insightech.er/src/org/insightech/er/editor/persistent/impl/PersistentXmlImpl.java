@@ -1398,6 +1398,12 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("\t<unique_key>").append(normalColumn.isUniqueKey()).append(
 				"</unique_key>\n");
 
+		xml.append("\t<character_set>").append(
+				escape(normalColumn.getCharacterSet())).append(
+				"</character_set>\n");
+		xml.append("\t<collation>").append(escape(normalColumn.getCollation()))
+				.append("</collation>\n");
+
 		xml.append(tab(this.createXML(normalColumn.getAutoIncrementSetting())));
 		xml.append("</normal_column>\n");
 
@@ -1782,14 +1788,14 @@ public class PersistentXmlImpl extends Persistent {
 			return "";
 		}
 
-		StringBuffer result = new StringBuffer(s.length() + 10);
+		StringBuilder result = new StringBuilder(s.length() + 10);
 		for (int i = 0; i < s.length(); ++i) {
 			appendEscapedChar(result, s.charAt(i));
 		}
 		return result.toString();
 	}
 
-	private static void appendEscapedChar(StringBuffer buffer, char c) {
+	private static void appendEscapedChar(StringBuilder buffer, char c) {
 		String replacement = getReplacement(c);
 		if (replacement != null) {
 			buffer.append('&');

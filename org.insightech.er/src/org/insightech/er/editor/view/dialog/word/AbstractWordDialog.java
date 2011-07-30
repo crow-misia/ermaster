@@ -402,7 +402,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		SqlType selectedType = SqlType.valueOf(diagram.getDatabase(), typeCombo
 				.getText());
 
-		if (this.argsText != null) {
+		if (selectedType != null && this.argsText != null) {
 			text = argsText.getText();
 
 			if (selectedType.doesNeedArgs()) {

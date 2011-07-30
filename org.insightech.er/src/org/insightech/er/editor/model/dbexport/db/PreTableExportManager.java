@@ -88,7 +88,7 @@ public abstract class PreTableExportManager {
 
 	public void run() {
 		try {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			sb.append(this.dropViews());
 			sb.append(this.dropForeignKeys());
 			sb.append(this.dropTables());
@@ -104,7 +104,7 @@ public abstract class PreTableExportManager {
 	}
 
 	private String dropSequences() throws SQLException {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ResultSet sequenceSet = null;
 
@@ -142,7 +142,7 @@ public abstract class PreTableExportManager {
 	}
 
 	private String dropViews() throws SQLException {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ResultSet viewSet = null;
 
@@ -179,7 +179,7 @@ public abstract class PreTableExportManager {
 	}
 
 	protected String dropForeignKeys() throws SQLException {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ResultSet foreignKeySet = null;
 
@@ -226,7 +226,7 @@ public abstract class PreTableExportManager {
 	}
 
 	private String dropTables() throws SQLException, InterruptedException {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ResultSet tableSet = null;
 

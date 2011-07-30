@@ -128,7 +128,7 @@ public class FunnyStyleSupport extends AbstractStyleSupport {
 		Label label = this.createColumnLabel();
 		label.setForegroundColor(ColorConstants.black);
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 		text.append(this.getColumnText(viewMode, physicalName, logicalName,
 				type, isNotNull, uniqueKey, detail, displayType));
 
@@ -191,7 +191,7 @@ public class FunnyStyleSupport extends AbstractStyleSupport {
 		filler.setBorder(new MarginBorder(new Insets(0, 0, 0, 16)));
 		columnFigure.add(filler);
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 		text.append(name);
 		text.append(" (GROUP)");
 

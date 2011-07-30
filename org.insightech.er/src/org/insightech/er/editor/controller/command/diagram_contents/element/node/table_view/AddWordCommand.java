@@ -27,7 +27,7 @@ public class AddWordCommand extends AbstractCommand {
 				.getDictionary();
 
 		this.column = new NormalColumn(this.word, true, false, false, false,
-				null, null, null);
+				null, null, null, null, null);
 	}
 
 	/**

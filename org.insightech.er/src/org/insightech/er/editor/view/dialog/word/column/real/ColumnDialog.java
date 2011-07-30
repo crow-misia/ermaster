@@ -6,6 +6,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -14,6 +15,7 @@ import org.insightech.er.ResourceString;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.impl.mysql.MySQLDBManager;
 import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -34,6 +36,10 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 
 	protected Text uniqueKeyNameText;
 
+	protected Combo characterSetCombo;
+
+	protected Combo collationCombo;
+
 	protected Button autoIncrementCheck;
 
 	protected Button autoIncrementSettingButton;
@@ -52,6 +58,13 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 		super.initializeDetailTab(composite);
 
 		DBManager manager = DBManagerFactory.getDBManager(this.diagram);
+
+		if (MySQLDBManager.ID.equals(this.diagram.getDatabase())) {
+			this.characterSetCombo = CompositeFactory.createCombo(this,
+					composite, "label.character.set", 1);
+			this.collationCombo = CompositeFactory.createCombo(this, composite,
+					"label.collation", 1);
+		}
 
 		if (manager.isSupported(DBManager.SUPPORT_AUTO_INCREMENT_SETTING)) {
 			CompositeFactory.filler(composite, 2);
@@ -160,14 +173,34 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 			this.enableAutoIncrement(false);
 		}
 
-		if (this.targetColumn.getDefaultValue() != null) {
-			this.defaultText.setText(this.targetColumn.getDefaultValue());
-		}
+		this.defaultText.setText(Format.null2blank(this.targetColumn
+				.getDefaultValue()));
 
 		this.setEnabledBySqlType();
 
 		this.uniqueKeyNameText.setText(Format.null2blank(this.targetColumn
 				.getUniqueKeyName()));
+
+		if (this.characterSetCombo != null) {
+			this.characterSetCombo.add("");
+
+			for (String characterSet : MySQLDBManager.getCharacterSetList()) {
+				this.characterSetCombo.add(characterSet);
+			}
+
+			this.characterSetCombo.setText(Format.null2blank(this.targetColumn
+					.getCharacterSet()));
+
+			this.collationCombo.add("");
+
+			for (String collation : MySQLDBManager
+					.getCollationList(this.targetColumn.getCharacterSet())) {
+				this.collationCombo.add(collation);
+			}
+
+			this.collationCombo.setText(Format.null2blank(this.targetColumn
+					.getCollation()));
+		}
 	}
 
 	@Override
@@ -200,7 +233,8 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 		if (selectedType != null) {
 			if (PostgresDBManager.ID.equals(this.diagram.getDatabase())) {
 				if (SqlType.SQL_TYPE_ID_BIG_SERIAL.equals(selectedType.getId())
-						|| SqlType.SQL_TYPE_ID_SERIAL.equals(selectedType.getId())) {
+						|| SqlType.SQL_TYPE_ID_SERIAL.equals(selectedType
+								.getId())) {
 					this.autoIncrementSettingButton.setEnabled(true);
 				} else {
 					this.autoIncrementSettingButton.setEnabled(false);
@@ -226,6 +260,11 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 		this.returnColumn.setAutoIncrementSetting(this.autoIncrementSetting);
 
 		this.returnColumn.setUniqueKeyName(this.uniqueKeyNameText.getText());
+
+		if (this.characterSetCombo != null) {
+			this.returnColumn.setCharacterSet(this.characterSetCombo.getText());
+			this.returnColumn.setCollation(this.collationCombo.getText());
+		}
 	}
 
 	/**
@@ -337,6 +376,28 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 						}
 
 					});
+		}
+
+		if (this.characterSetCombo != null) {
+
+			this.characterSetCombo.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					String selectedCollation = collationCombo.getText();
+
+					collationCombo.removeAll();
+					
+					for (String collation : MySQLDBManager
+							.getCollationList(characterSetCombo.getText())) {
+						collationCombo.add(collation);
+					}
+
+					int index = collationCombo.indexOf(selectedCollation);
+
+					collationCombo.select(index);
+				}
+			});
 		}
 	}
 

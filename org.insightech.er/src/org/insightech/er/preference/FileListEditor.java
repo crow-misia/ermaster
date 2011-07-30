@@ -115,7 +115,7 @@ public abstract class FileListEditor extends ListEditor {
 	 */
 	@Override
 	protected String createList(String[] items) {
-		StringBuffer path = new StringBuffer("");
+		StringBuilder path = new StringBuilder("");
 
 		for (int i = 0; i < items.length; i++) {
 			path.append(items[i]);

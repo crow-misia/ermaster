@@ -44,7 +44,7 @@ public class PostgresDDLCreator extends DDLCreator {
 			isWithoutOIDs = commonTableProperties.isWithoutOIDs();
 		}
 
-		StringBuffer postDDL = new StringBuffer();
+		StringBuilder postDDL = new StringBuilder();
 
 		if (isWithoutOIDs) {
 			postDDL.append(" WITHOUT OIDS");
@@ -66,7 +66,7 @@ public class PostgresDDLCreator extends DDLCreator {
 				.getDescription(), false);
 
 		if (!Check.isEmpty(tableComment)) {
-			StringBuffer ddl = new StringBuffer();
+			StringBuilder ddl = new StringBuilder();
 
 			ddl.append("COMMENT ON TABLE ");
 			ddl.append(filter(table.getNameWithSchema(this.getDiagram()
@@ -89,7 +89,7 @@ public class PostgresDDLCreator extends DDLCreator {
 						.getLogicalName(), normalColumn.getDescription(), true);
 
 				if (!Check.isEmpty(comment)) {
-					StringBuffer ddl = new StringBuffer();
+					StringBuilder ddl = new StringBuilder();
 
 					ddl.append("COMMENT ON COLUMN ");
 					ddl.append(filter(table.getNameWithSchema(this.getDiagram()
@@ -115,7 +115,7 @@ public class PostgresDDLCreator extends DDLCreator {
 							true);
 
 					if (!Check.isEmpty(comment)) {
-						StringBuffer ddl = new StringBuffer();
+						StringBuilder ddl = new StringBuilder();
 
 						ddl.append("COMMENT ON COLUMN ");
 						ddl.append(filter(table.getNameWithSchema(this
@@ -143,7 +143,7 @@ public class PostgresDDLCreator extends DDLCreator {
 		PostgresTablespaceProperties tablespaceProperties = (PostgresTablespaceProperties) tablespace
 				.getProperties(this.environment, this.getDiagram());
 
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("CREATE TABLESPACE ");
 		ddl.append(filter(tablespace.getName()));
@@ -167,7 +167,7 @@ public class PostgresDDLCreator extends DDLCreator {
 	}
 
 	private String getAutoIncrementSettingDDL(ERTable table, NormalColumn column) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		Sequence sequence = column.getAutoIncrementSetting();
 

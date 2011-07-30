@@ -68,7 +68,7 @@ public abstract class AbstractStyleSupport implements StyleSupport {
 	protected String getColumnText(int viewMode, String physicalName,
 			String logicalName, String type, boolean isNotNull,
 			boolean uniqueKey, boolean detail, boolean displayType) {
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		String name = null;
 		if (viewMode == Settings.VIEW_MODE_PHYSICAL) {
@@ -154,7 +154,7 @@ public abstract class AbstractStyleSupport implements StyleSupport {
 
 		label.setForegroundColor(this.getTextColor());
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 		text.append(name);
 		text.append(" (GROUP)");
 

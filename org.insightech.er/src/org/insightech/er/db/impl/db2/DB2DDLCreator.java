@@ -20,7 +20,7 @@ public class DB2DDLCreator extends DDLCreator {
 	 */
 	@Override
 	protected String getColulmnDDL(NormalColumn normalColumn) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append(super.getColulmnDDL(normalColumn));
 
@@ -55,7 +55,7 @@ public class DB2DDLCreator extends DDLCreator {
 		DB2TablespaceProperties tablespaceProperties = (DB2TablespaceProperties) tablespace
 				.getProperties(this.environment, this.getDiagram());
 
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("CREATE ");
 		if (!Check.isEmpty(tablespaceProperties.getType())) {
@@ -106,7 +106,7 @@ public class DB2DDLCreator extends DDLCreator {
 
 	@Override
 	public String getDDL(Sequence sequence) {
-		StringBuffer ddl = new StringBuffer();
+		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
 		if (this.semicolon && !Check.isEmpty(description)

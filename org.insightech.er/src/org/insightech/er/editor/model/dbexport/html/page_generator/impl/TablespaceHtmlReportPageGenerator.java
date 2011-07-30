@@ -92,7 +92,7 @@ public class TablespaceHtmlReportPageGenerator extends
 
 	private String generateEnvironmentTable(ERDiagram diagram,
 			Tablespace tablespace) throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/environment_row_template.html");
@@ -117,7 +117,7 @@ public class TablespaceHtmlReportPageGenerator extends
 
 	private String generateValueTable(TablespaceProperties properties)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("types/value_row_template.html");

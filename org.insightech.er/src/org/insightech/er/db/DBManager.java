@@ -27,6 +27,8 @@ public interface DBManager {
 
 	public static final int SUPPORT_SCHEMA = 4;
 
+	public static final int SUPPORT_SEQUENCE = 5;
+
 	public String getId();
 
 	public String getURL(String serverName, String dbName, int port);
