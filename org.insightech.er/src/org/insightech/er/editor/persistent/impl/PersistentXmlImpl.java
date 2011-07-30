@@ -1611,6 +1611,9 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("<character_set>").append(
 				escape(tableProperties.getCharacterSet())).append(
 				"</character_set>\n");
+		xml.append("<collation>")
+				.append(escape(tableProperties.getCollation())).append(
+						"</collation>\n");
 		xml.append("<schema>").append(escape(tableProperties.getSchema()))
 				.append("</schema>\n");
 		xml.append("<storage_engine>").append(

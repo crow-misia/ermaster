@@ -1592,6 +1592,7 @@ public class XMLLoader {
 
 		tableProperties.setCharacterSet(this.getStringValue(element,
 				"character_set"));
+		tableProperties.setCollation(this.getStringValue(element, "collation"));
 		tableProperties.setSchema(this.getStringValue(element, "schema"));
 		tableProperties.setStorageEngine(this.getStringValue(element,
 				"storage_engine"));

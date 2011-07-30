@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
@@ -132,15 +133,18 @@ public class MySQLDBManager extends DBManagerBase {
 		List<String> list = new ArrayList<String>();
 
 		if (characterset != null) {
-			String values = CHARACTER_SET_RESOURCE.getString(characterset);
+			try {
+				String values = CHARACTER_SET_RESOURCE.getString(characterset);
 
-			if (values != null) {
-				StringTokenizer tokenizer = new StringTokenizer(values);
+				if (values != null) {
+					StringTokenizer tokenizer = new StringTokenizer(values, ",");
 
-				while (tokenizer.hasMoreElements()) {
-					String token = tokenizer.nextToken().trim();
-					list.add(token);
+					while (tokenizer.hasMoreElements()) {
+						String token = tokenizer.nextToken().trim();
+						list.add(token);
+					}
 				}
+			} catch (MissingResourceException e) {
 			}
 		}
 

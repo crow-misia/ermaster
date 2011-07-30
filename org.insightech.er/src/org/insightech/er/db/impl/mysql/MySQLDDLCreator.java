@@ -33,16 +33,21 @@ public class MySQLDDLCreator extends DDLCreator {
 				.getTableViewProperties();
 
 		String engine = tableProperties.getStorageEngine();
-		if (engine == null || engine.equals("")) {
+		if (Check.isEmpty(engine)) {
 			engine = commonTableProperties.getStorageEngine();
 		}
 		String characterSet = tableProperties.getCharacterSet();
-		if (characterSet == null || characterSet.equals("")) {
+		if (Check.isEmpty(characterSet)) {
+			characterSet = commonTableProperties.getCharacterSet();
+		}
+
+		String collation = tableProperties.getCollation();
+		if (Check.isEmpty(collation)) {
 			characterSet = commonTableProperties.getCharacterSet();
 		}
 
 		StringBuilder postDDL = new StringBuilder();
-		if (engine != null && !engine.equals("")) {
+		if (!Check.isEmpty(engine)) {
 			postDDL.append(" ENGINE = ");
 			postDDL.append(engine);
 		}
@@ -58,9 +63,14 @@ public class MySQLDDLCreator extends DDLCreator {
 			}
 		}
 
-		if (characterSet != null && !characterSet.equals("")) {
+		if (!Check.isEmpty(characterSet)) {
 			postDDL.append(" DEFAULT CHARACTER SET ");
 			postDDL.append(characterSet);
+
+			if (!Check.isEmpty(collation)) {
+				postDDL.append(" COLLATE ");
+				postDDL.append(collation);
+			}
 		}
 
 		postDDL.append(super.getPostDDL(table));
