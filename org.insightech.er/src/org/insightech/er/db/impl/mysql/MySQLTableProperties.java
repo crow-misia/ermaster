@@ -10,6 +10,8 @@ public class MySQLTableProperties extends TableProperties {
 
 	private String characterSet;
 
+	private String collation;
+
 	public String getStorageEngine() {
 		return storageEngine;
 	}
@@ -24,6 +26,14 @@ public class MySQLTableProperties extends TableProperties {
 
 	public void setCharacterSet(String characterSet) {
 		this.characterSet = characterSet;
+	}
+
+	public String getCollation() {
+		return collation;
+	}
+
+	public void setCollation(String collation) {
+		this.collation = collation;
 	}
 
 }

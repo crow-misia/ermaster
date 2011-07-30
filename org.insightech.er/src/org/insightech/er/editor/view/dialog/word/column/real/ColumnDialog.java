@@ -387,7 +387,8 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 					String selectedCollation = collationCombo.getText();
 
 					collationCombo.removeAll();
-					
+					collationCombo.add("");
+
 					for (String collation : MySQLDBManager
 							.getCollationList(characterSetCombo.getText())) {
 						collationCombo.add(collation);
