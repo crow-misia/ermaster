@@ -17,6 +17,7 @@ import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager;
 import org.insightech.er.editor.model.dbexport.image.ExportToImageManager;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
 import org.insightech.er.preference.PreferenceInitializer;
+import org.insightech.er.preference.template.TemplatePreferencePage;
 import org.insightech.er.util.io.FileUtils;
 
 public class ExcelReportAntTask extends ERMasterAntTaskBase {
@@ -143,12 +144,10 @@ public class ExcelReportAntTask extends ERMasterAntTaskBase {
 
 	private InputStream getTemplate() throws FileNotFoundException {
 		if ("default_en".equals(template)) {
-			return this.getClass().getResourceAsStream(
-					"/" + PreferenceInitializer.DEFAULT_TEMPLATE_FILE_EN);
+			return TemplatePreferencePage.getDefaultExcelTemplateEn();
 
 		} else if ("default_ja".equals(template)) {
-			return this.getClass().getResourceAsStream(
-					"/" + PreferenceInitializer.DEFAULT_TEMPLATE_FILE_JA);
+			return TemplatePreferencePage.getDefaultExcelTemplateJa();
 
 		}
 
