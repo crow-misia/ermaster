@@ -1,6 +1,5 @@
 package org.insightech.er.preference.translation;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -9,12 +8,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.common.widgets.CompositeFactory;
-import org.insightech.er.preference.FileListEditor;
 import org.insightech.er.preference.PreferenceInitializer;
-import org.insightech.er.util.Check;
 
 public class TranslationPreferencePage extends
 		PreferencePage implements
@@ -81,20 +77,5 @@ public class TranslationPreferencePage extends
 		return super.performOk();
 	}
 
-	public static void addPreferenceValue(String value) {
-		IPreferenceStore preferenceStore = Activator.getDefault()
-				.getPreferenceStore();
-
-		String values = preferenceStore
-				.getString(PreferenceInitializer.TRANSLATION_FILE_LIST);
-
-		if (Check.isEmpty(values)) {
-			values = value;
-		} else {
-			values = values + FileListEditor.VALUE_SEPARATOR + value;
-		}
-
-		preferenceStore.setValue(PreferenceInitializer.TRANSLATION_FILE_LIST,
-				values);
-	}
+	
 }

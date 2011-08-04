@@ -1,14 +1,9 @@
 package org.insightech.er.editor.model.settings;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
 
-import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.preference.PreferenceInitializer;
 
@@ -30,36 +25,9 @@ public class TranslationSetting implements Serializable, Cloneable {
 	 * @return allTranslations
 	 */
 	public List<String> getAllTranslations() {
-		List<String> list = getAllUserTranslations();
+		List<String> list = PreferenceInitializer.getAllUserTranslations();
 
 		list.add(ResourceString.getResourceString("label.translation.default"));
-
-		return list;
-	}
-
-	/**
-	 * allTranslations ‚ðŽæ“¾‚µ‚Ü‚·.
-	 * 
-	 * @return allTranslations
-	 */
-	public List<String> getAllUserTranslations() {
-		String str = Activator.getDefault().getPreferenceStore().getString(
-				PreferenceInitializer.TRANSLATION_FILE_LIST);
-
-		StringTokenizer st = new StringTokenizer(str, "/");
-		List<String> list = new ArrayList<String>();
-		Set<String> names = new HashSet<String>();
-
-		while (st.hasMoreElements()) {
-			String fileName = st.nextToken();
-
-			File file = new File(PreferenceInitializer
-					.getTranslationPath(fileName));
-			if (file.exists() && !names.contains(fileName)) {
-				list.add(fileName);
-				names.add(fileName);
-			}
-		}
 
 		return list;
 	}

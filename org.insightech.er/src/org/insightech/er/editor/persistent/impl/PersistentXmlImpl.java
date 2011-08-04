@@ -273,6 +273,9 @@ public class PersistentXmlImpl extends Persistent {
 				"</user>\n");
 		xml.append("<password>").append(escape(dbSetting.getPassword()))
 				.append("</password>\n");
+		xml.append("<use_default_driver>").append(
+				dbSetting.isUseDefaultDriver()).append(
+				"</use_default_driver>\n");
 		xml.append("<url>").append(escape(dbSetting.getUrl())).append(
 				"</url>\n");
 		xml.append("<driver_class_name>").append(

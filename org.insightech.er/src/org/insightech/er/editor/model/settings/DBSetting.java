@@ -9,7 +9,6 @@ import java.util.Properties;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
-import org.insightech.er.db.impl.standard_sql.StandardSQLDBManager;
 import org.insightech.er.util.Format;
 
 public class DBSetting implements Serializable, Comparable<DBSetting> {
@@ -28,6 +27,8 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 
 	private transient String password;
 
+	private boolean useDefaultDriver;
+
 	private String url;
 
 	private String driverClassName;
@@ -37,13 +38,15 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 	}
 
 	public DBSetting(String dbsystem, String server, int port, String database,
-			String user, String password, String url, String driverClassName) {
+			String user, String password, boolean useDefaultDriver, String url,
+			String driverClassName) {
 		this.dbsystem = dbsystem;
 		this.server = server;
 		this.port = port;
 		this.database = database;
 		this.user = user;
 		this.password = password;
+		this.useDefaultDriver = useDefaultDriver;
 		this.url = url;
 		this.driverClassName = driverClassName;
 	}
@@ -66,6 +69,10 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public boolean isUseDefaultDriver() {
+		return useDefaultDriver;
 	}
 
 	public String getUrl() {
@@ -111,6 +118,14 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 			return compareTo;
 		}
 
+		if (this.isUseDefaultDriver() != other.isUseDefaultDriver()) {
+			if (this.isUseDefaultDriver()) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
+
 		compareTo = this.getUrl().compareTo(other.getUrl());
 		if (compareTo != 0) {
 			return compareTo;
@@ -139,33 +154,17 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 		return schema + "." + Format.null2blank(tableName);
 	}
 
-	public Connection connect()
-			throws InputException, InstantiationException,
+	public Connection connect() throws InputException, InstantiationException,
 			IllegalAccessException, SQLException {
-		String db = this.getDbsystem();
-
-		DBManager manager = DBManagerFactory.getDBManager(db);
-
-		String driverClassName = manager.getDriverClassName();
-
-		if (StandardSQLDBManager.ID.equals(manager.getId())) {
-			driverClassName = this.getDriverClassName();
-		}
-
-		Class driverClass = manager.getDriverClass(driverClassName);
+		DBManager manager = DBManagerFactory.getDBManager(this.getDbsystem());
+		Class<Driver> driverClass = manager.getDriverClass(this
+				.getDriverClassName());
 
 		if (driverClass == null) {
 			throw new InputException("error.jdbc.driver.not.found");
 		}
 
-		Driver driver = (Driver) driverClass.newInstance();
-
-		String url = this.getUrl();
-
-		if (!StandardSQLDBManager.ID.equals(db)) {
-			url = manager.getURL(this.getServer(),
-					this.getDatabase(), this.getPort());
-		}
+		Driver driver = driverClass.newInstance();
 
 		Properties info = new Properties();
 		if (this.getUser() != null) {
@@ -175,6 +174,6 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 			info.put("password", this.getPassword());
 		}
 
-		return driver.connect(url, info);
+		return driver.connect(this.getUrl(), info);
 	}
 }

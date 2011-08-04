@@ -33,7 +33,6 @@ import org.insightech.er.editor.model.diagram_contents.DiagramContents;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.preference.PreferenceInitializer;
-import org.insightech.er.preference.translation.TranslationPreferencePage;
 import org.insightech.er.util.Check;
 
 public class ExportToTranslationDictionaryDialog extends AbstractDialog {
@@ -141,7 +140,7 @@ public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 		String fileName = this.dictionaryNameText.getText().trim();
 		File file = new File(PreferenceInitializer.getTranslationPath(fileName));
 		file.getParentFile().mkdirs();
-		
+
 		BufferedWriter writer = null;
 
 		try {
@@ -155,7 +154,7 @@ public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 				writer.write("\r\n");
 			}
 
-			TranslationPreferencePage.addPreferenceValue(fileName);
+			PreferenceInitializer.addPreferenceValue(fileName);
 
 		} catch (IOException e) {
 			Activator.showExceptionDialog(e);
