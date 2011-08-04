@@ -1164,7 +1164,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 	protected abstract String getViewDefinitionSQL(String schema);
 
-	protected List<Column> getViewColumnList(String sql) {
+	private List<Column> getViewColumnList(String sql) {
 		List<Column> columnList = new ArrayList<Column>();
 
 		String upperSql = sql.toUpperCase();
@@ -1229,6 +1229,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		while (columnTokenizer.hasMoreTokens()) {
 			String columnName = columnTokenizer.nextToken().trim();
 
+			columnName = columnName.replaceAll("\"", "");
 			columnName = columnName.replaceAll(" AS", "");
 			columnName = columnName.replaceAll(" as", "");
 			columnName = columnName.replaceAll(" As", "");
@@ -1240,7 +1241,6 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			if (asIndex != -1) {
 				columnAlias = columnName.substring(asIndex + 1).trim();
 				columnName = columnName.substring(0, asIndex).trim();
-
 			}
 
 			int dotIndex = columnName.indexOf(".");
@@ -1399,7 +1399,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		new Activator();
 
 		DBSetting setting = new DBSetting("Oracle", "localhost", 1521, "XE",
-				"nakajima", "nakajima", null, null);
+				"nakajima", "nakajima", true, null, null);
 
 		Connection con = null;
 		try {

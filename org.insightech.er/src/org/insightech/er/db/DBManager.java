@@ -2,6 +2,7 @@ package org.insightech.er.db;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface DBManager {
 
 	public String getDriverClassName();
 
-	public Class getDriverClass(String driverClassName);
+	public Class<Driver> getDriverClass(String driverClassName);
 
 	public SqlTypeManager getSqlTypeManager();
 

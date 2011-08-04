@@ -1,11 +1,9 @@
 package org.insightech.er.editor.view.dialog.common;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -18,7 +16,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
@@ -125,39 +122,6 @@ public class DBSettingListDialog extends AbstractDialog {
 
 	}
 
-	private void saveSetting() {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-		store.setValue(PreferenceInitializer.DB_SETTING_LIST_NUM,
-				this.dbSettingList.size());
-
-		for (int i = 0; i < this.dbSettingList.size(); i++) {
-			DBSetting dbSetting = this.dbSettingList.get(i);
-			saveSetting(i + 1, dbSetting);
-		}
-	}
-
-	public static void saveSetting(int no, DBSetting dbSetting) {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-		store.setValue(PreferenceInitializer.DB_SETTING_DBSYSTEM + no, Format
-				.null2blank(dbSetting.getDbsystem()));
-		store.setValue(PreferenceInitializer.DB_SETTING_SERVER + no, Format
-				.null2blank(dbSetting.getServer()));
-		store.setValue(PreferenceInitializer.DB_SETTING_PORT + no, dbSetting
-				.getPort());
-		store.setValue(PreferenceInitializer.DB_SETTING_DATABASE + no, Format
-				.null2blank(dbSetting.getDatabase()));
-		store.setValue(PreferenceInitializer.DB_SETTING_USER + no, Format
-				.null2blank(dbSetting.getUser()));
-		store.setValue(PreferenceInitializer.DB_SETTING_PASSWORD + no, Format
-				.null2blank(dbSetting.getPassword()));
-		store.setValue(PreferenceInitializer.DB_SETTING_URL + no, Format
-				.null2blank(dbSetting.getUrl()));
-		store.setValue(PreferenceInitializer.DB_SETTING_DRIVER_CLASS_NAME + no,
-				Format.null2blank(dbSetting.getDriverClassName()));
-	}
-
 	@Override
 	protected void perfomeOK() throws InputException {
 		int index = settingTable.getSelectionIndex();
@@ -174,20 +138,8 @@ public class DBSettingListDialog extends AbstractDialog {
 
 	@Override
 	protected void setData() {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-		int num = store.getInt(PreferenceInitializer.DB_SETTING_LIST_NUM);
-
-		for (int i = 1; i <= num; i++) {
-			DBSetting dbSetting = getDBSetting(i);
-			if (this.database != null
-					&& !dbSetting.getDbsystem().equals(this.database)) {
-				continue;
-			}
-			this.dbSettingList.add(dbSetting);
-		}
-
-		Collections.sort(this.dbSettingList);
+		this.dbSettingList = PreferenceInitializer
+				.getDBSettingList(this.database);
 
 		for (DBSetting dbSetting : this.dbSettingList) {
 			TableItem item = new TableItem(this.settingTable, SWT.NONE);
@@ -202,30 +154,6 @@ public class DBSettingListDialog extends AbstractDialog {
 		}
 
 		this.setButtonEnabled(false);
-	}
-
-	public static DBSetting getDBSetting(int no) {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-		String dbsystem = store
-				.getString(PreferenceInitializer.DB_SETTING_DBSYSTEM + no);
-		String server = store.getString(PreferenceInitializer.DB_SETTING_SERVER
-				+ no);
-		int portNo = store.getInt(PreferenceInitializer.DB_SETTING_PORT + no);
-
-		String database = store
-				.getString(PreferenceInitializer.DB_SETTING_DATABASE + no);
-		String user = store.getString(PreferenceInitializer.DB_SETTING_USER
-				+ no);
-		String password = store
-				.getString(PreferenceInitializer.DB_SETTING_PASSWORD + no);
-		String url = store.getString(PreferenceInitializer.DB_SETTING_URL + no);
-		String driverClassName = store
-				.getString(PreferenceInitializer.DB_SETTING_DRIVER_CLASS_NAME
-						+ no);
-
-		return new DBSetting(dbsystem, server, portNo, database, user,
-				password, url, driverClassName);
 	}
 
 	/**
@@ -292,7 +220,7 @@ public class DBSettingListDialog extends AbstractDialog {
 				this.settingTable.remove(index);
 				this.dbSettingList.remove(index);
 
-				this.saveSetting();
+				PreferenceInitializer.saveSetting(this.dbSettingList);
 
 				if (index >= this.settingTable.getItemCount()) {
 					index = this.settingTable.getItemCount() - 1;

@@ -30,7 +30,7 @@ public class TranslationResources {
 				.getResourceString("label.translation.default");
 
 		if (translationSettings.isUse()) {
-			for (String translation : translationSettings
+			for (String translation : PreferenceInitializer
 					.getAllUserTranslations()) {
 				if (translationSettings.isSelected(translation)) {
 					File file = new File(PreferenceInitializer

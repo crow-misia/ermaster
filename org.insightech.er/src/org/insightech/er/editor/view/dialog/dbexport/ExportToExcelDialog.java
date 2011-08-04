@@ -45,6 +45,7 @@ import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
 import org.insightech.er.preference.PreferenceInitializer;
+import org.insightech.er.preference.template.TemplatePreferencePage;
 import org.insightech.er.util.Format;
 import org.insightech.er.util.io.FileUtils;
 
@@ -327,12 +328,10 @@ public class ExportToExcelDialog extends AbstractDialog {
 		int index = this.templateCombo.getSelectionIndex();
 
 		if (index == 0) {
-			return this.getClass().getResourceAsStream(
-					"/" + PreferenceInitializer.DEFAULT_TEMPLATE_FILE_EN);
+			return TemplatePreferencePage.getDefaultExcelTemplateEn();
 
 		} else if (index == 1) {
-			return this.getClass().getResourceAsStream(
-					"/" + PreferenceInitializer.DEFAULT_TEMPLATE_FILE_JA);
+			return TemplatePreferencePage.getDefaultExcelTemplateJa();
 
 		} else {
 			String templateName = this.templateCombo.getText();
@@ -471,4 +470,6 @@ public class ExportToExcelDialog extends AbstractDialog {
 	protected String getTitle() {
 		return "dialog.title.export.excel";
 	}
+	
+	
 }

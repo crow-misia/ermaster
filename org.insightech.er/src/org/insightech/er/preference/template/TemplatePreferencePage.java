@@ -24,6 +24,10 @@ public class TemplatePreferencePage extends
 		org.eclipse.jface.preference.PreferencePage implements
 		IWorkbenchPreferencePage {
 
+	private static final String DEFAULT_TEMPLATE_FILE_EN = "template_en.xls";
+
+	private static final String DEFAULT_TEMPLATE_FILE_JA = "template_ja.xls";
+
 	private TemplateFileListEditor fileListEditor;
 
 	public void init(IWorkbench workbench) {
@@ -74,7 +78,7 @@ public class TemplatePreferencePage extends
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				download(PreferenceInitializer.DEFAULT_TEMPLATE_FILE_EN);
+				download(DEFAULT_TEMPLATE_FILE_EN);
 			}
 		});
 
@@ -88,7 +92,7 @@ public class TemplatePreferencePage extends
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				download(PreferenceInitializer.DEFAULT_TEMPLATE_FILE_JA);
+				download(DEFAULT_TEMPLATE_FILE_JA);
 			}
 		});
 
@@ -148,5 +152,15 @@ public class TemplatePreferencePage extends
 
 			}
 		}
+	}
+
+	public static InputStream getDefaultExcelTemplateEn() {
+		return TemplatePreferencePage.class.getResourceAsStream("/"
+				+ DEFAULT_TEMPLATE_FILE_EN);
+	}
+
+	public static InputStream getDefaultExcelTemplateJa() {
+		return TemplatePreferencePage.class.getResourceAsStream("/"
+				+ DEFAULT_TEMPLATE_FILE_JA);
 	}
 }

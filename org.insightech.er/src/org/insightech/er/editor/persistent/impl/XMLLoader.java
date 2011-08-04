@@ -25,6 +25,7 @@ import org.insightech.er.db.impl.oracle.tablespace.OracleTablespaceProperties;
 import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.db.impl.postgres.PostgresTableProperties;
 import org.insightech.er.db.impl.postgres.tablespace.PostgresTablespaceProperties;
+import org.insightech.er.db.impl.standard_sql.StandardSQLDBManager;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ViewableModel;
@@ -1758,12 +1759,19 @@ public class XMLLoader {
 			String database = this.getStringValue(element, "database");
 			String user = this.getStringValue(element, "user");
 			String password = this.getStringValue(element, "password");
+			boolean useDefaultDriver = this.getBooleanValue(element,
+					"use_default_driver", true);
+			if (StandardSQLDBManager.ID.equals(dbsystem)) {
+				useDefaultDriver = false;
+			}
+
 			String url = this.getStringValue(element, "url");
 			String driverClassName = this.getStringValue(element,
 					"driver_class_name");
 
 			DBSetting dbSetting = new DBSetting(dbsystem, server, port,
-					database, user, password, url, driverClassName);
+					database, user, password, useDefaultDriver, url,
+					driverClassName);
 			diagram.setDbSetting(dbSetting);
 		}
 	}

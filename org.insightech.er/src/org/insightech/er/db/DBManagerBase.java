@@ -5,6 +5,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Driver;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,13 +17,10 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
-import org.insightech.er.Activator;
-import org.insightech.er.db.impl.standard_sql.StandardSQLDBManager;
+import org.insightech.er.editor.model.settings.JDBCDriverSetting;
 import org.insightech.er.preference.PreferenceInitializer;
 import org.insightech.er.preference.jdbc.JDBCPathDialog;
-import org.insightech.er.util.Format;
 
 public abstract class DBManagerBase implements DBManager {
 
@@ -45,70 +43,37 @@ public abstract class DBManagerBase implements DBManager {
 		return url;
 	}
 
-	public Class getDriverClass(String driverClassName) {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
+	@SuppressWarnings("unchecked")
+	public Class<Driver> getDriverClass(String driverClassName) {
+		String path = null;
 		Class clazz = null;
 
 		try {
-			String path = PreferenceInitializer
-					.getJDBCLibraryPath(this.getId());
-
-			if (StandardSQLDBManager.ID.equals(this.getId())) {
-
-				int num = store
-						.getInt(PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_LIST_NUM);
-
-				for (int i = 0; i < num; i++) {
-					if (driverClassName
-							.equals(store
-									.getString(PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_PREFIX
-											+ i))) {
-						path = store
-								.getString(PreferenceInitializer.JDBC_DRIVER_PATH_PREFIX
-										+ i);
-						break;
-					}
-				}
-			}
-
+			path = PreferenceInitializer.getJDBCDriverPath(this.getId(),
+					driverClassName);
 			ClassLoader loader = this.getClassLoader(path);
 			clazz = loader.loadClass(driverClassName);
 
 		} catch (Exception e) {
 			JDBCPathDialog dialog = new JDBCPathDialog(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow().getShell(), this
-					.getId(), driverClassName, PreferenceInitializer
-					.getJDBCLibraryPath(this.getId()), false);
+					.getId(), driverClassName, path,
+					new ArrayList<JDBCDriverSetting>(), false);
 
 			if (dialog.open() == IDialogConstants.OK_ID) {
+				JDBCDriverSetting newDriverSetting = new JDBCDriverSetting(this
+						.getId(), dialog.getDriverClassName(), dialog.getPath());
 
-				String path = dialog.getPath();
+				List<JDBCDriverSetting> driverSettingList = PreferenceInitializer
+						.getJDBCDriverSettingList();
 
-				if (StandardSQLDBManager.ID.equals(this.getId())) {
-					int num = store
-							.getInt(PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_LIST_NUM);
-
-					store.setValue(
-							PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_PREFIX
-									+ num, Format.null2blank(dialog
-									.getDriverClassName()));
-					store
-							.setValue(
-									PreferenceInitializer.JDBC_DRIVER_PATH_PREFIX
-											+ num, Format.null2blank(path));
-					num++;
-
-					store
-							.setValue(
-									PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_LIST_NUM,
-									num);
-
-				} else {
-					store.setValue(
-							PreferenceInitializer.JDBC_DRIVER_PATH_PREFIX
-									+ this.getId(), Format.null2blank(path));
+				if (driverSettingList.contains(newDriverSetting)) {
+					driverSettingList.remove(newDriverSetting);
 				}
+				driverSettingList.add(newDriverSetting);
+
+				PreferenceInitializer
+						.saveJDBCDriverSettingList(driverSettingList);
 
 				clazz = this.getDriverClass(dialog.getDriverClassName());
 			}
