@@ -2,6 +2,7 @@ package org.insightech.er.editor.model.diagram_contents.element.node.table;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +38,10 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 	public static final int DEFAULT_WIDTH = 120;
 
 	public static final int DEFAULT_HEIGHT = 75;
+
+	public static final Comparator<TableView> PHYSICAL_NAME_COMPARATOR = new TableViewPhysicalNameComparator();
+
+	public static final Comparator<TableView> LOGICAL_NAME_COMPARATOR = new TableViewLogicalNameComparator();
 
 	private String physicalName;
 
@@ -378,34 +383,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 	}
 
 	public int compareTo(TableView other) {
-		int compareTo = 0;
-
-		compareTo = Format
-				.null2blank(this.getTableViewProperties().getSchema())
-				.toUpperCase().compareTo(
-						Format.null2blank(
-								other.getTableViewProperties().getSchema())
-								.toUpperCase());
-
-		if (compareTo != 0) {
-			return compareTo;
-		}
-
-		compareTo = Format.null2blank(this.physicalName).toUpperCase()
-				.compareTo(Format.null2blank(other.physicalName).toUpperCase());
-
-		if (compareTo != 0) {
-			return compareTo;
-		}
-
-		compareTo = Format.null2blank(this.logicalName).toUpperCase()
-				.compareTo(Format.null2blank(other.logicalName).toUpperCase());
-
-		if (compareTo != 0) {
-			return compareTo;
-		}
-
-		return compareTo;
+		return PHYSICAL_NAME_COMPARATOR.compare(this, other);
 	}
 
 	public void replaceColumnGroup(ColumnGroup oldColumnGroup,
@@ -446,4 +424,91 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 	}
 
 	public abstract TableView copyData();
+
+	private static class TableViewPhysicalNameComparator implements
+			Comparator<TableView> {
+
+		public int compare(TableView o1, TableView o2) {
+			if (o1 == o2) {
+				return 0;
+			}
+			if (o2 == null) {
+				return -1;
+			}
+			if (o1 == null) {
+				return 1;
+			}
+
+			int compareTo = Format.null2blank(
+					o1.getTableViewProperties().getSchema()).toUpperCase()
+					.compareTo(
+							Format.null2blank(
+									o2.getTableViewProperties().getSchema())
+									.toUpperCase());
+
+			if (compareTo != 0) {
+				return compareTo;
+			}
+
+			int value = 0;
+
+			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.physicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.logicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			return 0;
+		}
+
+	}
+
+	private static class TableViewLogicalNameComparator implements
+			Comparator<TableView> {
+
+		public int compare(TableView o1, TableView o2) {
+			if (o1 == o2) {
+				return 0;
+			}
+			if (o2 == null) {
+				return -1;
+			}
+			if (o1 == null) {
+				return 1;
+			}
+
+			int compareTo = Format.null2blank(
+					o1.getTableViewProperties().getSchema()).toUpperCase()
+					.compareTo(
+							Format.null2blank(
+									o2.getTableViewProperties().getSchema())
+									.toUpperCase());
+
+			if (compareTo != 0) {
+				return compareTo;
+			}
+
+			int value = 0;
+
+			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.logicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.physicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			return 0;
+		}
+	}
 }

@@ -100,9 +100,16 @@ public class NormalColumnEditPart extends ColumnEditPart {
 		String type = diagram.filter(Format.formatType(normalColumn.getType(),
 				normalColumn.getTypeData(), diagram.getDatabase()));
 
-		boolean detail = true;
+		boolean displayKey = true;
 		if (notationLevel == Settings.NOTATION_LEVLE_COLUMN) {
-			detail = false;
+			displayKey = false;
+		}
+
+		boolean displayDetail = false;
+		if (notationLevel == Settings.NOTATION_LEVLE_KEY
+				|| notationLevel == Settings.NOTATION_LEVLE_EXCLUDE_TYPE
+				|| notationLevel == Settings.NOTATION_LEVLE_DETAIL) {
+			displayDetail = true;
 		}
 
 		boolean displayType = false;
@@ -115,9 +122,9 @@ public class NormalColumnEditPart extends ColumnEditPart {
 				.getPhysicalName()), diagram.filter(normalColumn
 				.getLogicalName()), type, normalColumn.isPrimaryKey(),
 				normalColumn.isForeignKey(), normalColumn.isNotNull(),
-				normalColumn.isUniqueKey(), detail, displayType,
-				isSelectedReferenced, isSelectedForeignKey, isAdded, isUpdated,
-				isRemoved);
+				normalColumn.isUniqueKey(), displayKey, displayDetail,
+				displayType, isSelectedReferenced, isSelectedForeignKey,
+				isAdded, isUpdated, isRemoved);
 	}
 
 	private List<NormalColumn> getSelectedReferencedColulmnList() {
@@ -261,8 +268,10 @@ public class NormalColumnEditPart extends ColumnEditPart {
 					NormalColumnFigure columnFigure = (NormalColumnFigure) childEditPart
 							.getFigure();
 					if (selected) {
-						columnFigure.setBackgroundColor(ColorConstants.titleBackground);
-						columnFigure.setForegroundColor(ColorConstants.titleForeground);
+						columnFigure
+								.setBackgroundColor(ColorConstants.titleBackground);
+						columnFigure
+								.setForegroundColor(ColorConstants.titleForeground);
 
 					} else {
 						columnFigure.setBackgroundColor(null);

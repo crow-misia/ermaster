@@ -41,6 +41,7 @@ import org.insightech.er.editor.view.action.option.notation.design.ChangeDesignT
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToColumnAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToDetailAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToExcludeTypeAction;
+import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToNameAndKeyAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToOnlyKeyAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToOnlyTitleAction;
 import org.insightech.er.editor.view.action.option.notation.system.ChangeToIDEF1XNotationAction;
@@ -77,6 +78,8 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		final IAction changeNotationLevelToColumnAction = getAction(ChangeNotationLevelToColumnAction.ID);
 		final IAction changeNotationLevelToDetailAction = getAction(ChangeNotationLevelToDetailAction.ID);
 		final IAction changeNotationLevelToExcludeTypeAction = getAction(ChangeNotationLevelToExcludeTypeAction.ID);
+		final IAction changeNotationLevelToNameAndKeyAction = getAction(ChangeNotationLevelToNameAndKeyAction.ID);
+
 		final IAction changeNotationExpandGroupAction = getAction(ChangeNotationExpandGroupAction.ID);
 
 		final IAction changeDesignToFunnyAction = getAction(ChangeDesignToFunnyAction.ID);
@@ -145,6 +148,7 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 		notationLevelMenu.add(changeNotationLevelToOnlyTitleAction);
 		notationLevelMenu.add(changeNotationLevelToOnlyKeyAction);
 		notationLevelMenu.add(changeNotationLevelToColumnAction);
+		notationLevelMenu.add(changeNotationLevelToNameAndKeyAction);
 		notationLevelMenu.add(changeNotationLevelToExcludeTypeAction);
 		notationLevelMenu.add(changeNotationLevelToDetailAction);
 
@@ -249,6 +253,7 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 				changeNotationLevelToOnlyTitleAction.setChecked(false);
 				changeNotationLevelToOnlyKeyAction.setChecked(false);
 				changeNotationLevelToColumnAction.setChecked(false);
+				changeNotationLevelToNameAndKeyAction.setChecked(false);
 				changeNotationLevelToExcludeTypeAction.setChecked(false);
 				changeNotationLevelToDetailAction.setChecked(false);
 
@@ -260,6 +265,9 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 
 				} else if (settings.getNotationLevel() == Settings.NOTATION_LEVLE_KEY) {
 					changeNotationLevelToOnlyKeyAction.setChecked(true);
+
+				} else if (settings.getNotationLevel() == Settings.NOTATION_LEVLE_NAME_AND_KEY) {
+					changeNotationLevelToNameAndKeyAction.setChecked(true);
 
 				} else if (settings.getNotationLevel() == Settings.NOTATION_LEVLE_EXCLUDE_TYPE) {
 					changeNotationLevelToExcludeTypeAction.setChecked(true);

@@ -9,8 +9,10 @@ import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditPart;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.ViewSet;
+import org.insightech.er.editor.model.settings.Settings;
 
 public class ViewSetOutlineEditPart extends AbstractOutlineEditPart {
 
@@ -27,11 +29,18 @@ public class ViewSetOutlineEditPart extends AbstractOutlineEditPart {
 	protected List getModelChildren() {
 		ViewSet viewSet = (ViewSet) this.getModel();
 
-		List<View> viewList = viewSet.getList();
+		List<View> list = viewSet.getList();
 
-		Collections.sort(viewList);
+		if (this.getDiagram().getDiagramContents().getSettings()
+				.getViewOrderBy() == Settings.VIEW_MODE_LOGICAL) {
+			Collections.sort(list, TableView.LOGICAL_NAME_COMPARATOR);
 
-		return viewList;
+		} else {
+			Collections.sort(list, TableView.PHYSICAL_NAME_COMPARATOR);
+
+		}
+
+		return list;
 	}
 
 	/**

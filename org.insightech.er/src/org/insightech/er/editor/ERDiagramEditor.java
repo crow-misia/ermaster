@@ -97,6 +97,7 @@ import org.insightech.er.editor.view.action.option.notation.design.ChangeDesignT
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToColumnAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToDetailAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToExcludeTypeAction;
+import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToNameAndKeyAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToOnlyKeyAction;
 import org.insightech.er.editor.view.action.option.notation.level.ChangeNotationLevelToOnlyTitleAction;
 import org.insightech.er.editor.view.action.option.notation.system.ChangeToIDEF1XNotationAction;
@@ -325,6 +326,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 						new ChangeNotationLevelToDetailAction(this),
 						new ChangeNotationLevelToOnlyTitleAction(this),
 						new ChangeNotationLevelToOnlyKeyAction(this),
+						new ChangeNotationLevelToNameAndKeyAction(this),
 						new ChangeNotationExpandGroupAction(this),
 						new ChangeDesignToFunnyAction(this),
 						new ChangeDesignToFrameAction(this),
@@ -541,12 +543,10 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 	}
 
 	public String getProjectFilePath(String extention) {
-		IFile file = ((IFileEditorInput) this.getEditorInput())
-				.getFile();
+		IFile file = ((IFileEditorInput) this.getEditorInput()).getFile();
 		String filePath = file.getLocation().toOSString();
-		filePath = filePath.substring(0, filePath.lastIndexOf("."))
-				+ extention;
-		
+		filePath = filePath.substring(0, filePath.lastIndexOf(".")) + extention;
+
 		return filePath;
 	}
 }

@@ -11,6 +11,7 @@ import org.insightech.er.ResourceString;
 import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditPart;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Dictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
+import org.insightech.er.editor.model.settings.Settings;
 
 public class DictionaryOutlineEditPart extends AbstractOutlineEditPart {
 
@@ -28,7 +29,14 @@ public class DictionaryOutlineEditPart extends AbstractOutlineEditPart {
 		Dictionary dictionary = (Dictionary) this.getModel();
 		List<Word> list = dictionary.getWordList();
 
-		Collections.sort(list);
+		if (this.getDiagram().getDiagramContents().getSettings()
+				.getViewOrderBy() == Settings.VIEW_MODE_LOGICAL) {
+			Collections.sort(list, Word.LOGICAL_NAME_COMPARATOR);
+
+		} else {
+			Collections.sort(list, Word.PHYSICAL_NAME_COMPARATOR);
+
+		}
 
 		return list;
 	}

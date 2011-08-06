@@ -1,13 +1,22 @@
 package org.insightech.er.editor.model.diagram_contents.not_element.dictionary;
 
+import java.util.Comparator;
+
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ObjectModel;
+import org.insightech.er.util.Format;
 
 public class Word extends AbstractModel implements ObjectModel,
 		Comparable<Word> {
 
 	private static final long serialVersionUID = 4315217440968295922L;
+
+	private static final Comparator<Word> WITHOUT_NAME_COMPARATOR = new WordWithoutNameComparator();
+
+	public static final Comparator<Word> PHYSICAL_NAME_COMPARATOR = new WordPhysicalNameComparator();
+
+	public static final Comparator<Word> LOGICAL_NAME_COMPARATOR = new WordLogicalNameComparator();
 
 	private String physicalName;
 
@@ -98,83 +107,7 @@ public class Word extends AbstractModel implements ObjectModel,
 	}
 
 	public int compareTo(Word o) {
-		if (o == null) {
-			return -1;
-		}
-
-		if (this.physicalName == null) {
-			if (o.physicalName != null) {
-				return 1;
-			}
-		} else {
-			if (o.physicalName == null) {
-				return -1;
-			}
-			int value = this.physicalName.toUpperCase().compareTo(
-					o.physicalName.toUpperCase());
-			if (value != 0) {
-				return value;
-			}
-		}
-
-		if (this.logicalName == null) {
-			if (o.logicalName != null) {
-				return 1;
-			}
-		} else {
-			if (o.logicalName == null) {
-				return -1;
-			}
-			int value = this.logicalName.toUpperCase().compareTo(
-					o.logicalName.toUpperCase());
-			if (value != 0) {
-				return value;
-			}
-		}
-
-		if (this.type == null) {
-			if (o.type != null) {
-				return 1;
-			}
-		} else {
-			if (o.type == null) {
-				return -1;
-			}
-			int value = this.type.getId().compareTo(o.type.getId());
-			if (value != 0) {
-				return value;
-			}
-		}
-
-		if (this.typeData == null) {
-			if (o.typeData != null) {
-				return 1;
-			}
-		} else {
-			if (o.typeData == null) {
-				return -1;
-			}
-			int value = this.typeData.compareTo(o.typeData);
-			if (value != 0) {
-				return value;
-			}
-		}
-
-		if (this.description == null) {
-			if (o.description != null) {
-				return 1;
-			}
-		} else {
-			if (o.description == null) {
-				return -1;
-			}
-			int value = this.description.compareTo(o.description);
-			if (value != 0) {
-				return value;
-			}
-		}
-
-		return 0;
+		return PHYSICAL_NAME_COMPARATOR.compare(this, o);
 	}
 
 	public String getName() {
@@ -183,6 +116,122 @@ public class Word extends AbstractModel implements ObjectModel,
 
 	public String getObjectType() {
 		return "word";
+	}
+
+	private static class WordWithoutNameComparator implements Comparator<Word> {
+
+		public int compare(Word o1, Word o2) {
+			if (o1 == o2) {
+				return 0;
+			}
+			if (o2 == null) {
+				return -1;
+			}
+			if (o1 == null) {
+				return 1;
+			}
+
+			if (o1.type == null) {
+				if (o2.type != null) {
+					return 1;
+				}
+			} else {
+				if (o2.type == null) {
+					return -1;
+				}
+				int value = o1.type.getId().compareTo(o2.type.getId());
+				if (value != 0) {
+					return value;
+				}
+			}
+
+			if (o1.typeData == null) {
+				if (o2.typeData != null) {
+					return 1;
+				}
+			} else {
+				if (o2.typeData == null) {
+					return -1;
+				}
+				int value = o1.typeData.compareTo(o2.typeData);
+				if (value != 0) {
+					return value;
+				}
+			}
+
+			int value = Format.null2blank(o1.description).compareTo(
+					Format.null2blank(o2.description));
+			if (value != 0) {
+				return value;
+			}
+
+			return 0;
+		}
+
+	}
+
+	private static class WordPhysicalNameComparator implements Comparator<Word> {
+
+		public int compare(Word o1, Word o2) {
+			if (o1 == o2) {
+				return 0;
+			}
+			if (o2 == null) {
+				return -1;
+			}
+			if (o1 == null) {
+				return 1;
+			}
+
+			int value = 0;
+
+			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.physicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.logicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			return WITHOUT_NAME_COMPARATOR.compare(o1, o2);
+		}
+
+	}
+
+	private static class WordLogicalNameComparator implements Comparator<Word> {
+
+		public int compare(Word o1, Word o2) {
+			if (o1 == o2) {
+				return 0;
+			}
+			if (o2 == null) {
+				return -1;
+			}
+			if (o1 == null) {
+				return 1;
+			}
+
+			int value = 0;
+
+			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.logicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
+					Format.null2blank(o2.physicalName).toUpperCase());
+			if (value != 0) {
+				return value;
+			}
+
+			return WITHOUT_NAME_COMPARATOR.compare(o1, o2);
+		}
+
 	}
 
 }
