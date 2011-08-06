@@ -601,6 +601,12 @@ public abstract class DDLCreator {
 
 		ddl.append(this.getPostDDL(table));
 
+		String option = Format.null2blank(table.getOption()).trim();
+		if (!"".equals(option)) {
+			ddl.append("\r\n");
+			ddl.append(option);
+		}
+		
 		if (this.semicolon) {
 			ddl.append(";");
 		}

@@ -19,14 +19,17 @@ public class ConstraintTabWrapper extends ValidatableTabWrapper {
 
 	private Text primaryKeyNameText;
 
+	private Text optionText;
+
 	private TableDialog tableDialog;
-	
-	public ConstraintTabWrapper(TableDialog tableDialog, TabFolder parent, int style, ERTable copyData) {
-		super(parent, style, "label.constraint");
+
+	public ConstraintTabWrapper(TableDialog tableDialog, TabFolder parent,
+			int style, ERTable copyData) {
+		super(parent, style, "label.constraint.and.option");
 
 		this.copyData = copyData;
 		this.tableDialog = tableDialog;
-		
+
 		this.init();
 	}
 
@@ -43,6 +46,9 @@ public class ConstraintTabWrapper extends ValidatableTabWrapper {
 			throw new InputException("error.primary.key.name.not.alphabet");
 		}
 		this.copyData.setPrimaryKeyName(text);
+
+		text = optionText.getText().trim();
+		this.copyData.setOption(text);
 	}
 
 	@Override
@@ -53,18 +59,27 @@ public class ConstraintTabWrapper extends ValidatableTabWrapper {
 
 		CompositeFactory.createLabel(this, "label.table.constraint", 1);
 
-		this.constraintText = CompositeFactory.createTextArea(tableDialog, this, null,
-				-1, 100, 1, false);
+		this.constraintText = CompositeFactory.createTextArea(tableDialog,
+				this, null, -1, 100, 1, false);
 
 		this.constraintText
 				.setText(Format.null2blank(copyData.getConstraint()));
 
 		CompositeFactory.filler(this, 1);
 
-		this.primaryKeyNameText = CompositeFactory.createText(tableDialog, this,
-				"label.primary.key.name", 1, false);
+		this.primaryKeyNameText = CompositeFactory.createText(tableDialog,
+				this, "label.primary.key.name", 1, false);
 		this.primaryKeyNameText.setText(Format.null2blank(copyData
 				.getPrimaryKeyName()));
+
+		CompositeFactory.filler(this, 1);
+
+		CompositeFactory.createLabel(this, "label.option", 1);
+
+		this.optionText = CompositeFactory.createTextArea(tableDialog, this,
+				null, -1, 100, 1, false);
+
+		this.optionText.setText(Format.null2blank(copyData.getOption()));
 	}
 
 	@Override
