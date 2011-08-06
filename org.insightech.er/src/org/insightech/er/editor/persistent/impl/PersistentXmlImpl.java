@@ -1173,6 +1173,8 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("\t<primary_key_name>").append(
 				escape(table.getPrimaryKeyName())).append(
 				"</primary_key_name>\n");
+		xml.append("\t<option>").append(escape(table.getOption())).append(
+				"</option>\n");
 
 		List<Column> columns = table.getColumns();
 		xml.append(tab(this.createXMLColumns(columns, context)));

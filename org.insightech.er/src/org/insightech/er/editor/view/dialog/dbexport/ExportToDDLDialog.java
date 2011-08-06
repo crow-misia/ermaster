@@ -391,7 +391,8 @@ public class ExportToDDLDialog extends AbstractDialog {
 
 		boolean openAfterSaved = this.openAfterSavedButton.getSelection();
 
-		this.exportSetting = new ExportSetting();
+		this.exportSetting = this.diagram.getDiagramContents().getSettings()
+				.getExportSetting().clone();
 
 		this.exportSetting.setDdlOutput(saveFilePath);
 		this.exportSetting.setDdlTarget(ddlTarget);

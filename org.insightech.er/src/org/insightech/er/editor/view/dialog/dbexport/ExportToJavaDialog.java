@@ -120,7 +120,8 @@ public class ExportToJavaDialog extends AbstractDialog {
 			String fileEncoding = this.fileEncodingCombo.getText();
 			boolean withHibernate = this.withHibernateButton.getSelection();
 
-			this.exportSetting = new ExportSetting();
+			this.exportSetting = this.diagram.getDiagramContents()
+					.getSettings().getExportSetting().clone();
 			ExportJavaSetting exportJavaSetting = this.exportSetting
 					.getExportJavaSetting();
 

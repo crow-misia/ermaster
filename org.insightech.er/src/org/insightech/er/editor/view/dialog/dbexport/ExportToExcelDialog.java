@@ -265,7 +265,8 @@ public class ExportToExcelDialog extends AbstractDialog {
 						IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID, true);
 			}
 
-			this.exportSetting = new ExportSetting();
+			this.exportSetting = this.diagram.getDiagramContents()
+					.getSettings().getExportSetting().clone();
 
 			this.exportSetting.setExcelOutput(outputExcelFilePath);
 			this.exportSetting.setImageOutput(outputImageFilePath);
@@ -470,6 +471,5 @@ public class ExportToExcelDialog extends AbstractDialog {
 	protected String getTitle() {
 		return "dialog.title.export.excel";
 	}
-	
-	
+
 }

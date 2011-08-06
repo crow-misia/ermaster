@@ -40,6 +40,8 @@ public class ERTable extends TableView implements TablePropertiesHolder,
 
 	private String primaryKeyName;
 
+	private String option;
+
 	private List<Index> indexes;
 
 	private List<ComplexUniqueKey> complexUniqueKeyList;
@@ -89,7 +91,8 @@ public class ERTable extends TableView implements TablePropertiesHolder,
 
 		to.setConstraint(this.getConstraint());
 		to.setPrimaryKeyName(this.getPrimaryKeyName());
-		
+		to.setOption(this.getOption());
+
 		super.copyTableViewData(to);
 
 		List<Index> indexes = new ArrayList<Index>();
@@ -121,7 +124,8 @@ public class ERTable extends TableView implements TablePropertiesHolder,
 
 		table.setConstraint(this.getConstraint());
 		table.setPrimaryKeyName(this.getPrimaryKeyName());
-		
+		table.setOption(this.getOption());
+
 		super.restructureData(to);
 
 		List<Index> indexes = new ArrayList<Index>();
@@ -280,6 +284,14 @@ public class ERTable extends TableView implements TablePropertiesHolder,
 
 	public void setPrimaryKeyName(String primaryKeyName) {
 		this.primaryKeyName = primaryKeyName;
+	}
+
+	public String getOption() {
+		return option;
+	}
+
+	public void setOption(String option) {
+		this.option = option;
 	}
 
 	public static boolean isRecursive(TableView source, TableView target) {

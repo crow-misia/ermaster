@@ -267,7 +267,7 @@ public class XMLLoader {
 		Node node = nodeList.item(0);
 
 		if (node.getFirstChild() == null) {
-			return null;
+			return "";
 		}
 
 		return node.getFirstChild().getNodeValue();
@@ -1174,7 +1174,6 @@ public class XMLLoader {
 					.getBooleanValue(element, "comment_replace_line_feed");
 			exportSetting.getDdlTarget().commentReplaceString = this
 					.getStringValue(element, "comment_replace_string");
-
 			this.loadExportJavaSetting(exportSetting.getExportJavaSetting(),
 					element, context);
 			this.loadExportTestDataSetting(exportSetting
@@ -1419,6 +1418,7 @@ public class XMLLoader {
 		table.setConstraint(this.getStringValue(element, "constraint"));
 		table.setPrimaryKeyName(this
 				.getStringValue(element, "primary_key_name"));
+		table.setOption(this.getStringValue(element, "option"));
 
 		List<Column> columns = this.loadColumns(element, context);
 		table.setColumns(columns);
