@@ -1076,6 +1076,7 @@ public class XMLLoader {
 			settings.setViewMode(this.getIntValue(element, "view_mode"));
 			settings.setOutlineViewMode(this.getIntValue(element,
 					"outline_view_mode"));
+			settings.setViewOrderBy(this.getIntValue(element, "view_order_by"));
 
 			settings.setAutoImeChange(this.getBooleanValue(element,
 					"auto_ime_change"));

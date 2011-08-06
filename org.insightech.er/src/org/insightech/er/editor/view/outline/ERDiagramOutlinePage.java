@@ -29,6 +29,8 @@ import org.insightech.er.editor.view.action.outline.index.CreateIndexAction;
 import org.insightech.er.editor.view.action.outline.notation.type.ChangeOutlineViewToBothAction;
 import org.insightech.er.editor.view.action.outline.notation.type.ChangeOutlineViewToLogicalAction;
 import org.insightech.er.editor.view.action.outline.notation.type.ChangeOutlineViewToPhysicalAction;
+import org.insightech.er.editor.view.action.outline.orderby.ChangeOutlineViewOrderByLogicalNameAction;
+import org.insightech.er.editor.view.action.outline.orderby.ChangeOutlineViewOrderByPhysicalNameAction;
 import org.insightech.er.editor.view.action.outline.sequence.CreateSequenceAction;
 import org.insightech.er.editor.view.action.outline.tablespace.CreateTablespaceAction;
 import org.insightech.er.editor.view.action.outline.trigger.CreateTriggerAction;
@@ -172,7 +174,9 @@ public class ERDiagramOutlinePage extends ContentOutlinePage {
 				new CreateTablespaceAction(treeViewer),
 				new ChangeOutlineViewToPhysicalAction(treeViewer),
 				new ChangeOutlineViewToLogicalAction(treeViewer),
-				new ChangeOutlineViewToBothAction(treeViewer) };
+				new ChangeOutlineViewToBothAction(treeViewer),
+				new ChangeOutlineViewOrderByPhysicalNameAction(treeViewer),
+				new ChangeOutlineViewOrderByLogicalNameAction(treeViewer) };
 
 		for (IAction action : actions) {
 			actionRegistry.registerAction(action);

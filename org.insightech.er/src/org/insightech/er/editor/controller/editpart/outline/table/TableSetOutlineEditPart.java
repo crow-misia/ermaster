@@ -13,6 +13,8 @@ import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditP
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableSet;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
+import org.insightech.er.editor.model.settings.Settings;
 
 public class TableSetOutlineEditPart extends AbstractOutlineEditPart {
 
@@ -29,18 +31,25 @@ public class TableSetOutlineEditPart extends AbstractOutlineEditPart {
 	protected List getModelChildren() {
 		TableSet tableSet = (TableSet) this.getModel();
 
-		List<ERTable> modelChildren = new ArrayList<ERTable>();
+		List<ERTable> list = new ArrayList<ERTable>();
 
 		Category category = this.getCurrentCategory();
 		for (ERTable table : tableSet) {
 			if (category == null || category.contains(table)) {
-				modelChildren.add(table);
+				list.add(table);
 			}
 		}
 
-		Collections.sort(modelChildren);
+		if (this.getDiagram().getDiagramContents().getSettings()
+				.getViewOrderBy() == Settings.VIEW_MODE_LOGICAL) {
+			Collections.sort(list, TableView.LOGICAL_NAME_COMPARATOR);
 
-		return modelChildren;
+		} else {
+			Collections.sort(list, TableView.PHYSICAL_NAME_COMPARATOR);
+
+		}
+
+		return list;
 	}
 
 	/**

@@ -633,6 +633,8 @@ public class PersistentXmlImpl extends Persistent {
 				"</view_mode>\n");
 		xml.append("\t<outline_view_mode>").append(
 				settings.getOutlineViewMode()).append("</outline_view_mode>\n");
+		xml.append("\t<view_order_by>").append(settings.getViewOrderBy())
+				.append("</view_order_by>\n");
 
 		xml.append("\t<auto_ime_change>").append(settings.isAutoImeChange())
 				.append("</auto_ime_change>\n");

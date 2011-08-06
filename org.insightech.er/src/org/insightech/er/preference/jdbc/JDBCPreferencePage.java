@@ -145,7 +145,6 @@ public class JDBCPreferencePage extends
 			String db = tableItem.getText(0);
 			String driverClassName = tableItem.getText(1);
 			String path = tableItem.getText(2);
-			System.out.println(db + ":" + driverClassName);
 
 			PreferenceInitializer.addJDBCDriver(db, driverClassName, path);
 		}
@@ -299,7 +298,7 @@ public class JDBCPreferencePage extends
 				item.setText(1, dialog.getDriverClassName());
 				item.setText(2, dialog.getPath());
 			}
-			
+
 		} catch (Exception e) {
 			Activator.showExceptionDialog(e);
 		}

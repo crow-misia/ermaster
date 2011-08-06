@@ -121,18 +121,19 @@ public class FunnyStyleSupport extends AbstractStyleSupport {
 	public void addColumn(NormalColumnFigure columnFigure, int viewMode,
 			String physicalName, String logicalName, String type,
 			boolean primaryKey, boolean foreignKey, boolean isNotNull,
-			boolean uniqueKey, boolean detail, boolean displayType,
-			boolean isSelectedReferenced, boolean isSelectedForeignKey,
-			boolean isAdded, boolean isUpdated, boolean isRemoved) {
+			boolean uniqueKey, boolean displayKey, boolean displayDetail,
+			boolean displayType, boolean isSelectedReferenced,
+			boolean isSelectedForeignKey, boolean isAdded, boolean isUpdated,
+			boolean isRemoved) {
 
 		Label label = this.createColumnLabel();
 		label.setForegroundColor(ColorConstants.black);
 
 		StringBuilder text = new StringBuilder();
 		text.append(this.getColumnText(viewMode, physicalName, logicalName,
-				type, isNotNull, uniqueKey, detail, displayType));
+				type, isNotNull, uniqueKey, displayDetail, displayType));
 
-		if (detail) {
+		if (displayKey) {
 			if (primaryKey) {
 				ImageFigure image = new ImageFigure();
 				image.setBorder(new MarginBorder(new Insets(0, 0, 0, 0)));

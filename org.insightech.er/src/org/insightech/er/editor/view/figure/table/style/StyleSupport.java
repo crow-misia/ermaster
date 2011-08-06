@@ -25,9 +25,10 @@ public interface StyleSupport {
 	public void addColumn(NormalColumnFigure columnFigure, int viewMode,
 			String physicalName, String logicalName, String type,
 			boolean primaryKey, boolean foreignKey, boolean isNotNull,
-			boolean uniqueKey, boolean detail, boolean displayType,
-			boolean isSelectedReferenced, boolean isSelectedForeignKey,
-			boolean isAdded, boolean isUpdated, boolean isRemoved);
+			boolean uniqueKey, boolean displayKey, boolean displayDetail,
+			boolean displayType, boolean isSelectedReferenced,
+			boolean isSelectedForeignKey, boolean isAdded, boolean isUpdated,
+			boolean isRemoved);
 
 	public void addColumnGroup(GroupColumnFigure columnFigure, int viewMode,
 			String name, boolean isAdded, boolean isUpdated, boolean isRemoved);

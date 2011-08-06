@@ -28,6 +28,8 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 
 	public static final int NOTATION_LEVLE_EXCLUDE_TYPE = 4;
 
+	public static final int NOTATION_LEVLE_NAME_AND_KEY = 5;
+
 	public static final String NOTATION_IE = "IE";
 
 	public static final String NOTATION_IDEF1X = "IDEF1X";
@@ -57,6 +59,8 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	private int notationLevel;
 
 	private int viewMode;
+	
+	private int viewOrderBy;
 
 	private int outlineViewMode;
 
@@ -83,6 +87,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 		this.tableStyle = null;
 		this.viewMode = VIEW_MODE_PHYSICAL;
 		this.outlineViewMode = VIEW_MODE_PHYSICAL;
+		this.viewOrderBy = VIEW_MODE_PHYSICAL;
 
 		this.modelProperties = new ModelProperties();
 		this.categorySetting = new CategorySetting();
@@ -165,6 +170,14 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 
 	public void setOutlineViewMode(int outlineViewMode) {
 		this.outlineViewMode = outlineViewMode;
+	}
+
+	public int getViewOrderBy() {
+		return viewOrderBy;
+	}
+
+	public void setViewOrderBy(int viewOrderBy) {
+		this.viewOrderBy = viewOrderBy;
 	}
 
 	public boolean isAutoImeChange() {

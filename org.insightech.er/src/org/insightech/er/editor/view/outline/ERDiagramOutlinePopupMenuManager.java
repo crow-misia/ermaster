@@ -12,6 +12,7 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
@@ -29,6 +30,8 @@ import org.insightech.er.editor.view.action.outline.index.CreateIndexAction;
 import org.insightech.er.editor.view.action.outline.notation.type.ChangeOutlineViewToBothAction;
 import org.insightech.er.editor.view.action.outline.notation.type.ChangeOutlineViewToLogicalAction;
 import org.insightech.er.editor.view.action.outline.notation.type.ChangeOutlineViewToPhysicalAction;
+import org.insightech.er.editor.view.action.outline.orderby.ChangeOutlineViewOrderByLogicalNameAction;
+import org.insightech.er.editor.view.action.outline.orderby.ChangeOutlineViewOrderByPhysicalNameAction;
 import org.insightech.er.editor.view.action.outline.sequence.CreateSequenceAction;
 import org.insightech.er.editor.view.action.outline.tablespace.CreateTablespaceAction;
 import org.insightech.er.editor.view.action.outline.trigger.CreateTriggerAction;
@@ -66,6 +69,8 @@ public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 			this.add(this.getAction(CreateIndexAction.ID));
 			this.add(this.getAction(CreateTablespaceAction.ID));
 
+			this.add(new Separator());
+
 			MenuManager viewModeMenu = new MenuManager(ResourceString
 					.getResourceString("label.outline.view.mode"));
 			viewModeMenu.add(this
@@ -74,6 +79,14 @@ public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 					.getAction(ChangeOutlineViewToLogicalAction.ID));
 			viewModeMenu.add(this.getAction(ChangeOutlineViewToBothAction.ID));
 			this.add(viewModeMenu);
+
+			MenuManager orderByMenu = new MenuManager(ResourceString
+					.getResourceString("label.order.by"));
+			orderByMenu.add(this
+					.getAction(ChangeOutlineViewOrderByPhysicalNameAction.ID));
+			orderByMenu.add(this
+					.getAction(ChangeOutlineViewOrderByLogicalNameAction.ID));
+			this.add(orderByMenu);
 
 			this.addMenuListener(new IMenuListener() {
 
@@ -95,7 +108,15 @@ public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 										&& !menuItem
 												.getId()
 												.equals(
-														ChangeOutlineViewToBothAction.ID)) {
+														ChangeOutlineViewToBothAction.ID)
+										&& !menuItem
+												.getId()
+												.equals(
+														ChangeOutlineViewOrderByPhysicalNameAction.ID)
+										&& !menuItem
+												.getId()
+												.equals(
+														ChangeOutlineViewOrderByLogicalNameAction.ID)) {
 									enabled(menuItem.getId(), false);
 									// menuItem.setVisible(false);
 								}
@@ -109,7 +130,7 @@ public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 
 								if (!clazz.isInstance(editPart)) {
 									enabled(actionId, false);
-									
+
 								} else {
 									if (CreateSequenceAction.ID
 											.equals(actionId)
@@ -149,7 +170,20 @@ public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 							action2.setChecked(true);
 						}
 
+						action0 = getAction(ChangeOutlineViewOrderByPhysicalNameAction.ID);
+						action1 = getAction(ChangeOutlineViewOrderByLogicalNameAction.ID);
+
+						if (settings.getViewOrderBy() == Settings.VIEW_MODE_PHYSICAL) {
+							action0.setChecked(true);
+							action1.setChecked(false);
+
+						} else {
+							action0.setChecked(false);
+							action1.setChecked(true);
+						}
+
 						manager.update(true);
+						
 					} catch (Exception e) {
 						Activator.showExceptionDialog(e);
 					}
