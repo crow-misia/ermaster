@@ -14,16 +14,20 @@ public class InsertedImageFigure extends Figure {
 
 	private Dimension imageSize;
 
-	public InsertedImageFigure(Image image, boolean fixAspectRatio) {
+	private int alpha;
+
+	public InsertedImageFigure(Image image, boolean fixAspectRatio, int alpha) {
 		this.image = image;
 		this.fixAspectRatio = fixAspectRatio;
+		this.alpha = alpha;
 		this.imageSize = new Dimension(this.image.getBounds().width, this.image
 				.getBounds().height);
 	}
 
-	public void setImg(Image image, boolean fixAspectRatio) {
+	public void setImg(Image image, boolean fixAspectRatio, int alpha) {
 		this.image = image;
 		this.fixAspectRatio = fixAspectRatio;
+		this.alpha = alpha;
 
 		this.imageSize = new Dimension(this.image.getBounds().width, this.image
 				.getBounds().height);
@@ -32,6 +36,8 @@ public class InsertedImageFigure extends Figure {
 	@Override
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
+
+		graphics.setAlpha(alpha);
 
 		Rectangle area = getClientArea();
 

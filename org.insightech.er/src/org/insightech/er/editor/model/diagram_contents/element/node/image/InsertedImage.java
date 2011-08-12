@@ -26,6 +26,8 @@ public class InsertedImage extends NodeElement {
 	/** -100Å@Å`Å@+100 */
 	private int brightness;
 
+	private int alpha;
+	
 	private boolean fixAspectRatio;
 
 	public String getBase64EncodedData() {
@@ -95,6 +97,14 @@ public class InsertedImage extends NodeElement {
 
 	public void setBrightness(int brightness) {
 		this.brightness = brightness;
+	}
+
+	public int getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
 	}
 
 	public boolean isFixAspectRatio() {

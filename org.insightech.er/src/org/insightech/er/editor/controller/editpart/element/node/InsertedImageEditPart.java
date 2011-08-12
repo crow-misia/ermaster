@@ -42,7 +42,7 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 		this.changeImage();
 
 		InsertedImageFigure figure = new InsertedImageFigure(this.image, model
-				.isFixAspectRatio());
+				.isFixAspectRatio(), model.getAlpha());
 		figure.setMinimumSize(new Dimension(1, 1));
 
 		return figure;
@@ -78,7 +78,8 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 			InsertedImageFigure figure = (InsertedImageFigure) this.getFigure();
 			InsertedImage model = (InsertedImage) this.getModel();
 
-			figure.setImg(this.image, model.isFixAspectRatio());
+			figure.setImg(this.image, model.isFixAspectRatio(), model
+					.getAlpha());
 
 			this.refreshVisuals();
 		}

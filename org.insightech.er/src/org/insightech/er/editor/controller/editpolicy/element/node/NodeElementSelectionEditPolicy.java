@@ -46,8 +46,8 @@ public class NodeElementSelectionEditPolicy extends ResizableEditPolicy {
 		int directions = this.getResizeDirections();
 
 		if (directions == 0) {
-			NonResizableHandleKit.addHandles((GraphicalEditPart) getHost(),
-					list);
+//			NonResizableHandleKit.addHandles((GraphicalEditPart) getHost(),
+//					list);
 
 		} else if (directions != -1) {
 			// 0

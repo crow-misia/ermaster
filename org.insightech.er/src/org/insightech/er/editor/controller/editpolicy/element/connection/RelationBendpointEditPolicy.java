@@ -72,14 +72,18 @@ public class RelationBendpointEditPolicy extends ERDiagramBendpointEditPolicy {
 			double zoom = zoomManager.getZoom();
 
 			Polyline feedbackFigure = new Polyline();
-			feedbackFigure.addPoint(new Point(rect.x * zoom, rect.y * zoom));
-			feedbackFigure.addPoint(new Point(rect.x * zoom,
-					(rect.y + rect.height) * zoom));
-			feedbackFigure.addPoint(new Point((rect.x + rect.width) * zoom,
-					(rect.y + rect.height) * zoom));
-			feedbackFigure.addPoint(new Point((rect.x + rect.width) * zoom,
-					rect.y * zoom));
-			feedbackFigure.addPoint(new Point(rect.x * zoom, rect.y * zoom));
+			feedbackFigure.addPoint(new Point((int) (rect.x * zoom),
+					(int) (rect.y * zoom)));
+			feedbackFigure.addPoint(new Point((int) (rect.x * zoom),
+					(int) ((rect.y + rect.height) * zoom)));
+			feedbackFigure.addPoint(new Point(
+					(int) ((rect.x + rect.width) * zoom),
+					(int) ((rect.y + rect.height) * zoom)));
+			feedbackFigure
+					.addPoint(new Point((int) ((rect.x + rect.width) * zoom),
+							(int) (rect.y * zoom)));
+			feedbackFigure.addPoint(new Point((int) (rect.x * zoom),
+					(int) (rect.y * zoom)));
 
 			feedbackFigure.setLineStyle(SWT.LINE_DASH);
 
