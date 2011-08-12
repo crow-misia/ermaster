@@ -47,8 +47,8 @@ public class PrintERDiagramOperation extends PrintGraphicalViewerOperation {
 						.getRightMargin() * printerDPI.x) / 72);
 
 		Rectangle paperBounds = new Rectangle(this.getPrinter().getBounds());
-		Rectangle printRegion = paperBounds.getCropped(notAvailable);
-		printRegion.intersect(paperBounds.getCropped(userPreferred));
+		Rectangle printRegion = paperBounds.getShrinked(notAvailable);
+		printRegion.intersect(paperBounds.getShrinked(userPreferred));
 		printRegion.translate(trim.x, trim.y);
 		return printRegion;
 	}

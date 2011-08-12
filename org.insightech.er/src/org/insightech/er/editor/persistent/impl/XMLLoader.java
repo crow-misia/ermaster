@@ -308,16 +308,20 @@ public class XMLLoader {
 	}
 
 	private int getIntValue(Element element, String tagname) {
+		return getIntValue(element, tagname, 0);
+	}
+
+	private int getIntValue(Element element, String tagname, int defaultValue) {
 		NodeList nodeList = element.getElementsByTagName(tagname);
 
 		if (nodeList.getLength() == 0) {
-			return 0;
+			return defaultValue;
 		}
 
 		Node node = nodeList.item(0);
 
 		if (node.getFirstChild() == null) {
-			return 0;
+			return defaultValue;
 		}
 
 		String value = node.getFirstChild().getNodeValue();
@@ -1637,6 +1641,7 @@ public class XMLLoader {
 		insertedImage.setHue(this.getIntValue(element, "hue"));
 		insertedImage.setSaturation(this.getIntValue(element, "saturation"));
 		insertedImage.setBrightness(this.getIntValue(element, "brightness"));
+		insertedImage.setAlpha(this.getIntValue(element, "alpha", 255));
 		insertedImage.setFixAspectRatio(this.getBooleanValue(element,
 				"fix_aspect_ratio"));
 

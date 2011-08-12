@@ -1292,6 +1292,8 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</saturation>\n");
 		xml.append("\t<brightness>").append(insertedImage.getBrightness())
 				.append("</brightness>\n");
+		xml.append("\t<alpha>").append(insertedImage.getAlpha()).append(
+				"</alpha>\n");
 		xml.append("\t<fix_aspect_ratio>").append(
 				insertedImage.isFixAspectRatio()).append(
 				"</fix_aspect_ratio>\n");

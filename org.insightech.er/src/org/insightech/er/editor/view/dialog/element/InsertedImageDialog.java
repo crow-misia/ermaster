@@ -16,6 +16,8 @@ public class InsertedImageDialog extends AbstractDialog {
 
 	private SpinnerWithScale brightnessSpinner;
 
+	private SpinnerWithScale alphaSpinner;
+
 	private Button fixAspectRatioCheckbox;
 
 	private InsertedImage insertedImage;
@@ -43,6 +45,9 @@ public class InsertedImageDialog extends AbstractDialog {
 		this.brightnessSpinner = CompositeFactory.createSpinnerWithScale(this,
 				composite, "label.image.brightness", -100, 100);
 
+		this.alphaSpinner = CompositeFactory.createSpinnerWithScale(this,
+				composite, "label.image.alpha", 0, 255);
+
 		this.fixAspectRatioCheckbox = CompositeFactory.createCheckbox(this,
 				composite, "label.image.fix.aspect.ratio", 3);
 	}
@@ -55,6 +60,7 @@ public class InsertedImageDialog extends AbstractDialog {
 		this.insertedImage.setHue(this.hueSpinner.getSelection());
 		this.insertedImage.setSaturation(this.saturationSpinner.getSelection());
 		this.insertedImage.setBrightness(this.brightnessSpinner.getSelection());
+		this.insertedImage.setAlpha(this.alphaSpinner.getSelection());
 
 		this.insertedImage.setFixAspectRatio(this.fixAspectRatioCheckbox
 				.getSelection());
@@ -75,6 +81,7 @@ public class InsertedImageDialog extends AbstractDialog {
 				.getSelection());
 		this.newInsertedImage.setBrightness(this.brightnessSpinner
 				.getSelection());
+		this.newInsertedImage.setAlpha(this.alphaSpinner.getSelection());
 		this.newInsertedImage.setFixAspectRatio(this.fixAspectRatioCheckbox
 				.getSelection());
 	}
@@ -89,6 +96,7 @@ public class InsertedImageDialog extends AbstractDialog {
 		this.hueSpinner.setSelection(this.insertedImage.getHue());
 		this.saturationSpinner.setSelection(this.insertedImage.getSaturation());
 		this.brightnessSpinner.setSelection(this.insertedImage.getBrightness());
+		this.alphaSpinner.setSelection(this.insertedImage.getAlpha());
 		this.fixAspectRatioCheckbox.setSelection(this.insertedImage
 				.isFixAspectRatio());
 	}

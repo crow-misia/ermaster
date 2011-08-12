@@ -23,7 +23,7 @@ public class NoteFigure extends Shape {
 	private TextFlow label;
 
 	private Color foregroundColor;
-	
+
 	public NoteFigure() {
 		this.create();
 		this.setMinimumSize(new Dimension(RETURN_WIDTH * 2, RETURN_WIDTH * 2));
@@ -80,10 +80,10 @@ public class NoteFigure extends Shape {
 	@Override
 	protected void outlineShape(Graphics graphics) {
 		Rectangle r = getBounds();
-		int x = r.x + lineWidth / 2;
-		int y = r.y + lineWidth / 2;
-		int w = r.width - Math.max(1, lineWidth);
-		int h = r.height - Math.max(1, lineWidth);
+		int x = r.x + getLineWidth() / 2;
+		int y = r.y + getLineWidth() / 2;
+		int w = r.width - Math.max(1, getLineWidth());
+		int h = r.height - Math.max(1, getLineWidth());
 
 		Rectangle bounds = new Rectangle(x, y, w, h);
 
@@ -100,7 +100,7 @@ public class NoteFigure extends Shape {
 		graphics.drawLine(topRight2, topRight3);
 		graphics.drawLine(topRight3, topRight1);
 	}
-	
+
 	private void decideColor(int[] color) {
 		if (color != null) {
 			int sum = color[0] + color[1] + color[2];

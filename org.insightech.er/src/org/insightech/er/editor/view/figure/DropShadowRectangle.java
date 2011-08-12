@@ -18,9 +18,10 @@ public class DropShadowRectangle extends RoundedRectangle {
 	protected void fillShape(Graphics graphics) {
 		Rectangle f = Rectangle.SINGLETON.setBounds(getBounds());
 		Insets shadowInset = new Insets(0, 0, SHADOW_INSET, SHADOW_INSET);
-		f.crop(shadowInset);
+		f.shrink(shadowInset);
 		this.drawShadow(f, graphics);
-		graphics.fillRoundRectangle(f, corner.width, corner.height);
+		graphics.fillRoundRectangle(f, getCornerDimensions().width,
+				getCornerDimensions().height);
 	}
 
 	/**
@@ -37,10 +38,10 @@ public class DropShadowRectangle extends RoundedRectangle {
 	@Override
 	protected void outlineShape(Graphics graphics) {
 		Rectangle f = Rectangle.SINGLETON.setBounds(getBounds());
-		Insets shadowInset = new Insets(lineWidth / 2, lineWidth / 2, lineWidth
-				+ SHADOW_INSET, lineWidth + SHADOW_INSET);
-		f.crop(shadowInset);
-		graphics.drawRoundRectangle(f, corner.width, corner.height);
+		Insets shadowInset = new Insets(getLineWidth() / 2, getLineWidth() / 2, getLineWidth()
+				+ SHADOW_INSET, getLineWidth() + SHADOW_INSET);
+		f.shrink(shadowInset);
+		graphics.drawRoundRectangle(f, getCornerDimensions().width, getCornerDimensions().height);
 	}
 
 	private void drawShadow(Rectangle rectangle, Graphics graphics) {
@@ -49,7 +50,7 @@ public class DropShadowRectangle extends RoundedRectangle {
 
 		for (int i = 0; i < SHADOW_INSET - 1; i++) {
 			rgb -= delta;
-			Color color = Resources.getColor(new int[] {rgb, rgb, rgb});
+			Color color = Resources.getColor(new int[] { rgb, rgb, rgb });
 			this.drawShadowLayer(rectangle, graphics, SHADOW_INSET - 1 - i,
 					color);
 		}
@@ -65,7 +66,8 @@ public class DropShadowRectangle extends RoundedRectangle {
 		Rectangle shadowLayer = new Rectangle(rectangle);
 		shadowLayer.x += offset;
 		shadowLayer.y += offset;
-		graphics.fillRoundRectangle(shadowLayer, corner.width, corner.height);
+		graphics.fillRoundRectangle(shadowLayer, getCornerDimensions().width,
+				getCornerDimensions().height);
 		// Restore the start of the graphics object
 		graphics.popState();
 	}
