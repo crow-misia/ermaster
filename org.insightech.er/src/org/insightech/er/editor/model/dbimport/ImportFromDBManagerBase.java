@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -53,6 +55,9 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			.getLogger(ImportFromDBManagerBase.class.getName());
 
 	private static final boolean LOG_SQL_TYPE = false;
+
+	private static final Pattern AS_PATTERN = Pattern
+			.compile("(.+) [aA][sS] (.+)");
 
 	protected Connection con;
 
@@ -1226,21 +1231,38 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 		StringTokenizer columnTokenizer = new StringTokenizer(columnsPart, ",");
 
-		while (columnTokenizer.hasMoreTokens()) {
-			String columnName = columnTokenizer.nextToken().trim();
+		String previousColumn = null;
 
+		while (columnTokenizer.hasMoreTokens()) {
+			String columnName = columnTokenizer.nextToken();
+
+			if (previousColumn != null) {
+				columnName = previousColumn + "," + columnName;
+				previousColumn = null;
+			}
+
+			if (columnName.split("\\(").length > columnName.split("\\)").length) {
+				previousColumn = columnName;
+				continue;
+			}
+
+			columnName = columnName.trim();
 			columnName = columnName.replaceAll("\"", "");
-			columnName = columnName.replaceAll(" AS", "");
-			columnName = columnName.replaceAll(" as", "");
-			columnName = columnName.replaceAll(" As", "");
-			columnName = columnName.replaceAll(" aS", "");
 
 			String columnAlias = null;
 
-			int asIndex = columnName.toUpperCase().indexOf(" ");
-			if (asIndex != -1) {
-				columnAlias = columnName.substring(asIndex + 1).trim();
-				columnName = columnName.substring(0, asIndex).trim();
+			Matcher matcher = AS_PATTERN.matcher(columnName);
+
+			if (matcher.matches()) {
+				columnAlias = matcher.toMatchResult().group(2).trim();
+				columnName = matcher.toMatchResult().group(1).trim();
+
+			} else {
+				int asIndex = columnName.indexOf(" ");
+				if (asIndex != -1) {
+					columnAlias = columnName.substring(asIndex + 1).trim();
+					columnName = columnName.substring(0, asIndex).trim();
+				}
 			}
 
 			int dotIndex = columnName.indexOf(".");
