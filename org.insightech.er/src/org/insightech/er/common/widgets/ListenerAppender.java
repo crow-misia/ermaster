@@ -239,6 +239,11 @@ public class ListenerAppender {
 
 			}
 
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				Point xy = getSelectedCell(e);
+				editableTable.onDoubleClicked(xy);
+			}
 		});
 	}
 
@@ -326,7 +331,7 @@ public class ListenerAppender {
 			final Spinner spinner, final int diff, final AbstractDialog dialog) {
 		if (dialog != null) {
 			spinner.addSelectionListener(new SelectionAdapter() {
-				
+
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					int value = spinner.getSelection();

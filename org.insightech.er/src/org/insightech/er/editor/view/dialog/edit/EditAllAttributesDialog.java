@@ -7,8 +7,6 @@ import java.util.List;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -803,55 +801,28 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		return diagramContents;
 	}
 
-	@Override
-	protected void addListener() {
-		super.addListener();
+	public void onDoubleClicked(Point xy) {
+		Column column = getColumn(xy);
 
-		this.attributeTable.addMouseListener(new MouseAdapter() {
+		if (column instanceof NormalColumn) {
+			NormalColumn normalColumn = (NormalColumn) column;
 
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				Point point = getSelectedCell(e);
-				Column column = getColumn(point);
-
-				if (column instanceof NormalColumn) {
-					NormalColumn normalColumn = (NormalColumn) column;
-
-					if (normalColumn.isPrimaryKey()) {
-						return;
-					}
-
-					if (normalColumn.isRefered()) {
-						return;
-					}
-
-					if (point.x == 10) {
-						normalColumn.setNotNull(!normalColumn.isNotNull());
-						resetNormalColumn(normalColumn);
-
-					} else if (point.x == 11) {
-						normalColumn.setUniqueKey(!normalColumn.isUniqueKey());
-						resetNormalColumn(normalColumn);
-					}
-				}
+			if (normalColumn.isPrimaryKey()) {
+				return;
 			}
 
-		});
-	}
+			if (normalColumn.isRefered()) {
+				return;
+			}
 
-	private Point getSelectedCell(MouseEvent e) {
-		int vIndex = attributeTable.getSelectionIndex();
-		if (vIndex != -1) {
-			TableItem item = attributeTable.getItem(vIndex);
-			for (int hIndex = 0; hIndex < attributeTable.getColumnCount(); hIndex++) {
-				if (item.getBounds(hIndex).contains(e.x, e.y)) {
-					Point xy = new Point(hIndex, vIndex);
-					xy.y = vIndex;
-					xy.x = hIndex;
-					return xy;
-				}
+			if (xy.x == 10) {
+				normalColumn.setNotNull(!normalColumn.isNotNull());
+				resetNormalColumn(normalColumn);
+
+			} else if (xy.x == 11) {
+				normalColumn.setUniqueKey(!normalColumn.isUniqueKey());
+				resetNormalColumn(normalColumn);
 			}
 		}
-		return null;
 	}
 }

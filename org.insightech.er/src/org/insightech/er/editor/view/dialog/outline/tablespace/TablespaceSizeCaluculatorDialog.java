@@ -430,4 +430,7 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 
 		return value;
 	}
+
+	public void onDoubleClicked(Point xy) {
+	}
 }

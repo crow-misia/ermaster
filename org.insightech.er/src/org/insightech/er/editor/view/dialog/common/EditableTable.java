@@ -9,5 +9,7 @@ public interface EditableTable {
 
 	public Control getControl(Point xy);
 
+	public void onDoubleClicked(Point xy);
+	
 	public boolean validate();
 }
