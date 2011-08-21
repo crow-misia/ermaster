@@ -123,6 +123,8 @@ public class Activator extends AbstractUIPlugin {
 				loadImageDescriptor("icons/color.gif"));
 		reg.put(ImageKey.CHANGE_BACKGROUND_COLOR_DISABLED,
 				loadImageDescriptor("icons/square.gif"));
+		reg.put(ImageKey.CHECK, loadImageDescriptor("icons/tick.png"));
+		reg.put(ImageKey.CHECK_GREY, loadImageDescriptor("icons/tick_grey.png"));
 		reg.put(ImageKey.COMMENT_CONNECTION,
 				loadImageDescriptor("icons/comment_connection.gif"));
 		reg.put(ImageKey.DATABASE, loadImageDescriptor("icons/database2.png"));

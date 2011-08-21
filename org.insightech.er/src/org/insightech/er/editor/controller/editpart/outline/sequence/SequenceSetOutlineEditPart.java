@@ -53,7 +53,8 @@ public class SequenceSetOutlineEditPart extends AbstractOutlineEditPart {
 
 		}
 
-		this.setWidgetText(ResourceString.getResourceString("label.sequence"));
+		this.setWidgetText(ResourceString.getResourceString("label.sequence")
+				+ " (" + this.getModelChildren().size() + ")");
 		this.setWidgetImage(Activator.getImage(ImageKey.DICTIONARY));
 	}
 
