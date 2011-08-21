@@ -48,7 +48,8 @@ public class ViewSetOutlineEditPart extends AbstractOutlineEditPart {
 	 */
 	@Override
 	protected void refreshOutlineVisuals() {
-		this.setWidgetText(ResourceString.getResourceString("label.view"));
+		this.setWidgetText(ResourceString.getResourceString("label.view") + " ("
+				+ this.getModelChildren().size() + ")");
 		this.setWidgetImage(Activator.getImage(ImageKey.DICTIONARY));
 	}
 

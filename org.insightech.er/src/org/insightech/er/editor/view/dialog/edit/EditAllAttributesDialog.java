@@ -2,19 +2,18 @@ package org.insightech.er.editor.view.dialog.edit;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -28,7 +27,7 @@ import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
-import org.insightech.er.common.widgets.CompositeFactory;
+import org.insightech.er.common.widgets.CenteredContentCellPaint;
 import org.insightech.er.common.widgets.ListenerAppender;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
@@ -73,7 +72,8 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 	private String errorMessage;
 
-	private Map<Column, TableEditor[]> columnNotNullCheckMap = new HashMap<Column, TableEditor[]>();
+	// private Map<Column, TableEditor[]> columnNotNullCheckMap = new
+	// HashMap<Column, TableEditor[]>();
 
 	public EditAllAttributesDialog(Shell parentShell, ERDiagram diagram) {
 		super(parentShell, 2);
@@ -201,25 +201,27 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		TableColumn columnKey = new TableColumn(this.attributeTable, SWT.CENTER);
 		columnKey.setText("PK");
 		columnKey.setWidth(KEY_WIDTH);
-		columnKey.setAlignment(SWT.CENTER);
+		new CenteredContentCellPaint(this.attributeTable, 8);
 
 		TableColumn columnForeignKey = new TableColumn(this.attributeTable,
 				SWT.CENTER);
 		columnForeignKey.setText("FK");
 		columnForeignKey.setWidth(KEY_WIDTH);
-		columnForeignKey.setAlignment(SWT.CENTER);
+		new CenteredContentCellPaint(this.attributeTable, 9);
 
 		TableColumn columnNotNull = new TableColumn(this.attributeTable,
-				SWT.NONE);
+				SWT.CENTER);
 		columnNotNull.setWidth(NOT_NULL_WIDTH);
 		columnNotNull.setText(ResourceString
 				.getResourceString("label.not.null"));
+		new CenteredContentCellPaint(this.attributeTable, 10);
 
 		TableColumn columnUnique = new TableColumn(this.attributeTable,
-				SWT.NONE);
+				SWT.CENTER);
 		columnUnique.setWidth(UNIQUE_KEY_WIDTH);
 		columnUnique.setText(ResourceString
 				.getResourceString("label.unique.key"));
+		new CenteredContentCellPaint(this.attributeTable, 11);
 
 		this.tableEditor = new TableEditor(this.attributeTable);
 		this.tableEditor.grabHorizontal = true;
@@ -331,7 +333,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 	private void column2TableItem(ERTable table, Column column,
 			TableItem tableItem) {
-		this.disposeCheckBox(column);
+		// this.disposeCheckBox(column);
 
 		if (table != null) {
 			tableItem.setText(2, Format.null2blank(table.getLogicalName()));
@@ -366,57 +368,73 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 			tableItem.setForeground(color);
 
-			tableItem.setForeground(2, ColorConstants.gray);
-			tableItem.setForeground(3, ColorConstants.gray);
+			int colCount = 0;
 
-			tableItem.setForeground(0, keyColor);
-			tableItem.setText(0, Format.null2blank(normalColumn
+			tableItem.setForeground(colCount, keyColor);
+			tableItem.setText(colCount, Format.null2blank(normalColumn
 					.getLogicalName()));
-			tableItem.setForeground(1, keyColor);
-			tableItem.setText(1, Format.null2blank(normalColumn
+
+			colCount++;
+			tableItem.setForeground(colCount, keyColor);
+			tableItem.setText(colCount, Format.null2blank(normalColumn
 					.getPhysicalName()));
 
+			colCount++;
+			tableItem.setForeground(colCount, ColorConstants.gray);
+
+			colCount++;
+			tableItem.setForeground(colCount, ColorConstants.gray);
+
+			colCount++;
 			if (normalColumn.getWord() != null) {
-				tableItem.setText(4, Format.null2blank(normalColumn.getWord()
-						.getLogicalName()));
+				tableItem.setText(colCount, Format.null2blank(normalColumn
+						.getWord().getLogicalName()));
 			}
 
+			colCount++;
 			SqlType sqlType = normalColumn.getType();
 
 			if (sqlType != null) {
 				String database = this.diagram.getDatabase();
 
 				if (sqlType.getAlias(database) != null) {
-					tableItem.setText(5, sqlType.getAlias(database));
+					tableItem.setText(colCount, sqlType.getAlias(database));
 				} else {
-					tableItem.setText(5, "");
+					tableItem.setText(colCount, "");
 				}
 
 			} else {
-				tableItem.setText(5, "");
+				tableItem.setText(colCount, "");
 			}
 
+			colCount++;
 			if (normalColumn.getTypeData().getLength() != null) {
-				tableItem.setText(6, normalColumn.getTypeData().getLength()
-						.toString());
+				tableItem.setText(colCount, normalColumn.getTypeData()
+						.getLength().toString());
 			} else {
-				tableItem.setText(6, "");
+				tableItem.setText(colCount, "");
 			}
+
+			colCount++;
 			if (normalColumn.getTypeData().getDecimal() != null) {
-				tableItem.setText(7, normalColumn.getTypeData().getDecimal()
-						.toString());
+				tableItem.setText(colCount, normalColumn.getTypeData()
+						.getDecimal().toString());
 			} else {
-				tableItem.setText(7, "");
+				tableItem.setText(colCount, "");
 			}
 
+			colCount++;
 			if (normalColumn.isPrimaryKey()) {
-				tableItem.setImage(8, Activator.getImage(ImageKey.PRIMARY_KEY));
+				tableItem.setImage(colCount, Activator
+						.getImage(ImageKey.PRIMARY_KEY));
 			} else {
-				tableItem.setImage(8, null);
+				tableItem.setImage(colCount, null);
 			}
 
+			colCount++;
 			if (normalColumn.isForeignKey()) {
-				tableItem.setImage(9, Activator.getImage(ImageKey.FOREIGN_KEY));
+				tableItem.setImage(colCount, Activator
+						.getImage(ImageKey.FOREIGN_KEY));
 
 				// CLabel imageLabel = new CLabel(this.attributeTable,
 				// SWT.NONE);
@@ -428,12 +446,43 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 				// editor.setEditor(imageLabel, tableItem, 9);
 
 			} else {
-				tableItem.setImage(9, null);
+				tableItem.setImage(colCount, null);
 			}
 
-			this.setTableEditor(table, normalColumn, tableItem);
+			colCount++;
+			if (normalColumn.isNotNull()) {
+				if (normalColumn.isPrimaryKey()) {
+					tableItem.setImage(colCount, Activator
+							.getImage(ImageKey.CHECK_GREY));
+				} else {
+					tableItem.setImage(colCount, Activator
+							.getImage(ImageKey.CHECK));
+				}
+
+			} else {
+				tableItem.setImage(colCount, null);
+			}
+
+			colCount++;
+			if (normalColumn.isUniqueKey()) {
+
+				if (table != null && normalColumn.isRefered()) {
+					tableItem.setImage(colCount, Activator
+							.getImage(ImageKey.CHECK_GREY));
+				} else {
+					tableItem.setImage(colCount, Activator
+							.getImage(ImageKey.CHECK));
+				}
+
+			} else {
+				tableItem.setImage(colCount, null);
+			}
+
+			// this.setTableEditor(table, normalColumn, tableItem);
 
 		} else {
+			// group column
+
 			// tableItem.setBackground(ColorConstants.white);
 			tableItem.setForeground(ColorConstants.gray);
 
@@ -447,69 +496,70 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		}
 	}
 
-	private void disposeCheckBox(Column column) {
-		TableEditor[] oldEditors = this.columnNotNullCheckMap.get(column);
+	// private void disposeCheckBox(Column column) {
+	// TableEditor[] oldEditors = this.columnNotNullCheckMap.get(column);
+	//
+	// if (oldEditors != null) {
+	// for (TableEditor oldEditor : oldEditors) {
+	// if (oldEditor.getEditor() != null) {
+	// oldEditor.getEditor().dispose();
+	// oldEditor.dispose();
+	// }
+	// }
+	//
+	// this.columnNotNullCheckMap.remove(column);
+	// }
+	// }
 
-		if (oldEditors != null) {
-			for (TableEditor oldEditor : oldEditors) {
-				if (oldEditor.getEditor() != null) {
-					oldEditor.getEditor().dispose();
-					oldEditor.dispose();
-				}
-			}
-
-			this.columnNotNullCheckMap.remove(column);
-		}
-	}
-
-	private void setTableEditor(ERTable table, final NormalColumn normalColumn,
-			TableItem tableItem) {
-
-		TableEditor[] editors = new TableEditor[] {
-				CompositeFactory.createCheckBoxTableEditor(tableItem,
-						normalColumn.isNotNull(), 10),
-				CompositeFactory.createCheckBoxTableEditor(tableItem,
-						normalColumn.isUniqueKey(), 11) };
-
-		final Button notNullCheckButton = (Button) editors[0].getEditor();
-		final Button uniqueCheckButton = (Button) editors[1].getEditor();
-
-		if (normalColumn.isPrimaryKey()) {
-			notNullCheckButton.setEnabled(false);
-		}
-
-		if (table != null) {
-			if (normalColumn.isRefered()) {
-				uniqueCheckButton.setEnabled(false);
-			}
-		}
-
-		this.columnNotNullCheckMap.put(normalColumn, editors);
-
-		notNullCheckButton.addSelectionListener(new SelectionAdapter() {
-
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				normalColumn.setNotNull(notNullCheckButton.getSelection());
-				super.widgetSelected(e);
-			}
-		});
-
-		uniqueCheckButton.addSelectionListener(new SelectionAdapter() {
-
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				normalColumn.setUniqueKey(uniqueCheckButton.getSelection());
-				super.widgetSelected(e);
-			}
-		});
-	}
+	// private void setTableEditor(ERTable table, final NormalColumn
+	// normalColumn,
+	// TableItem tableItem) {
+	//
+	// TableEditor[] editors = new TableEditor[] {
+	// CompositeFactory.createCheckBoxTableEditor(tableItem,
+	// normalColumn.isNotNull(), 10),
+	// CompositeFactory.createCheckBoxTableEditor(tableItem,
+	// normalColumn.isUniqueKey(), 11) };
+	//
+	// final Button notNullCheckButton = (Button) editors[0].getEditor();
+	// final Button uniqueCheckButton = (Button) editors[1].getEditor();
+	//
+	// if (normalColumn.isPrimaryKey()) {
+	// notNullCheckButton.setEnabled(false);
+	// }
+	//
+	// if (table != null) {
+	// if (normalColumn.isRefered()) {
+	// uniqueCheckButton.setEnabled(false);
+	// }
+	// }
+	//
+	// this.columnNotNullCheckMap.put(normalColumn, editors);
+	//
+	// notNullCheckButton.addSelectionListener(new SelectionAdapter() {
+	//
+	// /**
+	// * {@inheritDoc}
+	// */
+	// @Override
+	// public void widgetSelected(SelectionEvent e) {
+	// normalColumn.setNotNull(notNullCheckButton.getSelection());
+	// super.widgetSelected(e);
+	// }
+	// });
+	//
+	// uniqueCheckButton.addSelectionListener(new SelectionAdapter() {
+	//
+	// /**
+	// * {@inheritDoc}
+	// */
+	// @Override
+	// public void widgetSelected(SelectionEvent e) {
+	// normalColumn.setUniqueKey(uniqueCheckButton.getSelection());
+	// super.widgetSelected(e);
+	// }
+	// });
+	// }
 
 	public Control getControl(Point xy) {
 		Column column = this.getColumn(xy);
@@ -753,4 +803,55 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		return diagramContents;
 	}
 
+	@Override
+	protected void addListener() {
+		super.addListener();
+
+		this.attributeTable.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				Point point = getSelectedCell(e);
+				Column column = getColumn(point);
+
+				if (column instanceof NormalColumn) {
+					NormalColumn normalColumn = (NormalColumn) column;
+
+					if (normalColumn.isPrimaryKey()) {
+						return;
+					}
+
+					if (normalColumn.isRefered()) {
+						return;
+					}
+
+					if (point.x == 10) {
+						normalColumn.setNotNull(!normalColumn.isNotNull());
+						resetNormalColumn(normalColumn);
+
+					} else if (point.x == 11) {
+						normalColumn.setUniqueKey(!normalColumn.isUniqueKey());
+						resetNormalColumn(normalColumn);
+					}
+				}
+			}
+
+		});
+	}
+
+	private Point getSelectedCell(MouseEvent e) {
+		int vIndex = attributeTable.getSelectionIndex();
+		if (vIndex != -1) {
+			TableItem item = attributeTable.getItem(vIndex);
+			for (int hIndex = 0; hIndex < attributeTable.getColumnCount(); hIndex++) {
+				if (item.getBounds(hIndex).contains(e.x, e.y)) {
+					Point xy = new Point(hIndex, vIndex);
+					xy.y = vIndex;
+					xy.x = hIndex;
+					return xy;
+				}
+			}
+		}
+		return null;
+	}
 }

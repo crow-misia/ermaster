@@ -40,7 +40,8 @@ public class GroupSetOutlineEditPart extends AbstractOutlineEditPart {
 	@Override
 	protected void refreshOutlineVisuals() {
 		this.setWidgetText(ResourceString
-				.getResourceString("label.column.group"));
+				.getResourceString("label.column.group")
+				+ " (" + this.getModelChildren().size() + ")");
 		this.setWidgetImage(Activator.getImage(ImageKey.DICTIONARY));
 	}
 
