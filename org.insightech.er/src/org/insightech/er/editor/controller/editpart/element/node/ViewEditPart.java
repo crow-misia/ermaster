@@ -46,8 +46,7 @@ public class ViewEditPart extends TableViewEditPart {
 			CompoundCommand command = createChangeViewPropertyCommand(diagram,
 					view, copyView);
 
-			this.getViewer().getEditDomain().getCommandStack().execute(
-					command.unwrap());
+			this.executeCommand(command.unwrap());
 		}
 	}
 

@@ -16,8 +16,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
+import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.Resources;
+import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.controller.editpart.element.node.NodeElementEditPart;
 import org.insightech.er.editor.controller.editpolicy.ERDiagramLayoutEditPolicy;
 import org.insightech.er.editor.model.ERDiagram;
@@ -139,14 +141,15 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 			} else if (event.getPropertyName().equals(
 					ERDiagramPropertySource.PROPERTY_INIT_DATABASE)) {
 				ERDiagram diagram = (ERDiagram) this.getModel();
-				diagram.restoreDatabase(String.valueOf("PostgreSQL"));
+				diagram.restoreDatabase(DBManagerFactory.getAllDBList().get(0));
 
 			} else if (event.getPropertyName().equals(
 					ERDiagram.PROPERTY_CHANGE_SETTINGS)) {
 				this.changeSettings();
 			}
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Activator.showExceptionDialog(e);
 		}
 	}
 
