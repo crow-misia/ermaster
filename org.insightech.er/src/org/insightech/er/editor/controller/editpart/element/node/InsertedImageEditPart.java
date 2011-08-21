@@ -14,6 +14,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.image.ChangeInsertedImagePropertyCommand;
+import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
 import org.insightech.er.editor.controller.editpolicy.element.node.NodeElementComponentEditPolicy;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
@@ -82,6 +83,10 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 					.getAlpha());
 
 			this.refreshVisuals();
+
+			if (ERDiagramEditPart.isUpdateable()) {
+				this.getFigure().repaint();
+			}
 		}
 
 		super.propertyChange(event);
@@ -151,13 +156,14 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			ChangeInsertedImagePropertyCommand command = new ChangeInsertedImagePropertyCommand(
-					diagram, insertedImage, dialog.getNewInsertedImage());
+					diagram, insertedImage, dialog.getNewInsertedImage(),
+					oldInsertedImage);
 
-			this.getViewer().getEditDomain().getCommandStack().execute(command);
+			this.executeCommand(command);
 
 		} else {
 			ChangeInsertedImagePropertyCommand command = new ChangeInsertedImagePropertyCommand(
-					diagram, insertedImage, oldInsertedImage);
+					diagram, insertedImage, oldInsertedImage, oldInsertedImage);
 			command.execute();
 
 		}

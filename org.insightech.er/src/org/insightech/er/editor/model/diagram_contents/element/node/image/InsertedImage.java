@@ -29,6 +29,10 @@ public class InsertedImage extends NodeElement {
 	private int alpha;
 	
 	private boolean fixAspectRatio;
+	
+	public InsertedImage() {
+		this.alpha = 255;
+	}
 
 	public String getBase64EncodedData() {
 		return base64EncodedData;

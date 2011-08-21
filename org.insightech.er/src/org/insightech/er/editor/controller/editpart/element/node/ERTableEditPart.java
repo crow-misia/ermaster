@@ -59,8 +59,7 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 			CompoundCommand command = createChangeTablePropertyCommand(diagram,
 					table, copyTable);
 
-			this.getViewer().getEditDomain().getCommandStack().execute(
-					command.unwrap());
+			this.executeCommand(command.unwrap());
 		}
 	}
 

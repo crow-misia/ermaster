@@ -2,6 +2,7 @@ package org.insightech.er.editor.controller.editpart.element;
 
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ERDiagram;
@@ -38,5 +39,9 @@ public abstract class AbstractModelEditPart extends AbstractGraphicalEditPart
 
 	protected Category getCurrentCategory() {
 		return this.getDiagram().getCurrentCategory();
+	}
+
+	protected void executeCommand(Command command) {
+		this.getViewer().getEditDomain().getCommandStack().execute(command);
 	}
 }

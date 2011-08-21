@@ -47,12 +47,7 @@ public class InsertedImageFigure extends Figure {
 			double dw = (double) this.imageSize.width / (double) area.width;
 			double dh = (double) this.imageSize.height / (double) area.height;
 
-			if (dw < 1 && dh < 1) {
-				// image is smaller than the figure bounds
-				destination.width = this.imageSize.width;
-				destination.height = this.imageSize.height;
-
-			} else if (dw > dh) {
+			if (dw > dh) {
 				// we must limit the size by the width
 				destination.width = area.width;
 				destination.height = (int) (this.imageSize.height / dw);

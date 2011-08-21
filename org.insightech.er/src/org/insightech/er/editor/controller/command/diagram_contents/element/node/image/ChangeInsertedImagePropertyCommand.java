@@ -13,9 +13,9 @@ public class ChangeInsertedImagePropertyCommand extends AbstractCommand {
 	protected InsertedImage newInsertedImage;
 
 	public ChangeInsertedImagePropertyCommand(ERDiagram diagram,
-			InsertedImage insertedImage, InsertedImage newInsertedImage) {
+			InsertedImage insertedImage, InsertedImage newInsertedImage, InsertedImage oldInsertedImage) {
 		this.insertedImage = insertedImage;
-		this.oldInsertedImage = (InsertedImage) insertedImage.clone();
+		this.oldInsertedImage = oldInsertedImage;
 		this.newInsertedImage = newInsertedImage;
 	}
 
@@ -29,6 +29,7 @@ public class ChangeInsertedImagePropertyCommand extends AbstractCommand {
 		this.insertedImage.setBrightness(this.newInsertedImage.getBrightness());
 		this.insertedImage.setFixAspectRatio(this.newInsertedImage
 				.isFixAspectRatio());
+		this.insertedImage.setAlpha(this.newInsertedImage.getAlpha());
 
 		this.insertedImage.setDirty();
 	}
@@ -43,6 +44,7 @@ public class ChangeInsertedImagePropertyCommand extends AbstractCommand {
 		this.insertedImage.setBrightness(this.oldInsertedImage.getBrightness());
 		this.insertedImage.setFixAspectRatio(this.oldInsertedImage
 				.isFixAspectRatio());
+		this.insertedImage.setAlpha(this.oldInsertedImage.getAlpha());
 
 		this.insertedImage.setDirty();
 	}
