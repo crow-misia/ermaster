@@ -236,13 +236,18 @@ public class ListenerAppender {
 				} catch (Exception e) {
 					Activator.log(e);
 				}
-
 			}
 
 			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				Point xy = getSelectedCell(e);
-				editableTable.onDoubleClicked(xy);
+			public void mouseDoubleClick(MouseEvent event) {
+				try {
+					Point xy = getSelectedCell(event);
+					if (xy != null) {
+						editableTable.onDoubleClicked(xy);
+					}
+				} catch (Exception e) {
+					Activator.log(e);
+				}
 			}
 		});
 	}

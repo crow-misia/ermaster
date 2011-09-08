@@ -34,12 +34,12 @@ public class NoteEditPart extends NodeElementEditPart implements IResizable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void propertyChange(PropertyChangeEvent event) {
+	public void doPropertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(Note.PROPERTY_CHANGE_NOTE)) {
 			refreshVisuals();
 		}
 
-		super.propertyChange(event);
+		super.doPropertyChange(event);
 	}
 
 	/**

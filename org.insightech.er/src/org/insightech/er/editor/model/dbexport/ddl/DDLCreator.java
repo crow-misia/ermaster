@@ -606,7 +606,7 @@ public abstract class DDLCreator {
 			ddl.append("\r\n");
 			ddl.append(option);
 		}
-		
+
 		if (this.semicolon) {
 			ddl.append(";");
 		}
@@ -986,7 +986,8 @@ public abstract class DDLCreator {
 
 		ddl.append("DROP VIEW ");
 		ddl.append(this.getIfExistsOption());
-		ddl.append(filter(view.getPhysicalName()));
+		ddl.append(filter(this.getNameWithSchema(view.getTableViewProperties()
+				.getSchema(), view.getPhysicalName())));
 		if (this.semicolon) {
 			ddl.append(";");
 		}
@@ -1038,7 +1039,7 @@ public abstract class DDLCreator {
 
 	protected String filter(String str) {
 		if (str == null) {
-			return str;
+			return "";
 		}
 
 		Settings settings = diagram.getDiagramContents().getSettings();

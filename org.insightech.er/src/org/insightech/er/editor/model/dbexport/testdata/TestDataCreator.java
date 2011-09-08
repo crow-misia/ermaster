@@ -151,37 +151,40 @@ public abstract class TestDataCreator {
 			TableTestData tableTestData = this.testData.getTableTestDataMap()
 					.get(table);
 
-			DirectTestData directTestData = tableTestData.getDirectTestData();
-			RepeatTestData repeatTestData = tableTestData.getRepeatTestData();
+			if (tableTestData != null) {
+				DirectTestData directTestData = tableTestData
+						.getDirectTestData();
+				RepeatTestData repeatTestData = tableTestData
+						.getRepeatTestData();
 
-			if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
-				for (Map<NormalColumn, String> data : directTestData
-						.getDataList()) {
-					String value = data.get(column);
-					valueList.add(value);
+				if (this.testData.getExportOrder() == TestData.EXPORT_ORDER_DIRECT_TO_REPEAT) {
+					for (Map<NormalColumn, String> data : directTestData
+							.getDataList()) {
+						String value = data.get(column);
+						valueList.add(value);
+					}
+
+					for (int i = 0; i < repeatTestData.getTestDataNum(); i++) {
+						String value = this.getMergedRepeatTestDataValue(i,
+								repeatTestData.getDataDef(column), column);
+						valueList.add(value);
+					}
+
+				} else {
+					for (int i = 0; i < repeatTestData.getTestDataNum(); i++) {
+						String value = this.getRepeatTestDataValue(i,
+								repeatTestData.getDataDef(column), column);
+						valueList.add(value);
+					}
+
+					for (Map<NormalColumn, String> data : directTestData
+							.getDataList()) {
+						String value = data.get(column);
+						valueList.add(value);
+					}
+
 				}
-
-				for (int i = 0; i < repeatTestData.getTestDataNum(); i++) {
-					String value = this.getMergedRepeatTestDataValue(i,
-							repeatTestData.getDataDef(column), column);
-					valueList.add(value);
-				}
-
-			} else {
-				for (int i = 0; i < repeatTestData.getTestDataNum(); i++) {
-					String value = this.getRepeatTestDataValue(i,
-							repeatTestData.getDataDef(column), column);
-					valueList.add(value);
-				}
-
-				for (Map<NormalColumn, String> data : directTestData
-						.getDataList()) {
-					String value = data.get(column);
-					valueList.add(value);
-				}
-
 			}
-
 		}
 
 		return valueList;

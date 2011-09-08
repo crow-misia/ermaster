@@ -71,7 +71,7 @@ public abstract class TableViewEditPart extends NodeElementEditPart implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void propertyChange(PropertyChangeEvent event) {
+	public void doPropertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(
 				TableView.PROPERTY_CHANGE_PHYSICAL_NAME)) {
 			refreshVisuals();
@@ -85,7 +85,7 @@ public abstract class TableViewEditPart extends NodeElementEditPart implements
 			refreshVisuals();
 		}
 
-		super.propertyChange(event);
+		super.doPropertyChange(event);
 		this.refreshConnections();
 	}
 

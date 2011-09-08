@@ -40,13 +40,13 @@ public class ModelPropertiesEditPart extends NodeElementEditPart implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void propertyChange(PropertyChangeEvent event) {
+	public void doPropertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(
 				ModelProperties.PROPERTY_CHANGE_MODEL_PROPERTIES)) {
 			refreshVisuals();
 		}
 
-		super.propertyChange(event);
+		super.doPropertyChange(event);
 	}
 
 	/**

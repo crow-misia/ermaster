@@ -136,10 +136,11 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 	@Override
 	protected void initialize(Composite composite) {
 		CompositeFactory.createLabel(composite,
-				"１．次の値を V$TYPE_SIZE表 から取得してください", 3);
+				"label.tablespace.size.calculate.1", 3);
 
 		this.restoreDefaultButton1 = new Button(composite, SWT.NONE);
-		this.restoreDefaultButton1.setText("デフォルトに戻す");
+		this.restoreDefaultButton1.setText(ResourceString
+				.getResourceString("label.restore.default"));
 
 		CompositeFactory.filler(composite, 1, INDENT);
 		this.kcbhText = CompositeFactory.createNumText(this, composite, "KCBH",
@@ -184,9 +185,10 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 		CompositeFactory.filler(composite, 4);
 
 		CompositeFactory.createLabel(composite,
-				"２．次の値を V$PARAMETER表 から取得してください", 3);
+				"label.tablespace.size.calculate.2", 3);
 		this.restoreDefaultButton2 = new Button(composite, SWT.NONE);
-		this.restoreDefaultButton2.setText("デフォルトに戻す");
+		this.restoreDefaultButton2.setText(ResourceString
+				.getResourceString("label.restore.default"));
 
 		CompositeFactory.filler(composite, 1, INDENT);
 		this.dbBlockSizeText = CompositeFactory.createNumText(this, composite,
@@ -195,7 +197,8 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 
 		CompositeFactory.filler(composite, 4);
 
-		CompositeFactory.createLabel(composite, "各テーブルの行数を入力してください", 4);
+		CompositeFactory.createLabel(composite,
+				"label.tablespace.size.calculate.3", 4);
 
 		CompositeFactory.filler(composite, 4);
 
@@ -224,7 +227,8 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 		this.tableEditor = new TableEditor(this.tableTable);
 		this.tableEditor.grabHorizontal = true;
 
-		CompositeFactory.createLabel(composite, "計算された表領域サイズ", 2);
+		CompositeFactory.createLabel(composite,
+				"label.tablespace.size.calculated", 2);
 
 		this.tablespaceSizeText = new Text(composite, SWT.BORDER
 				| SWT.READ_ONLY | SWT.RIGHT);
