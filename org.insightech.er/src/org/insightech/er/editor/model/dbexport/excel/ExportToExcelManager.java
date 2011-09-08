@@ -260,14 +260,16 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 				workbook.removeSheetAt(0);
 
 			} else {
+				System.out.println("non sheet generator :  " + templateSheetName);
 				if (!isExcludeTarget(templateSheetName)) {
-					HSSFSheet sheet = workbook.getSheetAt(0);
 					moveSheet(workbook, 0);
+					HSSFSheet sheet = workbook.getSheetAt(workbook.getNumberOfSheets() - 1);
 
 					this.sheetObjectMap.put(templateSheetName,
 							new StringObjectModel(templateSheetName));
 
 					// ERê}ÇÃì\ÇËïtÇØ
+					System.out.println("ERê}ÇÃì\ÇËïtÇØ");
 					this.pictureSheetGenerator.setImage(workbook, sheet);
 
 					if (this.sheetIndexSheetGenerator.getTemplateSheetName()

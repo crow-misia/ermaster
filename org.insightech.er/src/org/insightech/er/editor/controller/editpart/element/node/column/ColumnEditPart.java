@@ -22,7 +22,8 @@ public abstract class ColumnEditPart extends AbstractModelEditPart {
 				new NormalColumnComponentEditPolicy());
 	}
 
-	public void propertyChange(PropertyChangeEvent evt) {
+	@Override
+	public void doPropertyChange(PropertyChangeEvent evt) {
 	}
 
 	/**

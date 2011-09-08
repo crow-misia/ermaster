@@ -59,7 +59,8 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 		}
 	}
 
-	public void propertyChange(PropertyChangeEvent event) {
+	@Override
+	public void doPropertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(
 				NodeElement.PROPERTY_CHANGE_RECTANGLE)) {
 			refreshVisuals();

@@ -1,7 +1,5 @@
 package org.insightech.er.editor.controller.editpart.element.node;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
@@ -27,14 +25,6 @@ public class CategoryEditPart extends NodeElementEditPart implements IResizable 
 		CategoryFigure figure = new CategoryFigure(category.getName());
 
 		return figure;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent event) {
-		super.propertyChange(event);
 	}
 
 	/**

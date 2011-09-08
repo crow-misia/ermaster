@@ -72,7 +72,7 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent event) {
+	public void doPropertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(InsertedImage.PROPERTY_CHANGE_IMAGE)) {
 			changeImage();
 
@@ -89,7 +89,7 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 			}
 		}
 
-		super.propertyChange(event);
+		super.doPropertyChange(event);
 	}
 
 	private void changeImage() {
