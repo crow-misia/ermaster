@@ -11,7 +11,7 @@ import org.insightech.er.editor.model.tracking.RemovedNodeElement;
 import org.insightech.er.editor.model.tracking.UpdatedNodeElement;
 
 /**
- * •ÏX—š—ğŒvZƒRƒ}ƒ“ƒh
+ * å¤‰æ›´å±¥æ­´è¨ˆç®—ã‚³ãƒãƒ³ãƒ‰
  */
 public class CalculateChangeTrackingCommand extends AbstractCommand {
 
@@ -28,7 +28,7 @@ public class CalculateChangeTrackingCommand extends AbstractCommand {
 	private List<RemovedNodeElement> oldRemovedNodeElements;
 
 	/**
-	 * •ÏX—š—ğŒvZƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+	 * å¤‰æ›´å±¥æ­´è¨ˆç®—ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param diagram
 	 * @param comparison
@@ -48,7 +48,7 @@ public class CalculateChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğŒvZˆ—‚ğÀs‚·‚é
+	 * å¤‰æ›´å±¥æ­´è¨ˆç®—å‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹
 	 */
 	@Override
 	protected void doExecute() {
@@ -58,7 +58,7 @@ public class CalculateChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğŒvZˆ—‚ğŒ³‚É–ß‚·
+	 * å¤‰æ›´å±¥æ­´è¨ˆç®—å‡¦ç†ã‚’å…ƒã«æˆ»ã™
 	 */
 	@Override
 	protected void doUndo() {

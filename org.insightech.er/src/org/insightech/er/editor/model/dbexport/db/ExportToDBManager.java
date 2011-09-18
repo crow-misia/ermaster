@@ -97,11 +97,6 @@ public class ExportToDBManager implements IRunnableWithProgress {
 		return exception;
 	}
 
-	/**
-	 * errorSql ‚ðŽæ“¾‚µ‚Ü‚·.
-	 * 
-	 * @return errorSql
-	 */
 	public String getErrorSql() {
 		return errorSql;
 	}

@@ -135,7 +135,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 	}
 
 	/**
-	 * ƒf[ƒ^ƒx[ƒX’è‹`‚ğƒGƒNƒZƒ‹‚É‘‚«o‚µ‚Ü‚·B
+	 * ï¿½fï¿½[ï¿½^ï¿½xï¿½[ï¿½Xï¿½ï¿½`ï¿½ï¿½Gï¿½Nï¿½Zï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
 	 * 
 	 * @param editorPart
 	 * @param viewer
@@ -152,7 +152,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		HSSFWorkbook workbook = this.loadTemplateWorkbook(this.template,
 				this.diagram);
 
-		// ƒtƒ@ƒCƒ‹‚ğŠJ‚¢‚Ä‚¢‚½Û‚Ì‘‚«‚İƒGƒ‰[‚ğ‘‚­o‚·‚½‚ß‚Éˆê’U‚±‚±‚Å‘‚«‚İˆ—‚ğs‚¤
+		// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Û‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[ï¿½ğ‘‚ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½ß‚Éˆï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
 		POIUtils.writeExcelFile(excelFile, workbook);
 
 		int count = this.countSheetFromTemplate(workbook, this.diagram);
@@ -268,8 +268,6 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 					this.sheetObjectMap.put(templateSheetName,
 							new StringObjectModel(templateSheetName));
 
-					// ER}‚Ì“\‚è•t‚¯
-					System.out.println("ER}‚Ì“\‚è•t‚¯");
 					this.pictureSheetGenerator.setImage(workbook, sheet);
 
 					if (this.sheetIndexSheetGenerator.getTemplateSheetName()
@@ -299,7 +297,6 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 			}
 		}
 
-		// ƒV[ƒgˆê——‚Ìì¬
 		if (sheetIndexSheetNo != -1) {
 			this.sheetIndexSheetGenerator.generate(monitor, workbook,
 					sheetIndexSheetNo, useLogicalNameAsSheetName,
@@ -343,13 +340,6 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		return count;
 	}
 
-	/**
-	 * ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ğì¬‚µ‚Ü‚·B
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
 	private boolean backup(File file, boolean isBackupEnable)
 			throws IOException {
 		if (!isBackupEnable || !file.exists()) {

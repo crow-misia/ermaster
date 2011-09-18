@@ -5,17 +5,17 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
 
 /**
- * •ÏX—š—ğ’Ç‰ÁƒRƒ}ƒ“ƒh
+ * å¤‰æ›´å±¥æ­´è¿½åŠ ã‚³ãƒãƒ³ãƒ‰
  */
 public class AddChangeTrackingCommand extends AbstractCommand {
 
 	private ERDiagram diagram;
 
-	// •ÏX—š—ğ
+	// å¤‰æ›´å±¥æ­´
 	private ChangeTracking changeTracking;
 
 	/**
-	 * •ÏX—š—ğ’Ç‰ÁƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+	 * å¤‰æ›´å±¥æ­´è¿½åŠ ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param diagram
 	 * @param nodeElements
@@ -28,7 +28,7 @@ public class AddChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğ’Ç‰Áˆ—‚ğÀs‚·‚é
+	 * å¤‰æ›´å±¥æ­´è¿½åŠ å‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹
 	 */
 	@Override
 	protected void doExecute() {
@@ -36,7 +36,7 @@ public class AddChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğ’Ç‰Áˆ—‚ğŒ³‚É–ß‚·
+	 * å¤‰æ›´å±¥æ­´è¿½åŠ å‡¦ç†ã‚’å…ƒã«æˆ»ã™
 	 */
 	@Override
 	protected void doUndo() {

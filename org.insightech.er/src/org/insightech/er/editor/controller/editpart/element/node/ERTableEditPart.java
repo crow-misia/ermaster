@@ -95,7 +95,7 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 						if (Activator
 								.showConfirmDialog("dialog.message.confirm.create.autoincrement.trigger")) {
 							if (!triggerSet.contains(triggerName)) {
-								// �g���K�[�̍쐬
+								// トリガーの作成
 								Trigger trigger = new Trigger();
 								trigger.setName(triggerName);
 								trigger.setSql("BEFORE INSERT ON " + tableName
@@ -111,7 +111,7 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 							}
 
 							if (!sequenceSet.contains(sequenceName)) {
-								// �V�[�P���X�̍쐬
+								// シーケンスの作成
 								Sequence sequence = new Sequence();
 								sequence.setName(sequenceName);
 								sequence.setStart(1L);
@@ -153,7 +153,7 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 							if (Activator
 									.showConfirmDialog("dialog.message.confirm.remove.autoincrement.trigger")) {
 
-								// �g���K�[�̍폜
+								// トリガーの削除
 								Trigger trigger = triggerSet.get(triggerName);
 
 								if (trigger != null) {
@@ -162,7 +162,7 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 									command.add(deleteTriggerCommand);
 								}
 
-								// �V�[�P���X�̍쐬
+								// シーケンスの作成
 								Sequence sequence = sequenceSet
 										.get(sequenceName);
 

@@ -20,14 +20,14 @@ public class PasteCommand extends AbstractCommand {
 
 	private GraphicalViewer viewer;
 
-	// “\‚è•t‚¯‘ÎÛ‚Ìˆê——
+	// è²¼ã‚Šä»˜ã‘å¯¾è±¡ã®ä¸€è¦§
 	private NodeSet nodeElements;
 
-	// “\‚è•t‚¯‚É’Ç‰Á‚·‚éƒOƒ‹[ƒv—ñ‚Ìˆê——
+	// è²¼ã‚Šä»˜ã‘æ™‚ã«è¿½åŠ ã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—åˆ—ã®ä¸€è¦§
 	private GroupSet columnGroups;
 
 	/**
-	 * “\‚è•t‚¯ƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+	 * è²¼ã‚Šä»˜ã‘ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param editor
 	 * @param nodeElements
@@ -41,28 +41,28 @@ public class PasteCommand extends AbstractCommand {
 
 		this.columnGroups = new GroupSet();
 
-		// “\‚è•t‚¯‘ÎÛ‚É‘Î‚µ‚Äˆ—‚ğŒJ‚è•Ô‚µ‚Ü‚·
+		// è²¼ã‚Šä»˜ã‘å¯¾è±¡ã«å¯¾ã—ã¦å‡¦ç†ã‚’ç¹°ã‚Šè¿”ã—ã¾ã™
 		for (NodeElement nodeElement : nodeElements) {
 			nodeElement.setLocation(new Location(nodeElement.getX() + x,
 					nodeElement.getY() + y, nodeElement.getWidth(), nodeElement
 							.getHeight()));
 
-			// “\‚è•t‚¯‘ÎÛ‚ªƒe[ƒuƒ‹‚Ìê‡
+			// è²¼ã‚Šä»˜ã‘å¯¾è±¡ãŒãƒ†ãƒ¼ãƒ–ãƒ«ã®å ´åˆ
 			if (nodeElement instanceof ERTable) {
 
 				ERTable table = (ERTable) nodeElement;
 
-				// —ñ‚É‘Î‚µ‚Äˆ—‚ğŒJ‚è•Ô‚µ‚Ü‚·
+				// åˆ—ã«å¯¾ã—ã¦å‡¦ç†ã‚’ç¹°ã‚Šè¿”ã—ã¾ã™
 				for (Column column : table.getColumns()) {
 
-					// —ñ‚ªƒOƒ‹[ƒv—ñ‚Ìê‡
+					// åˆ—ãŒã‚°ãƒ«ãƒ¼ãƒ—åˆ—ã®å ´åˆ
 					if (column instanceof ColumnGroup) {
 						ColumnGroup group = (ColumnGroup) column;
 
-						// ‚±‚Ì}‚ÌƒOƒ‹[ƒv—ñ‚Å‚È‚¢ê‡
+						// ã“ã®å›³ã®ã‚°ãƒ«ãƒ¼ãƒ—åˆ—ã§ãªã„å ´åˆ
 						if (!diagram.getDiagramContents().getGroups().contains(
 								group)) {
-							// ‘ÎÛ‚ÌƒOƒ‹[ƒv—ñ‚É’Ç‰Á‚µ‚Ü‚·B
+							// å¯¾è±¡ã®ã‚°ãƒ«ãƒ¼ãƒ—åˆ—ã«è¿½åŠ ã—ã¾ã™ã€‚
 							columnGroups.add(group);
 						}
 					}
@@ -72,65 +72,65 @@ public class PasteCommand extends AbstractCommand {
 	}
 
 	/**
-	 * “\‚è•t‚¯ˆ—‚ğÀs‚·‚é
+	 * è²¼ã‚Šä»˜ã‘å‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹
 	 */
 	@Override
 	protected void doExecute() {
-		// •`‰æXV‚ğ‚Æ‚ß‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’ã¨ã‚ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(false);
 
 		GroupSet columnGroupSet = this.diagram.getDiagramContents().getGroups();
 
-		// }‚Éƒm[ƒh‚ğ’Ç‰Á‚µ‚Ü‚·B
+		// å›³ã«ãƒãƒ¼ãƒ‰ã‚’è¿½åŠ ã—ã¾ã™ã€‚
 		for (NodeElement nodeElement : this.nodeElements) {
 			this.diagram.addContent(nodeElement);
 		}
 
-		// ƒOƒ‹[ƒv—ñ‚ğ’Ç‰Á‚µ‚Ü‚·B
+		// ã‚°ãƒ«ãƒ¼ãƒ—åˆ—ã‚’è¿½åŠ ã—ã¾ã™ã€‚
 		for (ColumnGroup columnGroup : this.columnGroups) {
 			columnGroupSet.add(columnGroup);
 		}
 
-		// •`‰æXV‚ğÄŠJ‚µ‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’å†é–‹ã—ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(true);
 
 		this.diagram.changeAll();
 
-		// “\‚è•t‚¯‚ç‚ê‚½ƒe[ƒuƒ‹‚ğ‘I‘ğó‘Ô‚É‚µ‚Ü‚·B
+		// è²¼ã‚Šä»˜ã‘ã‚‰ã‚ŒãŸãƒ†ãƒ¼ãƒ–ãƒ«ã‚’é¸æŠçŠ¶æ…‹ã«ã—ã¾ã™ã€‚
 		this.setFocus();
 	}
 
 	/**
-	 * “\‚è•t‚¯ˆ—‚ğŒ³‚É–ß‚·
+	 * è²¼ã‚Šä»˜ã‘å‡¦ç†ã‚’å…ƒã«æˆ»ã™
 	 */
 	@Override
 	protected void doUndo() {
-		// •`‰æXV‚ğ‚Æ‚ß‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’ã¨ã‚ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(false);
 
 		GroupSet columnGroupSet = this.diagram.getDiagramContents().getGroups();
 
-		// }‚©‚çƒm[ƒh‚ğíœ‚µ‚Ü‚·B
+		// å›³ã‹ã‚‰ãƒãƒ¼ãƒ‰ã‚’å‰Šé™¤ã—ã¾ã™ã€‚
 		for (NodeElement nodeElement : this.nodeElements) {
 			this.diagram.removeContent(nodeElement);
 		}
 
-		// ƒOƒ‹[ƒv—ñ‚ğíœ‚µ‚Ü‚·B
+		// ã‚°ãƒ«ãƒ¼ãƒ—åˆ—ã‚’å‰Šé™¤ã—ã¾ã™ã€‚
 		for (ColumnGroup columnGroup : this.columnGroups) {
 			columnGroupSet.remove(columnGroup);
 		}
 
-		// •`‰æXV‚ğÄŠJ‚µ‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’å†é–‹ã—ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(true);
 
 		this.diagram.changeAll();
 	}
 
 	/**
-	 * “\‚è•t‚¯‚ç‚ê‚½ƒe[ƒuƒ‹‚ğ‘I‘ğó‘Ô‚É‚µ‚Ü‚·B
+	 * è²¼ã‚Šä»˜ã‘ã‚‰ã‚ŒãŸãƒ†ãƒ¼ãƒ–ãƒ«ã‚’é¸æŠçŠ¶æ…‹ã«ã—ã¾ã™ã€‚
 	 */
 	private void setFocus() {
-		// “\‚è•t‚¯‚ç‚ê‚½ƒe[ƒuƒ‹‚ğ‘I‘ğó‘Ô‚É‚µ‚Ü‚·B
+		// è²¼ã‚Šä»˜ã‘ã‚‰ã‚ŒãŸãƒ†ãƒ¼ãƒ–ãƒ«ã‚’é¸æŠçŠ¶æ…‹ã«ã—ã¾ã™ã€‚
 		for (NodeElement nodeElement : this.nodeElements) {
 			EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(
 					nodeElement);

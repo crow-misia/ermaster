@@ -194,7 +194,7 @@ public class SqlType implements Serializable {
 
 		Map<TypeKey, SqlType> sqlTypeMap = dbSqlTypeMap.get(database);
 
-		// decimal(19,4) = money “™‚É‘Î‰
+		// decimal(19,4) = money ç­‰ã«å¯¾å¿œ
 		TypeKey typeKey = new TypeKey(alias, size);
 		SqlType sqlType = sqlTypeMap.get(typeKey);
 
@@ -206,7 +206,7 @@ public class SqlType implements Serializable {
 			sqlType = sqlTypeMap.get(typeKey);
 
 			if (sqlType == null) {
-				// db import ‚Ìê‡‚ÉAƒTƒCƒY‚ªæ“¾‚³‚ê‚Ä‚¢‚Ä‚àAw’è‚Í‚Å‚«‚È‚¢ƒP[ƒX‚ª‚ ‚é
+				// db import ã®å ´åˆã«ã€ã‚µã‚¤ã‚ºãŒå–å¾—ã•ã‚Œã¦ã„ã¦ã‚‚ã€æŒ‡å®šã¯ã§ããªã„ã‚±ãƒ¼ã‚¹ãŒã‚ã‚‹
 				typeKey = new TypeKey(alias, 0);
 				sqlType = sqlTypeMap.get(typeKey);
 			}
@@ -398,13 +398,13 @@ public class SqlType implements Serializable {
 
 				} else {
 					if (type.isUnsupported(db)) {
-						builder.append("      ");
+						builder.append("â–¡â–¡â–¡â–¡â–¡â–¡");
 					} else {
-						builder.append("¡¡¡¡¡¡");
+						builder.append("â– â– â– â– â– â– ");
 						errorCount++;
 					}
 
-					spaceLength = maxIdLength - "      ".length();
+					spaceLength = maxIdLength - "â–¡â–¡â–¡â–¡â–¡â–¡".length();
 					if (spaceLength < 4) {
 						spaceLength = 4;
 					}
@@ -444,7 +444,7 @@ public class SqlType implements Serializable {
 					str = Format.formatType(type, typeData, db);
 					if (str.equals(alias)) {
 						errorCount3++;
-						msg.append("~3");
+						msg.append("Ã—3");
 					}
 
 				} else if (type.isNeedLength(db)) {
@@ -455,7 +455,7 @@ public class SqlType implements Serializable {
 
 					if (str.equals(alias)) {
 						errorCount3++;
-						msg.append("~3");
+						msg.append("Ã—3");
 					}
 
 				} else if (type.isNeedDecimal(db)) {
@@ -466,7 +466,7 @@ public class SqlType implements Serializable {
 
 					if (str.equals(alias)) {
 						errorCount3++;
-						msg.append("~3");
+						msg.append("Ã—3");
 					}
 				} else if (type.doesNeedArgs()) {
 					str = alias + "('1')";
@@ -483,7 +483,7 @@ public class SqlType implements Serializable {
 
 					if (m1.matches() || m2.matches() || m3.matches()) {
 						errorCount2++;
-						msg.append("~2");
+						msg.append("Ã—2");
 					}
 				}
 
@@ -497,9 +497,9 @@ public class SqlType implements Serializable {
 		}
 
 		msg.append("\n");
-		msg.append(errorCount + " ŒÂ‚ÌŒ^‚ª•ÏŠ·‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B\n");
-		msg.append(errorCount2 + " ŒÂ‚Ì”šŒ^‚Ìw’è‚ª•s‘«‚µ‚Ä‚¢‚Ü‚·B\n");
-		msg.append(errorCount3 + " ŒÂ‚Ì”šŒ^‚Ìw’è‚ª—]•ª‚Å‚·B\n");
+		msg.append(errorCount + " å€‹ã®å‹ãŒå¤‰æ›ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚\n");
+		msg.append(errorCount2 + " å€‹ã®æ•°å­—å‹ã®æŒ‡å®šãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚\n");
+		msg.append(errorCount3 + " å€‹ã®æ•°å­—å‹ã®æŒ‡å®šãŒä½™åˆ†ã§ã™ã€‚\n");
 
 		logger.info(msg.toString());
 	}

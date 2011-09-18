@@ -19,6 +19,7 @@ public class EclipseDBManagerFactory {
 	private static final List<EclipseDBManager> DB_LIST = new ArrayList<EclipseDBManager>();
 
 	static {
+		new StandardSQLEclipseDBManager();
 		new DB2EclipseDBManager();
 		new HSQLDBEclipseDBManager();
 		new MySQLEclipseDBManager();
@@ -26,7 +27,6 @@ public class EclipseDBManagerFactory {
 		new PostgresEclipseDBManager();
 		new SQLiteEclipseDBManager();
 		new SqlServerEclipseDBManager();
-		new StandardSQLEclipseDBManager();
 	}
 
 	static void addDB(EclipseDBManager manager) {

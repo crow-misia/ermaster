@@ -77,10 +77,10 @@ public class RelationEditPart extends ERDiagramConnectionEditPart {
 	@Override
 	protected void refreshBendpoints() {
 		try {
-			// ƒxƒ“ƒhEƒ|ƒCƒ“ƒg‚ÌˆÊ’uî•ñ‚Ìæ“¾
+			// ãƒ™ãƒ³ãƒ‰ãƒ»ãƒã‚¤ãƒ³ãƒˆã®ä½ç½®æƒ…å ±ã®å–å¾—
 			Relation relation = (Relation) this.getModel();
 
-			// ÀÛ‚Ìƒxƒ“ƒhEƒ|ƒCƒ“ƒg‚ÌƒŠƒXƒg
+			// å®Ÿéš›ã®ãƒ™ãƒ³ãƒ‰ãƒ»ãƒã‚¤ãƒ³ãƒˆã®ãƒªã‚¹ãƒˆ
 			List<org.eclipse.draw2d.Bendpoint> constraint = new ArrayList<org.eclipse.draw2d.Bendpoint>();
 
 			for (Bendpoint bendPoint : relation.getBendpoints()) {

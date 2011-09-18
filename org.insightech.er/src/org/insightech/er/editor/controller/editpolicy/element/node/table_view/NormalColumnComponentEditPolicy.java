@@ -51,7 +51,7 @@ public class NormalColumnComponentEditPolicy extends ComponentEditPolicy {
 						ColumnGroup columnGroup = (ColumnGroup) normalColumn
 								.getColumnHolder();
 
-						// ColumnGroup ‚Ì ColumnHolder ‚©‚ç‚Íƒe[ƒuƒ‹‚Íæ“¾‚Å‚«‚È‚¢‚Ì‚Å’ˆÓ
+						// ColumnGroup ã® ColumnHolder ã‹ã‚‰ã¯ãƒ†ãƒ¼ãƒ–ãƒ«ã¯å–å¾—ã§ããªã„ã®ã§æ³¨æ„
 						TableView table = (TableView) this.getHost()
 								.getParent().getModel();
 
@@ -74,7 +74,7 @@ public class NormalColumnComponentEditPolicy extends ComponentEditPolicy {
 					ColumnGroup columnGroup = (ColumnGroup) this.getHost()
 							.getModel();
 
-					// ColumnGroup ‚Ì ColumnHolder ‚©‚ç‚Íƒe[ƒuƒ‹‚Íæ“¾‚Å‚«‚È‚¢‚Ì‚Å’ˆÓ
+					// ColumnGroup ã® ColumnHolder ã‹ã‚‰ã¯ãƒ†ãƒ¼ãƒ–ãƒ«ã¯å–å¾—ã§ããªã„ã®ã§æ³¨æ„
 					TableView table = (TableView) this.getHost().getParent()
 							.getModel();
 

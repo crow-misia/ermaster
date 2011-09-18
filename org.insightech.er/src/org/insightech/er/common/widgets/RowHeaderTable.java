@@ -149,29 +149,29 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 				super.processMouseEvent(event);
 
 				if (event.isPopupTrigger()) {
-					// ‰EƒNƒŠƒbƒN‚ª‚³‚ê‚½ê‡
+					// å³ã‚¯ãƒªãƒƒã‚¯ãŒã•ã‚ŒãŸå ´åˆ
 					if (!event.isControlDown() && !event.isShiftDown()) {
-						// Ctrl ‚à Shift ‚à‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢ê‡
+						// Ctrl ã‚‚ Shift ã‚‚æŠ¼ã•ã‚Œã¦ã„ãªã„å ´åˆ
 
-						// ƒNƒŠƒbƒN‚³‚ê‚½s‚Ìæ“¾
+						// ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸè¡Œã®å–å¾—
 						Point origin = event.getPoint();
 						int row = rowAtPoint(origin);
 
 						if (!isRowSelected(row)) {
-							// ‚±‚Ìs‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡
-							// ‚·‚×‚Ä‚Ì‘I‘ğ‚ğ‰ğœ
+							// ã“ã®è¡ŒãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆ
+							// ã™ã¹ã¦ã®é¸æŠã‚’è§£é™¤
 							clearSelection();
 						}
 
 						if (row != -1) {
-							// ƒNƒŠƒbƒN‚³‚ê‚½s‚ğ‘I‘ğ‚³‚ê‚½ó‘Ô‚É‚·‚é
+							// ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸè¡Œã‚’é¸æŠã•ã‚ŒãŸçŠ¶æ…‹ã«ã™ã‚‹
 							addRowSelectionInterval(row, row);
 						}
 					}
 
 					this.editingStopped(new ChangeEvent(this));
 
-					// ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚Ì•\¦
+					// ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º
 					this.pupupMenu.show(event.getComponent(), event.getX(),
 							event.getY());
 				}
@@ -602,11 +602,11 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 	}
 
 	/**
-	 * ƒJƒ‰ƒ€ƒe[ƒuƒ‹‚Ì‘I‘ğ‚³‚ê‚Ä‚¢‚é•”•ª‚ğƒRƒs[‚µ‚Ü‚·B
+	 * ã‚«ãƒ©ãƒ ãƒ†ãƒ¼ãƒ–ãƒ«ã®é¸æŠã•ã‚Œã¦ã„ã‚‹éƒ¨åˆ†ã‚’ã‚³ãƒ”ãƒ¼ã—ã¾ã™ã€‚
 	 */
 	private void copyToClipboard() {
 
-		// ‘I‘ğ‚³‚ê‚Ä‚¢‚és‚ğæ“¾
+		// é¸æŠã•ã‚Œã¦ã„ã‚‹è¡Œã‚’å–å¾—
 		int[] selectedRows = this.getSelection();
 
 		if (selectedRows.length == 0) {
@@ -615,7 +615,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 		StringBuilder builder = new StringBuilder();
 
-		// ‘S‚Ä‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚Íƒwƒbƒ_‚àƒRƒs[
+		// å…¨ã¦ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãƒ˜ãƒƒãƒ€ã‚‚ã‚³ãƒ”ãƒ¼
 		// if (selectedRows.length == this.editColumnTable.getItemCount()) {
 		// for (TableColumn c : this.editColumnTable.getColumns()) {
 		// builder.append(c.getText());
@@ -643,7 +643,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 	}
 
 	/**
-	 * ƒJƒ‰ƒ€ƒe[ƒuƒ‹‚ÉƒNƒŠƒbƒvƒ{[ƒh‚Ì“à—e‚ğ“\‚è•t‚¯‚Ü‚·B
+	 * ã‚«ãƒ©ãƒ ãƒ†ãƒ¼ãƒ–ãƒ«ã«ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã®å†…å®¹ã‚’è²¼ã‚Šä»˜ã‘ã¾ã™ã€‚
 	 */
 	private int pasteFromClipboard(boolean insert) {
 		int count = 0;
@@ -653,7 +653,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 		int row = this.getSelection()[0];
 
-		// ƒNƒŠƒbƒvƒ{[ƒh‚©‚ç“Ç‚İ‚İ
+		// ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰èª­ã¿è¾¼ã¿
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
 		Transferable transferable = clipboard.getContents(this);
@@ -733,10 +733,10 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 					cutMenu.addActionListener(new ActionListener() {
 
 						/**
-						 * uØ‚èæ‚èvƒƒjƒ…[‘I‘ğˆ—
+						 * ã€Œåˆ‡ã‚Šå–ã‚Šã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼é¸æŠæ™‚å‡¦ç†
 						 * 
 						 * @param even
-						 *            ƒCƒxƒ“ƒg
+						 *            ã‚¤ãƒ™ãƒ³ãƒˆ
 						 */
 						public void actionPerformed(ActionEvent even) {
 							cutRows();
@@ -753,10 +753,10 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 				copyMenu.addActionListener(new ActionListener() {
 
 					/**
-					 * uƒRƒs[vƒƒjƒ…[‘I‘ğˆ—
+					 * ã€Œã‚³ãƒ”ãƒ¼ã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼é¸æŠæ™‚å‡¦ç†
 					 * 
 					 * @param even
-					 *            ƒCƒxƒ“ƒg
+					 *            ã‚¤ãƒ™ãƒ³ãƒˆ
 					 */
 					public void actionPerformed(ActionEvent even) {
 						copyRows();
@@ -773,10 +773,10 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 					pasteMenu.addActionListener(new ActionListener() {
 
 						/**
-						 * u“\‚è•t‚¯vƒƒjƒ…[‘I‘ğˆ—
+						 * ã€Œè²¼ã‚Šä»˜ã‘ã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼é¸æŠæ™‚å‡¦ç†
 						 * 
 						 * @param even
-						 *            ƒCƒxƒ“ƒg
+						 *            ã‚¤ãƒ™ãƒ³ãƒˆ
 						 */
 						public void actionPerformed(ActionEvent even) {
 							pasteRows();
@@ -797,10 +797,10 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 				insertMenu.addActionListener(new ActionListener() {
 
 					/**
-					 * u‘}“üvƒƒjƒ…[‘I‘ğˆ—
+					 * ã€ŒæŒ¿å…¥ã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼é¸æŠæ™‚å‡¦ç†
 					 * 
 					 * @param even
-					 *            ƒCƒxƒ“ƒg
+					 *            ã‚¤ãƒ™ãƒ³ãƒˆ
 					 */
 					public void actionPerformed(ActionEvent even) {
 						insertRow();
@@ -817,10 +817,10 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 					insertPasteMenu.addActionListener(new ActionListener() {
 
 						/**
-						 * u‘}“ü ‚µ‚Ä“\‚è•t‚¯vƒƒjƒ…[‘I‘ğˆ—
+						 * ã€ŒæŒ¿å…¥ ã—ã¦è²¼ã‚Šä»˜ã‘ã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼é¸æŠæ™‚å‡¦ç†
 						 * 
 						 * @param even
-						 *            ƒCƒxƒ“ƒg
+						 *            ã‚¤ãƒ™ãƒ³ãƒˆ
 						 */
 						public void actionPerformed(ActionEvent even) {
 							insertAndPasteRows();
@@ -837,10 +837,10 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 				deleteMenu.addActionListener(new ActionListener() {
 
 					/**
-					 * uíœvƒƒjƒ…[‘I‘ğˆ—
+					 * ã€Œå‰Šé™¤ã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼é¸æŠæ™‚å‡¦ç†
 					 * 
 					 * @param even
-					 *            ƒCƒxƒ“ƒg
+					 *            ã‚¤ãƒ™ãƒ³ãƒˆ
 					 */
 					public void actionPerformed(ActionEvent even) {
 						deleteRows();
@@ -1000,24 +1000,24 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 	}
 
 	private void copyRows() {
-		// ƒe[ƒuƒ‹‚©‚çƒNƒŠƒbƒvƒ{[ƒh‚ÖƒRƒs[
+		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã¸ã‚³ãƒ”ãƒ¼
 		copyToClipboard();
 	}
 
 	private void cutRows() {
-		// ƒe[ƒuƒ‹‚©‚çƒNƒŠƒbƒvƒ{[ƒh‚ÖƒRƒs[
+		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã¸ã‚³ãƒ”ãƒ¼
 		copyToClipboard();
 		removeSelectedRows();
 	}
 
 	private void pasteRows() {
-		// “\‚è•t‚¯
+		// è²¼ã‚Šä»˜ã‘
 		int[] selectedRows = getSelection();
 		if (selectedRows.length == 0) {
 			return;
 		}
 
-		// ƒNƒŠƒbƒvƒ{[ƒh‚©‚çƒe[ƒuƒ‹‚Ö“\‚è•t‚¯
+		// ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‹ã‚‰ãƒ†ãƒ¼ãƒ–ãƒ«ã¸è²¼ã‚Šä»˜ã‘
 		int count = pasteFromClipboard(false);
 
 		table.clearSelection();
