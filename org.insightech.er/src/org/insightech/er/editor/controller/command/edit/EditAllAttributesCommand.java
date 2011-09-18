@@ -6,7 +6,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.DiagramContents;
 
 /**
- * DiagramContents ‚Ì’uŠ·ƒRƒ}ƒ“ƒh
+ * DiagramContents ã®ç½®æ›ã‚³ãƒãƒ³ãƒ‰
  */
 public class EditAllAttributesCommand extends AbstractCommand {
 
@@ -17,7 +17,7 @@ public class EditAllAttributesCommand extends AbstractCommand {
 	private DiagramContents newDiagramContents;
 
 	/**
-	 * ’uŠ·ƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+	 * ç½®æ›ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param diagram
 	 * @param nodeElements
@@ -36,12 +36,12 @@ public class EditAllAttributesCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		// •`‰æXV‚ğ‚Æ‚ß‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’ã¨ã‚ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(false);
 
 		this.diagram.replaceContents(newDiagramContents);
 
-		// •`‰æXV‚ğÄŠJ‚µ‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’å†é–‹ã—ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(true);
 
 		this.diagram.changeAll();
@@ -52,12 +52,12 @@ public class EditAllAttributesCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		// •`‰æXV‚ğ‚Æ‚ß‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’ã¨ã‚ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(false);
 
 		this.diagram.replaceContents(oldDiagramContents);
 
-		// •`‰æXV‚ğÄŠJ‚µ‚Ü‚·B
+		// æç”»æ›´æ–°ã‚’å†é–‹ã—ã¾ã™ã€‚
 		ERDiagramEditPart.setUpdateable(true);
 
 		this.diagram.changeAll();

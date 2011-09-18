@@ -265,7 +265,7 @@ public class ListenerAppender {
 			text.setText(tableItem.getText(xy.x));
 		}
 
-		// �t�H�[�J�X���O�ꂽ�Ƃ��̏���
+		// フォーカスが外れたときの処理
 		control.addFocusListener(new FocusAdapter() {
 
 			/**
@@ -278,7 +278,7 @@ public class ListenerAppender {
 
 		});
 
-		// ENTER��ESC�������ꂽ�Ƃ��̏���
+		// ENTERとESCが押されたときの処理
 		control.addKeyListener(new KeyAdapter() {
 
 			/**

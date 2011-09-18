@@ -5,7 +5,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.tracking.ChangeTrackingList;
 
 /**
- * •ÏX—š—ğŒvZƒRƒ}ƒ“ƒh
+ * å¤‰æ›´å±¥æ­´è¨ˆç®—ã‚³ãƒãƒ³ãƒ‰
  */
 public class ResetChangeTrackingCommand extends AbstractCommand {
 

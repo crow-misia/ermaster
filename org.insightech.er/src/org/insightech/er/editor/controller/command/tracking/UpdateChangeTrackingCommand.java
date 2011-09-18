@@ -4,11 +4,11 @@ import org.insightech.er.editor.controller.command.AbstractCommand;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
 
 /**
- * •ÏX—š—ğXVƒRƒ}ƒ“ƒh
+ * å¤‰æ›´å±¥æ­´æ›´æ–°ã‚³ãƒãƒ³ãƒ‰
  */
 public class UpdateChangeTrackingCommand extends AbstractCommand {
 
-	// •ÏX—š—ğ
+	// å¤‰æ›´å±¥æ­´
 	private ChangeTracking changeTracking;
 
 	private String oldComment;
@@ -16,7 +16,7 @@ public class UpdateChangeTrackingCommand extends AbstractCommand {
 	private String newComment;
 
 	/**
-	 * •ÏX—š—ğXVƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+	 * å¤‰æ›´å±¥æ­´æ›´æ–°ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param changeTracking
 	 * @param comment
@@ -30,7 +30,7 @@ public class UpdateChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğXVˆ—‚ğÀs‚·‚é
+	 * å¤‰æ›´å±¥æ­´æ›´æ–°å‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹
 	 */
 	@Override
 	protected void doExecute() {
@@ -38,7 +38,7 @@ public class UpdateChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğXVˆ—‚ğŒ³‚É–ß‚·
+	 * å¤‰æ›´å±¥æ­´æ›´æ–°å‡¦ç†ã‚’å…ƒã«æˆ»ã™
 	 */
 	@Override
 	protected void doUndo() {

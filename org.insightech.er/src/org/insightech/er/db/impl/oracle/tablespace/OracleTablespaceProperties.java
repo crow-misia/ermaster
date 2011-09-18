@@ -42,7 +42,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	private boolean autoSegmentSpaceManagement;
 
 	/**
-	 * dataFile ‚ğæ“¾‚µ‚Ü‚·.
+	 * dataFile ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return dataFile
 	 */
@@ -51,7 +51,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * dataFile ‚ğİ’è‚µ‚Ü‚·.
+	 * dataFile ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param dataFile
 	 *            dataFile
@@ -61,7 +61,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * fileSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * fileSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return fileSize
 	 */
@@ -70,7 +70,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * fileSize ‚ğİ’è‚µ‚Ü‚·.
+	 * fileSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param fileSize
 	 *            fileSize
@@ -80,7 +80,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoExtend ‚ğæ“¾‚µ‚Ü‚·.
+	 * autoExtend ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return autoExtend
 	 */
@@ -89,7 +89,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoExtend ‚ğİ’è‚µ‚Ü‚·.
+	 * autoExtend ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param autoExtend
 	 *            autoExtend
@@ -99,7 +99,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoExtendSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * autoExtendSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return autoExtendSize
 	 */
@@ -108,7 +108,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoExtendSize ‚ğİ’è‚µ‚Ü‚·.
+	 * autoExtendSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param autoExtendSize
 	 *            autoExtendSize
@@ -118,7 +118,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoExtendMaxSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * autoExtendMaxSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return autoExtendMaxSize
 	 */
@@ -127,7 +127,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoExtendMaxSize ‚ğİ’è‚µ‚Ü‚·.
+	 * autoExtendMaxSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param autoExtendMaxSize
 	 *            autoExtendMaxSize
@@ -137,7 +137,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * minimumExtentSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * minimumExtentSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return minimumExtentSize
 	 */
@@ -146,7 +146,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * minimumExtentSize ‚ğİ’è‚µ‚Ü‚·.
+	 * minimumExtentSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param minimumExtentSize
 	 *            minimumExtentSize
@@ -156,7 +156,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * logging ‚ğæ“¾‚µ‚Ü‚·.
+	 * logging ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return logging
 	 */
@@ -165,7 +165,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * logging ‚ğİ’è‚µ‚Ü‚·.
+	 * logging ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param logging
 	 *            logging
@@ -175,7 +175,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * offline ‚ğæ“¾‚µ‚Ü‚·.
+	 * offline ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return offline
 	 */
@@ -184,7 +184,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * offline ‚ğİ’è‚µ‚Ü‚·.
+	 * offline ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param offline
 	 *            offline
@@ -194,7 +194,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * temporary ‚ğæ“¾‚µ‚Ü‚·.
+	 * temporary ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return temporary
 	 */
@@ -203,7 +203,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * temporary ‚ğİ’è‚µ‚Ü‚·.
+	 * temporary ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param temporary
 	 *            temporary
@@ -213,7 +213,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoSegmentSpaceManagement ‚ğæ“¾‚µ‚Ü‚·.
+	 * autoSegmentSpaceManagement ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return autoSegmentSpaceManagement
 	 */
@@ -222,7 +222,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * autoSegmentSpaceManagement ‚ğİ’è‚µ‚Ü‚·.
+	 * autoSegmentSpaceManagement ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param autoSegmentSpaceManagement
 	 *            autoSegmentSpaceManagement
@@ -232,7 +232,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * initial ‚ğæ“¾‚µ‚Ü‚·.
+	 * initial ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return initial
 	 */
@@ -241,7 +241,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * initial ‚ğİ’è‚µ‚Ü‚·.
+	 * initial ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param initial
 	 *            initial
@@ -251,7 +251,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * next ‚ğæ“¾‚µ‚Ü‚·.
+	 * next ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return next
 	 */
@@ -260,7 +260,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * next ‚ğİ’è‚µ‚Ü‚·.
+	 * next ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param next
 	 *            next
@@ -270,7 +270,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * minExtents ‚ğæ“¾‚µ‚Ü‚·.
+	 * minExtents ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return minExtents
 	 */
@@ -279,7 +279,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * minExtents ‚ğİ’è‚µ‚Ü‚·.
+	 * minExtents ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param minExtents
 	 *            minExtents
@@ -289,7 +289,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * maxExtents ‚ğæ“¾‚µ‚Ü‚·.
+	 * maxExtents ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return maxExtents
 	 */
@@ -298,7 +298,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * maxExtents ‚ğİ’è‚µ‚Ü‚·.
+	 * maxExtents ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param maxExtents
 	 *            maxExtents
@@ -308,7 +308,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * pctIncrease ‚ğæ“¾‚µ‚Ü‚·.
+	 * pctIncrease ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return pctIncrease
 	 */
@@ -317,7 +317,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * pctIncrease ‚ğİ’è‚µ‚Ü‚·.
+	 * pctIncrease ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param pctIncrease
 	 *            pctIncrease

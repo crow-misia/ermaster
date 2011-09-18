@@ -34,7 +34,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	private String bufferPoolName;
 
 	/**
-	 * type ‚ğæ“¾‚µ‚Ü‚·.
+	 * type ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return type
 	 */
@@ -43,7 +43,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * type ‚ğİ’è‚µ‚Ü‚·.
+	 * type ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param type
 	 *            type
@@ -53,7 +53,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * pageSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * pageSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return pageSize
 	 */
@@ -62,7 +62,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * pageSize ‚ğİ’è‚µ‚Ü‚·.
+	 * pageSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param pageSize
 	 *            pageSize
@@ -72,7 +72,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * managedBy ‚ğæ“¾‚µ‚Ü‚·.
+	 * managedBy ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return managedBy
 	 */
@@ -81,7 +81,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * managedBy ‚ğİ’è‚µ‚Ü‚·.
+	 * managedBy ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param managedBy
 	 *            managedBy
@@ -91,7 +91,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * extentSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * extentSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return extentSize
 	 */
@@ -100,7 +100,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * extentSize ‚ğİ’è‚µ‚Ü‚·.
+	 * extentSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param extentSize
 	 *            extentSize
@@ -110,7 +110,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * prefetchSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * prefetchSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return prefetchSize
 	 */
@@ -119,7 +119,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * prefetchSize ‚ğİ’è‚µ‚Ü‚·.
+	 * prefetchSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param prefetchSize
 	 *            prefetchSize
@@ -129,7 +129,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * bufferPoolName ‚ğæ“¾‚µ‚Ü‚·.
+	 * bufferPoolName ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return bufferPoolName
 	 */
@@ -138,7 +138,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * bufferPoolName ‚ğİ’è‚µ‚Ü‚·.
+	 * bufferPoolName ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param bufferPoolName
 	 *            bufferPoolName
@@ -148,7 +148,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * container ‚ğæ“¾‚µ‚Ü‚·.
+	 * container ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return container
 	 */
@@ -157,7 +157,7 @@ public class DB2TablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * container ‚ğİ’è‚µ‚Ü‚·.
+	 * container ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param container
 	 *            container

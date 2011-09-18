@@ -22,7 +22,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	private String engine;
 
 	/**
-	 * dataFile ‚ğæ“¾‚µ‚Ü‚·.
+	 * dataFile ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return dataFile
 	 */
@@ -31,7 +31,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * dataFile ‚ğİ’è‚µ‚Ü‚·.
+	 * dataFile ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param dataFile
 	 *            dataFile
@@ -41,7 +41,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * logFileGroup ‚ğæ“¾‚µ‚Ü‚·.
+	 * logFileGroup ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return logFileGroup
 	 */
@@ -50,7 +50,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * logFileGroup ‚ğİ’è‚µ‚Ü‚·.
+	 * logFileGroup ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param logFileGroup
 	 *            logFileGroup
@@ -60,7 +60,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * extentSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * extentSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return extentSize
 	 */
@@ -69,7 +69,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * extentSize ‚ğİ’è‚µ‚Ü‚·.
+	 * extentSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param extentSize
 	 *            extentSize
@@ -79,7 +79,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * initialSize ‚ğæ“¾‚µ‚Ü‚·.
+	 * initialSize ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return initialSize
 	 */
@@ -88,7 +88,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * initialSize ‚ğİ’è‚µ‚Ü‚·.
+	 * initialSize ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param initialSize
 	 *            initialSize
@@ -98,7 +98,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * engine ‚ğæ“¾‚µ‚Ü‚·.
+	 * engine ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return engine
 	 */
@@ -107,7 +107,7 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * engine ‚ğİ’è‚µ‚Ü‚·.
+	 * engine ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param engine
 	 *            engine

@@ -16,7 +16,7 @@ public class PostgresTablespaceProperties implements TablespaceProperties {
 	private String owner;
 
 	/**
-	 * location ‚ğæ“¾‚µ‚Ü‚·.
+	 * location ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return location
 	 */
@@ -25,7 +25,7 @@ public class PostgresTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * location ‚ğİ’è‚µ‚Ü‚·.
+	 * location ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param location
 	 *            location
@@ -35,7 +35,7 @@ public class PostgresTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * owner ‚ğæ“¾‚µ‚Ü‚·.
+	 * owner ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return owner
 	 */
@@ -44,7 +44,7 @@ public class PostgresTablespaceProperties implements TablespaceProperties {
 	}
 
 	/**
-	 * owner ‚ğİ’è‚µ‚Ü‚·.
+	 * owner ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param owner
 	 *            owner

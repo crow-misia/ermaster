@@ -5,19 +5,19 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
 
 /**
- * •ÏX—š—ğíœƒRƒ}ƒ“ƒh
+ * å¤‰æ›´å±¥æ­´å‰Šé™¤ã‚³ãƒãƒ³ãƒ‰
  */
 public class DeleteChangeTrackingCommand extends AbstractCommand {
 
 	private ERDiagram diagram;
 
-	// •ÏX—š—ğ
+	// å¤‰æ›´å±¥æ­´
 	private ChangeTracking changeTracking;
 
 	private int index;
 
 	/**
-	 * •ÏX—š—ğíœƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+	 * å¤‰æ›´å±¥æ­´å‰Šé™¤ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param diagram
 	 * @param index
@@ -30,7 +30,7 @@ public class DeleteChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğíœˆ—‚ğÀs‚·‚é
+	 * å¤‰æ›´å±¥æ­´å‰Šé™¤å‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹
 	 */
 	@Override
 	protected void doExecute() {
@@ -38,7 +38,7 @@ public class DeleteChangeTrackingCommand extends AbstractCommand {
 	}
 
 	/**
-	 * •ÏX—š—ğíœˆ—‚ğŒ³‚É–ß‚·
+	 * å¤‰æ›´å±¥æ­´å‰Šé™¤å‡¦ç†ã‚’å…ƒã«æˆ»ã™
 	 */
 	@Override
 	protected void doUndo() {

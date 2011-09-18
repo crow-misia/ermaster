@@ -27,7 +27,6 @@ public class CreateBendpointCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		// ベンド・ポイントの追加
 		Bendpoint bendpoint = new Bendpoint(this.x, this.y);
 		connection.addBendpoint(index, bendpoint);
 	}
