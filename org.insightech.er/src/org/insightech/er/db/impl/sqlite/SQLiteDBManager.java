@@ -70,7 +70,7 @@ public class SQLiteDBManager extends DBManagerBase {
 
 	@Override
 	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_SCHEMA };
+		return new int[] { SUPPORT_SCHEMA, SUPPORT_AUTO_INCREMENT };
 	}
 
 	public ImportFromDBManager getTableImportManager() {
