@@ -220,18 +220,18 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("<diagram>\n");
 
 		if (diagram.getDbSetting() != null) {
-			xml.append("\t<dbsetting>\n").append(
-					tab(tab(this.createXML(diagram.getDbSetting())))).append(
-					"\t</dbsetting>\n");
+			xml.append("\t<dbsetting>\n")
+					.append(tab(tab(this.createXML(diagram.getDbSetting()))))
+					.append("\t</dbsetting>\n");
 		}
 		if (diagram.getPageSetting() != null) {
-			xml.append("\t<page_setting>\n").append(
-					tab(tab(this.createXML(diagram.getPageSetting())))).append(
-					"\t</page_setting>\n");
+			xml.append("\t<page_setting>\n")
+					.append(tab(tab(this.createXML(diagram.getPageSetting()))))
+					.append("\t</page_setting>\n");
 		}
 
-		xml.append("\t<category_index>").append(
-				diagram.getCurrentCategoryIndex())
+		xml.append("\t<category_index>")
+				.append(diagram.getCurrentCategoryIndex())
 				.append("</category_index>\n");
 		xml.append("\t<zoom>").append(diagram.getZoom()).append("</zoom>\n");
 		xml.append("\t<x>").append(diagram.getX()).append("</x>\n");
@@ -246,8 +246,8 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append(tab(this.createXMLColor(diagram.getColor())));
 		xml.append("\t<font_name>").append(escape(diagram.getFontName()))
 				.append("</font_name>\n");
-		xml.append("\t<font_size>").append(diagram.getFontSize()).append(
-				"</font_size>\n");
+		xml.append("\t<font_size>").append(diagram.getFontSize())
+				.append("</font_size>\n");
 
 		PersistentContext context = this.getCurrentContext(diagram);
 
@@ -264,23 +264,23 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<dbsystem>").append(escape(dbSetting.getDbsystem()))
 				.append("</dbsystem>\n");
-		xml.append("<server>").append(escape(dbSetting.getServer())).append(
-				"</server>\n");
+		xml.append("<server>").append(escape(dbSetting.getServer()))
+				.append("</server>\n");
 		xml.append("<port>").append(dbSetting.getPort()).append("</port>\n");
 		xml.append("<database>").append(escape(dbSetting.getDatabase()))
 				.append("</database>\n");
-		xml.append("<user>").append(escape(dbSetting.getUser())).append(
-				"</user>\n");
+		xml.append("<user>").append(escape(dbSetting.getUser()))
+				.append("</user>\n");
 		xml.append("<password>").append(escape(dbSetting.getPassword()))
 				.append("</password>\n");
-		xml.append("<use_default_driver>").append(
-				dbSetting.isUseDefaultDriver()).append(
-				"</use_default_driver>\n");
-		xml.append("<url>").append(escape(dbSetting.getUrl())).append(
-				"</url>\n");
-		xml.append("<driver_class_name>").append(
-				escape(dbSetting.getDriverClassName())).append(
-				"</driver_class_name>\n");
+		xml.append("<use_default_driver>")
+				.append(dbSetting.isUseDefaultDriver())
+				.append("</use_default_driver>\n");
+		xml.append("<url>").append(escape(dbSetting.getUrl()))
+				.append("</url>\n");
+		xml.append("<driver_class_name>")
+				.append(escape(dbSetting.getDriverClassName()))
+				.append("</driver_class_name>\n");
 
 		return xml.toString();
 	}
@@ -288,17 +288,17 @@ public class PersistentXmlImpl extends Persistent {
 	private String createXML(PageSetting pageSetting) {
 		StringBuilder xml = new StringBuilder();
 
-		xml.append("<direction_horizontal>").append(
-				pageSetting.isDirectionHorizontal()).append(
-				"</direction_horizontal>\n");
-		xml.append("<scale>").append(pageSetting.getScale()).append(
-				"</scale>\n");
+		xml.append("<direction_horizontal>")
+				.append(pageSetting.isDirectionHorizontal())
+				.append("</direction_horizontal>\n");
+		xml.append("<scale>").append(pageSetting.getScale())
+				.append("</scale>\n");
 		xml.append("<paper_size>").append(escape(pageSetting.getPaperSize()))
 				.append("</paper_size>\n");
-		xml.append("<top_margin>").append(pageSetting.getTopMargin()).append(
-				"</top_margin>\n");
-		xml.append("<left_margin>").append(pageSetting.getLeftMargin()).append(
-				"</left_margin>\n");
+		xml.append("<top_margin>").append(pageSetting.getTopMargin())
+				.append("</top_margin>\n");
+		xml.append("<left_margin>").append(pageSetting.getLeftMargin())
+				.append("</left_margin>\n");
 		xml.append("<bottom_margin>").append(pageSetting.getBottomMargin())
 				.append("</bottom_margin>\n");
 		xml.append("<right_margin>").append(pageSetting.getRightMargin())
@@ -372,12 +372,12 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<trigger>\n");
 
-		xml.append("\t<name>").append(escape(trigger.getName())).append(
-				"</name>\n");
-		xml.append("\t<schema>").append(escape(trigger.getSchema())).append(
-				"</schema>\n");
-		xml.append("\t<sql>").append(escape(trigger.getSql())).append(
-				"</sql>\n");
+		xml.append("\t<name>").append(escape(trigger.getName()))
+				.append("</name>\n");
+		xml.append("\t<schema>").append(escape(trigger.getSchema()))
+				.append("</schema>\n");
+		xml.append("\t<sql>").append(escape(trigger.getSql()))
+				.append("</sql>\n");
 		xml.append("\t<description>").append(escape(trigger.getDescription()))
 				.append("</description>\n");
 
@@ -405,19 +405,19 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<sequence>\n");
 
-		xml.append("\t<name>").append(escape(sequence.getName())).append(
-				"</name>\n");
-		xml.append("\t<schema>").append(escape(sequence.getSchema())).append(
-				"</schema>\n");
-		xml.append("\t<increment>").append(
-				Format.toString(sequence.getIncrement())).append(
-				"</increment>\n");
-		xml.append("\t<min_value>").append(
-				Format.toString(sequence.getMinValue())).append(
-				"</min_value>\n");
-		xml.append("\t<max_value>").append(
-				Format.toString(sequence.getMaxValue())).append(
-				"</max_value>\n");
+		xml.append("\t<name>").append(escape(sequence.getName()))
+				.append("</name>\n");
+		xml.append("\t<schema>").append(escape(sequence.getSchema()))
+				.append("</schema>\n");
+		xml.append("\t<increment>")
+				.append(Format.toString(sequence.getIncrement()))
+				.append("</increment>\n");
+		xml.append("\t<min_value>")
+				.append(Format.toString(sequence.getMinValue()))
+				.append("</min_value>\n");
+		xml.append("\t<max_value>")
+				.append(Format.toString(sequence.getMaxValue()))
+				.append("</max_value>\n");
 		xml.append("\t<start>").append(Format.toString(sequence.getStart()))
 				.append("</start>\n");
 		xml.append("\t<cache>").append(Format.toString(sequence.getCache()))
@@ -428,9 +428,9 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</description>\n");
 		xml.append("\t<data_type>").append(escape(sequence.getDataType()))
 				.append("</data_type>\n");
-		xml.append("\t<decimal_size>").append(
-				Format.toString(sequence.getDecimalSize())).append(
-				"</decimal_size>\n");
+		xml.append("\t<decimal_size>")
+				.append(Format.toString(sequence.getDecimalSize()))
+				.append("</decimal_size>\n");
 
 		xml.append("</sequence>\n");
 
@@ -461,8 +461,8 @@ public class PersistentXmlImpl extends Persistent {
 			xml.append("\t<id>").append(context.tablespaceMap.get(tablespace))
 					.append("</id>\n");
 		}
-		xml.append("\t<name>").append(escape(tablespace.getName())).append(
-				"</name>\n");
+		xml.append("\t<name>").append(escape(tablespace.getName()))
+				.append("</name>\n");
 
 		for (Map.Entry<Environment, TablespaceProperties> entry : tablespace
 				.getPropertiesMap().entrySet()) {
@@ -471,29 +471,25 @@ public class PersistentXmlImpl extends Persistent {
 
 			xml.append("\t<properties>\n");
 
-			xml.append("\t\t<environment_id>").append(
-					context.environmentMap.get(environment)).append(
-					"</environment_id>\n");
+			xml.append("\t\t<environment_id>")
+					.append(context.environmentMap.get(environment))
+					.append("</environment_id>\n");
 
 			if (tablespaceProperties instanceof DB2TablespaceProperties) {
-				xml
-						.append(tab(tab(this
-								.createXML((DB2TablespaceProperties) tablespaceProperties))));
+				xml.append(tab(tab(this
+						.createXML((DB2TablespaceProperties) tablespaceProperties))));
 
 			} else if (tablespaceProperties instanceof MySQLTablespaceProperties) {
-				xml
-						.append(tab(tab(this
-								.createXML((MySQLTablespaceProperties) tablespaceProperties))));
+				xml.append(tab(tab(this
+						.createXML((MySQLTablespaceProperties) tablespaceProperties))));
 
 			} else if (tablespaceProperties instanceof OracleTablespaceProperties) {
-				xml
-						.append(tab(tab(this
-								.createXML((OracleTablespaceProperties) tablespaceProperties))));
+				xml.append(tab(tab(this
+						.createXML((OracleTablespaceProperties) tablespaceProperties))));
 
 			} else if (tablespaceProperties instanceof PostgresTablespaceProperties) {
-				xml
-						.append(tab(tab(this
-								.createXML((PostgresTablespaceProperties) tablespaceProperties))));
+				xml.append(tab(tab(this
+						.createXML((PostgresTablespaceProperties) tablespaceProperties))));
 			}
 
 			xml.append("\t</properties>\n");
@@ -507,9 +503,9 @@ public class PersistentXmlImpl extends Persistent {
 	private String createXML(DB2TablespaceProperties tablespace) {
 		StringBuilder xml = new StringBuilder();
 
-		xml.append("<buffer_pool_name>").append(
-				escape(tablespace.getBufferPoolName())).append(
-				"</buffer_pool_name>\n");
+		xml.append("<buffer_pool_name>")
+				.append(escape(tablespace.getBufferPoolName()))
+				.append("</buffer_pool_name>\n");
 		xml.append("<container>").append(escape(tablespace.getContainer()))
 				.append("</container>\n");
 		// xml.append("<container_device_path>").append(
@@ -530,11 +526,11 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</managed_by>\n");
 		xml.append("<page_size>").append(escape(tablespace.getPageSize()))
 				.append("</page_size>\n");
-		xml.append("<prefetch_size>").append(
-				escape(tablespace.getPrefetchSize())).append(
-				"</prefetch_size>\n");
-		xml.append("<type>").append(escape(tablespace.getType())).append(
-				"</type>\n");
+		xml.append("<prefetch_size>")
+				.append(escape(tablespace.getPrefetchSize()))
+				.append("</prefetch_size>\n");
+		xml.append("<type>").append(escape(tablespace.getType()))
+				.append("</type>\n");
 
 		return xml.toString();
 	}
@@ -544,16 +540,16 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<data_file>").append(escape(tablespace.getDataFile()))
 				.append("</data_file>\n");
-		xml.append("<engine>").append(escape(tablespace.getEngine())).append(
-				"</engine>\n");
+		xml.append("<engine>").append(escape(tablespace.getEngine()))
+				.append("</engine>\n");
 		xml.append("<extent_size>").append(escape(tablespace.getExtentSize()))
 				.append("</extent_size>\n");
 		xml.append("<initial_size>")
-				.append(escape(tablespace.getInitialSize())).append(
-						"</initial_size>\n");
-		xml.append("<log_file_group>").append(
-				escape(tablespace.getLogFileGroup())).append(
-				"</log_file_group>\n");
+				.append(escape(tablespace.getInitialSize()))
+				.append("</initial_size>\n");
+		xml.append("<log_file_group>")
+				.append(escape(tablespace.getLogFileGroup()))
+				.append("</log_file_group>\n");
 
 		return xml.toString();
 	}
@@ -561,41 +557,41 @@ public class PersistentXmlImpl extends Persistent {
 	private String createXML(OracleTablespaceProperties tablespace) {
 		StringBuilder xml = new StringBuilder();
 
-		xml.append("<auto_extend>").append(tablespace.isAutoExtend()).append(
-				"</auto_extend>\n");
-		xml.append("<auto_segment_space_management>").append(
-				tablespace.isAutoSegmentSpaceManagement()).append(
-				"</auto_segment_space_management>\n");
-		xml.append("<logging>").append(tablespace.isLogging()).append(
-				"</logging>\n");
-		xml.append("<offline>").append(tablespace.isOffline()).append(
-				"</offline>\n");
-		xml.append("<temporary>").append(tablespace.isTemporary()).append(
-				"</temporary>\n");
-		xml.append("<auto_extend_max_size>").append(
-				escape(tablespace.getAutoExtendMaxSize())).append(
-				"</auto_extend_max_size>\n");
-		xml.append("<auto_extend_size>").append(
-				escape(tablespace.getAutoExtendSize())).append(
-				"</auto_extend_size>\n");
+		xml.append("<auto_extend>").append(tablespace.isAutoExtend())
+				.append("</auto_extend>\n");
+		xml.append("<auto_segment_space_management>")
+				.append(tablespace.isAutoSegmentSpaceManagement())
+				.append("</auto_segment_space_management>\n");
+		xml.append("<logging>").append(tablespace.isLogging())
+				.append("</logging>\n");
+		xml.append("<offline>").append(tablespace.isOffline())
+				.append("</offline>\n");
+		xml.append("<temporary>").append(tablespace.isTemporary())
+				.append("</temporary>\n");
+		xml.append("<auto_extend_max_size>")
+				.append(escape(tablespace.getAutoExtendMaxSize()))
+				.append("</auto_extend_max_size>\n");
+		xml.append("<auto_extend_size>")
+				.append(escape(tablespace.getAutoExtendSize()))
+				.append("</auto_extend_size>\n");
 		xml.append("<data_file>").append(escape(tablespace.getDataFile()))
 				.append("</data_file>\n");
 		xml.append("<file_size>").append(escape(tablespace.getFileSize()))
 				.append("</file_size>\n");
-		xml.append("<initial>").append(escape(tablespace.getInitial())).append(
-				"</initial>\n");
+		xml.append("<initial>").append(escape(tablespace.getInitial()))
+				.append("</initial>\n");
 		xml.append("<max_extents>").append(escape(tablespace.getMaxExtents()))
 				.append("</max_extents>\n");
 		xml.append("<min_extents>").append(escape(tablespace.getMinExtents()))
 				.append("</min_extents>\n");
-		xml.append("<minimum_extent_size>").append(
-				escape(tablespace.getMinimumExtentSize())).append(
-				"</minimum_extent_size>\n");
-		xml.append("<next>").append(escape(tablespace.getNext())).append(
-				"</next>\n");
+		xml.append("<minimum_extent_size>")
+				.append(escape(tablespace.getMinimumExtentSize()))
+				.append("</minimum_extent_size>\n");
+		xml.append("<next>").append(escape(tablespace.getNext()))
+				.append("</next>\n");
 		xml.append("<pct_increase>")
-				.append(escape(tablespace.getPctIncrease())).append(
-						"</pct_increase>\n");
+				.append(escape(tablespace.getPctIncrease()))
+				.append("</pct_increase>\n");
 
 		return xml.toString();
 	}
@@ -605,8 +601,8 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<location>").append(escape(tablespace.getLocation()))
 				.append("</location>\n");
-		xml.append("<owner>").append(escape(tablespace.getOwner())).append(
-				"</owner>\n");
+		xml.append("<owner>").append(escape(tablespace.getOwner()))
+				.append("</owner>\n");
 
 		return xml.toString();
 	}
@@ -618,43 +614,43 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("\t<database>").append(escape(settings.getDatabase()))
 				.append("</database>\n");
-		xml.append("\t<capital>").append(settings.isCapital()).append(
-				"</capital>\n");
+		xml.append("\t<capital>").append(settings.isCapital())
+				.append("</capital>\n");
 		xml.append("\t<table_style>").append(escape(settings.getTableStyle()))
 				.append("</table_style>\n");
 		xml.append("\t<notation>").append(escape(settings.getNotation()))
 				.append("</notation>\n");
 		xml.append("\t<notation_level>").append(settings.getNotationLevel())
 				.append("</notation_level>\n");
-		xml.append("\t<notation_expand_group>").append(
-				settings.isNotationExpandGroup()).append(
-				"</notation_expand_group>\n");
-		xml.append("\t<view_mode>").append(settings.getViewMode()).append(
-				"</view_mode>\n");
-		xml.append("\t<outline_view_mode>").append(
-				settings.getOutlineViewMode()).append("</outline_view_mode>\n");
+		xml.append("\t<notation_expand_group>")
+				.append(settings.isNotationExpandGroup())
+				.append("</notation_expand_group>\n");
+		xml.append("\t<view_mode>").append(settings.getViewMode())
+				.append("</view_mode>\n");
+		xml.append("\t<outline_view_mode>")
+				.append(settings.getOutlineViewMode())
+				.append("</outline_view_mode>\n");
 		xml.append("\t<view_order_by>").append(settings.getViewOrderBy())
 				.append("</view_order_by>\n");
 
 		xml.append("\t<auto_ime_change>").append(settings.isAutoImeChange())
 				.append("</auto_ime_change>\n");
-		xml.append("\t<validate_physical_name>").append(
-				settings.isValidatePhysicalName()).append(
-				"</validate_physical_name>\n");
+		xml.append("\t<validate_physical_name>")
+				.append(settings.isValidatePhysicalName())
+				.append("</validate_physical_name>\n");
 		xml.append("\t<use_bezier_curve>").append(settings.isUseBezierCurve())
 				.append("</use_bezier_curve>\n");
-		xml.append("\t<suspend_validator>").append(
-				settings.isSuspendValidator()).append("</suspend_validator>\n");
+		xml.append("\t<suspend_validator>")
+				.append(settings.isSuspendValidator())
+				.append("</suspend_validator>\n");
 
 		xml.append(tab(this.createXML(settings.getExportSetting(), context)));
 		xml.append(tab(this.createXML(settings.getCategorySetting(), context)));
-		xml.append(tab(this
-				.createXML(settings.getTranslationSetting(), context)));
+		xml.append(tab(this.createXML(settings.getTranslationSetting(), context)));
 		xml.append(tab(this.createXML(settings.getModelProperties(), context)));
-		xml.append(tab(this.createXML((TableProperties) settings
-				.getTableViewProperties(), context)));
-		xml.append(tab(this
-				.createXML(settings.getEnvironmentSetting(), context)));
+		xml.append(tab(this.createXML(
+				(TableProperties) settings.getTableViewProperties(), context)));
+		xml.append(tab(this.createXML(settings.getEnvironmentSetting(), context)));
 
 		xml.append("</settings>\n");
 
@@ -690,8 +686,8 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<test_data>\n");
 
-		xml.append("\t<name>").append(escape(testData.getName())).append(
-				"</name>\n");
+		xml.append("\t<name>").append(escape(testData.getName()))
+				.append("</name>\n");
 		xml.append("\t<export_order>").append(testData.getExportOrder())
 				.append("</export_order>\n");
 
@@ -740,11 +736,12 @@ public class PersistentXmlImpl extends Persistent {
 			xml.append("\t<data>\n");
 			for (NormalColumn normalColumn : table.getExpandedColumns()) {
 				xml.append("\t\t<column_data>\n");
-				xml.append("\t\t\t<column_id>").append(
-						context.columnMap.get(normalColumn)).append(
-						"</column_id>\n");
-				xml.append("\t\t\t<value>").append(
-						escape(data.get(normalColumn))).append("</value>\n");
+				xml.append("\t\t\t<column_id>")
+						.append(context.columnMap.get(normalColumn))
+						.append("</column_id>\n");
+				xml.append("\t\t\t<value>")
+						.append(escape(data.get(normalColumn)))
+						.append("</value>\n");
 				xml.append("\t\t</column_data>\n");
 			}
 			xml.append("\t</data>\n");
@@ -765,8 +762,9 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("\t<data_def_list>\n");
 
 		for (NormalColumn normalColumn : table.getExpandedColumns()) {
-			xml.append(tab(tab(this.createXML(repeatTestData
-					.getDataDef(normalColumn), normalColumn, context))));
+			xml.append(tab(tab(this.createXML(
+					repeatTestData.getDataDef(normalColumn), normalColumn,
+					context))));
 		}
 
 		xml.append("\t</data_def_list>\n");
@@ -783,28 +781,28 @@ public class PersistentXmlImpl extends Persistent {
 
 		if (columnId != null) {
 			xml.append("<data_def>\n");
-			xml.append("\t<column_id>").append(columnId).append(
-					"</column_id>\n");
+			xml.append("\t<column_id>").append(columnId)
+					.append("</column_id>\n");
 			xml.append("\t<type>").append(escape(repeatTestDataDef.getType()))
 					.append("</type>\n");
-			xml.append("\t<repeat_num>").append(
-					Format.toString((repeatTestDataDef.getRepeatNum())))
+			xml.append("\t<repeat_num>")
+					.append(Format.toString((repeatTestDataDef.getRepeatNum())))
 					.append("</repeat_num>\n");
-			xml.append("\t<template>").append(
-					escape(repeatTestDataDef.getTemplate())).append(
-					"</template>\n");
-			xml.append("\t<from>").append(
-					Format.toString((repeatTestDataDef.getFrom()))).append(
-					"</from>\n");
-			xml.append("\t<to>").append(
-					Format.toString((repeatTestDataDef.getTo()))).append(
-					"</to>\n");
-			xml.append("\t<increment>").append(
-					Format.toString((repeatTestDataDef.getIncrement())))
+			xml.append("\t<template>")
+					.append(escape(repeatTestDataDef.getTemplate()))
+					.append("</template>\n");
+			xml.append("\t<from>")
+					.append(Format.toString((repeatTestDataDef.getFrom())))
+					.append("</from>\n");
+			xml.append("\t<to>")
+					.append(Format.toString((repeatTestDataDef.getTo())))
+					.append("</to>\n");
+			xml.append("\t<increment>")
+					.append(Format.toString((repeatTestDataDef.getIncrement())))
 					.append("</increment>\n");
 			for (String select : repeatTestDataDef.getSelects()) {
-				xml.append("\t<select>").append(escape(select)).append(
-						"</select>\n");
+				xml.append("\t<select>").append(escape(select))
+						.append("</select>\n");
 			}
 			xml.append("\t<modified_values>\n");
 			for (Integer modifiedRow : repeatTestDataDef.getModifiedValues()
@@ -812,9 +810,9 @@ public class PersistentXmlImpl extends Persistent {
 				xml.append("\t\t<modified_value>\n");
 				xml.append("\t\t\t<row>").append(modifiedRow)
 						.append("</row>\n");
-				xml.append("\t\t\t<value>").append(
-						escape(repeatTestDataDef.getModifiedValues().get(
-								modifiedRow))).append("</value>\n");
+				xml.append("\t\t\t<value>")
+						.append(escape(repeatTestDataDef.getModifiedValues()
+								.get(modifiedRow))).append("</value>\n");
 				xml.append("\t\t</modified_value>\n");
 			}
 			xml.append("\t</modified_values>\n");
@@ -844,9 +842,9 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<change_tracking>\n");
 
-		xml.append("\t<updated_date>").append(
-				DATE_FORMAT.format(changeTracking.getUpdatedDate())).append(
-				"</updated_date>\n");
+		xml.append("\t<updated_date>")
+				.append(DATE_FORMAT.format(changeTracking.getUpdatedDate()))
+				.append("</updated_date>\n");
 		xml.append("\t<comment>").append(escape(changeTracking.getComment()))
 				.append("</comment>\n");
 
@@ -867,29 +865,30 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<export_setting>\n");
 
-		xml.append("\t<category_name_to_export>").append(
-				escape(exportSetting.getCategoryNameToExport())).append(
-				"</category_name_to_export>\n");
-		xml.append("\t<ddl_output>").append(
-				escape(exportSetting.getDdlOutput())).append("</ddl_output>\n");
-		xml.append("\t<excel_output>").append(
-				escape(exportSetting.getExcelOutput())).append(
-				"</excel_output>\n");
-		xml.append("\t<excel_template>").append(
-				escape(exportSetting.getExcelTemplate())).append(
-				"</excel_template>\n");
-		xml.append("\t<image_output>").append(
-				escape(exportSetting.getImageOutput())).append(
-				"</image_output>\n");
-		xml.append("\t<put_diagram_on_excel>").append(
-				exportSetting.isPutERDiagramOnExcel()).append(
-				"</put_diagram_on_excel>\n");
-		xml.append("\t<use_logical_name_as_sheet>").append(
-				exportSetting.isUseLogicalNameAsSheet()).append(
-				"</use_logical_name_as_sheet>\n");
-		xml.append("\t<open_after_saved>").append(
-				exportSetting.isOpenAfterSaved()).append(
-				"</open_after_saved>\n");
+		xml.append("\t<category_name_to_export>")
+				.append(escape(exportSetting.getCategoryNameToExport()))
+				.append("</category_name_to_export>\n");
+		xml.append("\t<ddl_output>")
+				.append(escape(exportSetting.getDdlOutput()))
+				.append("</ddl_output>\n");
+		xml.append("\t<excel_output>")
+				.append(escape(exportSetting.getExcelOutput()))
+				.append("</excel_output>\n");
+		xml.append("\t<excel_template>")
+				.append(escape(exportSetting.getExcelTemplate()))
+				.append("</excel_template>\n");
+		xml.append("\t<image_output>")
+				.append(escape(exportSetting.getImageOutput()))
+				.append("</image_output>\n");
+		xml.append("\t<put_diagram_on_excel>")
+				.append(exportSetting.isPutERDiagramOnExcel())
+				.append("</put_diagram_on_excel>\n");
+		xml.append("\t<use_logical_name_as_sheet>")
+				.append(exportSetting.isUseLogicalNameAsSheet())
+				.append("</use_logical_name_as_sheet>\n");
+		xml.append("\t<open_after_saved>")
+				.append(exportSetting.isOpenAfterSaved())
+				.append("</open_after_saved>\n");
 
 		DDLTarget ddlTarget = exportSetting.getDdlTarget();
 
@@ -897,54 +896,54 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</create_comment>\n");
 		xml.append("\t<create_foreignKey>").append(ddlTarget.createForeignKey)
 				.append("</create_foreignKey>\n");
-		xml.append("\t<create_index>").append(ddlTarget.createIndex).append(
-				"</create_index>\n");
+		xml.append("\t<create_index>").append(ddlTarget.createIndex)
+				.append("</create_index>\n");
 		xml.append("\t<create_sequence>").append(ddlTarget.createSequence)
 				.append("</create_sequence>\n");
-		xml.append("\t<create_table>").append(ddlTarget.createTable).append(
-				"</create_table>\n");
+		xml.append("\t<create_table>").append(ddlTarget.createTable)
+				.append("</create_table>\n");
 		xml.append("\t<create_tablespace>").append(ddlTarget.createTablespace)
 				.append("</create_tablespace>\n");
 		xml.append("\t<create_trigger>").append(ddlTarget.createTrigger)
 				.append("</create_trigger>\n");
-		xml.append("\t<create_view>").append(ddlTarget.createView).append(
-				"</create_view>\n");
+		xml.append("\t<create_view>").append(ddlTarget.createView)
+				.append("</create_view>\n");
 
-		xml.append("\t<drop_index>").append(ddlTarget.dropIndex).append(
-				"</drop_index>\n");
-		xml.append("\t<drop_sequence>").append(ddlTarget.dropSequence).append(
-				"</drop_sequence>\n");
-		xml.append("\t<drop_table>").append(ddlTarget.dropTable).append(
-				"</drop_table>\n");
+		xml.append("\t<drop_index>").append(ddlTarget.dropIndex)
+				.append("</drop_index>\n");
+		xml.append("\t<drop_sequence>").append(ddlTarget.dropSequence)
+				.append("</drop_sequence>\n");
+		xml.append("\t<drop_table>").append(ddlTarget.dropTable)
+				.append("</drop_table>\n");
 		xml.append("\t<drop_tablespace>").append(ddlTarget.dropTablespace)
 				.append("</drop_tablespace>\n");
-		xml.append("\t<drop_trigger>").append(ddlTarget.dropTrigger).append(
-				"</drop_trigger>\n");
-		xml.append("\t<drop_view>").append(ddlTarget.dropView).append(
-				"</drop_view>\n");
+		xml.append("\t<drop_trigger>").append(ddlTarget.dropTrigger)
+				.append("</drop_trigger>\n");
+		xml.append("\t<drop_view>").append(ddlTarget.dropView)
+				.append("</drop_view>\n");
 
-		xml.append("\t<inline_column_comment>").append(
-				ddlTarget.inlineColumnComment).append(
-				"</inline_column_comment>\n");
-		xml.append("\t<inline_table_comment>").append(
-				ddlTarget.inlineTableComment).append(
-				"</inline_table_comment>\n");
+		xml.append("\t<inline_column_comment>")
+				.append(ddlTarget.inlineColumnComment)
+				.append("</inline_column_comment>\n");
+		xml.append("\t<inline_table_comment>")
+				.append(ddlTarget.inlineTableComment)
+				.append("</inline_table_comment>\n");
 
-		xml.append("\t<comment_value_description>").append(
-				ddlTarget.commentValueDescription).append(
-				"</comment_value_description>\n");
-		xml.append("\t<comment_value_logical_name>").append(
-				ddlTarget.commentValueLogicalName).append(
-				"</comment_value_logical_name>\n");
-		xml.append("\t<comment_value_logical_name_description>").append(
-				ddlTarget.commentValueLogicalNameDescription).append(
-				"</comment_value_logical_name_description>\n");
-		xml.append("\t<comment_replace_line_feed>").append(
-				ddlTarget.commentReplaceLineFeed).append(
-				"</comment_replace_line_feed>\n");
-		xml.append("\t<comment_replace_string>").append(
-				Format.null2blank(ddlTarget.commentReplaceString)).append(
-				"</comment_replace_string>\n");
+		xml.append("\t<comment_value_description>")
+				.append(ddlTarget.commentValueDescription)
+				.append("</comment_value_description>\n");
+		xml.append("\t<comment_value_logical_name>")
+				.append(ddlTarget.commentValueLogicalName)
+				.append("</comment_value_logical_name>\n");
+		xml.append("\t<comment_value_logical_name_description>")
+				.append(ddlTarget.commentValueLogicalNameDescription)
+				.append("</comment_value_logical_name_description>\n");
+		xml.append("\t<comment_replace_line_feed>")
+				.append(ddlTarget.commentReplaceLineFeed)
+				.append("</comment_replace_line_feed>\n");
+		xml.append("\t<comment_replace_string>")
+				.append(Format.null2blank(ddlTarget.commentReplaceString))
+				.append("</comment_replace_string>\n");
 
 		xml.append(tab(this.createXML(exportSetting.getExportJavaSetting(),
 				context)));
@@ -962,21 +961,21 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<export_java_setting>\n");
 
-		xml.append("\t<java_output>").append(
-				escape(exportJavaSetting.getJavaOutput())).append(
-				"</java_output>\n");
-		xml.append("\t<package_name>").append(
-				escape(exportJavaSetting.getPackageName())).append(
-				"</package_name>\n");
-		xml.append("\t<class_name_suffix>").append(
-				escape(exportJavaSetting.getClassNameSuffix())).append(
-				"</class_name_suffix>\n");
-		xml.append("\t<src_file_encoding>").append(
-				escape(exportJavaSetting.getSrcFileEncoding())).append(
-				"</src_file_encoding>\n");
-		xml.append("\t<with_hibernate>").append(
-				exportJavaSetting.isWithHibernate()).append(
-				"</with_hibernate>\n");
+		xml.append("\t<java_output>")
+				.append(escape(exportJavaSetting.getJavaOutput()))
+				.append("</java_output>\n");
+		xml.append("\t<package_name>")
+				.append(escape(exportJavaSetting.getPackageName()))
+				.append("</package_name>\n");
+		xml.append("\t<class_name_suffix>")
+				.append(escape(exportJavaSetting.getClassNameSuffix()))
+				.append("</class_name_suffix>\n");
+		xml.append("\t<src_file_encoding>")
+				.append(escape(exportJavaSetting.getSrcFileEncoding()))
+				.append("</src_file_encoding>\n");
+		xml.append("\t<with_hibernate>")
+				.append(exportJavaSetting.isWithHibernate())
+				.append("</with_hibernate>\n");
 
 		xml.append("</export_java_setting>\n");
 
@@ -989,15 +988,15 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<export_testdata_setting>\n");
 
-		xml.append("\t<file_encoding>").append(
-				escape(exportTestDataSetting.getExportFileEncoding())).append(
-				"</file_encoding>\n");
-		xml.append("\t<file_path>").append(
-				escape(exportTestDataSetting.getExportFilePath())).append(
-				"</file_path>\n");
+		xml.append("\t<file_encoding>")
+				.append(escape(exportTestDataSetting.getExportFileEncoding()))
+				.append("</file_encoding>\n");
+		xml.append("\t<file_path>")
+				.append(escape(exportTestDataSetting.getExportFilePath()))
+				.append("</file_path>\n");
 		xml.append("\t<format>")
-				.append(exportTestDataSetting.getExportFormat()).append(
-						"</format>\n");
+				.append(exportTestDataSetting.getExportFormat())
+				.append("</format>\n");
 
 		xml.append("</export_testdata_setting>\n");
 
@@ -1011,15 +1010,15 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("<category_settings>\n");
 		xml.append("\t<free_layout>").append(categorySettings.isFreeLayout())
 				.append("</free_layout>\n");
-		xml.append("\t<show_referred_tables>").append(
-				categorySettings.isShowReferredTables()).append(
-				"</show_referred_tables>\n");
+		xml.append("\t<show_referred_tables>")
+				.append(categorySettings.isShowReferredTables())
+				.append("</show_referred_tables>\n");
 
 		xml.append("\t<categories>\n");
 
 		for (Category category : categorySettings.getAllCategories()) {
-			xml.append(tab(tab(this.createXML(category, categorySettings
-					.isSelected(category), context))));
+			xml.append(tab(tab(this.createXML(category,
+					categorySettings.isSelected(category), context))));
 		}
 
 		xml.append("\t</categories>\n");
@@ -1034,15 +1033,13 @@ public class PersistentXmlImpl extends Persistent {
 		StringBuilder xml = new StringBuilder();
 
 		xml.append("<translation_settings>\n");
-		xml.append("\t<use>").append(translationSettings.isUse()).append(
-				"</use>\n");
+		xml.append("\t<use>").append(translationSettings.isUse())
+				.append("</use>\n");
 
 		xml.append("\t<translations>\n");
 
 		for (String translation : translationSettings.getSelectedTranslations()) {
-			xml
-					.append(tab(tab(this.createTranslationXML(translation,
-							context))));
+			xml.append(tab(tab(this.createTranslationXML(translation, context))));
 		}
 
 		xml.append("\t</translations>\n");
@@ -1060,14 +1057,14 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append(tab(this.createXMLNodeElement(category, context)));
 
-		xml.append("\t<name>").append(escape(category.getName())).append(
-				"</name>\n");
+		xml.append("\t<name>").append(escape(category.getName()))
+				.append("</name>\n");
 		xml.append("\t<selected>").append(isSelected).append("</selected>\n");
 
 		for (NodeElement nodeElement : category.getContents()) {
-			xml.append("\t<node_element>").append(
-					context.nodeElementMap.get(nodeElement)).append(
-					"</node_element>\n");
+			xml.append("\t<node_element>")
+					.append(context.nodeElementMap.get(nodeElement))
+					.append("</node_element>\n");
 		}
 
 		xml.append("</category>\n");
@@ -1120,17 +1117,17 @@ public class PersistentXmlImpl extends Persistent {
 			PersistentContext context) {
 		StringBuilder xml = new StringBuilder();
 
-		xml.append("<id>").append(
-				Format.toString(context.nodeElementMap.get(nodeElement)))
+		xml.append("<id>")
+				.append(Format.toString(context.nodeElementMap.get(nodeElement)))
 				.append("</id>\n");
-		xml.append("<height>").append(nodeElement.getHeight()).append(
-				"</height>\n");
-		xml.append("<width>").append(nodeElement.getWidth()).append(
-				"</width>\n");
+		xml.append("<height>").append(nodeElement.getHeight())
+				.append("</height>\n");
+		xml.append("<width>").append(nodeElement.getWidth())
+				.append("</width>\n");
 		xml.append("\t<font_name>").append(escape(nodeElement.getFontName()))
 				.append("</font_name>\n");
-		xml.append("\t<font_size>").append(nodeElement.getFontSize()).append(
-				"</font_size>\n");
+		xml.append("\t<font_size>").append(nodeElement.getFontSize())
+				.append("</font_size>\n");
 		xml.append("<x>").append(nodeElement.getX()).append("</x>\n");
 		xml.append("<y>").append(nodeElement.getY()).append("</y>\n");
 		xml.append(this.createXMLColor(nodeElement.getColor()));
@@ -1170,11 +1167,11 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</description>\n");
 		xml.append("\t<constraint>").append(escape(table.getConstraint()))
 				.append("</constraint>\n");
-		xml.append("\t<primary_key_name>").append(
-				escape(table.getPrimaryKeyName())).append(
-				"</primary_key_name>\n");
-		xml.append("\t<option>").append(escape(table.getOption())).append(
-				"</option>\n");
+		xml.append("\t<primary_key_name>")
+				.append(escape(table.getPrimaryKeyName()))
+				.append("</primary_key_name>\n");
+		xml.append("\t<option>").append(escape(table.getOption()))
+				.append("</option>\n");
 
 		List<Column> columns = table.getColumns();
 		xml.append(tab(this.createXMLColumns(columns, context)));
@@ -1231,14 +1228,14 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append(tab(this.createXMLNodeElement(modelProperties, context)));
 
-		xml.append("\t<display>").append(modelProperties.isDisplay()).append(
-				"</display>\n");
-		xml.append("\t<creation_date>").append(
-				DATE_FORMAT.format(modelProperties.getCreationDate())).append(
-				"</creation_date>\n");
-		xml.append("\t<updated_date>").append(
-				DATE_FORMAT.format(modelProperties.getUpdatedDate())).append(
-				"</updated_date>\n");
+		xml.append("\t<display>").append(modelProperties.isDisplay())
+				.append("</display>\n");
+		xml.append("\t<creation_date>")
+				.append(DATE_FORMAT.format(modelProperties.getCreationDate()))
+				.append("</creation_date>\n");
+		xml.append("\t<updated_date>")
+				.append(DATE_FORMAT.format(modelProperties.getUpdatedDate()))
+				.append("</updated_date>\n");
 
 		for (NameValue property : modelProperties.getProperties()) {
 			xml.append(tab(this.createXML(property, context)));
@@ -1254,10 +1251,10 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<model_property>\n");
 
-		xml.append("\t<name>").append(escape(property.getName())).append(
-				"</name>\n");
-		xml.append("\t<value>").append(escape(property.getValue())).append(
-				"</value>\n");
+		xml.append("\t<name>").append(escape(property.getName()))
+				.append("</name>\n");
+		xml.append("\t<value>").append(escape(property.getValue()))
+				.append("</value>\n");
 
 		xml.append("</model_property>\n");
 
@@ -1270,8 +1267,8 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("<note>\n");
 
 		xml.append(tab(this.createXMLNodeElement(note, context)));
-		xml.append("\t<text>").append(escape(note.getText())).append(
-				"</text>\n");
+		xml.append("\t<text>").append(escape(note.getText()))
+				.append("</text>\n");
 
 		xml.append("</note>\n");
 
@@ -1292,11 +1289,11 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</saturation>\n");
 		xml.append("\t<brightness>").append(insertedImage.getBrightness())
 				.append("</brightness>\n");
-		xml.append("\t<alpha>").append(insertedImage.getAlpha()).append(
-				"</alpha>\n");
-		xml.append("\t<fix_aspect_ratio>").append(
-				insertedImage.isFixAspectRatio()).append(
-				"</fix_aspect_ratio>\n");
+		xml.append("\t<alpha>").append(insertedImage.getAlpha())
+				.append("</alpha>\n");
+		xml.append("\t<fix_aspect_ratio>")
+				.append(insertedImage.isFixAspectRatio())
+				.append("</fix_aspect_ratio>\n");
 
 		xml.append("</image>\n");
 
@@ -1312,9 +1309,7 @@ public class PersistentXmlImpl extends Persistent {
 		for (Column column : columns) {
 
 			if (column instanceof ColumnGroup) {
-				xml
-						.append(tab(this.createXMLId((ColumnGroup) column,
-								context)));
+				xml.append(tab(this.createXMLId((ColumnGroup) column, context)));
 
 			} else if (column instanceof NormalColumn) {
 				xml.append(tab(this.createXML((NormalColumn) column, context)));
@@ -1331,9 +1326,9 @@ public class PersistentXmlImpl extends Persistent {
 			PersistentContext context) {
 		StringBuilder xml = new StringBuilder();
 
-		xml.append("<column_group>").append(
-				context.columnGroupMap.get(columnGroup)).append(
-				"</column_group>\n");
+		xml.append("<column_group>")
+				.append(context.columnGroupMap.get(columnGroup))
+				.append("</column_group>\n");
 
 		return xml.toString();
 	}
@@ -1356,16 +1351,15 @@ public class PersistentXmlImpl extends Persistent {
 					.append("</id>\n");
 			for (NormalColumn referencedColumn : normalColumn
 					.getReferencedColumnList()) {
-				xml.append("\t<referenced_column>").append(
-						Format
-								.toString(context.columnMap
-										.get(referencedColumn))).append(
-						"</referenced_column>\n");
+				xml.append("\t<referenced_column>")
+						.append(Format.toString(context.columnMap
+								.get(referencedColumn)))
+						.append("</referenced_column>\n");
 			}
 			for (Relation relation : normalColumn.getRelationList()) {
-				xml.append("\t<relation>").append(
-						context.connectionMap.get(relation)).append(
-						"</relation>\n");
+				xml.append("\t<relation>")
+						.append(context.connectionMap.get(relation))
+						.append("</relation>\n");
 			}
 		}
 
@@ -1374,15 +1368,15 @@ public class PersistentXmlImpl extends Persistent {
 		String physicalName = normalColumn.getForeignKeyPhysicalName();
 		SqlType sqlType = normalColumn.getType();
 
-		xml.append("\t<description>").append(escape(description)).append(
-				"</description>\n");
-		xml.append("\t<unique_key_name>").append(
-				escape(normalColumn.getUniqueKeyName())).append(
-				"</unique_key_name>\n");
-		xml.append("\t<logical_name>").append(escape(logicalName)).append(
-				"</logical_name>\n");
-		xml.append("\t<physical_name>").append(escape(physicalName)).append(
-				"</physical_name>\n");
+		xml.append("\t<description>").append(escape(description))
+				.append("</description>\n");
+		xml.append("\t<unique_key_name>")
+				.append(escape(normalColumn.getUniqueKeyName()))
+				.append("</unique_key_name>\n");
+		xml.append("\t<logical_name>").append(escape(logicalName))
+				.append("</logical_name>\n");
+		xml.append("\t<physical_name>").append(escape(physicalName))
+				.append("</physical_name>\n");
 
 		String type = "";
 		if (sqlType != null) {
@@ -1390,26 +1384,27 @@ public class PersistentXmlImpl extends Persistent {
 		}
 		xml.append("\t<type>").append(type).append("</type>\n");
 
-		xml.append("\t<constraint>").append(
-				escape(normalColumn.getConstraint())).append("</constraint>\n");
-		xml.append("\t<default_value>").append(
-				escape(normalColumn.getDefaultValue())).append(
-				"</default_value>\n");
+		xml.append("\t<constraint>")
+				.append(escape(normalColumn.getConstraint()))
+				.append("</constraint>\n");
+		xml.append("\t<default_value>")
+				.append(escape(normalColumn.getDefaultValue()))
+				.append("</default_value>\n");
 
 		xml.append("\t<auto_increment>").append(normalColumn.isAutoIncrement())
 				.append("</auto_increment>\n");
 		xml.append("\t<foreign_key>").append(normalColumn.isForeignKey())
 				.append("</foreign_key>\n");
-		xml.append("\t<not_null>").append(normalColumn.isNotNull()).append(
-				"</not_null>\n");
+		xml.append("\t<not_null>").append(normalColumn.isNotNull())
+				.append("</not_null>\n");
 		xml.append("\t<primary_key>").append(normalColumn.isPrimaryKey())
 				.append("</primary_key>\n");
-		xml.append("\t<unique_key>").append(normalColumn.isUniqueKey()).append(
-				"</unique_key>\n");
+		xml.append("\t<unique_key>").append(normalColumn.isUniqueKey())
+				.append("</unique_key>\n");
 
-		xml.append("\t<character_set>").append(
-				escape(normalColumn.getCharacterSet())).append(
-				"</character_set>\n");
+		xml.append("\t<character_set>")
+				.append(escape(normalColumn.getCharacterSet()))
+				.append("</character_set>\n");
 		xml.append("\t<collation>").append(escape(normalColumn.getCollation()))
 				.append("</collation>\n");
 
@@ -1448,12 +1443,12 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<id>").append(context.connectionMap.get(connection))
 				.append("</id>\n");
-		xml.append("<source>").append(
-				context.nodeElementMap.get(connection.getSource())).append(
-				"</source>\n");
-		xml.append("<target>").append(
-				context.nodeElementMap.get(connection.getTarget())).append(
-				"</target>\n");
+		xml.append("<source>")
+				.append(context.nodeElementMap.get(connection.getSource()))
+				.append("</source>\n");
+		xml.append("<target>")
+				.append(context.nodeElementMap.get(connection.getTarget()))
+				.append("</target>\n");
 
 		for (Bendpoint bendpoint : connection.getBendpoints()) {
 			xml.append(tab(this.createXML(bendpoint)));
@@ -1467,8 +1462,8 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<bendpoint>\n");
 
-		xml.append("\t<relative>").append(bendpoint.isRelative()).append(
-				"</relative>\n");
+		xml.append("\t<relative>").append(bendpoint.isRelative())
+				.append("</relative>\n");
 		xml.append("\t<x>").append(bendpoint.getX()).append("</x>\n");
 		xml.append("\t<y>").append(bendpoint.getY()).append("</y>\n");
 
@@ -1497,37 +1492,37 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append(tab(this.createXMLConnectionElement(relation, context)));
 
-		xml.append("\t<child_cardinality>").append(
-				escape(relation.getChildCardinality())).append(
-				"</child_cardinality>\n");
-		xml.append("\t<parent_cardinality>").append(
-				escape(relation.getParentCardinality())).append(
-				"</parent_cardinality>\n");
+		xml.append("\t<child_cardinality>")
+				.append(escape(relation.getChildCardinality()))
+				.append("</child_cardinality>\n");
+		xml.append("\t<parent_cardinality>")
+				.append(escape(relation.getParentCardinality()))
+				.append("</parent_cardinality>\n");
 		xml.append("\t<reference_for_pk>").append(relation.isReferenceForPK())
 				.append("</reference_for_pk>\n");
-		xml.append("\t<name>").append(escape(relation.getName())).append(
-				"</name>\n");
-		xml.append("\t<on_delete_action>").append(
-				escape(relation.getOnDeleteAction())).append(
-				"</on_delete_action>\n");
-		xml.append("\t<on_update_action>").append(
-				escape(relation.getOnUpdateAction())).append(
-				"</on_update_action>\n");
-		xml.append("\t<source_xp>").append(relation.getSourceXp()).append(
-				"</source_xp>\n");
-		xml.append("\t<source_yp>").append(relation.getSourceYp()).append(
-				"</source_yp>\n");
-		xml.append("\t<target_xp>").append(relation.getTargetXp()).append(
-				"</target_xp>\n");
-		xml.append("\t<target_yp>").append(relation.getTargetYp()).append(
-				"</target_yp>\n");
-		xml.append("\t<referenced_column>").append(
-				context.columnMap.get(relation.getReferencedColumn())).append(
-				"</referenced_column>\n");
-		xml.append("\t<referenced_complex_unique_key>").append(
-				context.complexUniqueKeyMap.get(relation
-						.getReferencedComplexUniqueKey())).append(
-				"</referenced_complex_unique_key>\n");
+		xml.append("\t<name>").append(escape(relation.getName()))
+				.append("</name>\n");
+		xml.append("\t<on_delete_action>")
+				.append(escape(relation.getOnDeleteAction()))
+				.append("</on_delete_action>\n");
+		xml.append("\t<on_update_action>")
+				.append(escape(relation.getOnUpdateAction()))
+				.append("</on_update_action>\n");
+		xml.append("\t<source_xp>").append(relation.getSourceXp())
+				.append("</source_xp>\n");
+		xml.append("\t<source_yp>").append(relation.getSourceYp())
+				.append("</source_yp>\n");
+		xml.append("\t<target_xp>").append(relation.getTargetXp())
+				.append("</target_xp>\n");
+		xml.append("\t<target_yp>").append(relation.getTargetYp())
+				.append("</target_yp>\n");
+		xml.append("\t<referenced_column>")
+				.append(context.columnMap.get(relation.getReferencedColumn()))
+				.append("</referenced_column>\n");
+		xml.append("\t<referenced_complex_unique_key>")
+				.append(context.complexUniqueKeyMap.get(relation
+						.getReferencedComplexUniqueKey()))
+				.append("</referenced_complex_unique_key>\n");
 
 		xml.append("</relation>\n");
 
@@ -1576,8 +1571,8 @@ public class PersistentXmlImpl extends Persistent {
 
 			Integer environmentId = context.environmentMap.get(environment);
 			xml.append("\t\t<id>").append(environmentId).append("</id>\n");
-			xml.append("\t\t<name>").append(environment.getName()).append(
-					"</name>\n");
+			xml.append("\t\t<name>").append(environment.getName())
+					.append("</name>\n");
 
 			xml.append("\t</environment>\n");
 		}
@@ -1596,9 +1591,12 @@ public class PersistentXmlImpl extends Persistent {
 		Integer tablespaceId = context.tablespaceMap.get(tableProperties
 				.getTableSpace());
 		if (tablespaceId != null) {
-			xml.append("\t<tablespace_id>").append(tablespaceId).append(
-					"</tablespace_id>\n");
+			xml.append("\t<tablespace_id>").append(tablespaceId)
+					.append("</tablespace_id>\n");
 		}
+
+		xml.append("\t<schema>").append(escape(tableProperties.getSchema()))
+				.append("</schema>\n");
 
 		if (tableProperties instanceof MySQLTableProperties) {
 			xml.append(tab(this
@@ -1617,20 +1615,18 @@ public class PersistentXmlImpl extends Persistent {
 	private String createXML(MySQLTableProperties tableProperties) {
 		StringBuilder xml = new StringBuilder();
 
-		xml.append("<character_set>").append(
-				escape(tableProperties.getCharacterSet())).append(
-				"</character_set>\n");
+		xml.append("<character_set>")
+				.append(escape(tableProperties.getCharacterSet()))
+				.append("</character_set>\n");
 		xml.append("<collation>")
-				.append(escape(tableProperties.getCollation())).append(
-						"</collation>\n");
-		xml.append("<schema>").append(escape(tableProperties.getSchema()))
-				.append("</schema>\n");
-		xml.append("<storage_engine>").append(
-				escape(tableProperties.getStorageEngine())).append(
-				"</storage_engine>\n");
-		xml.append("<primary_key_length_of_text>").append(
-				tableProperties.getPrimaryKeyLengthOfText()).append(
-				"</primary_key_length_of_text>\n");
+				.append(escape(tableProperties.getCollation()))
+				.append("</collation>\n");
+		xml.append("<storage_engine>")
+				.append(escape(tableProperties.getStorageEngine()))
+				.append("</storage_engine>\n");
+		xml.append("<primary_key_length_of_text>")
+				.append(tableProperties.getPrimaryKeyLengthOfText())
+				.append("</primary_key_length_of_text>\n");
 
 		return xml.toString();
 	}
@@ -1640,8 +1636,6 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<without_oids>").append(tableProperties.isWithoutOIDs())
 				.append("</without_oids>\n");
-		xml.append("<schema>").append(escape(tableProperties.getSchema()))
-				.append("</schema>\n");
 
 		return xml.toString();
 	}
@@ -1655,8 +1649,8 @@ public class PersistentXmlImpl extends Persistent {
 		Integer tablespaceId = context.tablespaceMap.get(viewProperties
 				.getTableSpace());
 		if (tablespaceId != null) {
-			xml.append("\t<tablespace_id>").append(tablespaceId).append(
-					"</tablespace_id>\n");
+			xml.append("\t<tablespace_id>").append(tablespaceId)
+					.append("</tablespace_id>\n");
 		}
 
 		xml.append("<schema>").append(escape(viewProperties.getSchema()))
@@ -1672,14 +1666,14 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<inidex>\n");
 
-		xml.append("\t<full_text>").append(index.isFullText()).append(
-				"</full_text>\n");
-		xml.append("\t<non_unique>").append(index.isNonUnique()).append(
-				"</non_unique>\n");
-		xml.append("\t<name>").append(escape(index.getName())).append(
-				"</name>\n");
-		xml.append("\t<type>").append(escape(index.getType())).append(
-				"</type>\n");
+		xml.append("\t<full_text>").append(index.isFullText())
+				.append("</full_text>\n");
+		xml.append("\t<non_unique>").append(index.isNonUnique())
+				.append("</non_unique>\n");
+		xml.append("\t<name>").append(escape(index.getName()))
+				.append("</name>\n");
+		xml.append("\t<type>").append(escape(index.getType()))
+				.append("</type>\n");
 		xml.append("\t<description>").append(escape(index.getDescription()))
 				.append("</description>\n");
 
@@ -1718,12 +1712,12 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<complex_unique_key>\n");
 
-		xml.append("\t<id>").append(
-				context.complexUniqueKeyMap.get(complexUniqueKey)).append(
-				"</id>\n");
-		xml.append("\t<name>").append(
-				Format.null2blank(complexUniqueKey.getUniqueKeyName())).append(
-				"</name>\n");
+		xml.append("\t<id>")
+				.append(context.complexUniqueKeyMap.get(complexUniqueKey))
+				.append("</id>\n");
+		xml.append("\t<name>")
+				.append(Format.null2blank(complexUniqueKey.getUniqueKeyName()))
+				.append("</name>\n");
 		xml.append("\t<columns>\n");
 
 		for (NormalColumn column : complexUniqueKey.getColumnList()) {
@@ -1760,20 +1754,20 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("<word>\n");
 
 		if (context != null) {
-			xml.append("\t<id>").append(context.wordMap.get(word)).append(
-					"</id>\n");
+			xml.append("\t<id>").append(context.wordMap.get(word))
+					.append("</id>\n");
 		}
 
-		xml.append("\t<length>").append(word.getTypeData().getLength()).append(
-				"</length>\n");
+		xml.append("\t<length>").append(word.getTypeData().getLength())
+				.append("</length>\n");
 		xml.append("\t<decimal>").append(word.getTypeData().getDecimal())
 				.append("</decimal>\n");
 
 		Integer arrayDimension = word.getTypeData().getArrayDimension();
-		xml.append("\t<array>").append(word.getTypeData().isArray()).append(
-				"</array>\n");
-		xml.append("\t<array_dimension>").append(arrayDimension).append(
-				"</array_dimension>\n");
+		xml.append("\t<array>").append(word.getTypeData().isArray())
+				.append("</array>\n");
+		xml.append("\t<array_dimension>").append(arrayDimension)
+				.append("</array_dimension>\n");
 
 		xml.append("\t<unsigned>").append(word.getTypeData().isUnsigned())
 				.append("</unsigned>\n");

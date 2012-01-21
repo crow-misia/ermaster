@@ -870,12 +870,8 @@ public class XMLLoader {
 			RepeatTestDataDef dataDef = new RepeatTestDataDef();
 
 			dataDef.setType(this.getStringValue(dataDefElement, "type"));
-			dataDef
-					.setRepeatNum(this
-							.getIntValue(dataDefElement, "repeat_num"));
-			dataDef
-					.setTemplate(this
-							.getStringValue(dataDefElement, "template"));
+			dataDef.setRepeatNum(this.getIntValue(dataDefElement, "repeat_num"));
+			dataDef.setTemplate(this.getStringValue(dataDefElement, "template"));
 			dataDef.setFrom(this.getIntValue(dataDefElement, "from"));
 			dataDef.setTo(this.getIntValue(dataDefElement, "to"));
 			dataDef.setIncrement(this.getIntValue(dataDefElement, "increment"));
@@ -925,12 +921,12 @@ public class XMLLoader {
 
 		String type = this.getStringValue(element, "type");
 
-		TypeData typeData = new TypeData(this
-				.getIntegerValue(element, "length"), this.getIntegerValue(
-				element, "decimal"), this.getBooleanValue(element, "array"),
-				this.getIntegerValue(element, "array_dimension"), this
-						.getBooleanValue(element, "unsigned"), this
-						.getStringValue(element, "args"));
+		TypeData typeData = new TypeData(
+				this.getIntegerValue(element, "length"), this.getIntegerValue(
+						element, "decimal"), this.getBooleanValue(element,
+						"array"), this.getIntegerValue(element,
+						"array_dimension"), this.getBooleanValue(element,
+						"unsigned"), this.getStringValue(element, "args"));
 
 		Word word = new Word(Format.null2blank(this.getStringValue(element,
 				"physical_name")), Format.null2blank(this.getStringValue(
@@ -991,11 +987,11 @@ public class XMLLoader {
 		NormalColumn normalColumn = null;
 
 		if (word == null) {
-			word = new Word(this.getStringValue(element, "physical_name"), this
-					.getStringValue(element, "logical_name"), SqlType
-					.valueOfId(type), new TypeData(null, null, false, null,
-					false, null), this.getStringValue(element, "description"),
-					database);
+			word = new Word(this.getStringValue(element, "physical_name"),
+					this.getStringValue(element, "logical_name"),
+					SqlType.valueOfId(type), new TypeData(null, null, false,
+							null, false, null), this.getStringValue(element,
+							"description"), database);
 
 			UniqueWord uniqueWord = new UniqueWord(word);
 
@@ -1007,13 +1003,14 @@ public class XMLLoader {
 		}
 
 		normalColumn = new NormalColumn(word, this.getBooleanValue(element,
-				"not_null"), this.getBooleanValue(element, "primary_key"), this
-				.getBooleanValue(element, "unique_key"), this.getBooleanValue(
-				element, "auto_increment"), this.getStringValue(element,
-				"default_value"), this.getStringValue(element, "constraint"),
-				this.getStringValue(element, "unique_key_name"), this
-						.getStringValue(element, "character_set"), this
-						.getStringValue(element, "collation"));
+				"not_null"), this.getBooleanValue(element, "primary_key"),
+				this.getBooleanValue(element, "unique_key"),
+				this.getBooleanValue(element, "auto_increment"),
+				this.getStringValue(element, "default_value"),
+				this.getStringValue(element, "constraint"),
+				this.getStringValue(element, "unique_key_name"),
+				this.getStringValue(element, "character_set"),
+				this.getStringValue(element, "collation"));
 
 		Element autoIncrementSettingElement = this.getElement(element,
 				"sequence");
@@ -1104,8 +1101,9 @@ public class XMLLoader {
 			ModelProperties modelProperties = settings.getModelProperties();
 			this.loadModelProperties(modelProperties, element);
 
-			this.loadTableProperties((TableProperties) settings
-					.getTableViewProperties(), element, context);
+			this.loadTableProperties(
+					(TableProperties) settings.getTableViewProperties(),
+					element, context);
 
 		}
 	}
@@ -1180,8 +1178,8 @@ public class XMLLoader {
 					.getStringValue(element, "comment_replace_string");
 			this.loadExportJavaSetting(exportSetting.getExportJavaSetting(),
 					element, context);
-			this.loadExportTestDataSetting(exportSetting
-					.getExportTestDataSetting(), element, context);
+			this.loadExportTestDataSetting(
+					exportSetting.getExportTestDataSetting(), element, context);
 		}
 	}
 
@@ -1324,8 +1322,8 @@ public class XMLLoader {
 		}
 
 		if (environmentList.isEmpty()) {
-			Environment environment = new Environment(ResourceString
-					.getResourceString("label.default"));
+			Environment environment = new Environment(
+					ResourceString.getResourceString("label.default"));
 			environmentList.add(environment);
 			context.environmentMap.put("", environment);
 		}
@@ -1434,8 +1432,9 @@ public class XMLLoader {
 				.loadComplexUniqueKeyList(element, table, context);
 		table.setComplexUniqueKeyList(complexUniqueKeyList);
 
-		this.loadTableProperties((TableProperties) table
-				.getTableViewProperties(), element, context);
+		this.loadTableProperties(
+				(TableProperties) table.getTableViewProperties(), element,
+				context);
 
 		return table;
 	}
@@ -1582,6 +1581,8 @@ public class XMLLoader {
 		Tablespace tablespace = context.tablespaceMap.get(tablespaceId);
 		tableProperties.setTableSpace(tablespace);
 
+		tableProperties.setSchema(this.getStringValue(element, "schema"));
+
 		if (tableProperties instanceof MySQLTableProperties) {
 			this.loadTablePropertiesMySQL(
 					(MySQLTableProperties) tableProperties, element);
@@ -1599,7 +1600,6 @@ public class XMLLoader {
 		tableProperties.setCharacterSet(this.getStringValue(element,
 				"character_set"));
 		tableProperties.setCollation(this.getStringValue(element, "collation"));
-		tableProperties.setSchema(this.getStringValue(element, "schema"));
 		tableProperties.setStorageEngine(this.getStringValue(element,
 				"storage_engine"));
 		tableProperties.setPrimaryKeyLengthOfText(this.getIntegerValue(element,
@@ -1610,7 +1610,6 @@ public class XMLLoader {
 			PostgresTableProperties tableProperties, Element element) {
 		tableProperties.setWithoutOIDs(this.getBooleanValue(element,
 				"without_oids"));
-		tableProperties.setSchema(this.getStringValue(element, "schema"));
 	}
 
 	private void loadViewProperties(ViewProperties viewProperties,
