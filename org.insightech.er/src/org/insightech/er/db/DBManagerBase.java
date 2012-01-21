@@ -49,10 +49,16 @@ public abstract class DBManagerBase implements DBManager {
 		Class clazz = null;
 
 		try {
-			path = PreferenceInitializer.getJDBCDriverPath(this.getId(),
-					driverClassName);
-			ClassLoader loader = this.getClassLoader(path);
-			clazz = loader.loadClass(driverClassName);
+			if (driverClassName.equals("sun.jdbc.odbc.JdbcOdbcDriver")) {
+				return (Class<Driver>) Class
+						.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+
+			} else {
+				path = PreferenceInitializer.getJDBCDriverPath(this.getId(),
+						driverClassName);
+				ClassLoader loader = this.getClassLoader(path);
+				clazz = loader.loadClass(driverClassName);
+			}
 
 		} catch (Exception e) {
 			JDBCPathDialog dialog = new JDBCPathDialog(PlatformUI
@@ -156,10 +162,15 @@ public abstract class DBManagerBase implements DBManager {
 		List<String> schemaList = new ArrayList<String>();
 
 		DatabaseMetaData metaData = con.getMetaData();
-		ResultSet rs = metaData.getSchemas();
+		try {
+			ResultSet rs = metaData.getSchemas();
 
-		while (rs.next()) {
-			schemaList.add(rs.getString(1));
+			while (rs.next()) {
+				schemaList.add(rs.getString(1));
+			}
+
+		} catch (SQLException e) {
+			// when schema is not supported
 		}
 
 		return schemaList;

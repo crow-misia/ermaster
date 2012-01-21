@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.insightech.er.ResourceString;
+import org.insightech.er.db.impl.access.AccessEclipseDBManager;
 import org.insightech.er.db.impl.db2.DB2EclipseDBManager;
 import org.insightech.er.db.impl.hsqldb.HSQLDBEclipseDBManager;
 import org.insightech.er.db.impl.mysql.MySQLEclipseDBManager;
@@ -22,6 +23,7 @@ public class EclipseDBManagerFactory {
 		new StandardSQLEclipseDBManager();
 		new DB2EclipseDBManager();
 		new HSQLDBEclipseDBManager();
+		new AccessEclipseDBManager();
 		new MySQLEclipseDBManager();
 		new OracleEclipseDBManager();
 		new PostgresEclipseDBManager();

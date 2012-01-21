@@ -1628,6 +1628,9 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("<storage_engine>").append(
 				escape(tableProperties.getStorageEngine())).append(
 				"</storage_engine>\n");
+		xml.append("<primary_key_length_of_text>").append(
+				tableProperties.getPrimaryKeyLengthOfText()).append(
+				"</primary_key_length_of_text>\n");
 
 		return xml.toString();
 	}

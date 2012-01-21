@@ -26,7 +26,7 @@ public class DBSelectTabWrapper extends ValidatableTabWrapper {
 
 	public DBSelectTabWrapper(OptionSettingDialog dialog, TabFolder parent,
 			int style, Settings settings) {
-		super(parent, style, "label.database");
+		super(dialog, parent, style, "label.database");
 
 		this.settings = settings;
 		this.dialog = dialog;
@@ -43,7 +43,7 @@ public class DBSelectTabWrapper extends ValidatableTabWrapper {
 		this.databaseCombo = CompositeFactory.createReadOnlyCombo(null, this,
 				"label.database");
 		this.databaseCombo.setVisibleItemCount(10);
-		
+
 		for (String db : DBManagerFactory.getAllDBList()) {
 			this.databaseCombo.add(db);
 		}

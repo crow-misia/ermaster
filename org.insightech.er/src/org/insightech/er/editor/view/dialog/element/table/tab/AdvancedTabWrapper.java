@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.element.table.tab;
 
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.TabFolder;
+import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.db.EclipseDBManagerFactory;
@@ -14,8 +15,9 @@ public class AdvancedTabWrapper extends ValidatableTabWrapper {
 
 	private AdvancedComposite composite;
 
-	public AdvancedTabWrapper(TabFolder parent, int style, ERTable table) {
-		super(parent, style, "label.advanced.settings");
+	public AdvancedTabWrapper(AbstractDialog dialog, TabFolder parent,
+			int style, ERTable table) {
+		super(dialog, parent, style, "label.advanced.settings");
 
 		this.table = table;
 
@@ -35,8 +37,9 @@ public class AdvancedTabWrapper extends ValidatableTabWrapper {
 		this.setLayout(new GridLayout());
 		this.composite = EclipseDBManagerFactory.getEclipseDBManager(
 				this.table.getDiagram()).createAdvancedComposite(this);
-		this.composite.initialize((TableProperties) this.table
-				.getTableViewProperties(), this.table.getDiagram());
+		this.composite.initialize(this.dialog,
+				(TableProperties) this.table.getTableViewProperties(),
+				this.table.getDiagram(), this.table);
 	}
 
 	/**

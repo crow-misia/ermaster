@@ -18,12 +18,22 @@ public class DropShadowRectangle extends RoundedRectangle {
 	protected void fillShape(Graphics graphics) {
 		Rectangle f = Rectangle.SINGLETON.setBounds(getBounds());
 		Insets shadowInset = new Insets(0, 0, SHADOW_INSET, SHADOW_INSET);
-		f.shrink(shadowInset);
+		f = shrink(f, shadowInset);
 		this.drawShadow(f, graphics);
-		graphics.fillRoundRectangle(f, getCornerDimensions().width,
-				getCornerDimensions().height);
+		graphics.fillRoundRectangle(f, corner.width,
+				corner.height);
 	}
 
+	private Rectangle shrink(Rectangle bounds, Insets insets) {
+		Rectangle shrinked = bounds.getCopy();
+
+		shrinked.x += insets.left;
+		shrinked.y += insets.top;
+		shrinked.width -= insets.getWidth();
+		shrinked.height -= insets.getHeight();
+
+		return shrinked;
+	}
 	/**
 	 * {@inheritDoc}
 	 */
@@ -40,8 +50,8 @@ public class DropShadowRectangle extends RoundedRectangle {
 		Rectangle f = Rectangle.SINGLETON.setBounds(getBounds());
 		Insets shadowInset = new Insets(getLineWidth() / 2, getLineWidth() / 2, getLineWidth()
 				+ SHADOW_INSET, getLineWidth() + SHADOW_INSET);
-		f.shrink(shadowInset);
-		graphics.drawRoundRectangle(f, getCornerDimensions().width, getCornerDimensions().height);
+		shrink(f, shadowInset);
+		graphics.drawRoundRectangle(f, corner.width, corner.height);
 	}
 
 	private void drawShadow(Rectangle rectangle, Graphics graphics) {
@@ -66,8 +76,8 @@ public class DropShadowRectangle extends RoundedRectangle {
 		Rectangle shadowLayer = new Rectangle(rectangle);
 		shadowLayer.x += offset;
 		shadowLayer.y += offset;
-		graphics.fillRoundRectangle(shadowLayer, getCornerDimensions().width,
-				getCornerDimensions().height);
+		graphics.fillRoundRectangle(shadowLayer, corner.width,
+				corner.height);
 		// Restore the start of the graphics object
 		graphics.popState();
 	}

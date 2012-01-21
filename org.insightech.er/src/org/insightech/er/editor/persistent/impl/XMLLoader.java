@@ -1602,6 +1602,8 @@ public class XMLLoader {
 		tableProperties.setSchema(this.getStringValue(element, "schema"));
 		tableProperties.setStorageEngine(this.getStringValue(element,
 				"storage_engine"));
+		tableProperties.setPrimaryKeyLengthOfText(this.getIntegerValue(element,
+				"primary_key_length_of_text"));
 	}
 
 	private void loadTablePropertiesPostgres(

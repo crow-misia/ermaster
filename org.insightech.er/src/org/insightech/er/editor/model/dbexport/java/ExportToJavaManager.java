@@ -626,7 +626,7 @@ public class ExportToJavaManager {
 				properties.append(property);
 			}
 
-		} else {
+		} else if (table.getPrimaryKeySize() > 1) {
 			String property = HIBERNATE_COMPOSITE_ID;
 
 			StringBuilder keys = new StringBuilder();

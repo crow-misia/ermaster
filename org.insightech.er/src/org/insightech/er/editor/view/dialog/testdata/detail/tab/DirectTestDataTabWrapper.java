@@ -32,7 +32,7 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 
 	public DirectTestDataTabWrapper(TestDataDialog dialog, TabFolder parent,
 			int style) {
-		super(parent, style, "label.testdata.direct.input");
+		super(dialog, parent, style, "label.testdata.direct.input");
 
 		this.dialog = dialog;
 
@@ -96,7 +96,7 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 		this.directTestData = dialog.getTestData().getTableTestDataMap().get(
 				this.table).getDirectTestData();
 
-		// ƒe[ƒuƒ‹•ÏX
+		// ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ÏX
 		this.initTable();
 	}
 
@@ -148,7 +148,7 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 			this.addTableItem(data);
 		}
 
-		// ‹ós
+		// ï¿½ï¿½s
 		this.addNewRowToTable();
 
 		this.editColumnTable.setVisible(true);

@@ -5,6 +5,7 @@ import java.util.List;
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
+import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -53,8 +54,8 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		if (this.ddlTarget.createComment) {
-			String comment = this.filterComment(table.getLogicalName(), table
-					.getDescription(), false);
+			String comment = this.filterComment(table.getLogicalName(),
+					table.getDescription(), false);
 
 			if (!Check.isEmpty(comment)) {
 				postDDL.append(" COMMENT = '");
@@ -236,12 +237,12 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		if (ddlTarget.commentReplaceLineFeed) {
-			comment = comment.replaceAll("\r\n", Format
-					.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\r", Format
-					.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\n", Format
-					.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\r\n",
+					Format.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\r",
+					Format.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\n",
+					Format.null2blank(ddlTarget.commentReplaceString));
 		}
 
 		int maxLength = 60;
@@ -353,6 +354,33 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		return ddl.toString();
+	}
+
+	@Override
+	protected String getPrimaryKeyLength(ERTable table, NormalColumn primaryKey) {
+		SqlType type = primaryKey.getType();
+
+		if (type != null && type.isFullTextIndexable()
+				&& !type.isNeedLength(this.getDiagram().getDatabase())) {
+			Integer length = null;
+
+			MySQLTableProperties tableProperties = (MySQLTableProperties) table
+					.getTableViewProperties();
+
+			length = tableProperties.getPrimaryKeyLengthOfText();
+
+			if (length == null) {
+				tableProperties = (MySQLTableProperties) this.getDiagram()
+						.getDiagramContents().getSettings()
+						.getTableViewProperties();
+
+				length = tableProperties.getPrimaryKeyLengthOfText();
+			}
+
+			return "(" + length + ")";
+		}
+
+		return "";
 	}
 
 }

@@ -12,6 +12,8 @@ public class MySQLTableProperties extends TableProperties {
 
 	private String collation;
 
+	private Integer primaryKeyLengthOfText;
+
 	public String getStorageEngine() {
 		return storageEngine;
 	}
@@ -34,6 +36,14 @@ public class MySQLTableProperties extends TableProperties {
 
 	public void setCollation(String collation) {
 		this.collation = collation;
+	}
+
+	public Integer getPrimaryKeyLengthOfText() {
+		return primaryKeyLengthOfText;
+	}
+
+	public void setPrimaryKeyLengthOfText(Integer primaryKeyLengthOfText) {
+		this.primaryKeyLengthOfText = primaryKeyLengthOfText;
 	}
 
 }

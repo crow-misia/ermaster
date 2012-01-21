@@ -25,7 +25,7 @@ public class OptionTabWrapper extends ValidatableTabWrapper {
 
 	public OptionTabWrapper(OptionSettingDialog dialog, TabFolder parent,
 			int style, Settings settings) {
-		super(parent, style, "label.option");
+		super(dialog, parent, style, "label.option");
 
 		this.settings = settings;
 		this.dialog = dialog;
@@ -69,8 +69,8 @@ public class OptionTabWrapper extends ValidatableTabWrapper {
 				.getSelection());
 		this.settings
 				.setUseBezierCurve(this.useBezierCurveCheck.getSelection());
-		this.settings
-				.setSuspendValidator(this.suspendValidatorCheck.getSelection());
+		this.settings.setSuspendValidator(this.suspendValidatorCheck
+				.getSelection());
 	}
 
 	@Override

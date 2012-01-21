@@ -21,7 +21,7 @@ public class AdvancedTabWrapper extends ValidatableTabWrapper {
 
 	public AdvancedTabWrapper(OptionSettingDialog dialog, TabFolder parent,
 			int style, Settings settings, ERDiagram diagram) {
-		super(parent, style, "label.advanced.settings");
+		super(dialog, parent, style, "label.advanced.settings");
 
 		this.diagram = diagram;
 		this.settings = settings;
@@ -50,8 +50,9 @@ public class AdvancedTabWrapper extends ValidatableTabWrapper {
 
 		this.composite = EclipseDBManagerFactory.getEclipseDBManager(
 				this.settings.getDatabase()).createAdvancedComposite(this);
-		this.composite.initialize((TableProperties) this.settings
-				.getTableViewProperties(), this.diagram);
+		this.composite.initialize(this.dialog,
+				(TableProperties) this.settings.getTableViewProperties(),
+				this.diagram, null);
 
 		this.pack();
 	}

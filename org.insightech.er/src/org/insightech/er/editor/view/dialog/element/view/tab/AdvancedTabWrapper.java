@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.element.view.tab;
 
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.TabFolder;
+import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
@@ -13,8 +14,9 @@ public class AdvancedTabWrapper extends ValidatableTabWrapper {
 
 	private AdvancedComposite composite;
 
-	public AdvancedTabWrapper(TabFolder parent, int style, View view) {
-		super(parent, style, "label.advanced.settings");
+	public AdvancedTabWrapper(AbstractDialog dialog, TabFolder parent,
+			int style, View view) {
+		super(dialog, parent, style, "label.advanced.settings");
 
 		this.view = view;
 

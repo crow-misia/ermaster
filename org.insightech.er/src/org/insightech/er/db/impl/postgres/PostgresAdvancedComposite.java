@@ -5,6 +5,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.insightech.er.ResourceString;
+import org.insightech.er.common.exception.InputException;
 import org.insightech.er.editor.view.dialog.element.table.tab.AdvancedComposite;
 
 public class PostgresAdvancedComposite extends AdvancedComposite {
@@ -41,13 +42,11 @@ public class PostgresAdvancedComposite extends AdvancedComposite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean validate() {
+	public void validate() throws InputException {
 		super.validate();
 
 		((PostgresTableProperties) this.tableProperties)
 				.setWithoutOIDs(this.withoutOIDs.getSelection());
-
-		return true;
 	}
 
 }

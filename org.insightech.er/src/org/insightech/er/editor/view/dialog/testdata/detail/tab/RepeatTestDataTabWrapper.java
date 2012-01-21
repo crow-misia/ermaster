@@ -38,7 +38,7 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 
 	public RepeatTestDataTabWrapper(TestDataDialog dialog, TabFolder parent,
 			int style) {
-		super(parent, style, "label.testdata.repeat.input");
+		super(dialog, parent, style, "label.testdata.repeat.input");
 
 		this.dialog = dialog;
 
@@ -161,7 +161,7 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 		this.testDataNumText.setText(Format.toString(this.repeatTestData
 				.getTestDataNum()));
 
-		// ƒe[ƒuƒ‹•ÏX
+		// ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ÏX
 		this.initTable();
 	}
 

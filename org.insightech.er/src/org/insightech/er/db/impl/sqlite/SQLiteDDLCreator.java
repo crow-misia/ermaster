@@ -2,6 +2,7 @@ package org.insightech.er.db.impl.sqlite;
 
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
 
@@ -23,10 +24,14 @@ public class SQLiteDDLCreator extends DDLCreator {
 		ddl.append(super.getColulmnDDL(normalColumn));
 
 		if (normalColumn.isAutoIncrement()) {
-			ddl.append(" AUTOINCREMENT");
+			ddl.append(" PRIMARY KEY AUTOINCREMENT");
 		}
 		
 		return ddl.toString();
 	}
 
+	@Override
+	protected String getPrimaryKeyDDL(ERTable table) {
+		return "";
+	}
 }

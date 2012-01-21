@@ -17,9 +17,10 @@ public class SqlTabWrapper extends ValidatableTabWrapper {
 	private Text sqlText;
 
 	private ViewDialog viewDialog;
-	
-	public SqlTabWrapper(ViewDialog viewDialog, TabFolder parent, int style, View copyData) {
-		super(parent, style, "label.sql");
+
+	public SqlTabWrapper(ViewDialog viewDialog, TabFolder parent, int style,
+			View copyData) {
+		super(viewDialog, parent, style, "label.sql");
 
 		this.viewDialog = viewDialog;
 		this.copyData = copyData;
@@ -33,8 +34,8 @@ public class SqlTabWrapper extends ValidatableTabWrapper {
 		gridLayout.numColumns = 1;
 		this.setLayout(gridLayout);
 
-		this.sqlText = CompositeFactory.createTextArea(this.viewDialog, this, "label.sql",
-				400, 400, 1, true);
+		this.sqlText = CompositeFactory.createTextArea(this.viewDialog, this,
+				"label.sql", 400, 400, 1, true);
 
 		this.sqlText.setText(Format.null2blank(copyData.getSql()));
 	}

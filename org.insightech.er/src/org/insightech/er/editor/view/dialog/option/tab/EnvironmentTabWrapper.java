@@ -39,7 +39,7 @@ public class EnvironmentTabWrapper extends ValidatableTabWrapper {
 
 	public EnvironmentTabWrapper(OptionSettingDialog dialog, TabFolder parent,
 			int style, Settings settings) {
-		super(parent, style, "label.tablespace.environment");
+		super(dialog, parent, style, "label.tablespace.environment");
 
 		this.settings = settings;
 

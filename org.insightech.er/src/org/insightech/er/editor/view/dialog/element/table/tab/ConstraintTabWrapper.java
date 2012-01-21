@@ -25,7 +25,7 @@ public class ConstraintTabWrapper extends ValidatableTabWrapper {
 
 	public ConstraintTabWrapper(TableDialog tableDialog, TabFolder parent,
 			int style, ERTable copyData) {
-		super(parent, style, "label.constraint.and.option");
+		super(tableDialog, parent, style, "label.constraint.and.option");
 
 		this.copyData = copyData;
 		this.tableDialog = tableDialog;
