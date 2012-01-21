@@ -270,6 +270,19 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		columnData.decimalDegits = columnSet.getInt("DECIMAL_DIGITS");
 		columnData.nullable = columnSet.getInt("NULLABLE");
 		columnData.defaultValue = columnSet.getString("COLUMN_DEF");
+
+		if (columnData.defaultValue != null) {
+			if ("bit".equals(columnData.type)) {
+				byte[] bits = columnData.defaultValue.getBytes();
+
+				columnData.defaultValue = "";
+
+				for (int i = 0; i < bits.length; i++) {
+					columnData.defaultValue += bits[i];
+				}
+			}
+		}
+
 		columnData.description = columnSet.getString("REMARKS");
 
 		return columnData;
@@ -364,7 +377,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 	protected Trigger importTrigger(String schema, String triggerName)
 			throws SQLException {
-		//		
+		//
 		return null;
 	}
 
@@ -419,8 +432,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			String schema) throws SQLException, InterruptedException {
 		String autoIncrementColumnName = null;
 		try {
-			autoIncrementColumnName = this.getAutoIncrementColumnName(con, this
-					.getTableNameWithSchema(schema, tableName));
+			autoIncrementColumnName = this.getAutoIncrementColumnName(con,
+					this.getTableNameWithSchema(schema, tableName));
 		} catch (SQLException e) {
 			// �e�[�u����񂪎擾�ł��Ȃ��ꍇ�i���̃��[�U�̏��L���Ȃǂ̏ꍇ�j�A
 			// ���̃e�[�u���͎g�p���Ȃ��B
@@ -677,8 +690,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			int arrayStartIndex = type.indexOf("[");
 			if (arrayStartIndex != -1) {
 				array = true;
-				String str = type.substring(arrayStartIndex + 1, type
-						.indexOf("]"));
+				String str = type.substring(arrayStartIndex + 1,
+						type.indexOf("]"));
 				arrayDimension = Integer.parseInt(str);
 				type = type.substring(0, arrayStartIndex);
 			}
@@ -943,7 +956,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 		} catch (SQLException e) {
 			// microsoft access does not support getImportedKeys
-			
+
 		} finally {
 			this.close(foreignKeySet);
 		}
@@ -1363,9 +1376,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 
 		} else {
-			word = new Word(columnAlias, this.translationResources
-					.translate(columnAlias), null, new TypeData(null, null,
-					false, null, false, null), null, null);
+			word = new Word(columnAlias,
+					this.translationResources.translate(columnAlias), null,
+					new TypeData(null, null, false, null, false, null), null,
+					null);
 
 		}
 

@@ -294,13 +294,16 @@ public abstract class DDLCreator {
 
 	abstract protected String getDDL(Tablespace object);
 
+	protected Iterable<ERTable> getTablesForCreateDDL() {
+		return diagram.getDiagramContents().getContents().getTableSet();
+	}
+
 	private String getCreateTables(ERDiagram diagram) {
 		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;
 
-		for (ERTable table : diagram.getDiagramContents().getContents()
-				.getTableSet()) {
+		for (ERTable table : this.getTablesForCreateDDL()) {
 
 			if (diagram.getCurrentCategory() != null
 					&& !diagram.getCurrentCategory().contains(table)) {
@@ -322,7 +325,7 @@ public abstract class DDLCreator {
 		return ddl.toString();
 	}
 
-	private String getCreateForeignKeys(ERDiagram diagram) {
+	protected String getCreateForeignKeys(ERDiagram diagram) {
 		StringBuilder ddl = new StringBuilder();
 
 		boolean first = true;

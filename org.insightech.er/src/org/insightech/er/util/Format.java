@@ -38,7 +38,9 @@ public class Format {
 				}
 
 				if (typeData.isArray() && PostgresDBManager.ID.equals(database)) {
-					type += "[" + typeData.getArrayDimension() + "]";
+					for (int i=0; i <typeData.getArrayDimension(); i++) {
+						type += "[]";
+					}
 				}
 
 				if (sqlType.isNumber() && typeData.isUnsigned()
