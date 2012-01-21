@@ -16,7 +16,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -33,6 +32,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.CopyColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
+import org.insightech.er.editor.view.dialog.element.table.sub.QuickAddDialog;
 import org.insightech.er.editor.view.dialog.word.column.AbstractColumnDialog;
 import org.insightech.er.util.Format;
 
@@ -62,6 +62,8 @@ public class ERTableComposite extends Composite {
 
 	private Button downButton;
 
+	private Button quickAddButton;
+
 	private ERDiagram diagram;
 
 	private ERTable ertable;
@@ -75,7 +77,7 @@ public class ERTableComposite extends Composite {
 	private Map<Column, TableEditor[]> columnNotNullCheckMap = new HashMap<Column, TableEditor[]>();
 
 	private boolean buttonDisplay;
-	
+
 	private boolean checkboxEnabled;
 
 	private int height;
@@ -87,13 +89,15 @@ public class ERTableComposite extends Composite {
 			AbstractColumnDialog columnDialog, AbstractDialog parentDialog,
 			int horizontalSpan, boolean buttonDisplay, boolean checkboxEnabled) {
 		this(holder, parent, diagram, erTable, columnList, columnDialog,
-				parentDialog, horizontalSpan, buttonDisplay, checkboxEnabled, DEFAULT_HEIGHT);
+				parentDialog, horizontalSpan, buttonDisplay, checkboxEnabled,
+				DEFAULT_HEIGHT);
 	}
 
 	public ERTableComposite(ERTableCompositeHolder holder, Composite parent,
 			ERDiagram diagram, ERTable erTable, List<Column> columnList,
 			AbstractColumnDialog columnDialog, AbstractDialog parentDialog,
-			int horizontalSpan, boolean buttonDisplay, boolean checkboxEnabled, int height) {
+			int horizontalSpan, boolean buttonDisplay, boolean checkboxEnabled,
+			int height) {
 		super(parent, SWT.NONE);
 
 		this.holder = holder;
@@ -192,7 +196,7 @@ public class ERTableComposite extends Composite {
 	 */
 	private void createButton() {
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 6;
+		gridLayout.numColumns = 8;
 
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
@@ -260,10 +264,7 @@ public class ERTableComposite extends Composite {
 
 		});
 
-		Label filler = new Label(buttonComposite, SWT.NONE);
-		GridData fillerGridData = new GridData();
-		fillerGridData.widthHint = 30;
-		filler.setLayoutData(fillerGridData);
+		CompositeFactory.filler(buttonComposite, 1, 30);
 
 		this.upButton = CompositeFactory.createButton(buttonComposite,
 				"label.up.arrow");
@@ -295,6 +296,34 @@ public class ERTableComposite extends Composite {
 
 		});
 
+		CompositeFactory.filler(buttonComposite, 1, 30);
+
+		this.quickAddButton = new Button(buttonComposite, SWT.NONE);
+		this.quickAddButton.setText(ResourceString
+				.getResourceString("label.button.quick.add"));
+
+		this.quickAddButton.addSelectionListener(new SelectionAdapter() {
+
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				QuickAddDialog dialog = new QuickAddDialog(PlatformUI
+						.getWorkbench().getActiveWorkbenchWindow().getShell(),
+						diagram);
+				if (dialog.open() == IDialogConstants.OK_ID) {
+					List<NormalColumn> columnList = dialog.getColumnList();
+
+					for (NormalColumn column : columnList) {
+						addTableData(column, true);
+					}
+				}
+			}
+
+		});
+
+		this.quickAddButton.setEnabled(true);
 	}
 
 	private void initComposite() {
@@ -442,11 +471,11 @@ public class ERTableComposite extends Composite {
 
 	/**
 	 * <pre>
-	 * ƒJƒ‰ƒ€‚Ì’Ç‰Á‚ğ‚µ‚½ê‡
-	 * CopyColumn ‚ª’Ç‰Á‚³‚ê‚Ü‚·
-	 * ‚±‚ÌÛAword ‚É‚Í CopyWord ‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚·
-	 * iCopyWord ‚Ì original ‚Í ƒ[ƒh‚ğ‘I‘ğ‚µ‚½ê‡‚ÍA‚»‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
-	 *  ‘I‘ğ‚µ‚È‚©‚Á‚½ê‡‚ÍAV‚µ‚¢ƒCƒ“ƒXƒ^ƒ“ƒXj
+	 * ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì’Ç‰Bâµ‚ï¿½ï¿½ê‡
+	 * CopyColumn ï¿½ï¿½ï¿½Ç‰Bï¿½ï¿½ï¿½Ü‚ï¿½
+	 * ï¿½ï¿½ï¿½ÌÛAword ï¿½É‚ï¿½ CopyWord ï¿½ï¿½ï¿½İ’è‚³ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½
+	 * ï¿½iCopyWord ï¿½ï¿½ original ï¿½ï¿½ ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½Iï¿½âµ‚ï¿½ï¿½ê‡ï¿½ÍAï¿½ï¿½ï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½X
+	 *  ï¿½Iï¿½âµ‚È‚ï¿½ï¿½Bï¿½ï¿½ê‡ï¿½ÍAï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½j
 	 * </pre>
 	 * 
 	 * @param column
@@ -642,6 +671,7 @@ public class ERTableComposite extends Composite {
 			this.columnDeleteButton.setEnabled(false);
 			this.upButton.setEnabled(false);
 			this.downButton.setEnabled(false);
+			this.quickAddButton.setEnabled(enabled);
 		}
 	}
 

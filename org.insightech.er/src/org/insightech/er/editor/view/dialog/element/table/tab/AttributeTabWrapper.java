@@ -64,7 +64,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 	public AttributeTabWrapper(TableDialog tableDialog, TabFolder parent,
 			int style, ERTable copyData) {
-		super(parent, style, "label.table.attribute");
+		super(tableDialog, parent, style, "label.table.attribute");
 
 		this.copyData = copyData;
 		this.tableDialog = tableDialog;
@@ -196,8 +196,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 		this.groupAddButton.setEnabled(false);
 
-		createGroup(footer);
-
+		this.createGroup(footer);
 		this.initGroupCombo();
 	}
 
@@ -266,7 +265,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 		gridData1.widthHint = -1;
 		GridData gridData = new GridData();
 		gridData.heightHint = -1;
-		gridData.horizontalSpan = 2;
+		gridData.horizontalSpan = 4;
 
 		// FormToolkit toolkit = new FormToolkit(this.getDisplay());
 		// Form root = toolkit.createForm(parent);

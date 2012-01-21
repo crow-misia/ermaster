@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.insightech.er.Activator;
+import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
@@ -50,9 +51,9 @@ public class ComplexUniqueKeyTabWrapper extends ValidatableTabWrapper {
 
 	private Map<TableEditor, NormalColumn> editorColumnMap;
 
-	public ComplexUniqueKeyTabWrapper(TabFolder parent, int style,
-			ERTable copyData) {
-		super(parent, style, "label.complex.unique.key");
+	public ComplexUniqueKeyTabWrapper(AbstractDialog dialog, TabFolder parent,
+			int style, ERTable copyData) {
+		super(dialog, parent, style, "label.complex.unique.key");
 
 		this.copyData = copyData;
 		this.tableEditorList = new ArrayList<TableEditor>();

@@ -62,10 +62,10 @@ public class ViewDialog extends AbstractDialog {
 
 		this.tabWrapperList.add(new SqlTabWrapper(this, tabFolder, SWT.NONE,
 				this.copyData));
-		this.tabWrapperList.add(new DescriptionTabWrapper(tabFolder, SWT.NONE,
-				this.copyData));
-		this.tabWrapperList.add(new AdvancedTabWrapper(tabFolder, SWT.NONE,
-				this.copyData));
+		this.tabWrapperList.add(new DescriptionTabWrapper(this, tabFolder,
+				SWT.NONE, this.copyData));
+		this.tabWrapperList.add(new AdvancedTabWrapper(this, tabFolder,
+				SWT.NONE, this.copyData));
 
 		this.tabFolder.addSelectionListener(new SelectionListener() {
 

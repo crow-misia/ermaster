@@ -434,8 +434,8 @@ public abstract class DDLCreator {
 		boolean first = true;
 
 		List<String> autoSequenceNames = diagram.getDiagramContents()
-				.getContents().getTableSet().getAutoSequenceNames(
-						diagram.getDatabase());
+				.getContents().getTableSet()
+				.getAutoSequenceNames(diagram.getDatabase());
 
 		for (Sequence sequence : diagram.getDiagramContents().getSequenceSet()) {
 			String sequenceName = this.getNameWithSchema(sequence.getSchema(),
@@ -538,29 +538,7 @@ public abstract class DDLCreator {
 			}
 		}
 
-		List<NormalColumn> primaryKeys = table.getPrimaryKeys();
-
-		if (primaryKeys.size() != 0) {
-			ddl.append(",\r\n");
-			ddl.append("\t");
-			if (!Check.isEmpty(table.getPrimaryKeyName())) {
-				ddl.append("CONSTRAINT ");
-				ddl.append(table.getPrimaryKeyName());
-				ddl.append(" ");
-			}
-			ddl.append("PRIMARY KEY (");
-
-			first = true;
-			for (NormalColumn primaryKey : primaryKeys) {
-				if (!first) {
-					ddl.append(", ");
-				}
-				ddl.append(filter(primaryKey.getPhysicalName()));
-				first = false;
-			}
-
-			ddl.append(")");
-		}
+		ddl.append(this.getPrimaryKeyDDL(table));
 
 		List<ComplexUniqueKey> complexUniqueKeyList = table
 				.getComplexUniqueKeyList();
@@ -612,6 +590,41 @@ public abstract class DDLCreator {
 		}
 
 		return ddl.toString();
+	}
+
+	protected String getPrimaryKeyDDL(ERTable table) {
+		StringBuilder ddl = new StringBuilder();
+
+		List<NormalColumn> primaryKeys = table.getPrimaryKeys();
+
+		if (primaryKeys.size() != 0) {
+			ddl.append(",\r\n");
+			ddl.append("\t");
+			if (!Check.isEmpty(table.getPrimaryKeyName())) {
+				ddl.append("CONSTRAINT ");
+				ddl.append(table.getPrimaryKeyName());
+				ddl.append(" ");
+			}
+			ddl.append("PRIMARY KEY (");
+
+			boolean first = true;
+			for (NormalColumn primaryKey : primaryKeys) {
+				if (!first) {
+					ddl.append(", ");
+				}
+				ddl.append(filter(primaryKey.getPhysicalName()));
+				ddl.append(this.getPrimaryKeyLength(table, primaryKey));
+				first = false;
+			}
+
+			ddl.append(")");
+		}
+
+		return ddl.toString();
+	}
+
+	protected String getPrimaryKeyLength(ERTable table, NormalColumn primaryKey) {
+		return "";
 	}
 
 	protected String getTableSettingDDL(ERTable table) {
@@ -883,8 +896,8 @@ public abstract class DDLCreator {
 		}
 
 		ddl.append("CREATE TRIGGER ");
-		ddl.append(filter(this.getNameWithSchema(trigger.getSchema(), trigger
-				.getName())));
+		ddl.append(filter(this.getNameWithSchema(trigger.getSchema(),
+				trigger.getName())));
 		ddl.append(" ");
 		ddl.append(filter(trigger.getSql()));
 
@@ -908,8 +921,8 @@ public abstract class DDLCreator {
 
 		ddl.append("CREATE ");
 		ddl.append("SEQUENCE ");
-		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
-				.getName())));
+		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(),
+				sequence.getName())));
 		if (sequence.getIncrement() != null) {
 			ddl.append(" INCREMENT ");
 			ddl.append(sequence.getIncrement());
@@ -1028,8 +1041,8 @@ public abstract class DDLCreator {
 		ddl.append("DROP ");
 		ddl.append("SEQUENCE ");
 		ddl.append(this.getIfExistsOption());
-		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
-				.getName())));
+		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(),
+				sequence.getName())));
 		if (this.semicolon) {
 			ddl.append(";");
 		}
@@ -1101,12 +1114,12 @@ public abstract class DDLCreator {
 		}
 
 		if (ddlTarget.commentReplaceLineFeed) {
-			comment = comment.replaceAll("\r\n", Format
-					.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\r", Format
-					.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\n", Format
-					.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\r\n",
+					Format.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\r",
+					Format.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\n",
+					Format.null2blank(ddlTarget.commentReplaceString));
 		}
 
 		return comment;

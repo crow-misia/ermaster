@@ -62,22 +62,22 @@ public class TableDialog extends AbstractDialog {
 				this, tabFolder, SWT.NONE, this.copyData);
 		this.tabWrapperList.add(attributeTabWrapper);
 
-		this.tabWrapperList.add(new DescriptionTabWrapper(tabFolder, SWT.NONE,
-				this.copyData));
+		this.tabWrapperList.add(new DescriptionTabWrapper(this, tabFolder,
+				SWT.NONE, this.copyData));
 
 		final ComplexUniqueKeyTabWrapper complexUniqueKeyTabWrapper = new ComplexUniqueKeyTabWrapper(
-				tabFolder, SWT.NONE, this.copyData);
+				this, tabFolder, SWT.NONE, this.copyData);
 		this.tabWrapperList.add(complexUniqueKeyTabWrapper);
 
-		this.tabWrapperList.add(new ConstraintTabWrapper(this, tabFolder, SWT.NONE,
-				this.copyData));
+		this.tabWrapperList.add(new ConstraintTabWrapper(this, tabFolder,
+				SWT.NONE, this.copyData));
 
-		final IndexTabWrapper indexTabWrapper = new IndexTabWrapper(tabFolder,
-				SWT.NONE, this.copyData);
+		final IndexTabWrapper indexTabWrapper = new IndexTabWrapper(this,
+				tabFolder, SWT.NONE, this.copyData);
 		this.tabWrapperList.add(indexTabWrapper);
 
-		this.tabWrapperList.add(new AdvancedTabWrapper(tabFolder, SWT.NONE,
-				this.copyData));
+		this.tabWrapperList.add(new AdvancedTabWrapper(this, tabFolder,
+				SWT.NONE, this.copyData));
 
 		this.tabFolder.addSelectionListener(new SelectionListener() {
 

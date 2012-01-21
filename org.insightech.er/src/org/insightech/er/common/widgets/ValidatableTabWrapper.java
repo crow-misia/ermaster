@@ -4,14 +4,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.insightech.er.ResourceString;
+import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 
 public abstract class ValidatableTabWrapper extends Composite {
 
 	protected TabItem tabItem;
 
-	public ValidatableTabWrapper(TabFolder parent, int style, String title) {
+	protected AbstractDialog dialog;
+
+	public ValidatableTabWrapper(AbstractDialog dialog, TabFolder parent,
+			int style, String title) {
 		super(parent, style);
+
+		this.dialog = dialog;
 
 		this.tabItem = new TabItem(parent, style);
 		this.tabItem.setText(ResourceString.getResourceString(title));
@@ -39,6 +45,6 @@ public abstract class ValidatableTabWrapper extends Composite {
 	}
 
 	abstract public void perfomeOK();
-	
+
 	abstract public void setInitFocus();
 }

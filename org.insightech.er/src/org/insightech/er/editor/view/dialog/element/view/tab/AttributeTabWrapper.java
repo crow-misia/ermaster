@@ -59,7 +59,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 	public AttributeTabWrapper(ViewDialog viewDialog, TabFolder parent,
 			int style, View copyData) {
-		super(parent, style, "label.table.attribute");
+		super(viewDialog, parent, style, "label.table.attribute");
 
 		this.copyData = copyData;
 		this.viewDialog = viewDialog;

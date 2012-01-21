@@ -41,16 +41,28 @@ public class PrintERDiagramOperation extends PrintGraphicalViewerOperation {
 				trim.height + trim.y, trim.width + trim.x);
 
 		Insets userPreferred = new Insets(
-				(pageSetting.getTopMargin() * printerDPI.x) / 72, (pageSetting
-						.getLeftMargin() * printerDPI.x) / 72, (pageSetting
-						.getBottomMargin() * printerDPI.x) / 72, (pageSetting
-						.getRightMargin() * printerDPI.x) / 72);
+				(pageSetting.getTopMargin() * printerDPI.x) / 72,
+				(pageSetting.getLeftMargin() * printerDPI.x) / 72,
+				(pageSetting.getBottomMargin() * printerDPI.x) / 72,
+				(pageSetting.getRightMargin() * printerDPI.x) / 72);
 
 		Rectangle paperBounds = new Rectangle(this.getPrinter().getBounds());
-		Rectangle printRegion = paperBounds.getShrinked(notAvailable);
-		printRegion.intersect(paperBounds.getShrinked(userPreferred));
+		Rectangle printRegion = shrink(paperBounds, notAvailable);
+		printRegion.intersect(shrink(paperBounds, userPreferred));
 		printRegion.translate(trim.x, trim.y);
+		
 		return printRegion;
+	}
+
+	private Rectangle shrink(Rectangle bounds, Insets insets) {
+		Rectangle shrinked = bounds.getCopy();
+
+		shrinked.x += insets.left;
+		shrinked.y += insets.top;
+		shrinked.width -= insets.getWidth();
+		shrinked.height -= insets.getHeight();
+
+		return shrinked;
 	}
 
 	/**

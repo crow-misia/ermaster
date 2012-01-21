@@ -422,8 +422,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			autoIncrementColumnName = this.getAutoIncrementColumnName(con, this
 					.getTableNameWithSchema(schema, tableName));
 		} catch (SQLException e) {
-			// ƒe[ƒuƒ‹î•ñ‚ªæ“¾‚Å‚«‚È‚¢ê‡i‘¼‚Ìƒ†[ƒU‚ÌŠ—L•¨‚È‚Ç‚Ìê‡jA
-			// ‚±‚Ìƒe[ƒuƒ‹‚Íg—p‚µ‚È‚¢B
+			// ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ñ‚ªæ“¾ï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½ê‡ï¿½iï¿½ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½Uï¿½Ìï¿½ï¿½Lï¿½ï¿½ï¿½È‚Ç‚Ìê‡ï¿½jï¿½A
+			// ï¿½ï¿½ï¿½Ìƒeï¿½[ï¿½uï¿½ï¿½ï¿½Ígï¿½pï¿½ï¿½ï¿½È‚ï¿½ï¿½B
 			return null;
 		}
 
@@ -515,8 +515,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		ResultSet indexSet = null;
 
 		try {
-			// getIndexInfo ‚Í table w’è‚È‚µ‚Å‚Íæ“¾‚Å‚«‚È‚¢‚½‚ßA
-			// ƒe[ƒuƒ‹‚²‚Æ‚Éæ“¾‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
+			// getIndexInfo ï¿½ï¿½ table ï¿½wï¿½ï¿½È‚ï¿½ï¿½Å‚Íæ“¾ï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ßA
+			// ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½Æ‚Éæ“¾ï¿½ï¿½ï¿½ï¿½Kï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
 			indexSet = metaData.getIndexInfo(null, table
 					.getTableViewProperties(this.dbSetting.getDbsystem())
 					.getSchema(), table.getPhysicalName(), false, true);
@@ -629,6 +629,9 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 				primaryKeys.add(data);
 			}
+
+		} catch (SQLException e) {
+			// Microsoft Access does not support getPrimaryKeys
 
 		} finally {
 			this.close(primaryKeySet);
@@ -749,7 +752,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				this.dictionary.put(uniqueWord, word);
 			}
 
-			// TODO UNIQUE KEY ‚Ì§–ñ–¼‚ªæ“¾‚Å‚«‚Ä‚¢‚È‚¢
+			// TODO UNIQUE KEY ï¿½Ìï¿½ï¿½ñ–¼‚ï¿½ï¿½æ“¾ï¿½Å‚ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½
 
 			NormalColumn column = new NormalColumn(word, notNull, primaryKey,
 					uniqueKey, autoIncrement, defaultValue, constraint, null,
@@ -938,6 +941,9 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				this.createRelation(target, entry.getValue());
 			}
 
+		} catch (SQLException e) {
+			// microsoft access does not support getImportedKeys
+			
 		} finally {
 			this.close(foreignKeySet);
 		}
@@ -1025,12 +1031,13 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 		if (!referenceForPK) {
 			if (referenceMap.size() > 1) {
-				// TODO •¡‡ˆêˆÓƒL[‚Ì§–ñ–¼‚ğ•œŒ³‚Å‚«‚Ä‚¢‚È‚¢
+				// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÓƒLï¿½[ï¿½Ìï¿½ï¿½ñ–¼‚ğ•œŒï¿½ï¿½Å‚ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½
 				referencedComplexUniqueKey = new ComplexUniqueKey("");
 				for (NormalColumn column : referenceMap.keySet()) {
 					referencedComplexUniqueKey.addColumn(column);
 				}
-				// TODO ‚±‚±‚Å•¡‡ˆêˆÓƒL[‚ğ’Ç‰Á‚·‚é‚Ì‚Å‚Í‚È‚­Aindex ‚©‚çƒ†ƒj[ƒNƒL[‚ğì‚é‚Æ‚±‚ë‚Å‚â‚ê‚éH
+				// TODO ï¿½ï¿½ï¿½ï¿½ï¿½Å•ï¿½ï¿½ï¿½ï¿½ï¿½ÓƒLï¿½[ï¿½ï¿½Ç‰Bï¿½ï¿½ï¿½Ì‚Å‚Í‚È‚ï¿½ï¿½Aindex
+				// ï¿½ï¿½ï¿½çƒ†ï¿½jï¿½[ï¿½Nï¿½Lï¿½[ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½H
 				source.getComplexUniqueKeyList()
 						.add(referencedComplexUniqueKey);
 
@@ -1218,8 +1225,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				tableAlias = tableName.substring(asIndex + 1).trim();
 				tableName = tableName.substring(0, asIndex).trim();
 
-				// schema.tablename ‚Ìê‡Aschema ‚ğ–³‹‚µ‚Äl‚¦‚é
-				// TODO schema ‚ğl—¶‚µ‚Äl‚¦‚½•û‚ª‚æ‚¢
+				// schema.tablename ï¿½Ìê‡ï¿½Aschema ï¿½ğ–³ï¿½ï¿½ï¿½ï¿½Älï¿½ï¿½ï¿½ï¿½
+				// TODO schema ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½Älï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¢
 				int dotIndex = tableName.indexOf(".");
 				if (dotIndex != -1) {
 					tableName = tableName.substring(dotIndex + 1);
@@ -1273,7 +1280,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				String aliasTableName = columnName.substring(0, dotIndex);
 				columnName = columnName.substring(dotIndex + 1);
 
-				// schema.tablename.columnname ‚Ìê‡
+				// schema.tablename.columnname ï¿½Ìê‡
 				dotIndex = columnName.indexOf(".");
 				if (dotIndex != -1) {
 					aliasTableName = columnName.substring(0, dotIndex);
@@ -1404,7 +1411,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 	protected Tablespace importTablespace(String tablespaceName)
 			throws SQLException {
-		// TODO ƒe[ƒuƒ‹ƒXƒy[ƒX‚ÌƒCƒ“ƒ|[ƒg
+		// TODO ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½Xï¿½yï¿½[ï¿½Xï¿½ÌƒCï¿½ï¿½ï¿½|ï¿½[ï¿½g
 		return null;
 	}
 

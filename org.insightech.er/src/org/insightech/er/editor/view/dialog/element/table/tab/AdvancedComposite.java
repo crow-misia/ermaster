@@ -5,8 +5,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.insightech.er.common.dialog.AbstractDialog;
+import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.editor.model.ERDiagram;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.properties.TableProperties;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
 
@@ -18,18 +21,25 @@ public abstract class AdvancedComposite extends Composite {
 
 	protected TableProperties tableProperties;
 
-	private ERDiagram diagram;
+	protected ERDiagram diagram;
+
+	protected AbstractDialog dialog;
+
+	protected ERTable table;
 
 	public AdvancedComposite(Composite parent) {
 		super(parent, SWT.NONE);
 	}
 
-	public final void initialize(TableProperties tableProperties,
-			ERDiagram diagram) {
+	public final void initialize(AbstractDialog dialog,
+			TableProperties tableProperties, ERDiagram diagram, ERTable table) {
+		this.dialog = dialog;
 		this.tableProperties = tableProperties;
 		this.diagram = diagram;
-
+		this.table = table;
+		
 		this.initComposite();
+		this.addListener();
 		this.setData();
 	}
 
@@ -45,6 +55,9 @@ public abstract class AdvancedComposite extends Composite {
 				"label.schema", 1, 120, false);
 
 		this.initTablespaceCombo();
+	}
+
+	protected void addListener() {
 	}
 
 	private void initTablespaceCombo() {
@@ -70,13 +83,13 @@ public abstract class AdvancedComposite extends Composite {
 		}
 	}
 
-	public boolean validate() {
+	public void validate() throws InputException {
 		if (this.tableSpaceCombo != null) {
 			int tablespaceIndex = this.tableSpaceCombo.getSelectionIndex();
 			if (tablespaceIndex > 0) {
 				Tablespace tablespace = this.diagram.getDiagramContents()
-						.getTablespaceSet().getTablespaceList().get(
-								tablespaceIndex - 1);
+						.getTablespaceSet().getTablespaceList()
+						.get(tablespaceIndex - 1);
 				this.tableProperties.setTableSpace(tablespace);
 
 			} else {
@@ -87,8 +100,6 @@ public abstract class AdvancedComposite extends Composite {
 		if (this.schemaText != null) {
 			this.tableProperties.setSchema(this.schemaText.getText());
 		}
-
-		return true;
 	}
 
 	public void setInitFocus() {

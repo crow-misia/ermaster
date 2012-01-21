@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.dialog.element.table.tab;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Text;
+import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
@@ -15,8 +16,9 @@ public class DescriptionTabWrapper extends ValidatableTabWrapper {
 
 	private Text descriptionText;
 
-	public DescriptionTabWrapper(TabFolder parent, int style, ERTable copyData) {
-		super(parent, style, "label.table.description");
+	public DescriptionTabWrapper(AbstractDialog dialog, TabFolder parent,
+			int style, ERTable copyData) {
+		super(dialog, parent, style, "label.table.description");
 
 		this.copyData = copyData;
 

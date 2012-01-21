@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 import org.insightech.er.ResourceString;
+import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
@@ -48,8 +49,9 @@ public class IndexTabWrapper extends ValidatableTabWrapper {
 
 	private Button deleteButton;
 
-	public IndexTabWrapper(TabFolder parent, int style, ERTable copyData) {
-		super(parent, style, "label.index");
+	public IndexTabWrapper(AbstractDialog dialog, TabFolder parent, int style,
+			ERTable copyData) {
+		super(dialog, parent, style, "label.index");
 
 		this.copyData = copyData;
 
