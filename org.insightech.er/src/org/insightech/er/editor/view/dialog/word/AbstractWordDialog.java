@@ -124,7 +124,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 			this.arrayCheck = CompositeFactory.createCheckbox(this, composite,
 					"label.column.array");
-			this.arrayCheck.setEnabled(false);
+			this.arrayCheck.setEnabled(true);
 			this.arrayDimensionText = CompositeFactory.createNumText(this,
 					composite, "label.column.array.dimension", 15);
 			this.arrayDimensionText.setEnabled(false);
