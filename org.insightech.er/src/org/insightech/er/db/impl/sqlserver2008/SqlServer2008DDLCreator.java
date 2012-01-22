@@ -1,14 +1,13 @@
-package org.insightech.er.db.impl.access;
+package org.insightech.er.db.impl.sqlserver2008;
 
+import org.insightech.er.db.impl.sqlserver.SqlServerDDLCreator;
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
-import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
 
-public class AccessDDLCreator extends DDLCreator {
+public class SqlServer2008DDLCreator extends SqlServerDDLCreator {
 
-	public AccessDDLCreator(ERDiagram diagram, boolean semicolon) {
+	public SqlServer2008DDLCreator(ERDiagram diagram, boolean semicolon) {
 		super(diagram, semicolon);
 	}
 
@@ -29,10 +28,4 @@ public class AccessDDLCreator extends DDLCreator {
 
 		return ddl.toString();
 	}
-
-	@Override
-	protected String getDDL(Tablespace object) {
-		return null;
-	}
-
 }

@@ -12,6 +12,7 @@ import org.insightech.er.db.impl.oracle.OracleDBManager;
 import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.db.impl.sqlite.SQLiteDBManager;
 import org.insightech.er.db.impl.sqlserver.SqlServerDBManager;
+import org.insightech.er.db.impl.sqlserver2008.SqlServer2008DBManager;
 import org.insightech.er.db.impl.standard_sql.StandardSQLDBManager;
 import org.insightech.er.editor.model.ERDiagram;
 
@@ -31,6 +32,7 @@ public class DBManagerFactory {
 		new PostgresDBManager();
 		new SQLiteDBManager();
 		new SqlServerDBManager();
+		new SqlServer2008DBManager();
 	}
 
 	static void addDB(DBManager manager) {
@@ -45,9 +47,10 @@ public class DBManagerFactory {
 			}
 		}
 
-		throw new IllegalArgumentException(ResourceString
-				.getResourceString("error.database.is.not.supported")
-				+ database);
+		throw new IllegalArgumentException(
+				ResourceString
+						.getResourceString("error.database.is.not.supported")
+						+ database);
 	}
 
 	public static DBManager getDBManager(ERDiagram diagram) {
