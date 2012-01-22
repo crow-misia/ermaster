@@ -12,6 +12,7 @@ import org.insightech.er.db.impl.oracle.OracleEclipseDBManager;
 import org.insightech.er.db.impl.postgres.PostgresEclipseDBManager;
 import org.insightech.er.db.impl.sqlite.SQLiteEclipseDBManager;
 import org.insightech.er.db.impl.sqlserver.SqlServerEclipseDBManager;
+import org.insightech.er.db.impl.sqlserver2008.SqlServer2008EclipseDBManager;
 import org.insightech.er.db.impl.standard_sql.StandardSQLEclipseDBManager;
 import org.insightech.er.editor.model.ERDiagram;
 
@@ -29,6 +30,7 @@ public class EclipseDBManagerFactory {
 		new PostgresEclipseDBManager();
 		new SQLiteEclipseDBManager();
 		new SqlServerEclipseDBManager();
+		new SqlServer2008EclipseDBManager();
 	}
 
 	static void addDB(EclipseDBManager manager) {
@@ -42,9 +44,10 @@ public class EclipseDBManagerFactory {
 			}
 		}
 
-		throw new IllegalArgumentException(ResourceString
-				.getResourceString("error.database.is.not.supported")
-				+ database);
+		throw new IllegalArgumentException(
+				ResourceString
+						.getResourceString("error.database.is.not.supported")
+						+ database);
 	}
 
 	public static EclipseDBManager getEclipseDBManager(ERDiagram diagram) {
