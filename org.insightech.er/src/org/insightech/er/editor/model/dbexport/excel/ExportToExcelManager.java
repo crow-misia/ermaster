@@ -152,7 +152,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		HSSFWorkbook workbook = this.loadTemplateWorkbook(this.template,
 				this.diagram);
 
-		// �t�@�C����J���Ă����ۂ̏������݃G���[�𑁂��o�����߂Ɉ�U�����ŏ������ݏ�����s��
+		// check whether the file is not opened by another process.
 		POIUtils.writeExcelFile(excelFile, workbook);
 
 		int count = this.countSheetFromTemplate(workbook, this.diagram);

@@ -279,9 +279,9 @@ public class RepeatTestDataSettingDialog extends AbstractDialog {
 		dataDef.setType(this.typeCombo.getText());
 		dataDef.setRepeatNum(this.getIntValue(this.repeatNum));
 		dataDef.setTemplate(this.template.getText());
-		dataDef.setFrom(this.getIntValue(this.from));
-		dataDef.setTo(this.getIntValue(this.to));
-		dataDef.setIncrement(this.getIntValue(this.increment));
+		dataDef.setFrom(this.from.getText());
+		dataDef.setTo(this.to.getText());
+		dataDef.setIncrement(this.increment.getText());
 
 		String str = this.selects.getText();
 		BufferedReader reader = new BufferedReader(new StringReader(str));

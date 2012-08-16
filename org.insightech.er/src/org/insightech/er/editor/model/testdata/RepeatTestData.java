@@ -62,23 +62,23 @@ public class RepeatTestData implements Cloneable {
 		SqlType sqlType = normalColumn.getType();
 		Integer length = normalColumn.getTypeData().getLength();
 
-		dataDef.setFrom(1);
-		dataDef.setIncrement(1);
+		dataDef.setFrom("1");
+		dataDef.setIncrement("1");
 		dataDef.setRepeatNum(1);
 
 		if (length != null) {
 			if (length == 1) {
-				dataDef.setTo(9);
+				dataDef.setTo("9");
 
 			} else if (length == 2) {
-				dataDef.setTo(99);
+				dataDef.setTo("99");
 
 			} else {
-				dataDef.setTo(100);
+				dataDef.setTo("100");
 			}
 
 		} else {
-			dataDef.setTo(100);
+			dataDef.setTo("100");
 		}
 
 		if (normalColumn.isForeignKey()) {
