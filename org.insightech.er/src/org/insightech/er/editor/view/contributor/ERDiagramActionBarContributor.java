@@ -36,9 +36,10 @@ import org.insightech.er.editor.view.action.dbexport.ExportToDBAction.ExportToDB
 import org.insightech.er.editor.view.action.edit.ChangeBackgroundColorAction;
 import org.insightech.er.editor.view.action.edit.ChangeBackgroundColorAction.ChangeBackgroundColorRetargetAction;
 import org.insightech.er.editor.view.action.line.HorizontalLineAction;
-import org.insightech.er.editor.view.action.line.VerticalLineAction;
 import org.insightech.er.editor.view.action.line.HorizontalLineAction.HorizontalLineRetargetAction;
+import org.insightech.er.editor.view.action.line.VerticalLineAction;
 import org.insightech.er.editor.view.action.line.VerticalLineAction.VerticalLineRetargetAction;
+import org.insightech.er.editor.view.action.option.notation.GridSnapAction.GridSnapRetargetAction;
 import org.insightech.er.editor.view.action.option.notation.LockEditAction;
 import org.insightech.er.editor.view.action.option.notation.TooltipAction;
 import org.insightech.er.editor.view.action.zoom.ZoomAdjustAction;
@@ -83,12 +84,13 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 		this.addRetargetAction(new ZoomAdjustRetargetAction());
 
 		RetargetAction gridAction = new RetargetAction(
-				GEFActionConstants.TOGGLE_GRID_VISIBILITY, ResourceString
-						.getResourceString("action.title.grid"),
+				GEFActionConstants.TOGGLE_GRID_VISIBILITY,
+				ResourceString.getResourceString("action.title.grid"),
 				IAction.AS_CHECK_BOX);
 		gridAction.setImageDescriptor(Activator
 				.getImageDescriptor(ImageKey.GRID));
-		this.addRetargetAction(gridAction);
+
+		this.addRetargetAction(new GridSnapRetargetAction());
 
 		RetargetAction tooltipAction = new RetargetAction(TooltipAction.ID,
 				ResourceString.getResourceString("action.title.tooltip"),
@@ -180,8 +182,8 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 
 		toolBarManager.add(new Separator());
 
-		toolBarManager.add(this
-				.getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
+//		toolBarManager.add(this
+//				.getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		toolBarManager.add(this.getAction(TooltipAction.ID));
 		toolBarManager.add(this.getAction(LockEditAction.ID));
 
@@ -261,8 +263,7 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 											.getSystemFont().getFontData()[0];
 									fontNameContributionItem.setText(fonData
 											.getName());
-									viewableModel
-											.setFontName(fonData.getName());
+									viewableModel.setFontName(fonData.getName());
 								}
 
 								if (fontSize > 0) {
@@ -270,9 +271,8 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 											.valueOf(fontSize));
 
 								} else {
-									fontSizeContributionItem
-											.setText(String
-													.valueOf(ViewableModel.DEFAULT_FONT_SIZE));
+									fontSizeContributionItem.setText(String
+											.valueOf(ViewableModel.DEFAULT_FONT_SIZE));
 									viewableModel.setFontSize(fontSize);
 								}
 							}

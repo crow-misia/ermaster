@@ -25,11 +25,11 @@ public class RepeatTestDataDef implements Cloneable {
 
 	private String template;
 
-	private int from;
+	private String from;
 
-	private int to;
+	private String to;
 
-	private int increment;
+	private String increment;
 
 	private String[] selects;
 
@@ -63,27 +63,27 @@ public class RepeatTestDataDef implements Cloneable {
 		this.template = template;
 	}
 
-	public int getFrom() {
+	public String getFrom() {
 		return from;
 	}
 
-	public void setFrom(int from) {
+	public void setFrom(String from) {
 		this.from = from;
 	}
 
-	public int getTo() {
+	public String getTo() {
 		return to;
 	}
 
-	public void setTo(int to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
 
-	public int getIncrement() {
+	public String getIncrement() {
 		return increment;
 	}
 
-	public void setIncrement(int increment) {
+	public void setIncrement(String increment) {
 		this.increment = increment;
 	}
 

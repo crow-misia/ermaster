@@ -872,9 +872,9 @@ public class XMLLoader {
 			dataDef.setType(this.getStringValue(dataDefElement, "type"));
 			dataDef.setRepeatNum(this.getIntValue(dataDefElement, "repeat_num"));
 			dataDef.setTemplate(this.getStringValue(dataDefElement, "template"));
-			dataDef.setFrom(this.getIntValue(dataDefElement, "from"));
-			dataDef.setTo(this.getIntValue(dataDefElement, "to"));
-			dataDef.setIncrement(this.getIntValue(dataDefElement, "increment"));
+			dataDef.setFrom(this.getStringValue(dataDefElement, "from"));
+			dataDef.setTo(this.getStringValue(dataDefElement, "to"));
+			dataDef.setIncrement(this.getStringValue(dataDefElement, "increment"));
 			dataDef.setSelects(this.getTagValues(dataDefElement, "select"));
 
 			Element modifiedValuesElement = this.getElement(dataDefElement,

@@ -65,21 +65,52 @@ public abstract class TestDataCreator {
 		int repeatNum = repeatTestDataDef.getRepeatNum();
 
 		if (RepeatTestDataDef.TYPE_FORMAT.equals(type)) {
-			int from = repeatTestDataDef.getFrom();
-			int increment = repeatTestDataDef.getIncrement();
-			int to = repeatTestDataDef.getTo();
+			String fromStr = repeatTestDataDef.getFrom();
+			String incrementStr = repeatTestDataDef.getIncrement();
+			String toStr = repeatTestDataDef.getTo();
+
+			int fromDecimalPlaces = 0;
+			if (fromStr.indexOf(".") != -1) {
+				fromDecimalPlaces = fromStr.length() - fromStr.indexOf(".") - 1;
+			}
+			int incrementDecimalPlaces = 0;
+			if (incrementStr.indexOf(".") != -1) {
+				incrementDecimalPlaces = incrementStr.length()
+						- incrementStr.indexOf(".") - 1;
+			}
+			int toDecimalPlaces = 0;
+			if (toStr.indexOf(".") != -1) {
+				toDecimalPlaces = toStr.length() - toStr.indexOf(".") - 1;
+			}
+
+			int decimalPlaces = Math.max(Math.max(fromDecimalPlaces,
+					incrementDecimalPlaces), toDecimalPlaces);
+			int from = (int) (Double.parseDouble(fromStr) * Math.pow(10,
+					decimalPlaces));
+			int increment = (int) (Double.parseDouble(incrementStr) * Math.pow(
+					10, decimalPlaces));
+			int to = (int) (Double.parseDouble(toStr) * Math.pow(10,
+					decimalPlaces));
 
 			String template = repeatTestDataDef.getTemplate();
 
-			int no = from;
+			int num = from;
 
 			if (repeatNum != 0 && to - from + 1 != 0) {
-				no = from
+				num = from
 						+ (((count / repeatNum) * increment) % (to - from + 1));
-
 			}
 
-			String value = template.replaceAll("%", String.valueOf(no));
+			String value = null;
+
+			if (decimalPlaces == 0) {
+				value = template.replaceAll("%", String.valueOf(num));
+
+			} else {
+				value = template.replaceAll("%", String.valueOf(num
+						/ Math.pow(10, decimalPlaces)));
+			}
+
 			if (column.getType() != null && column.getType().isTimestamp()) {
 				SimpleDateFormat format1 = new SimpleDateFormat(
 						"yyyy-MM-dd HH:mm:ss.SSS");
