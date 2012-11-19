@@ -1,5 +1,6 @@
 package org.insightech.er;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Map;
@@ -12,16 +13,16 @@ public class ResourceString {
 	private static ResourceBundle resource = ResourceBundle
 			.getBundle("org.insightech.er.ERDiagram");;
 
-	/**
-	 * ERDiagram.properties の指定されたキーに対応する値を返します
-	 * 
-	 * @param key
-	 *            ERDiagram.properties で定義されたキー
-	 * @return ERDiagram.properties の指定されたキーに対応する値
-	 */
 	public static String getResourceString(String key) {
+		return getResourceString(key, null);
+	}
+	
+	public static String getResourceString(String key, String[] args) {
 		try {
-			return resource.getString(key);
+			String string = resource.getString(key);
+			string = MessageFormat.format(string, args);
+			
+			return string;
 		} catch (MissingResourceException e) {
 			return key;
 		}
