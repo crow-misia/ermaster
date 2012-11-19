@@ -42,12 +42,16 @@ public class ImportDBSettingDialog extends AbstractDBSettingDialog {
 		} catch (InputException e) {
 			throw e;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			Activator.log(e);
 			Throwable cause = e.getCause();
 
 			if (cause instanceof UnknownHostException) {
 				throw new InputException("error.server.not.found");
+
+			} else if (e instanceof UnsupportedClassVersionError) {
+				throw new InputException("error.jdbc.class.version",
+						new String[] { System.getProperty("java.version") });
 			}
 
 			Activator.showMessageDialog(e.getMessage());
