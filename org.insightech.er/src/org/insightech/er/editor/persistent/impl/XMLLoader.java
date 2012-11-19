@@ -191,8 +191,11 @@ public class XMLLoader {
 
 		private void reduce(Set<NormalColumn> foreignKeyColumnSet,
 				NormalColumn foreignKeyColumn) {
+			
+			
 			String[] referencedColumnIds = this.columnReferencedColumnMap
 					.get(foreignKeyColumn);
+
 			String[] relationIds = this.columnRelationMap.get(foreignKeyColumn);
 
 			List<NormalColumn> referencedColumnList = new ArrayList<NormalColumn>();
@@ -206,7 +209,7 @@ public class XMLLoader {
 								.get(referencedColumnId);
 						referencedColumnList.add(referencedColumn);
 
-						if (foreignKeyColumnSet.contains(referencedColumn)) {
+						if (foreignKeyColumnSet.contains(referencedColumn) && foreignKeyColumn != referencedColumn) {
 							reduce(foreignKeyColumnSet, referencedColumn);
 						}
 
@@ -235,6 +238,7 @@ public class XMLLoader {
 					}
 				}
 			}
+			
 			foreignKeyColumnSet.remove(foreignKeyColumn);
 		}
 	}
