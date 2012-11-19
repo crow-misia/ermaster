@@ -224,7 +224,7 @@ public abstract class AbstractDialog extends Dialog {
 
 			} catch (InputException e) {
 				this.setMessage(ResourceString
-						.getResourceString(e.getMessage()));
+						.getResourceString(e.getMessage(), e.getArgs()));
 				return;
 
 			} catch (Exception e) {
