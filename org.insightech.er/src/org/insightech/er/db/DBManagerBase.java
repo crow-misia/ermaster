@@ -10,8 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -26,10 +28,14 @@ public abstract class DBManagerBase implements DBManager {
 
 	private Set<String> reservedWords = new HashSet<String>();
 
+	private Map<String, ClassLoader> loaderMap;
+
 	public DBManagerBase() {
 		DBManagerFactory.addDB(this);
 
 		this.reservedWords = this.getReservedWords();
+
+		this.loaderMap = new HashMap<String, ClassLoader>();
 	}
 
 	public String getURL(String serverName, String dbName, int port) {
@@ -56,8 +62,20 @@ public abstract class DBManagerBase implements DBManager {
 			} else {
 				path = PreferenceInitializer.getJDBCDriverPath(this.getId(),
 						driverClassName);
-				ClassLoader loader = this.getClassLoader(path);
-				clazz = loader.loadClass(driverClassName);
+
+				// Cash the class loader to map.
+				// Because if I use the another loader with the driver using native library(.dll)
+				// next error occur.
+				// 
+				// java.lang.UnsatisfiedLinkError: Native Library xxx.dll already loaded in another classloader
+				//
+				ClassLoader loader = this.loaderMap.get(path);
+				if (loader == null) {
+					loader = this.getClassLoader(path);
+					this.loaderMap.put(path, loader);
+				}
+				
+				clazz = loader.loadClass(driverClassName);				
 			}
 
 		} catch (Exception e) {
