@@ -36,7 +36,7 @@ public class SQLiteDDLCreator extends DDLCreator {
 
 	@Override
 	protected String getPrimaryKeyDDL(ERTable table) {
-		StringBuilder ddl = new StringBuilder();
+		StringBuilder ddl = new StringBuilder(super.getPrimaryKeyDDL(table));
 
 		for (Relation relation : table.getIncomingRelations()) {
 			ddl.append(",\r\n\tFOREIGN KEY (");
