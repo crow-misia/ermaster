@@ -219,15 +219,17 @@ public class PostgresDDLCreator extends DDLCreator {
 		boolean first = true;
 
 		for (NormalColumn column : table.getNormalColumns()) {
-			if (SqlType.SQL_TYPE_ID_SERIAL.equals(column.getType().getId())
-					|| SqlType.SQL_TYPE_ID_BIG_SERIAL.equals(column.getType()
-							.getId())) {
-				String autoIncrementSettingDDL = getAutoIncrementSettingDDL(
-						table, column);
-				if (!Check.isEmpty(autoIncrementSettingDDL)) {
-					ddl.append(autoIncrementSettingDDL);
-					ddl.append("\r\n");
-					first = false;
+			if (column.getType() != null) {
+				if (SqlType.SQL_TYPE_ID_SERIAL.equals(column.getType().getId())
+						|| SqlType.SQL_TYPE_ID_BIG_SERIAL.equals(column
+								.getType().getId())) {
+					String autoIncrementSettingDDL = getAutoIncrementSettingDDL(
+							table, column);
+					if (!Check.isEmpty(autoIncrementSettingDDL)) {
+						ddl.append(autoIncrementSettingDDL);
+						ddl.append("\r\n");
+						first = false;
+					}
 				}
 			}
 		}
