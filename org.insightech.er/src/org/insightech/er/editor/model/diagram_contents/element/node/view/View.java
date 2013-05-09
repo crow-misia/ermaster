@@ -74,15 +74,15 @@ public class View extends TableView implements ObjectModel, ColumnHolder {
 	}
 
 	/**
-	 * ƒrƒ…[‚ğ•¡»‚µ‚Ü‚·B<br>
-	 * •¡»‚·‚éî•ñ‚ÍA–¼‘O‚ÆSQL‚ÆƒvƒƒpƒeƒB‚Ì‚İB<br>
-	 * —ñ‚Í•¡»‘ÎÛŠO‚Æ‚µAŒã‚©‚ç•¡»‚·‚éB<br>
+	 * ãƒ“ãƒ¥ãƒ¼ã‚’è¤‡è£½ã—ã¾ã™ã€‚<br>
+	 * è¤‡è£½ã™ã‚‹æƒ…å ±ã¯ã€åå‰ã¨SQLã¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®ã¿ã€‚<br>
+	 * åˆ—ã¯è¤‡è£½å¯¾è±¡å¤–ã¨ã—ã€å¾Œã‹ã‚‰è¤‡è£½ã™ã‚‹ã€‚<br>
 	 */
 	@Override
 	public View clone() {
 		View clone = (View) super.clone();
 
-		// ƒvƒƒpƒeƒB‚ğ•¡»‚µ‚Ü‚·B
+		// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’è¤‡è£½ã—ã¾ã™ã€‚
 		TableViewProperties cloneViewProperties = this.tableViewProperties
 				.clone();
 		clone.tableViewProperties = cloneViewProperties;

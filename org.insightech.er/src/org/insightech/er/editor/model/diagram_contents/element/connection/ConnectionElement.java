@@ -20,7 +20,7 @@ public abstract class ConnectionElement extends AbstractModel {
 
 	protected NodeElement target;
 
-	// ƒxƒ“ƒhEƒ|ƒCƒ“ƒg‚ÌˆÊ’uî•ñ‚ÌƒŠƒXƒg
+	// ãƒ™ãƒ³ãƒ‰ãƒ»ãƒã‚¤ãƒ³ãƒˆã®ä½ç½®æƒ…å ±ã®ãƒªã‚¹ãƒˆ
 	private List<Bendpoint> bendPoints = new ArrayList<Bendpoint>();
 
 	public NodeElement getSource() {
@@ -107,7 +107,7 @@ public abstract class ConnectionElement extends AbstractModel {
 	}
 
 	/**
-	 * Ú‘±‚ğ•¡»‚µ‚Ü‚·B Ú‘±Œ³‚ÆÚ‘±æ‚Ìƒm[ƒh‚Í‚Æ‚à‚ÉA•¡»Œ³‚Æ“¯‚¶‚Å‚·B
+	 * æ¥ç¶šã‚’è¤‡è£½ã—ã¾ã™ã€‚ æ¥ç¶šå…ƒã¨æ¥ç¶šå…ˆã®ãƒãƒ¼ãƒ‰ã¯ã¨ã‚‚ã«ã€è¤‡è£½å…ƒã¨åŒã˜ã§ã™ã€‚
 	 */
 	@Override
 	public ConnectionElement clone() {

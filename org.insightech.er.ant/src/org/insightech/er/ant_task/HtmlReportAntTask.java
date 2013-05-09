@@ -33,7 +33,7 @@ public class HtmlReportAntTask extends ERMasterAntTaskBase {
 
 		this.log("Output to : " + this.outputDir);
 
-		// 出力ディレクトリの削除
+		// 蜃ｺ蜉帙ョ繧｣繝ｬ繧ｯ繝医Μ縺ｮ蜑企勁
 		File dir = new File(outputDir);
 		FileUtils.deleteDirectory(dir);
 

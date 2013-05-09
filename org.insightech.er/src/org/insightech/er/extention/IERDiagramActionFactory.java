@@ -4,12 +4,12 @@ import org.eclipse.jface.action.IAction;
 import org.insightech.er.editor.ERDiagramEditor;
 
 /**
- * 拡張ポイントから読み込むクラスのインターフェイス
+ * 諡｡蠑ｵ繝昴う繝ｳ繝医°繧芽ｪｭ縺ｿ霎ｼ繧繧ｯ繝ｩ繧ｹ縺ｮ繧､繝ｳ繧ｿ繝ｼ繝輔ぉ繧､繧ｹ
  */
 public interface IERDiagramActionFactory {
 
 	/**
-	 * IAction を実装したクラスを返す
+	 * IAction 繧貞ｮ溯｣�縺励◆繧ｯ繝ｩ繧ｹ繧定ｿ斐☆
 	 * 
 	 * @param editor
 	 * @return IAction

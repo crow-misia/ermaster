@@ -315,8 +315,8 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 					});
 		}
 
-		// Primary Key ‚ÍAAUTO_INCREMENT ‚Ìƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Ì§ŒäƒŠƒXƒi[‚ÌŒÄo‚µŒã‚É
-		// validate ‚ÌƒŠƒXƒi[‚ğŒÄ‚Ñ‚½‚¢‚Ì‚Å‚±‚±‚ÅƒŠƒXƒi[‚Ì’Ç‰Á‚ğ
+		// Primary Key ã¯ã€AUTO_INCREMENT ã®ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®åˆ¶å¾¡ãƒªã‚¹ãƒŠãƒ¼ã®å‘¼å‡ºã—å¾Œã«
+		// validate ã®ãƒªã‚¹ãƒŠãƒ¼ã‚’å‘¼ã³ãŸã„ã®ã§ã“ã“ã§ãƒªã‚¹ãƒŠãƒ¼ã®è¿½åŠ ã‚’
 		// ListenerAppender.addCheckBoxListener(this.primaryKeyCheck, this);
 
 		final NormalColumn autoIncrementColumn = this.erTable

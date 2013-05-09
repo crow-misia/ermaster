@@ -63,7 +63,7 @@ public class ERDiagramTransferDragSourceListener extends
 	private Object getTargetModel(DragSourceEvent event) {
 		List editParts = dragSourceViewer.getSelectedEditParts();
 		if (editParts.size() != 1) {
-			// ƒhƒ‰ƒbƒOƒAƒ“ƒhƒhƒƒbƒv‚Í‘I‘ğ‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ª‚P‚Â‚Ì‚Æ‚«‚Ì‚İ‰Â”\‚Æ‚·‚é
+			// ãƒ‰ãƒ©ãƒƒã‚°ã‚¢ãƒ³ãƒ‰ãƒ‰ãƒ­ãƒƒãƒ—ã¯é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒï¼‘ã¤ã®ã¨ãã®ã¿å¯èƒ½ã¨ã™ã‚‹
 			return null;
 		}
 

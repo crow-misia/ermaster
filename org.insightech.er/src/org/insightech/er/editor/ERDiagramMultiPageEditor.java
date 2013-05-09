@@ -55,9 +55,9 @@ import org.insightech.er.util.Format;
 
 /**
  * <pre>
- * ƒGƒfƒBƒ^[ƒNƒ‰ƒX
- * ƒJƒeƒSƒŠ[–ˆ‚Éƒ^ƒuiƒy[ƒWj‚ğì¬‚·‚é
- * Šeƒ^ƒuiƒy[ƒWj‚É‚ÍA{@link ERDiagramEditor} ‚ğŠ„‚è“–‚Ä‚é
+ * ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼ã‚¯ãƒ©ã‚¹
+ * ã‚«ãƒ†ã‚´ãƒªãƒ¼æ¯ã«ã‚¿ãƒ–ï¼ˆãƒšãƒ¼ã‚¸ï¼‰ã‚’ä½œæˆã™ã‚‹
+ * å„ã‚¿ãƒ–ï¼ˆãƒšãƒ¼ã‚¸ï¼‰ã«ã¯ã€{@link ERDiagramEditor} ã‚’å‰²ã‚Šå½“ã¦ã‚‹
  * </pre>
  */
 public class ERDiagramMultiPageEditor extends MultiPageEditorPart {

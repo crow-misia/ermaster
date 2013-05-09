@@ -163,7 +163,7 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 			this.setToolTipText(ResourceString
 					.getResourceString("action.title.change.background.color"));
 
-			// サブメニューの生成
+			// 繧ｵ繝悶Γ繝九Η繝ｼ縺ｮ逕滓��
 			setMenuCreator(new IMenuCreator() {
 				public Menu getMenu(Control parent) {
 					Menu menu = new Menu(parent);

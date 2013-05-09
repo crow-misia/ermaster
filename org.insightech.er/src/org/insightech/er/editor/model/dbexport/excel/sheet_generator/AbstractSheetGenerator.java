@@ -31,58 +31,58 @@ public abstract class AbstractSheetGenerator {
 
 	protected static final String KEYWORD_PHYSICAL_TABLE_NAME = "$PTN";
 
-	// ˜_—ƒJƒ‰ƒ€–¼
+	// è«–ç†ã‚«ãƒ©ãƒ å
 	protected static final String KEYWORD_LOGICAL_COLUMN_NAME = "$LCN";
 
-	// •¨—ƒJƒ‰ƒ€–¼
+	// ç‰©ç†ã‚«ãƒ©ãƒ å
 	protected static final String KEYWORD_PHYSICAL_COLUMN_NAME = "$PCN";
 
-	// Œ^
+	// å‹
 	protected static final String KEYWORD_TYPE = "$TYP";
 
-	// ’·‚³
+	// é•·ã•
 	protected static final String KEYWORD_LENGTH = "$LEN";
 
-	// ¬”
+	// å°æ•°
 	protected static final String KEYWORD_DECIMAL = "$DEC";
 
-	// åƒL[
+	// ä¸»ã‚­ãƒ¼
 	protected static final String KEYWORD_PRIMARY_KEY = "$PK";
 
 	// Not Null
 	protected static final String KEYWORD_NOT_NULL = "$NN";
 
-	// ƒ†ƒj[ƒNƒL[
+	// ãƒ¦ãƒ‹ãƒ¼ã‚¯ã‚­ãƒ¼
 	protected static final String KEYWORD_UNIQUE_KEY = "$UK";
 
-	// ŠO•”ƒL[
+	// å¤–éƒ¨ã‚­ãƒ¼
 	protected static final String KEYWORD_FOREIGN_KEY = "$FK";
 
-	// QÆƒe[ƒuƒ‹.ƒL[i˜_—–¼j
+	// å‚ç…§ãƒ†ãƒ¼ãƒ–ãƒ«.ã‚­ãƒ¼ï¼ˆè«–ç†åï¼‰
 	protected static final String KEYWORD_LOGICAL_REFERENCE_TABLE_KEY = "$LRFTC";
 
-	// QÆƒe[ƒuƒ‹.ƒL[i•¨—–¼j
+	// å‚ç…§ãƒ†ãƒ¼ãƒ–ãƒ«.ã‚­ãƒ¼ï¼ˆç‰©ç†åï¼‰
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_TABLE_KEY = "$PRFTC";
 
-	// QÆƒe[ƒuƒ‹i˜_—–¼j
+	// å‚ç…§ãƒ†ãƒ¼ãƒ–ãƒ«ï¼ˆè«–ç†åï¼‰
 	protected static final String KEYWORD_LOGICAL_REFERENCE_TABLE = "$LRFT";
 
-	// QÆƒe[ƒuƒ‹i•¨—–¼j
+	// å‚ç…§ãƒ†ãƒ¼ãƒ–ãƒ«ï¼ˆç‰©ç†åï¼‰
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_TABLE = "$PRFT";
 
-	// QÆƒL[i˜_—–¼j
+	// å‚ç…§ã‚­ãƒ¼ï¼ˆè«–ç†åï¼‰
 	protected static final String KEYWORD_LOGICAL_REFERENCE_KEY = "$LRFC";
 
-	// QÆƒL[i•¨—–¼j
+	// å‚ç…§ã‚­ãƒ¼ï¼ˆç‰©ç†åï¼‰
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_KEY = "$PRFC";
 
-	// ƒI[ƒgƒCƒ“ƒNƒŠƒƒ“ƒg
+	// ã‚ªãƒ¼ãƒˆã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 	protected static final String KEYWORD_AUTO_INCREMENT = "$INC";
 
-	// à–¾
+	// èª¬æ˜
 	protected static final String KEYWORD_DESCRIPTION = "$CDSC";
 
-	// ƒfƒtƒHƒ‹ƒg’l
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
 	protected static final String KEYWORD_DEFAULT_VALUE = "$DEF";
 
 	protected static final String KEYWORD_LOGICAL_FOREIGN_KEY_NAME = "$LFKN";

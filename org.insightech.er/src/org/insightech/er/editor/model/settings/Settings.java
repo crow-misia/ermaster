@@ -244,7 +244,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	}
 
 	/**
-	 * translationSettings ‚ğæ“¾‚µ‚Ü‚·.
+	 * translationSettings ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return translationSettings
 	 */
@@ -253,7 +253,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	}
 
 	/**
-	 * environmentSetting ‚ğæ“¾‚µ‚Ü‚·.
+	 * environmentSetting ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return environmentSetting
 	 */

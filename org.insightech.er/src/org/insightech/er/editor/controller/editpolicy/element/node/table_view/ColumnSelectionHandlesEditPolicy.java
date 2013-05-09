@@ -258,7 +258,7 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 
 		CompoundCommand command = new CompoundCommand();
 
-		// 参照している外部キーの変更
+		// 蜿ら�ｧ縺励※縺�繧句､夜Κ繧ｭ繝ｼ縺ｮ螟画峩
 		List<Relation> relationList = oldColumn.getOutgoingRelationList();
 
 		if (!relationList.isEmpty()) {

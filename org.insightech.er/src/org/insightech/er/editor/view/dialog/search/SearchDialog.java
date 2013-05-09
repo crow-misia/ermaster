@@ -43,7 +43,7 @@ public class SearchDialog extends Dialog {
 
 	private Button allCheckBox;
 
-	// ’PŒê
+	// å˜èª
 	private Button wordCheckBox;
 
 	private Button physicalWordNameCheckBox;
@@ -58,7 +58,7 @@ public class SearchDialog extends Dialog {
 
 	private Button wordDescriptionCheckBox;
 
-	// ƒe[ƒuƒ‹
+	// ãƒ†ãƒ¼ãƒ–ãƒ«
 	private Button tableCheckBox;
 
 	private Button physicalTableNameCheckBox;
@@ -81,7 +81,7 @@ public class SearchDialog extends Dialog {
 
 	private Button columnGroupNameCheckBox;
 
-	// ƒOƒ‹[ƒv
+	// ã‚°ãƒ«ãƒ¼ãƒ—
 	private Button groupCheckBox;
 
 	private Button groupNameCheckBox;
@@ -100,7 +100,7 @@ public class SearchDialog extends Dialog {
 
 	private Button groupColumnDescriptionCheckBox;
 
-	// ‚»‚Ì‘¼
+	// ãã®ä»–
 	private Button modelPropertiesCheckBox;
 
 	private Button indexCheckBox;
@@ -109,12 +109,12 @@ public class SearchDialog extends Dialog {
 
 	private Button noteCheckBox;
 
-	// ŒŸõE’uŠ·Œê
+	// æ¤œç´¢ãƒ»ç½®æ›èª
 	private Combo keywordCombo;
 
 	private Combo replaceCombo;
 
-	// ŒŸõŒ‹‰Ê
+	// æ¤œç´¢çµæœ
 	private Table resultTable;
 
 	private GraphicalViewer viewer;

@@ -122,8 +122,8 @@ import org.insightech.er.editor.view.tool.ERDiagramPaletteRoot;
 import org.insightech.er.extention.ExtensionLoader;
 
 /**
- * TODO ON UPDATEAON DELETE ‚Ìƒvƒ‹ƒ_ƒEƒ“‚ğİ’è‚Å‚«‚é‚à‚Ì‚¾‚¯‚É§ŒÀ‚·‚é<br>
- * TODO ƒfƒtƒHƒ‹ƒg’l‚ÉŒ^‚Ì§ŒÀ‚ğ“K—p‚·‚é<br>
+ * TODO ON UPDATEã€ON DELETE ã®ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³ã‚’è¨­å®šã§ãã‚‹ã‚‚ã®ã ã‘ã«åˆ¶é™ã™ã‚‹<br>
+ * TODO ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã«å‹ã®åˆ¶é™ã‚’é©ç”¨ã™ã‚‹<br>
  * 
  */
 public class ERDiagramEditor extends GraphicalEditorWithPalette {
@@ -151,7 +151,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 	private boolean isDirty;
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^.
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿.
 	 * 
 	 * @param diagram
 	 *            ERDiagram
@@ -197,9 +197,9 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 
 	/**
 	 * <pre>
-	 * •Û‘¶‚Ìˆ—
-	 * ƒtƒ@ƒCƒ‹‚Ì•Û‘¶©‘Ì‚ÍA{@link ERDiagramMultiPageEditor} ‚Ås‚¤‚½‚ß
-	 * Šeƒy[ƒW‚Ì {@link ERDiagramEditor} ‚Å‚ÍAƒRƒ}ƒ“ƒhƒXƒ^ƒbƒN‚ÌƒNƒŠƒA‚Ì‚İ‚ğs‚¤
+	 * ä¿å­˜æ™‚ã®å‡¦ç†
+	 * ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜è‡ªä½“ã¯ã€{@link ERDiagramMultiPageEditor} ã§è¡Œã†ãŸã‚
+	 * å„ãƒšãƒ¼ã‚¸ã® {@link ERDiagramEditor} ã§ã¯ã€ã‚³ãƒãƒ³ãƒ‰ã‚¹ã‚¿ãƒƒã‚¯ã®ã‚¯ãƒªã‚¢ã®ã¿ã‚’è¡Œã†
 	 * </pre>
 	 */
 	@Override
@@ -287,7 +287,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 
 	/**
 	 * <pre>
-	 * ‚±‚Ìƒy[ƒW‚ª‘I‘ğ‚³‚ê‚½Û‚Ìˆ—
+	 * ã“ã®ãƒšãƒ¼ã‚¸ãŒé¸æŠã•ã‚ŒãŸéš›ã®å‡¦ç†
 	 * </pre>
 	 */
 	public void changeCategory() {

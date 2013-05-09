@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * CSVo—ÍƒNƒ‰ƒX
+ * CSVå‡ºåŠ›ã‚¯ãƒ©ã‚¹
  * 
  * @author generator
  * @version $Id: CsvWriter.java,v 1.1 2008/08/17 10:49:17 h_nakajima Exp $
@@ -25,10 +25,10 @@ public class CsvWriter {
 	private String delimiter;
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 * 
 	 * @param writer
-	 *            o—Íæ
+	 *            å‡ºåŠ›å…ˆ
 	 */
 	public CsvWriter(PrintWriter writer) {
 		this.writer = writer;
@@ -37,21 +37,21 @@ public class CsvWriter {
 	}
 
 	/**
-	 * Date Œ^‚Ìƒf[ƒ^‚ğo—Í‚·‚éÛ‚ÌƒtƒH[ƒ}ƒbƒgŒ`®‚ğw’è‚µ‚Ü‚·
+	 * Date å‹ã®ãƒ‡ãƒ¼ã‚¿ã‚’å‡ºåŠ›ã™ã‚‹éš›ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆå½¢å¼ã‚’æŒ‡å®šã—ã¾ã™
 	 * 
 	 * @param format
-	 *            ƒtƒH[ƒ}ƒbƒgŒ`®
+	 *            ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆå½¢å¼
 	 */
 	public void setDateFormat(String format) {
 		this.dateFormat = new SimpleDateFormat(format);
 	}
 
 	/**
-	 * CSV‚Ì‚½‚ß‚É•¶š—ñ‚ğƒGƒXƒP[ƒv‚µ‚Ü‚·B
+	 * CSVã®ãŸã‚ã«æ–‡å­—åˆ—ã‚’ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã—ã¾ã™ã€‚
 	 * 
 	 * @param str
-	 *            ƒGƒXƒP[ƒv‘O‚Ì•¶š—ñ
-	 * @return ƒGƒXƒP[ƒv‚³‚ê‚½•¶š—ñ
+	 *            ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—å‰ã®æ–‡å­—åˆ—
+	 * @return ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã•ã‚ŒãŸæ–‡å­—åˆ—
 	 */
 	public static String escape(String str) {
 		if (str == null) {
@@ -61,10 +61,10 @@ public class CsvWriter {
 	}
 
 	/**
-	 * ƒIƒuƒWƒFƒNƒg‚Ì•¶š—ñ•\Œ»‚ğo—Í‚µ‚Ü‚·
+	 * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ–‡å­—åˆ—è¡¨ç¾ã‚’å‡ºåŠ›ã—ã¾ã™
 	 * 
 	 * @param object
-	 *            ƒIƒuƒWƒFƒNƒg
+	 *            ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public void print(Object object) {
 		String value = null;
@@ -89,21 +89,21 @@ public class CsvWriter {
 	}
 
 	/**
-	 * ƒfƒŠƒ~ƒ^[‚ğo—Í‘ÎÛ‚ÉƒZƒbƒg‚µ‚Ü‚·
+	 * ãƒ‡ãƒªãƒŸã‚¿ãƒ¼ã‚’å‡ºåŠ›å¯¾è±¡ã«ã‚»ãƒƒãƒˆã—ã¾ã™
 	 */
 	private void setDelimiter() {
 		this.delimiter = DELIMITER;
 	}
 
 	/**
-	 * ƒfƒŠƒ~ƒ^[‚ğo—Í‘ÎÛ‚©‚çƒŠƒZƒbƒg‚µ‚Ü‚·
+	 * ãƒ‡ãƒªãƒŸã‚¿ãƒ¼ã‚’å‡ºåŠ›å¯¾è±¡ã‹ã‚‰ãƒªã‚»ãƒƒãƒˆã—ã¾ã™
 	 */
 	private void resetDelimiter() {
 		this.delimiter = "";
 	}
 
 	/**
-	 * ‰üsƒR[ƒh‚ğo—Í‚µ‚Ü‚·
+	 * æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã‚’å‡ºåŠ›ã—ã¾ã™
 	 */
 	public void crln() {
 		writer.print("\r\n");
@@ -112,7 +112,7 @@ public class CsvWriter {
 	}
 
 	/**
-	 * o—Íæ‚ğ•Â‚¶‚Ü‚·
+	 * å‡ºåŠ›å…ˆã‚’é–‰ã˜ã¾ã™
 	 */
 	public void close() {
 		this.writer.close();

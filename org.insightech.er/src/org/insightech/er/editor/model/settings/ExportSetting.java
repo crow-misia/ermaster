@@ -58,7 +58,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * excelOutput ‚ğæ“¾‚µ‚Ü‚·.
+	 * excelOutput ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return excelOutput
 	 */
@@ -67,7 +67,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * excelOutput ‚ğİ’è‚µ‚Ü‚·.
+	 * excelOutput ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param excelOutput
 	 *            excelOutput
@@ -77,7 +77,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * imageOutput ‚ğæ“¾‚µ‚Ü‚·.
+	 * imageOutput ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return imageOutput
 	 */
@@ -86,7 +86,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * imageOutput ‚ğİ’è‚µ‚Ü‚·.
+	 * imageOutput ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param imageOutput
 	 *            imageOutput
@@ -96,7 +96,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * excelTemplate ‚ğæ“¾‚µ‚Ü‚·.
+	 * excelTemplate ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return excelTemplate
 	 */
@@ -105,7 +105,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * excelTemplate ‚ğİ’è‚µ‚Ü‚·.
+	 * excelTemplate ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param excelTemplate
 	 *            excelTemplate
@@ -115,7 +115,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * useLogicalNameAsSheet ‚ğæ“¾‚µ‚Ü‚·.
+	 * useLogicalNameAsSheet ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return useLogicalNameAsSheet
 	 */
@@ -124,7 +124,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * useLogicalNameAsSheet ‚ğİ’è‚µ‚Ü‚·.
+	 * useLogicalNameAsSheet ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param useLogicalNameAsSheet
 	 *            useLogicalNameAsSheet
@@ -134,7 +134,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * putERDiagramOnExcel ‚ğæ“¾‚µ‚Ü‚·.
+	 * putERDiagramOnExcel ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return putERDiagramOnExcel
 	 */
@@ -143,7 +143,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * putERDiagramOnExcel ‚ğİ’è‚µ‚Ü‚·.
+	 * putERDiagramOnExcel ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param putERDiagramOnExcel
 	 *            putERDiagramOnExcel
@@ -161,7 +161,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * categoryNameToExport‚ğæ“¾‚µ‚Ü‚·B
+	 * categoryNameToExportã‚’å–å¾—ã—ã¾ã™ã€‚
 	 * 
 	 * @return categoryNameToExport
 	 */
@@ -170,7 +170,7 @@ public class ExportSetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * categoryNameToExport‚ğİ’è‚µ‚Ü‚·B
+	 * categoryNameToExportã‚’è¨­å®šã—ã¾ã™ã€‚
 	 * 
 	 * @param categoryNameToExport
 	 *            categoryNameToExport

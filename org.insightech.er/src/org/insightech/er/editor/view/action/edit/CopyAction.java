@@ -18,7 +18,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.edit.CopyManager;
 
 /**
- * ƒRƒs[ƒAƒNƒVƒ‡ƒ“
+ * ã‚³ãƒ”ãƒ¼ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
  * 
  * @author nakajima
  * 
@@ -26,7 +26,7 @@ import org.insightech.er.editor.model.edit.CopyManager;
 public class CopyAction extends SelectionAction {
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 * 
 	 * @param part
 	 */
@@ -73,18 +73,18 @@ public class CopyAction extends SelectionAction {
 	}
 
 	/**
-	 * ƒRƒs[‚ğÀs‚µ‚Ü‚·B <br>
-	 * ‚±‚Ì“_‚ÌƒRƒs[‘ÎÛ‚ğƒRƒs[—Ìˆæ‚É•¡»‚µ‚Ä‚¨‚«‚Ü‚·<br>
+	 * ã‚³ãƒ”ãƒ¼ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚ <br>
+	 * ã“ã®æ™‚ç‚¹ã®ã‚³ãƒ”ãƒ¼å¯¾è±¡ã‚’ã‚³ãƒ”ãƒ¼é ˜åŸŸã«è¤‡è£½ã—ã¦ãŠãã¾ã™<br>
 	 */
 	private void copy() {
 		if (!calculateEnabled()) {
 			return;
 		}
 
-		// ƒRƒs[î•ñ‚ğƒNƒŠƒA‚µ‚Ü‚·B
+		// ã‚³ãƒ”ãƒ¼æƒ…å ±ã‚’ã‚¯ãƒªã‚¢ã—ã¾ã™ã€‚
 		CopyManager.clear();
 
-		// ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒm[ƒh‚ÌEditPart‚ğæ“¾‚µ‚Ü‚·
+		// é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã®EditPartã‚’å–å¾—ã—ã¾ã™
 		NodeSet nodeElementList = new NodeSet();
 
 		for (Object object : this.getSelectedObjects()) {

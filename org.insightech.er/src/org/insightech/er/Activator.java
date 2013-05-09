@@ -210,32 +210,32 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * w’è‚³‚ê‚½ƒL[‚É‘Î‰‚·‚é {@link Image} ‚ğ•Ô‚µ‚Ü‚·
+	 * æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹ {@link Image} ã‚’è¿”ã—ã¾ã™
 	 * 
 	 * @param key
-	 *            {@link ImageKey} ‚Å’è‹`‚³‚ê‚½ƒL[
-	 * @return w’è‚³‚ê‚½ƒL[‚É‘Î‰‚·‚é {@link Image}
+	 *            {@link ImageKey} ã§å®šç¾©ã•ã‚ŒãŸã‚­ãƒ¼
+	 * @return æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹ {@link Image}
 	 */
 	public static Image getImage(String key) {
 		return getDefault().getImageRegistry().get(key);
 	}
 
 	/**
-	 * w’è‚³‚ê‚½ƒL[‚É‘Î‰‚·‚é {@link ImageDescriptor} ‚ğ•Ô‚µ‚Ü‚·
+	 * æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹ {@link ImageDescriptor} ã‚’è¿”ã—ã¾ã™
 	 * 
 	 * @param key
-	 *            {@link ImageKey} ‚Å’è‹`‚³‚ê‚½ƒL[
-	 * @return w’è‚³‚ê‚½ƒL[‚É‘Î‰‚·‚é {@link ImageDescriptor}
+	 *            {@link ImageKey} ã§å®šç¾©ã•ã‚ŒãŸã‚­ãƒ¼
+	 * @return æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹ {@link ImageDescriptor}
 	 */
 	public static ImageDescriptor getImageDescriptor(String key) {
 		return getDefault().getImageRegistry().getDescriptor(key);
 	}
 
 	/**
-	 * w’è‚³‚ê‚½—áŠO‚Ì—áŠOƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ü‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸä¾‹å¤–ã®ä¾‹å¤–ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	 * 
 	 * @param e
-	 *            —áŠO
+	 *            ä¾‹å¤–
 	 */
 	public static void showExceptionDialog(Throwable e) {
 		IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, e
@@ -250,10 +250,10 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * w’è‚³‚ê‚½ƒƒbƒZ[ƒW‚ÌƒGƒ‰[ƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ü‚·B
+	 * æŒ‡å®šã•ã‚ŒãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ã‚¨ãƒ©ãƒ¼ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	 * 
 	 * @param message
-	 *            ƒGƒ‰[ƒƒbƒZ[ƒW
+	 *            ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	 */
 	public static void showErrorDialog(String message) {
 		MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench()
@@ -265,10 +265,10 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * ƒƒbƒZ[ƒWƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ü‚·B
+	 * ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	 * 
 	 * @param message
-	 *            ƒƒbƒZ[ƒW
+	 *            ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	 */
 	public static void showMessageDialog(String message) {
 		MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench()
@@ -282,10 +282,10 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Šm”Fƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ü‚·B
+	 * ç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	 * 
 	 * @param message
-	 *            ƒƒbƒZ[ƒW
+	 *            ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	 */
 	public static boolean showConfirmDialog(String message) {
 		return showConfirmDialog(message, SWT.OK, SWT.CANCEL);
@@ -293,10 +293,10 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Šm”Fƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ü‚·B
+	 * ç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	 * 
 	 * @param message
-	 *            ƒƒbƒZ[ƒW
+	 *            ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	 */
 	public static boolean showConfirmDialog(String message, int ok, int cancel) {
 		MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench()
@@ -315,13 +315,13 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * •Û‘¶ƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ü‚·
+	 * ä¿å­˜ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™
 	 * 
 	 * @param filePath
-	 *            ƒfƒtƒHƒ‹ƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
+	 *            ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 	 * @param filterExtensions
-	 *            Šg’£q
-	 * @return •Û‘¶ƒ_ƒCƒAƒƒO‚Å‘I‘ğ‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ÌƒpƒX
+	 *            æ‹¡å¼µå­
+	 * @return ä¿å­˜ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹
 	 */
 	public static String showSaveDialog(String filePath,
 			String[] filterExtensions) {
@@ -347,11 +347,11 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * ƒfƒBƒŒƒNƒgƒŠ‘I‘ğƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ü‚·
+	 * ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªé¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™
 	 * 
 	 * @param filePath
-	 *            ƒfƒtƒHƒ‹ƒg‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-	 * @return ƒfƒBƒŒƒNƒgƒŠ‘I‘ğƒ_ƒCƒAƒƒO‚Å‘I‘ğ‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠ‚ÌƒpƒX
+	 *            ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	 * @return ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªé¸æŠãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§é¸æŠã•ã‚ŒãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒ‘ã‚¹
 	 */
 	public static String showDirectoryDialog(String filePath) {
 		String fileName = null;

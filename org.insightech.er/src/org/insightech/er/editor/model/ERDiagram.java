@@ -265,7 +265,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * dbSetting ‚ğæ“¾‚µ‚Ü‚·.
+	 * dbSetting ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return dbSetting
 	 */
@@ -274,7 +274,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * dbSetting ‚ğİ’è‚µ‚Ü‚·.
+	 * dbSetting ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param dbSetting
 	 *            dbSetting
@@ -284,7 +284,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * pageSetting ‚ğæ“¾‚µ‚Ü‚·.
+	 * pageSetting ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return pageSetting
 	 */
@@ -293,7 +293,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * pageSetting ‚ğİ’è‚µ‚Ü‚·.
+	 * pageSetting ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param pageSetting
 	 *            pageSetting
@@ -303,7 +303,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * editor ‚ğæ“¾‚µ‚Ü‚·.
+	 * editor ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return editor
 	 */
@@ -326,7 +326,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * disableSelectColumn ‚ğæ“¾‚µ‚Ü‚·.
+	 * disableSelectColumn ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return disableSelectColumn
 	 */
@@ -335,7 +335,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * disableSelectColumn ‚ğİ’è‚µ‚Ü‚·.
+	 * disableSelectColumn ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param disableSelectColumn
 	 *            disableSelectColumn

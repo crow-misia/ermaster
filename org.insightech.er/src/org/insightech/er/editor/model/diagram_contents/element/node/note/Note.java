@@ -7,7 +7,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.util.Format;
 
 /**
- * �m�[�g�̃��f��
+ * ノートのモデル
  * 
  * @author nakajima
  * 
@@ -21,7 +21,7 @@ public class Note extends NodeElement implements Comparable<Note> {
 	private String text;
 
 	/**
-	 * �m�[�g�̖{����ԋp���܂��B
+	 * ノートの本文を返却します。
 	 * 
 	 * @return
 	 */
@@ -30,7 +30,7 @@ public class Note extends NodeElement implements Comparable<Note> {
 	}
 
 	/**
-	 * �m�[�g�̖{����ݒ肵�܂��B
+	 * ノートの本文を設定します。
 	 * 
 	 * @param text
 	 */

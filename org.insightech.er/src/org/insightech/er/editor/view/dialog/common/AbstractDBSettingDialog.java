@@ -284,7 +284,7 @@ public abstract class AbstractDBSettingDialog extends AbstractDialog {
 	}
 
 	/**
-	 * dbSetting ‚ğæ“¾‚µ‚Ü‚·.
+	 * dbSetting ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return dbSetting
 	 */

@@ -22,7 +22,7 @@ public class ExportToJavaWithProgressManager extends ExportToJavaManager
 	}
 
 	/**
-	 * exception ‚ğæ“¾‚µ‚Ü‚·.
+	 * exception ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return exception
 	 */

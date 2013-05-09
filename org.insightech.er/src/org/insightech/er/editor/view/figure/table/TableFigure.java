@@ -135,7 +135,7 @@ public class TableFigure extends RoundedRectangle {
 	}
 
 	/**
-	 * columns ‚ğæ“¾‚µ‚Ü‚·.
+	 * columns ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return columns
 	 */

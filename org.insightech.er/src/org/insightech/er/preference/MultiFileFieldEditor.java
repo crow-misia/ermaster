@@ -84,7 +84,7 @@ public class MultiFileFieldEditor extends FileFieldEditor {
 	}
 
 	/**
-	 * multiple ��ݒ肵�܂�.
+	 * multiple を設定します.
 	 * 
 	 * @param multiple
 	 *            multiple

@@ -793,7 +793,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 	}
 
 	/**
-	 * diagramContents ‚ğæ“¾‚µ‚Ü‚·.
+	 * diagramContents ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return diagramContents
 	 */

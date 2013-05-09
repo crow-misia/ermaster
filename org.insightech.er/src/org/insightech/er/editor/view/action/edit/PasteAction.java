@@ -17,7 +17,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.edit.CopyManager;
 
 /**
- * “\‚è•t‚¯ƒAƒNƒVƒ‡ƒ“
+ * è²¼ã‚Šä»˜ã‘ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
  * 
  * @author nakajima
  * 
@@ -27,7 +27,7 @@ public class PasteAction extends SelectionAction {
 	private ERDiagramEditor editor;
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 * 
 	 * @param part
 	 */
@@ -70,24 +70,24 @@ public class PasteAction extends SelectionAction {
 	}
 
 	/**
-	 * “\‚è•t‚¯ƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B<br>
-	 * ƒRƒs[—Ìˆæ‚É•¡»‚³‚ê‚Ä‚¢‚éƒm[ƒh‚ğ‚³‚ç‚É•¡»‚µ‚Ä“\‚è•t‚¯‚Ü‚·<br>
+	 * è²¼ã‚Šä»˜ã‘ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚<br>
+	 * ã‚³ãƒ”ãƒ¼é ˜åŸŸã«è¤‡è£½ã•ã‚Œã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã‚’ã•ã‚‰ã«è¤‡è£½ã—ã¦è²¼ã‚Šä»˜ã‘ã¾ã™<br>
 	 * 
-	 * @return “\‚è•t‚¯ƒRƒ}ƒ“ƒh
+	 * @return è²¼ã‚Šä»˜ã‘ã‚³ãƒãƒ³ãƒ‰
 	 */
 	private Command createCommand() {
 
-		// “\‚è•t‚¯•s‰Â‚Ìê‡
+		// è²¼ã‚Šä»˜ã‘ä¸å¯ã®å ´åˆ
 		if (!calculateEnabled()) {
 			return null;
 		}
 
-		// “\‚è•t‚¯‘ÎÛ‚Ìƒm[ƒhˆê——
+		// è²¼ã‚Šä»˜ã‘å¯¾è±¡ã®ãƒãƒ¼ãƒ‰ä¸€è¦§
 		NodeSet pasteList = CopyManager.paste();
 
 		int numberOfCopy = CopyManager.getNumberOfCopy();
 
-		// “\‚è•t‚¯ƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+		// è²¼ã‚Šä»˜ã‘ã‚³ãƒãƒ³ãƒ‰ã‚’ä½œæˆã—ã¾ã™ã€‚
 		boolean first = true;
 		int x = 0;
 		int y = 0;

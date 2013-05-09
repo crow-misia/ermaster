@@ -301,7 +301,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	}
 
 	/**
-	 * allTranslations ‚ğæ“¾‚µ‚Ü‚·.
+	 * allTranslations ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return allTranslations
 	 */

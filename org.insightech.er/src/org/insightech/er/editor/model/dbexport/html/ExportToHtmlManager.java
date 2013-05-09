@@ -86,23 +86,23 @@ public class ExportToHtmlManager {
 	}
 
 	public void doProcess() throws IOException, InterruptedException {
-		// ŒÅ’èƒtƒ@ƒCƒ‹‚ÌƒRƒs[
+		// å›ºå®šãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
 		for (int i = 0; i < FIX_FILES.length; i++) {
 			this.copyOut(FIX_FILES[i], FIX_FILES[i]);
 		}
 
-		// ƒeƒ“ƒvƒŒ[ƒg‚©‚ç¶¬
+		// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‹ã‚‰ç”Ÿæˆ
 		String template = null;
 
-		// ƒCƒ[ƒW
+		// ã‚¤ãƒ¡ãƒ¼ã‚¸
 		String imageSrc = "image/er.png";
 
-		// ƒAƒCƒRƒ“
+		// ã‚¢ã‚¤ã‚³ãƒ³
 		for (String iconFile : ICON_FILES) {
 			this.copyOutResource("image/" + iconFile, iconFile);
 		}
 
-		// ƒgƒbƒvŠK‘w
+		// ãƒˆãƒƒãƒ—éšå±¤
 		String allclasses = overviewPageGenerator.generateAllClasses(diagram,
 				htmlReportPageGeneratorList);
 		this.writeOut("allclasses.html", allclasses);
@@ -115,7 +115,7 @@ public class ExportToHtmlManager {
 				imageSrc, tableLocationMap, htmlReportPageGeneratorList);
 		this.writeOut("overview-summary.html", overviewSummary);
 
-		// ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv–ˆ‚ÌŠK‘w
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—æ¯ã®éšå±¤
 		for (int i = 0; i < htmlReportPageGeneratorList.size(); i++) {
 
 			HtmlReportPageGenerator pageGenerator = (HtmlReportPageGenerator) htmlReportPageGeneratorList

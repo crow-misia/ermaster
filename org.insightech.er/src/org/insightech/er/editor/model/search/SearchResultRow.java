@@ -105,7 +105,7 @@ public class SearchResultRow {
 	}
 
 	/**
-	 * targetNode ‚ğæ“¾‚µ‚Ü‚·.
+	 * targetNode ã‚’å–å¾—ã—ã¾ã™.
 	 *
 	 * @return targetNode
 	 */

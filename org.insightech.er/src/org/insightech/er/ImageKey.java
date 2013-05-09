@@ -2,7 +2,7 @@ package org.insightech.er;
 
 /**
  * {@link Activator#getImage(String)},
- * {@link Activator#getImageDescriptor(String)} のキーとなる定数を定義したクラス
+ * {@link Activator#getImageDescriptor(String)} 縺ｮ繧ｭ繝ｼ縺ｨ縺ｪ繧句ｮ壽焚繧貞ｮ夂ｾｩ縺励◆繧ｯ繝ｩ繧ｹ
  */
 public interface ImageKey {
 

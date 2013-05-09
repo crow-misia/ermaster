@@ -99,8 +99,8 @@ public abstract class PreImportFromDBManager {
 
 						} catch (SQLException e) {
 							e.printStackTrace();
-							// �e�[�u����񂪎擾�ł��Ȃ��ꍇ�i���̃��[�U�̏��L���Ȃǂ̏ꍇ�j�A
-							// ���̃e�[�u���͎g�p���Ȃ��B
+							// テーブル情報が取得できない場合（他のユーザの所有物などの場合）、
+							// このテーブルは使用しない。
 							continue;
 						}
 					}
