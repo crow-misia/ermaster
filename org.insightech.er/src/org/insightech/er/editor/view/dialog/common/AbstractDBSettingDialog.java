@@ -225,7 +225,7 @@ public abstract class AbstractDBSettingDialog extends AbstractDialog {
 				}
 
 			} catch (NumberFormatException e) {
-				return "error.port.degit";
+				return "error.port.digit";
 			}
 		}
 

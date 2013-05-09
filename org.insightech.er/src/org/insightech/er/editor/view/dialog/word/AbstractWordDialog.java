@@ -360,7 +360,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 				}
 
 			} catch (NumberFormatException e) {
-				return "error.column.length.degit";
+				return "error.column.length.digit";
 			}
 		}
 
@@ -374,7 +374,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 				}
 
 			} catch (NumberFormatException e) {
-				return "error.column.decimal.degit";
+				return "error.column.decimal.digit";
 			}
 		}
 
@@ -389,7 +389,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 					}
 
 				} catch (NumberFormatException e) {
-					return "error.column.array.dimension.degit";
+					return "error.column.array.dimension.digit";
 				}
 
 			} else {

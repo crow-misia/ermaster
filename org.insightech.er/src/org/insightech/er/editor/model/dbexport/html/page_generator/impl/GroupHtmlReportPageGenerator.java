@@ -45,7 +45,7 @@ public class GroupHtmlReportPageGenerator extends
 		String attributeTable = this.generateAttributeTable(diagram,
 				normalColumnList);
 
-		List<TableView> usedTableList = columnGroup.getUsedTalbeList(diagram);
+		List<TableView> usedTableList = columnGroup.getUsedTableList(diagram);
 
 		String usedTableTable = this.generateUsedTableTable(usedTableList);
 

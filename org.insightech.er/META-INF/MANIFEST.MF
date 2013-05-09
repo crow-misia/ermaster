@@ -20,10 +20,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem;bundle-version="1.2.1"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- lib/commons-codec-1.3.jar,
  template/,
  icons/,
- lib/poi-3.7-20101029.jar
+ lib/commons-codec-1.6.jar,
+ lib/poi-3.9-20121203.jar
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-LazyStart: true
 Bundle-Vendor: Insightech.org

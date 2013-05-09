@@ -65,7 +65,7 @@ public class WordHtmlReportPageGenerator extends
 
 			} else {
 				ColumnGroup columnGroup = (ColumnGroup) columnHolder;
-				usedTableList.addAll(columnGroup.getUsedTalbeList(diagram));
+				usedTableList.addAll(columnGroup.getUsedTableList(diagram));
 			}
 		}
 

@@ -73,7 +73,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 				Integer.parseInt(text);
 
 			} catch (NumberFormatException e) {
-				return "error.sequence.increment.degit";
+				return "error.sequence.increment.digit";
 			}
 		}
 
@@ -85,7 +85,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 					Long.parseLong(text);
 
 				} catch (NumberFormatException e) {
-					return "error.sequence.minValue.degit";
+					return "error.sequence.minValue.digit";
 				}
 			}
 		}
@@ -98,7 +98,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 					new BigDecimal(text);
 
 				} catch (NumberFormatException e) {
-					return "error.sequence.maxValue.degit";
+					return "error.sequence.maxValue.digit";
 				}
 			}
 		}
@@ -110,7 +110,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 				Long.parseLong(text);
 
 			} catch (NumberFormatException e) {
-				return "error.sequence.start.degit";
+				return "error.sequence.start.digit";
 			}
 		}
 
@@ -122,7 +122,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 					Integer.parseInt(text);
 
 				} catch (NumberFormatException e) {
-					return "error.sequence.cache.degit";
+					return "error.sequence.cache.digit";
 				}
 			}
 		}

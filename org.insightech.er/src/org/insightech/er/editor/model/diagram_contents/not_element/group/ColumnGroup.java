@@ -55,7 +55,7 @@ public class ColumnGroup extends Column implements ObjectModel,
 		this.columns.remove(column);
 	}
 
-	public List<TableView> getUsedTalbeList(ERDiagram diagram) {
+	public List<TableView> getUsedTableList(ERDiagram diagram) {
 		List<TableView> usedTableList = new ArrayList<TableView>();
 
 		for (TableView table : diagram.getDiagramContents().getContents()

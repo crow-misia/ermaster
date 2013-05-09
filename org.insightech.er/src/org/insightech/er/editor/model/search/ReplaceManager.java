@@ -344,8 +344,8 @@ public class ReplaceManager {
 			return true;
 		}
 
-		for (int degitType : DEGIT_TYPES) {
-			if (type == degitType) {
+		for (int digitType : DEGIT_TYPES) {
+			if (type == digitType) {
 				try {
 					int len = Integer.parseInt(str);
 					if (len < 0) {

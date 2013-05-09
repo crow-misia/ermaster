@@ -358,7 +358,7 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 			}
 
 		} catch (NumberFormatException e) {
-			this.errorMessage = "error.record.num.degit";
+			this.errorMessage = "error.record.num.digit";
 			return;
 		}
 	}

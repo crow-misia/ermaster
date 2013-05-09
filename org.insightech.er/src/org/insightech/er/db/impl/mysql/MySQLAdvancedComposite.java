@@ -135,7 +135,7 @@ public class MySQLAdvancedComposite extends AdvancedComposite {
 				length = Integer.valueOf(str);
 			}
 		} catch (Exception e) {
-			throw new InputException("error.column.length.degit");
+			throw new InputException("error.column.length.digit");
 		}
 
 		((MySQLTableProperties) this.tableProperties)
