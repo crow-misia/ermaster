@@ -69,7 +69,7 @@ public class MySQLDBManager extends DBManagerBase {
 	}
 
 	public String[] getIndexTypeList(ERTable table) {
-		return new String[] { "BTREE", "HASH", };
+		return new String[] { "BTREE", "RTREE", "HASH", };
 	}
 
 	@Override
