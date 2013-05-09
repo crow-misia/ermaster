@@ -21,6 +21,7 @@ import org.insightech.er.db.impl.mysql.MySQLDBManager;
 import org.insightech.er.db.impl.mysql.MySQLTableProperties;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
 import org.insightech.er.db.impl.oracle.OracleDBManager;
+import org.insightech.er.db.impl.oracle.OracleTableProperties;
 import org.insightech.er.db.impl.oracle.tablespace.OracleTablespaceProperties;
 import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.db.impl.postgres.PostgresTableProperties;
@@ -1595,6 +1596,10 @@ public class XMLLoader {
 			this.loadTablePropertiesPostgres(
 					(PostgresTableProperties) tableProperties, element);
 
+		} else if (tableProperties instanceof OracleTableProperties) {
+			this.loadTablePropertiesOracle(
+					(OracleTableProperties) tableProperties, element);
+
 		}
 	}
 
@@ -1614,6 +1619,13 @@ public class XMLLoader {
 			PostgresTableProperties tableProperties, Element element) {
 		tableProperties.setWithoutOIDs(this.getBooleanValue(element,
 				"without_oids"));
+	}
+
+	private void loadTablePropertiesOracle(OracleTableProperties tableProperties,
+			Element element) {
+
+		tableProperties.setCharacterSet(this.getStringValue(element,
+				"character_set"));
 	}
 
 	private void loadViewProperties(ViewProperties viewProperties,

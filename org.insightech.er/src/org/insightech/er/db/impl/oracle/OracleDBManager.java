@@ -2,7 +2,9 @@ package org.insightech.er.db.impl.oracle;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.insightech.er.db.DBManagerBase;
 import org.insightech.er.db.impl.oracle.tablespace.OracleTablespaceProperties;
@@ -18,6 +20,9 @@ import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Ta
 
 public class OracleDBManager extends DBManagerBase {
 
+	private static final ResourceBundle CHARACTER_SET_RESOURCE = ResourceBundle
+			.getBundle("oracle_characterset");
+	
 	public static final String ID = "Oracle";
 
 	public String getId() {
@@ -128,5 +133,17 @@ public class OracleDBManager extends DBManagerBase {
 
 	public BigDecimal getSequenceMaxValue() {
 		return new BigDecimal("9999999999999999999999999999");
+	}
+
+	public static List<String> getCharacterSetList() {
+		final List<String> list = new ArrayList<String>();
+
+		final Enumeration<String> keys = CHARACTER_SET_RESOURCE.getKeys();
+
+		while (keys.hasMoreElements()) {
+			list.add(keys.nextElement());
+		}
+
+		return list;
 	}
 }

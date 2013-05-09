@@ -13,6 +13,7 @@ import java.util.Map;
 import org.insightech.er.db.impl.db2.tablespace.DB2TablespaceProperties;
 import org.insightech.er.db.impl.mysql.MySQLTableProperties;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
+import org.insightech.er.db.impl.oracle.OracleTableProperties;
 import org.insightech.er.db.impl.oracle.tablespace.OracleTablespaceProperties;
 import org.insightech.er.db.impl.postgres.PostgresTableProperties;
 import org.insightech.er.db.impl.postgres.tablespace.PostgresTablespaceProperties;
@@ -1605,6 +1606,10 @@ public class PersistentXmlImpl extends Persistent {
 		} else if (tableProperties instanceof PostgresTableProperties) {
 			xml.append(tab(this
 					.createXML((PostgresTableProperties) tableProperties)));
+
+		} else if (tableProperties instanceof OracleTableProperties) {
+			xml.append(tab(this
+					.createXML((OracleTableProperties) tableProperties)));
 		}
 
 		xml.append("</table_properties>\n");
@@ -1636,6 +1641,16 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("<without_oids>").append(tableProperties.isWithoutOIDs())
 				.append("</without_oids>\n");
+
+		return xml.toString();
+	}
+
+	private String createXML(OracleTableProperties tableProperties) {
+		StringBuilder xml = new StringBuilder();
+
+		xml.append("<character_set>")
+				.append(escape(tableProperties.getCharacterSet()))
+				.append("</character_set>\n");
 
 		return xml.toString();
 	}
