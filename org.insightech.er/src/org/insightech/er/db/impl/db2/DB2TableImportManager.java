@@ -25,7 +25,7 @@ public class DB2TableImportManager extends ImportFromDBManagerBase {
 		String type = columnData.type.toLowerCase();
 
 		if (type.equals("decimal")) {
-			if (columnData.size == 5 && columnData.decimalDegits == 0) {
+			if (columnData.size == 5 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
