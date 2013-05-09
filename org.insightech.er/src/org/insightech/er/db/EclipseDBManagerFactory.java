@@ -35,7 +35,7 @@ public class EclipseDBManagerFactory {
 		addDB(new SqlServer2008EclipseDBManager());
 	}
 
-	static void addDB(EclipseDBManager manager) {
+	private static void addDB(EclipseDBManager manager) {
 		DB_LIST.add(manager);
 	}
 

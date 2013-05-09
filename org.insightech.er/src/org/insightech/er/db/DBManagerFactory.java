@@ -37,7 +37,7 @@ public class DBManagerFactory {
 		addDB(new SqlServer2008DBManager());
 	}
 
-	static void addDB(DBManager manager) {
+	private static void addDB(DBManager manager) {
 		DB_LIST.add(manager);
 		DB_ID_LIST.add(manager.getId());
 	}

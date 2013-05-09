@@ -28,13 +28,11 @@ import org.insightech.er.preference.jdbc.JDBCPathDialog;
 public abstract class DBManagerBase implements DBManager {
 	protected static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-	private Set<String> reservedWords = new HashSet<String>();
+	private final Set<String> reservedWords;
 
-	private Map<String, ClassLoader> loaderMap;
+	private final Map<String, ClassLoader> loaderMap;
 
 	public DBManagerBase() {
-		DBManagerFactory.addDB(this);
-
 		this.reservedWords = this.getReservedWords();
 
 		this.loaderMap = new HashMap<String, ClassLoader>();
