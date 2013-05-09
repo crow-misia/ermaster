@@ -36,7 +36,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.index.
 import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
-public class IndexDialog extends AbstractDialog {
+public final class IndexDialog extends AbstractDialog {
 
 	private Text nameText;
 
@@ -124,20 +124,24 @@ public class IndexDialog extends AbstractDialog {
 				"label.table.name", 1, -1, SWT.READ_ONLY | SWT.BORDER, false);
 		this.nameText = CompositeFactory.createText(this, composite,
 				"label.index.name", false);
-		this.typeCombo = CompositeFactory.createReadOnlyCombo(this, composite,
-				"label.index.type");
 
-		this.initTypeCombo();
+		this.initTypeCombo(composite);
 
 		this.descriptionText = CompositeFactory.createTextArea(this, composite,
 				"label.description", -1, 100, 1, true);
 	}
 
-	private void initTypeCombo() {
+	private void initTypeCombo(Composite composite) {
 		final String[] indexTypeList = DBManagerFactory.getDBManager(
 				this.table.getDiagram()).getIndexTypeList(this.table);
 
-		this.typeCombo.add("");
+		if (indexTypeList == null || indexTypeList.length == 0) {
+			// インデックスタイプのリストが空の場合、サポートしていないと判断する
+			this.typeCombo = null;
+			return;
+		}
+		this.typeCombo = CompositeFactory.createReadOnlyCombo(this, composite,
+				"label.index.type");
 
 		for (final String indexType : indexTypeList) {
 			this.typeCombo.add(indexType);
@@ -316,10 +320,10 @@ public class IndexDialog extends AbstractDialog {
 			this.descriptionText.setText(Format.null2blank(this.targetIndex
 					.getDescription()));
 
-			if (!Check.isEmpty(this.targetIndex.getType())) {
+			if (this.typeCombo != null && !Check.isEmpty(this.targetIndex.getType())) {
 				boolean selected = false;
 
-				for (int i = 0; i < this.typeCombo.getItemCount(); i++) {
+				for (int i = 0, n = this.typeCombo.getItemCount(); i < n; i++) {
 					if (this.typeCombo.getItem(i).equals(
 							this.targetIndex.getType())) {
 						this.typeCombo.select(i);
@@ -549,16 +553,13 @@ public class IndexDialog extends AbstractDialog {
 		String text = nameText.getText();
 
 		this.resultIndex = new Index(table, text, !this.uniqueCheckBox
-				.getSelection(), this.typeCombo.getText(), null);
+				.getSelection(), this.typeCombo == null ? "" : this.typeCombo.getText(), null);
 		this.resultIndex.setDescription(this.descriptionText.getText().trim());
-
-		int i = 0;
 
 		for (NormalColumn selectedColumn : selectedColumns) {
 			Boolean desc = Boolean.valueOf(this.descCheckBoxMap.get(
 					selectedColumn).getSelection());
 			this.resultIndex.addColumn(selectedColumn, desc);
-			i++;
 		}
 
 		DBManager dbManager = DBManagerFactory.getDBManager(table.getDiagram());
