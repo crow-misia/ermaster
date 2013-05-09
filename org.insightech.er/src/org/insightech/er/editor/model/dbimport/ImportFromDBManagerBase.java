@@ -104,7 +104,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 		public int size;
 
-		public int decimalDegits;
+		public int decimalDigits;
 
 		public int nullable;
 
@@ -119,7 +119,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		@Override
 		public String toString() {
 			return "ColumnData [columnName=" + columnName + ", type=" + type
-					+ ", size=" + size + ", decimalDegits=" + decimalDegits
+					+ ", size=" + size + ", decimalDigits=" + decimalDigits
 					+ "]";
 		}
 
@@ -267,7 +267,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		columnData.columnName = columnSet.getString("COLUMN_NAME");
 		columnData.type = columnSet.getString("TYPE_NAME").toLowerCase();
 		columnData.size = columnSet.getInt("COLUMN_SIZE");
-		columnData.decimalDegits = columnSet.getInt("DECIMAL_DIGITS");
+		columnData.decimalDigits = columnSet.getInt("DECIMAL_DIGITS");
 		columnData.nullable = columnSet.getInt("NULLABLE");
 		columnData.defaultValue = columnSet.getString("COLUMN_DEF");
 
@@ -704,11 +704,11 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 			if (sqlType == null || LOG_SQL_TYPE) {
 				logger.info(columnName + ": " + type + ", " + size + ", "
-						+ columnData.decimalDegits);
+						+ columnData.decimalDigits);
 			}
 
-			int decimalDegits = columnData.decimalDegits;
-			Integer decimal = new Integer(decimalDegits);
+			int decimalDigits = columnData.decimalDigits;
+			Integer decimal = new Integer(decimalDigits);
 
 			boolean notNull = false;
 			if (columnData.nullable == DatabaseMetaData.columnNoNulls) {

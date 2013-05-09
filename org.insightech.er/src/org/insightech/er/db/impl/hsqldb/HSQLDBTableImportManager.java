@@ -25,20 +25,20 @@ public class HSQLDBTableImportManager extends ImportFromDBManagerBase {
 		String type = columnData.type.toLowerCase();
 
 		if (type.startsWith("decimal")) {
-			if (columnData.size == 128 && columnData.decimalDegits == 0) {
+			if (columnData.size == 128 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 
 			} else if (columnData.size == 646456993
-					&& columnData.decimalDegits == 0) {
+					&& columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
 		} else if (type.startsWith("numeric")) {
-			if (columnData.size == 128 && columnData.decimalDegits == 0) {
+			if (columnData.size == 128 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 
 			} else if (columnData.size == 646456993
-					&& columnData.decimalDegits == 0) {
+					&& columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
@@ -47,7 +47,7 @@ public class HSQLDBTableImportManager extends ImportFromDBManagerBase {
 				columnData.size = 0;
 
 			} else if (columnData.size == 646456993
-					&& columnData.decimalDegits == 0) {
+					&& columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 

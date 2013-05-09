@@ -22,12 +22,12 @@ public class SqlServerTableImportManager extends ImportFromDBManagerBase {
 		String type = columnData.type.toLowerCase();
 
 		if (type.startsWith("decimal")) {
-			if (columnData.size == 18 && columnData.decimalDegits == 0) {
+			if (columnData.size == 18 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
 		} else if (type.startsWith("numeric")) {
-			if (columnData.size == 18 && columnData.decimalDegits == 0) {
+			if (columnData.size == 18 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 

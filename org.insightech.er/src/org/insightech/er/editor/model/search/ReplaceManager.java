@@ -59,7 +59,7 @@ public class ReplaceManager {
 		}
 
 		checkAlphabet(type, replaceWord);
-		checkDegit(type, replaceWord);
+		checkDigit(type, replaceWord);
 
 		if (type == SearchResultRow.TYPE_RELATION_NAME) {
 			Relation relation = (Relation) object;
@@ -339,7 +339,7 @@ public class ReplaceManager {
 		return true;
 	}
 
-	private static boolean checkDegit(int type, String str) {
+	private static boolean checkDigit(int type, String str) {
 		if (str == null || str.equals("")) {
 			return true;
 		}

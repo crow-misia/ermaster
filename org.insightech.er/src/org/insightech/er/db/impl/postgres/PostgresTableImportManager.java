@@ -35,16 +35,16 @@ public class PostgresTableImportManager extends ImportFromDBManagerBase {
 		String type = columnData.type.toLowerCase();
 
 		if (type.startsWith("time")) {
-			if (columnData.decimalDegits == 6) {
+			if (columnData.decimalDigits == 6) {
 				columnData.size = 0;
 			} else {
-				columnData.size = columnData.decimalDegits;
+				columnData.size = columnData.decimalDigits;
 			}
 
-			columnData.decimalDegits = 0;
+			columnData.decimalDigits = 0;
 
 		} else if (type.equals("numeric")) {
-			if (columnData.size == 131089 && columnData.decimalDegits == 0) {
+			if (columnData.size == 131089 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
@@ -62,7 +62,7 @@ public class PostgresTableImportManager extends ImportFromDBManagerBase {
 					columnData);
 
 			if (restrictType != null && restrictType.indexOf("(") != -1) {
-				columnData.size = columnData.decimalDegits;
+				columnData.size = columnData.decimalDigits;
 
 			} else {
 				columnData.size = 0;
@@ -70,7 +70,7 @@ public class PostgresTableImportManager extends ImportFromDBManagerBase {
 			}
 
 			columnData.type = restrictType;
-			columnData.decimalDegits = 0;
+			columnData.decimalDigits = 0;
 		}
 	}
 

@@ -324,12 +324,12 @@ public class OracleTableImportManager extends ImportFromDBManagerBase {
 		String type = columnData.type.toLowerCase();
 
 		if (type.equals("number")) {
-			if (columnData.size == 22 && columnData.decimalDegits == 0) {
+			if (columnData.size == 22 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
 		} else if (type.equals("float")) {
-			if (columnData.size == 126 && columnData.decimalDegits == 0) {
+			if (columnData.size == 126 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
@@ -359,23 +359,23 @@ public class OracleTableImportManager extends ImportFromDBManagerBase {
 			} else if (dayToSecondMatcber.matches()) {
 				columnData.type = "interval day to second";
 
-				if (columnData.size == 2 && columnData.decimalDegits == 6) {
+				if (columnData.size == 2 && columnData.decimalDigits == 6) {
 					columnData.size = 0;
-					columnData.decimalDegits = 0;
+					columnData.decimalDigits = 0;
 				}
 
 			} else if (timestampMatcber.matches()) {
 				columnData.type = columnData.type.replaceAll("\\(.\\)", "");
 				columnData.size = 0;
 
-				if (columnData.decimalDegits == 6) {
+				if (columnData.decimalDigits == 6) {
 					columnData.size = 0;
 
 				} else {
-					columnData.size = columnData.decimalDegits;
+					columnData.size = columnData.decimalDigits;
 				}
 
-				columnData.decimalDegits = 0;
+				columnData.decimalDigits = 0;
 			}
 
 		}
