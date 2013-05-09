@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 import org.insightech.er.util.Format;
 
-public class JDBCDriverSetting implements Serializable,
+public final class JDBCDriverSetting implements Serializable,
 		Comparable<JDBCDriverSetting> {
 
 	private static final long serialVersionUID = -14161958891939683L;
 
-	private String db;
+	private final String db;
 
-	private String className;
+	private final String className;
 
-	private String path;
+	private final String path;
 
 	public JDBCDriverSetting(String db, String className, String path) {
 		this.db = db;
@@ -84,15 +84,15 @@ public class JDBCDriverSetting implements Serializable,
 			return compareTo;
 		}
 
-		s1 = Format.null2blank(this.path);
-		s2 = Format.null2blank(another.path);
-
-		compareTo = s1.compareTo(s2);
-		if (compareTo != 0) {
-			return compareTo;
-		}
-
 		return 0;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder s = new StringBuilder();
+		s.append("db=").append(db);
+		s.append(",className=").append(className);
+		s.append(",path=").append(path);
+		return s.toString();
+	}
 }

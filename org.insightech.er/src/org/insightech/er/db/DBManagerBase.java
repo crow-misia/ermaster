@@ -9,6 +9,7 @@ import java.sql.Driver;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,6 +55,7 @@ public abstract class DBManagerBase implements DBManager {
 		String path = null;
 		Class clazz = null;
 
+		do {
 		try {
 			if (driverClassName.equals("sun.jdbc.odbc.JdbcOdbcDriver")) {
 				return (Class<Driver>) Class
@@ -75,20 +77,20 @@ public abstract class DBManagerBase implements DBManager {
 					this.loaderMap.put(path, loader);
 				}
 				
-				clazz = loader.loadClass(driverClassName);				
+				clazz = loader.loadClass(driverClassName);
 			}
 
 		} catch (Exception e) {
 			JDBCPathDialog dialog = new JDBCPathDialog(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow().getShell(), this
 					.getId(), driverClassName, path,
-					new ArrayList<JDBCDriverSetting>(), false);
+					Collections.<JDBCDriverSetting>emptySet(), false);
 
 			if (dialog.open() == IDialogConstants.OK_ID) {
 				JDBCDriverSetting newDriverSetting = new JDBCDriverSetting(this
 						.getId(), dialog.getDriverClassName(), dialog.getPath());
 
-				List<JDBCDriverSetting> driverSettingList = PreferenceInitializer
+				Set<JDBCDriverSetting> driverSettingList = PreferenceInitializer
 						.getJDBCDriverSettingList();
 
 				if (driverSettingList.contains(newDriverSetting)) {
@@ -98,10 +100,9 @@ public abstract class DBManagerBase implements DBManager {
 
 				PreferenceInitializer
 						.saveJDBCDriverSettingList(driverSettingList);
-
-				clazz = this.getDriverClass(dialog.getDriverClassName());
 			}
 		}
+		} while (clazz == null);
 
 		return clazz;
 	}

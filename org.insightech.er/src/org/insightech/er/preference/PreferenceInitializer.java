@@ -2,11 +2,13 @@ package org.insightech.er.preference;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -20,7 +22,7 @@ import org.insightech.er.editor.model.settings.JDBCDriverSetting;
 import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
-public class PreferenceInitializer extends AbstractPreferenceInitializer {
+public final class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	public static final String TEMPLATE_FILE_LIST = "template_file_list";
 
@@ -83,7 +85,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	}
 
 	public static void saveJDBCDriverSettingList(
-			List<JDBCDriverSetting> driverSettingList) {
+			Collection<JDBCDriverSetting> driverSettingList) {
 		clearJDBCDriverInfo();
 
 		for (JDBCDriverSetting driverSetting : driverSettingList) {
@@ -110,20 +112,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				listSize + 1);
 	}
 
-	public static List<JDBCDriverSetting> getJDBCDriverSettingList() {
-		List<JDBCDriverSetting> list = new ArrayList<JDBCDriverSetting>();
+	public static Set<JDBCDriverSetting> getJDBCDriverSettingList() {
+		Set<JDBCDriverSetting> list = new TreeSet<JDBCDriverSetting>();
 
-		List<JDBCDriverSetting> defaultDriverList = new ArrayList<JDBCDriverSetting>();
-
-		for (String db : DBManagerFactory.getAllDBList()) {
-			if (!StandardSQLDBManager.ID.equals(db)) {
-				DBManager dbManager = DBManagerFactory.getDBManager(db);
-
-				JDBCDriverSetting driverSetting = new JDBCDriverSetting(db,
-						dbManager.getDriverClassName(), null);
-				defaultDriverList.add(driverSetting);
-			}
-		}
+		final Set<String> dbList = new HashSet<String>(DBManagerFactory.getAllDBList());
 
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
@@ -141,19 +133,21 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 					.getString(PreferenceInitializer.JDBC_DRIVER_PATH_PREFIX
 							+ i);
 
-			JDBCDriverSetting setting = new JDBCDriverSetting(db, className,
-					path);
+			final JDBCDriverSetting setting = new JDBCDriverSetting(db, className, path);
 
 			list.add(setting);
 
-			defaultDriverList.remove(setting);
+			dbList.remove(db);
 		}
 
-		for (JDBCDriverSetting defaultDriverSetting : defaultDriverList) {
-			list.add(defaultDriverSetting);
+		for (String db : dbList) {
+			if (!StandardSQLDBManager.ID.equals(db)) {
+				DBManager dbManager = DBManagerFactory.getDBManager(db);
+				JDBCDriverSetting driverSetting = new JDBCDriverSetting(db,
+						dbManager.getDriverClassName(), null);
+				list.add(driverSetting);
+			}
 		}
-
-		Collections.sort(list);
 
 		return list;
 	}
@@ -193,7 +187,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				path = store
 						.getString(PreferenceInitializer.JDBC_DRIVER_PATH_PREFIX
 								+ i);
-				break;
+				if (path != null && !"".equals(path)) {
+					break;
+				}
 			}
 		}
 
@@ -264,22 +260,21 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setValue(PreferenceInitializer.DB_SETTING_LIST_NUM, dbSettingList
 				.size());
 
-		for (int i = 0; i < dbSettingList.size(); i++) {
+		for (int i = 0, n = dbSettingList.size(); i < n; i++) {
 			DBSetting dbSetting = dbSettingList.get(i);
 			PreferenceInitializer.saveSetting(i + 1, dbSetting);
 		}
 	}
 
 	public static List<DBSetting> getDBSettingList(String database) {
-		List<DBSetting> dbSettingList = new ArrayList<DBSetting>();
-
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
 		int num = store.getInt(PreferenceInitializer.DB_SETTING_LIST_NUM);
+		List<DBSetting> dbSettingList = new ArrayList<DBSetting>(num);
 
 		for (int i = 1; i <= num; i++) {
 			DBSetting dbSetting = PreferenceInitializer.getDBSetting(i);
-			if (database != null && !dbSetting.getDbsystem().equals(database)) {
+			if (database != null && !database.equals(dbSetting.getDbsystem())) {
 				continue;
 			}
 			dbSettingList.add(dbSetting);
