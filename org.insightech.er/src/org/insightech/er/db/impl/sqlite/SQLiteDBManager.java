@@ -60,12 +60,8 @@ public class SQLiteDBManager extends DBManagerBase {
 		return new SQLiteDDLCreator(diagram, semicolon);
 	}
 
-	public List<String> getIndexTypeList(ERTable table) {
-		List<String> list = new ArrayList<String>();
-
-		list.add("BTREE");
-
-		return list;
+	public String[] getIndexTypeList(ERTable table) {
+		return EMPTY_STRING_ARRAY;
 	}
 
 	@Override

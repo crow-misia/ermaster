@@ -134,12 +134,12 @@ public class IndexDialog extends AbstractDialog {
 	}
 
 	private void initTypeCombo() {
-		java.util.List<String> indexTypeList = DBManagerFactory.getDBManager(
+		final String[] indexTypeList = DBManagerFactory.getDBManager(
 				this.table.getDiagram()).getIndexTypeList(this.table);
 
 		this.typeCombo.add("");
 
-		for (String indexType : indexTypeList) {
+		for (final String indexType : indexTypeList) {
 			this.typeCombo.add(indexType);
 		}
 	}

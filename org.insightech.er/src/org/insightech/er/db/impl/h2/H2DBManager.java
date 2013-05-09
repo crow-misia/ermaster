@@ -1,8 +1,8 @@
 package org.insightech.er.db.impl.h2;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.insightech.er.db.DBManagerBase;
 import org.insightech.er.db.sqltype.SqlTypeManager;
@@ -60,12 +60,8 @@ public class H2DBManager extends DBManagerBase {
 		return new H2DDLCreator(diagram, semicolon);
 	}
 
-	public List<String> getIndexTypeList(ERTable table) {
-		List<String> list = new ArrayList<String>();
-
-		list.add("HASH");
-
-		return list;
+	public String[] getIndexTypeList(ERTable table) {
+		return new String[] { "HASH", };
 	}
 
 	@Override
@@ -109,8 +105,8 @@ public class H2DBManager extends DBManagerBase {
 	}
 
 	@Override
-	public List<String> getSystemSchemaList() {
-		List<String> list = new ArrayList<String>();
+	public Set<String> getSystemSchemaList() {
+		final Set<String> list = new HashSet<String>();
 
 		list.add("information_schema");
 		list.add("system_lobs");

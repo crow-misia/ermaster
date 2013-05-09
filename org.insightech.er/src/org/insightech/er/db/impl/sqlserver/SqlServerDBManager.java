@@ -1,8 +1,8 @@
 package org.insightech.er.db.impl.sqlserver;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.insightech.er.db.DBManagerBase;
 import org.insightech.er.db.impl.sqlserver.tablespace.SqlServerTablespaceProperties;
@@ -61,12 +61,8 @@ public class SqlServerDBManager extends DBManagerBase {
 		return new SqlServerDDLCreator(diagram, semicolon);
 	}
 
-	public List<String> getIndexTypeList(ERTable table) {
-		List<String> list = new ArrayList<String>();
-
-		list.add("BTREE");
-
-		return list;
+	public String[] getIndexTypeList(ERTable table) {
+		return EMPTY_STRING_ARRAY;
 	}
 
 	@Override
@@ -106,8 +102,8 @@ public class SqlServerDBManager extends DBManagerBase {
 	}
 	
 	@Override
-	public List<String> getSystemSchemaList() {
-		List<String> list = new ArrayList<String>();
+	public Set<String> getSystemSchemaList() {
+		final Set<String> list = new HashSet<String>();
 		
 		list.add("db_accessadmin");
 		list.add("db_backupoperator");

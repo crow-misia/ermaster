@@ -68,12 +68,8 @@ public class MySQLDBManager extends DBManagerBase {
 		return new MySQLDDLCreator(diagram, semicolon);
 	}
 
-	public List<String> getIndexTypeList(ERTable table) {
-		List<String> list = new ArrayList<String>();
-
-		list.add("BTREE");
-
-		return list;
+	public String[] getIndexTypeList(ERTable table) {
+		return new String[] { "BTREE", "HASH", };
 	}
 
 	@Override

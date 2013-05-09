@@ -1,8 +1,6 @@
 package org.insightech.er.db.impl.standard_sql;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.insightech.er.db.DBManagerBase;
 import org.insightech.er.db.sqltype.SqlTypeManager;
@@ -60,12 +58,8 @@ public class StandardSQLDBManager extends DBManagerBase {
 		return new StandardSQLDDLCreator(diagram, semicolon);
 	}
 
-	public List<String> getIndexTypeList(ERTable table) {
-		List<String> list = new ArrayList<String>();
-
-		list.add("BTREE");
-
-		return list;
+	public String[] getIndexTypeList(ERTable table) {
+		return EMPTY_STRING_ARRAY;
 	}
 
 	@Override

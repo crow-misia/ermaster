@@ -26,6 +26,7 @@ import org.insightech.er.preference.PreferenceInitializer;
 import org.insightech.er.preference.jdbc.JDBCPathDialog;
 
 public abstract class DBManagerBase implements DBManager {
+	protected static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	private Set<String> reservedWords = new HashSet<String>();
 
@@ -152,8 +153,8 @@ public abstract class DBManagerBase implements DBManager {
 	public boolean isSupported(int supportItem) {
 		int[] supportItems = this.getSupportItems();
 
-		for (int i = 0; i < supportItems.length; i++) {
-			if (supportItems[i] == supportItem) {
+		for (final int item : supportItems) {
+			if (item == supportItem) {
 				return true;
 			}
 		}
@@ -195,10 +196,8 @@ public abstract class DBManagerBase implements DBManager {
 		return schemaList;
 	}
 
-	public List<String> getSystemSchemaList() {
-		List<String> list = new ArrayList<String>();
-
-		return list;
+	public Set<String> getSystemSchemaList() {
+		return Collections.emptySet();
 	}
 
 }
