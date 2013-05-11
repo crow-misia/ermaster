@@ -350,7 +350,7 @@ public class CategoryManageDialog extends AbstractDialog {
 
 				Category addCategory = new Category();
 				int[] color = diagram.getDefaultColor();
-				addCategory.setColor(color[0], color[1], color[2]);
+				addCategory.setColor(color);
 				addCategory.setName(name);
 				categorySettings.addCategoryAsSelected(addCategory);
 				targetCategory = addCategory;

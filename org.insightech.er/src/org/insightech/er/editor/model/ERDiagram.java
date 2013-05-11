@@ -79,8 +79,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	public void addNewContent(NodeElement element) {
-		element.setColor(this.defaultColor[0], this.defaultColor[1],
-				this.defaultColor[2]);
+		element.setColor(this.defaultColor);
 		element.setFontName(this.getFontName());
 		element.setFontSize(this.getFontSize());
 
@@ -170,8 +169,7 @@ public class ERDiagram extends ViewableModel {
 	}
 	
 	public void addCategory(Category category) {
-		category.setColor(this.defaultColor[0], this.defaultColor[1],
-				this.defaultColor[2]);
+		category.setColor(this.defaultColor);
 		this.getDiagramContents().getSettings().getCategorySetting()
 				.addCategoryAsSelected(category);
 		this.editor.initCategoryPages();

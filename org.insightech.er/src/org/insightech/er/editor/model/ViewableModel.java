@@ -1,5 +1,7 @@
 package org.insightech.er.editor.model;
 
+import java.util.Arrays;
+
 
 
 public abstract class ViewableModel extends AbstractModel {
@@ -42,11 +44,12 @@ public abstract class ViewableModel extends AbstractModel {
 	}
 
 	public void setColor(int red, int green, int blue) {
-		this.color = new int[3];
-		this.color[0] = red;
-		this.color[1] = green;
-		this.color[2] = blue;
+		this.color = new int[] { red, green, blue, };
+		this.firePropertyChange(PROPERTY_CHANGE_COLOR, null, null);
+	}
 
+	public void setColor(int[] color) {
+		this.color = Arrays.copyOf(color, 3);
 		this.firePropertyChange(PROPERTY_CHANGE_COLOR, null, null);
 	}
 
@@ -61,8 +64,7 @@ public abstract class ViewableModel extends AbstractModel {
 	public ViewableModel clone() {
 		ViewableModel clone = (ViewableModel) super.clone();
 		if (this.color != null) {
-			clone.color = new int[] { this.color[0], this.color[1],
-					this.color[2] };
+			clone.color = Arrays.copyOf(this.color, 3);
 		}
 
 		return clone;

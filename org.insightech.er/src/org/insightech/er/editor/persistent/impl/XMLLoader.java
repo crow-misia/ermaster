@@ -1820,16 +1820,19 @@ public class XMLLoader {
 	}
 
 	private void loadColor(ViewableModel model, Element element) {
-		int[] rgb = new int[] { 255, 255, 255 };
+		int[] rgb;
 		Element color = this.getElement(element, "color");
 
-		if (color != null) {
+		if (color == null) {
+			rgb = new int[] { 255, 255, 255 };
+		} else {
+			rgb = new int[3];
 			rgb[0] = this.getIntValue(color, "r");
 			rgb[1] = this.getIntValue(color, "g");
 			rgb[2] = this.getIntValue(color, "b");
 		}
 
-		model.setColor(rgb[0], rgb[1], rgb[2]);
+		model.setColor(rgb);
 	}
 
 	private void loadDefaultColor(ERDiagram diagram, Element element) {
