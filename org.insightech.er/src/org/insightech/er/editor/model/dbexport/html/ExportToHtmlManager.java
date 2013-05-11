@@ -25,6 +25,7 @@ import org.insightech.er.editor.model.dbexport.html.page_generator.impl.ViewHtml
 import org.insightech.er.editor.model.dbexport.html.page_generator.impl.WordHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.element.node.Location;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.io.FileUtils;
 import org.insightech.er.util.io.IOUtils;
 
@@ -186,7 +187,7 @@ public class ExportToHtmlManager {
 			return content;
 
 		} finally {
-			in.close();
+			Closer.close(in);
 		}
 	}
 
@@ -223,9 +224,7 @@ public class ExportToHtmlManager {
 			copyOutResource(dstPath, in);
 
 		} finally {
-			if (in != null) {
-				in.close();
-			}
+			Closer.close(in);
 		}
 	}
 
@@ -243,9 +242,7 @@ public class ExportToHtmlManager {
 			IOUtils.copy(in, out);
 
 		} finally {
-			if (out != null) {
-				out.close();
-			}
+			Closer.close(out);
 		}
 	}
 }

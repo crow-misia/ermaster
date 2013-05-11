@@ -16,6 +16,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.editor.model.settings.Environment;
+import org.insightech.er.util.Closer;
 
 public abstract class PreTableExportManager {
 
@@ -125,10 +126,7 @@ public abstract class PreTableExportManager {
 			}
 
 		} finally {
-			if (sequenceSet != null) {
-				sequenceSet.close();
-			}
-
+			Closer.close(sequenceSet);
 		}
 
 		return ddl.toString();
@@ -163,10 +161,7 @@ public abstract class PreTableExportManager {
 			}
 
 		} finally {
-			if (viewSet != null) {
-				viewSet.close();
-			}
-
+			Closer.close(viewSet);
 		}
 
 		return ddl.toString();
@@ -209,9 +204,7 @@ public abstract class PreTableExportManager {
 			}
 
 		} finally {
-			if (foreignKeySet != null) {
-				foreignKeySet.close();
-			}
+			Closer.close(foreignKeySet);
 		}
 
 		return ddl.toString();
@@ -256,9 +249,7 @@ public abstract class PreTableExportManager {
 			}
 
 		} finally {
-			if (tableSet != null) {
-				tableSet.close();
-			}
+			Closer.close(tableSet);
 		}
 
 		return ddl.toString();

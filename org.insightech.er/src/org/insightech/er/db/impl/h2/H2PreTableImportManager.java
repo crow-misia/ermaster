@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.h2;
 
+import java.io.Closeable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import org.insightech.er.editor.model.dbimport.DBObject;
 import org.insightech.er.editor.model.dbimport.PreImportFromDBManager;
+import org.insightech.er.util.Closer;
 
 public class H2PreTableImportManager extends PreImportFromDBManager {
 
@@ -15,14 +17,14 @@ public class H2PreTableImportManager extends PreImportFromDBManager {
 	protected List<DBObject> importSequences() throws SQLException {
 		List<DBObject> list = new ArrayList<DBObject>();
 
-		ResultSet resultSet = null;
-		PreparedStatement stmt = null;
-
 		if (this.schemaList.isEmpty()) {
 			this.schemaList.add(null);
 		}
 
 		for (String schemaPattern : this.schemaList) {
+			ResultSet resultSet = null;
+			PreparedStatement stmt = null;
+
 			try {
 				if (schemaPattern == null) {
 					stmt = con
@@ -46,14 +48,8 @@ public class H2PreTableImportManager extends PreImportFromDBManager {
 				}
 
 			} finally {
-				if (resultSet != null) {
-					resultSet.close();
-					resultSet = null;
-				}
-				if (stmt != null) {
-					stmt.close();
-					stmt = null;
-				}
+				Closer.close(resultSet);
+				Closer.close(stmt);
 			}
 		}
 

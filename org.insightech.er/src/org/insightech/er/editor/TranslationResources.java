@@ -17,6 +17,7 @@ import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.settings.TranslationSetting;
 import org.insightech.er.preference.PreferenceInitializer;
+import org.insightech.er.util.Closer;
 
 public class TranslationResources {
 
@@ -47,13 +48,7 @@ public class TranslationResources {
 							Activator.showExceptionDialog(e);
 
 						} finally {
-							if (in != null) {
-								try {
-									in.close();
-								} catch (IOException e) {
-									Activator.showExceptionDialog(e);
-								}
-							}
+							Closer.closeWithAlert(in);
 						}
 					}
 
@@ -70,11 +65,7 @@ public class TranslationResources {
 					Activator.showExceptionDialog(e);
 
 				} finally {
-					try {
-						in.close();
-					} catch (IOException e) {
-						Activator.showExceptionDialog(e);
-					}
+					Closer.closeWithAlert(in);
 				}
 
 			}

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.settings.DBSetting;
+import org.insightech.er.util.Closer;
 
 public abstract class PreImportFromDBManager {
 
@@ -78,13 +79,13 @@ public abstract class PreImportFromDBManager {
 			throws SQLException {
 		List<DBObject> list = new ArrayList<DBObject>();
 
-		ResultSet resultSet = null;
-
 		if (this.schemaList.isEmpty()) {
 			this.schemaList.add(null);
 		}
 
 		for (String schemaPattern : this.schemaList) {
+			ResultSet resultSet = null;
+
 			try {
 				resultSet = metaData
 						.getTables(null, schemaPattern, null, types);
@@ -110,11 +111,7 @@ public abstract class PreImportFromDBManager {
 				}
 
 			} finally {
-				if (resultSet != null) {
-					resultSet.close();
-					resultSet = null;
-				}
-
+				Closer.close(resultSet);
 			}
 		}
 
@@ -135,13 +132,8 @@ public abstract class PreImportFromDBManager {
 					+ this.getTableNameWithSchema(schema, tableName));
 
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (stmt != null) {
-				stmt.close();
-			}
-
+			Closer.close(rs);
+			Closer.close(stmt);
 		}
 
 		return autoIncrementColumnName;

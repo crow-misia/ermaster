@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.insightech.er.util.Closer;
+
 public class FileUtils {
 
 	public static void deleteDirectory(File directory) throws IOException {
@@ -100,16 +102,16 @@ public class FileUtils {
 		if (destFile.exists() && destFile.isDirectory())
 			throw new IOException("Destination '" + destFile
 					+ "' exists but is a directory");
-		FileInputStream input = new FileInputStream(srcFile);
+		FileInputStream input = null;
+		FileOutputStream output = null;
 		try {
-			FileOutputStream output = new FileOutputStream(destFile);
-			try {
-				IOUtils.copy(input, output);
-			} finally {
-				IOUtils.closeQuietly(output);
-			}
+			input = new FileInputStream(srcFile);
+			output = new FileOutputStream(destFile);
+
+			IOUtils.copy(input, output);
 		} finally {
-			IOUtils.closeQuietly(input);
+			Closer.close(output);
+			Closer.close(input);
 		}
 		if (srcFile.length() != destFile.length())
 			throw new IOException("Failed to copy full contents from '"
@@ -125,27 +127,29 @@ public class FileUtils {
 			byte abyte0[] = IOUtils.toByteArray(in);
 			return abyte0;
 		} finally {
-			IOUtils.closeQuietly(in);
+			Closer.close(in);
 		}
 	}
 
 	public static void writeByteArrayToFile(File file, byte data[])
 			throws IOException {
-		OutputStream out = new FileOutputStream(file);
+		OutputStream out = null;
 		try {
+			out = new FileOutputStream(file);
 			out.write(data);
 		} finally {
-			IOUtils.closeQuietly(out);
+			Closer.close(out);
 		}
 	}
 
 	public static void writeStringToFile(File file, String data, String encoding)
 			throws IOException {
-		OutputStream out = new FileOutputStream(file);
+		OutputStream out = null;
 		try {
+			out = new FileOutputStream(file);
 			IOUtils.write(data, out, encoding);
 		} finally {
-			IOUtils.closeQuietly(out);
+			Closer.close(out);
 		}
 	}
 }

@@ -46,6 +46,7 @@ import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
 import org.insightech.er.preference.PreferenceInitializer;
 import org.insightech.er.preference.template.TemplatePreferencePage;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 import org.insightech.er.util.io.FileUtils;
 
@@ -297,13 +298,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 			this.diagram.setCurrentCategory(currentCategory,
 					currentCategoryIndex);
 
-			if (stream != null) {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					Activator.showExceptionDialog(e);
-				}
-			}
+			Closer.closeWithAlert(stream);
 		}
 	}
 

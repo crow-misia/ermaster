@@ -11,22 +11,6 @@ import java.io.Writer;
 
 public class IOUtils {
 
-	public static void closeQuietly(InputStream input) {
-		try {
-			if (input != null)
-				input.close();
-		} catch (IOException ioe) {
-		}
-	}
-
-	public static void closeQuietly(OutputStream output) {
-		try {
-			if (output != null)
-				output.close();
-		} catch (IOException ioe) {
-		}
-	}
-
 	public static int copy(InputStream input, OutputStream output)
 			throws IOException {
 		byte buffer[] = new byte[4096];

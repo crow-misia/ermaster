@@ -54,6 +54,7 @@ import org.insightech.er.editor.model.edit.CopyManager;
 import org.insightech.er.editor.persistent.Persistent;
 import org.insightech.er.editor.view.dialog.dbimport.AbstractSelectImportedObjectDialog;
 import org.insightech.er.editor.view.dialog.dbimport.SelectImportedObjectFromFileDialog;
+import org.insightech.er.util.Closer;
 
 public class ImportFromFileAction extends AbstractImportAction {
 
@@ -104,7 +105,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 			this.loadedDiagram = persistent.load(in);
 
 		} finally {
-			in.close();
+			Closer.close(in);
 		}
 
 		return this.getAllObjects(loadedDiagram);

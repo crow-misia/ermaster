@@ -53,6 +53,7 @@ import org.insightech.er.editor.model.settings.Environment;
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.util.Check;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
 public class ExportToDDLDialog extends AbstractDialog {
@@ -446,9 +447,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 			this.diagram.setCurrentCategory(currentCategory,
 					currentCategoryIndex);
 
-			if (out != null) {
-				out.close();
-			}
+			Closer.close(out);
 		}
 
 		if (openAfterSaved) {

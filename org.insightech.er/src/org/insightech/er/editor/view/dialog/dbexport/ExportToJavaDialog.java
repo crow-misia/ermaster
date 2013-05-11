@@ -28,6 +28,7 @@ import org.insightech.er.editor.model.dbexport.java.ExportToJavaWithProgressMana
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
 public class ExportToJavaDialog extends AbstractDialog {
@@ -148,13 +149,7 @@ public class ExportToJavaDialog extends AbstractDialog {
 			Activator.showExceptionDialog(e);
 
 		} finally {
-			if (stream != null) {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					Activator.showExceptionDialog(e);
-				}
-			}
+			Closer.closeWithAlert(stream);
 		}
 	}
 

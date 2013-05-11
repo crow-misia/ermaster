@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
+import org.insightech.er.util.Closer;
 
 public class ExportToDBManager implements IRunnableWithProgress {
 
@@ -87,9 +88,7 @@ public class ExportToDBManager implements IRunnableWithProgress {
 			throw e;
 
 		} finally {
-			if (stmt != null) {
-				stmt.close();
-			}
+			Closer.close(stmt);
 		}
 	}
 

@@ -19,6 +19,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.db.ExportToDBManager;
 import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.util.Check;
+import org.insightech.er.util.Closer;
 
 public class ExportToDBDialog extends AbstractDialog {
 
@@ -119,13 +120,7 @@ public class ExportToDBDialog extends AbstractDialog {
 			throw new InputException("error.database.not.found");
 
 		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					Activator.showExceptionDialog(e);
-				}
-			}
+			Closer.closeWithAlert(con);
 		}
 
 	}

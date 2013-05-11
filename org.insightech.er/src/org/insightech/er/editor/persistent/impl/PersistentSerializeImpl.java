@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.persistent.Persistent;
+import org.insightech.er.util.Closer;
 
 public class PersistentSerializeImpl extends Persistent {
 
@@ -20,9 +21,13 @@ public class PersistentSerializeImpl extends Persistent {
 		InputStream inputStream = null;
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-		ObjectOutputStream oos = new ObjectOutputStream(out);
-		oos.writeObject(diagram);
-		oos.close();
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(out);
+			oos.writeObject(diagram);
+		} finally {
+			Closer.close(oos);
+		}
 
 		inputStream = new ByteArrayInputStream(out.toByteArray());
 

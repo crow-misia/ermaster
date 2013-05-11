@@ -15,6 +15,7 @@ import org.insightech.er.editor.ERDiagramEditor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Dictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.CsvWriter;
 import org.insightech.er.util.Format;
 
@@ -80,9 +81,7 @@ public class ExportToDictionaryAction extends AbstractExportAction {
 			Activator.showMessageDialog("dialog.message.export.finish");
 
 		} finally {
-			if (out != null) {
-				out.close();
-			}
+			Closer.close(out);
 		}
 	}
 

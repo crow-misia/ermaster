@@ -1,7 +1,9 @@
 package org.insightech.er.db;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.impl.access.AccessDBManager;
@@ -19,7 +21,7 @@ import org.insightech.er.editor.model.ERDiagram;
 
 public class DBManagerFactory {
 
-	private static final List<DBManager> DB_LIST = new ArrayList<DBManager>();
+	private static final Map<String, DBManager> DB_LIST = new HashMap<String, DBManager>();
 
 	private static final List<String> DB_ID_LIST = new ArrayList<String>();
 
@@ -38,21 +40,20 @@ public class DBManagerFactory {
 	}
 
 	private static void addDB(DBManager manager) {
-		DB_LIST.add(manager);
-		DB_ID_LIST.add(manager.getId());
+		final String id = manager.getId();
+		DB_LIST.put(id, manager);
+		DB_ID_LIST.add(id);
 	}
 
 	public static DBManager getDBManager(String database) {
-		for (DBManager manager : DB_LIST) {
-			if (manager.getId().equals(database)) {
-				return manager;
-			}
-		}
-
-		throw new IllegalArgumentException(
-				ResourceString
+		DBManager manager = DB_LIST.get(database);
+		if (manager == null) {
+			throw new IllegalArgumentException(
+					ResourceString
 						.getResourceString("error.database.is.not.supported")
 						+ database);
+		}
+		return manager;
 	}
 
 	public static DBManager getDBManager(ERDiagram diagram) {

@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 
 import org.insightech.er.editor.model.dbexport.testdata.TestDataCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
+import org.insightech.er.util.Closer;
 
 public abstract class AbstractTextTestDataCreator extends TestDataCreator {
 
@@ -53,10 +54,8 @@ public abstract class AbstractTextTestDataCreator extends TestDataCreator {
 	protected abstract String getFooter();
 
 	@Override
-	protected void closeFile() throws IOException {
-		if (out != null) {
-			out.close();
-		}
+	protected void closeFile() {
+		Closer.close(out);
 	}
 
 }

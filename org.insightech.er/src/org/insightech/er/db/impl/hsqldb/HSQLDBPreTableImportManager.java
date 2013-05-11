@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.insightech.er.editor.model.dbimport.DBObject;
 import org.insightech.er.editor.model.dbimport.PreImportFromDBManager;
+import org.insightech.er.util.Closer;
 
 public class HSQLDBPreTableImportManager extends PreImportFromDBManager {
 
@@ -15,14 +16,14 @@ public class HSQLDBPreTableImportManager extends PreImportFromDBManager {
 	protected List<DBObject> importSequences() throws SQLException {
 		List<DBObject> list = new ArrayList<DBObject>();
 
-		ResultSet resultSet = null;
-		PreparedStatement stmt = null;
-
 		if (this.schemaList.isEmpty()) {
 			this.schemaList.add(null);
 		}
 
 		for (String schemaPattern : this.schemaList) {
+			ResultSet resultSet = null;
+			PreparedStatement stmt = null;
+
 			try {
 				if (schemaPattern == null) {
 					stmt = con
@@ -46,14 +47,8 @@ public class HSQLDBPreTableImportManager extends PreImportFromDBManager {
 				}
 
 			} finally {
-				if (resultSet != null) {
-					resultSet.close();
-					resultSet = null;
-				}
-				if (stmt != null) {
-					stmt.close();
-					stmt = null;
-				}
+				Closer.close(resultSet);
+				Closer.close(stmt);
 			}
 		}
 

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.insightech.er.Activator;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.io.IOUtils;
 
 public class InsertedImage extends NodeElement {
@@ -69,13 +70,7 @@ public class InsertedImage extends NodeElement {
 			Activator.showExceptionDialog(e);
 
 		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (Exception e) {
-					Activator.showExceptionDialog(e);
-				}
-			}
+			Closer.closeWithAlert(in);
 		}
 	}
 

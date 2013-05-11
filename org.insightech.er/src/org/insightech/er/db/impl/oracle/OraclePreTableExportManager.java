@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.insightech.er.editor.model.dbexport.db.PreTableExportManager;
+import org.insightech.er.util.Closer;
 
 public class OraclePreTableExportManager extends PreTableExportManager {
 
@@ -20,13 +21,8 @@ public class OraclePreTableExportManager extends PreTableExportManager {
 			rs = stmt.executeQuery("SELECT 1 FROM " + tableNameWithSchema);
 
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (stmt != null) {
-				stmt.close();
-			}
-
+			Closer.close(rs);
+			Closer.close(stmt);
 		}
 	}
 }

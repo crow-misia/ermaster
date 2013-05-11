@@ -22,6 +22,7 @@ import org.insightech.er.editor.model.dbexport.db.PreTableExportManager;
 import org.insightech.er.editor.model.settings.Environment;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.common.AbstractDBSettingDialog;
+import org.insightech.er.util.Closer;
 
 public class ExportDBSettingDialog extends AbstractDBSettingDialog {
 
@@ -148,13 +149,7 @@ public class ExportDBSettingDialog extends AbstractDBSettingDialog {
 			throw new InputException("error.database.not.found");
 
 		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					Activator.showExceptionDialog(e);
-				}
-			}
+			Closer.closeWithAlert(con);
 		}
 	}
 

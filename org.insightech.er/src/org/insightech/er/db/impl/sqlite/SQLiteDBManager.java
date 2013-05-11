@@ -1,8 +1,6 @@
 package org.insightech.er.db.impl.sqlite;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.insightech.er.db.DBManagerBase;
 import org.insightech.er.db.sqltype.SqlTypeManager;

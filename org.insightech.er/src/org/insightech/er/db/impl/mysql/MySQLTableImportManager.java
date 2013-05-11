@@ -13,6 +13,7 @@ import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
+import org.insightech.er.util.Closer;
 
 public class MySQLTableImportManager extends ImportFromDBManagerBase {
 
@@ -98,12 +99,8 @@ public class MySQLTableImportManager extends ImportFromDBManagerBase {
 			}
 
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (ps != null) {
-				ps.close();
-			}
+			Closer.close(rs);
+			Closer.close(ps);
 		}
 
 		return type;

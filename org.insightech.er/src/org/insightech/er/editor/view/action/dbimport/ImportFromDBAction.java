@@ -26,6 +26,7 @@ import org.insightech.er.editor.view.dialog.dbimport.AbstractSelectImportedObjec
 import org.insightech.er.editor.view.dialog.dbimport.ImportDBSettingDialog;
 import org.insightech.er.editor.view.dialog.dbimport.SelectImportedObjectFromDBDialog;
 import org.insightech.er.editor.view.dialog.dbimport.SelectImportedSchemaDialog;
+import org.insightech.er.util.Closer;
 
 public class ImportFromDBAction extends AbstractImportAction {
 
@@ -173,9 +174,7 @@ public class ImportFromDBAction extends AbstractImportAction {
 					}
 
 				} finally {
-					if (con != null) {
-						con.close();
-					}
+					Closer.close(con);
 				}
 			}
 

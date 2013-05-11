@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
+import org.insightech.er.util.Closer;
 
 public class PostgresTableImportManager extends ImportFromDBManagerBase {
 
@@ -159,12 +160,8 @@ public class PostgresTableImportManager extends ImportFromDBManagerBase {
 			}
 
 		} finally {
-			if (rs != null) {
-				rs.close();
-			}
-			if (ps != null) {
-				ps.close();
-			}
+			Closer.close(rs);
+			Closer.close(ps);
 		}
 
 		return type;

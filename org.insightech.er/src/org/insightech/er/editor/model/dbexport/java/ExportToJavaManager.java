@@ -17,6 +17,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.TableV
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
 import org.insightech.er.util.Check;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 import org.insightech.er.util.io.FileUtils;
 import org.insightech.er.util.io.IOUtils;
@@ -230,7 +231,7 @@ public class ExportToJavaManager {
 			return content;
 
 		} finally {
-			in.close();
+			Closer.close(in);
 		}
 	}
 

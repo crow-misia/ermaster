@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.insightech.er.db.sqltype.SqlType.TypeKey;
 import org.insightech.er.util.Check;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.POIUtils;
 
 public class SqlTypeFactory {
@@ -93,7 +94,7 @@ public class SqlTypeFactory {
 			}
 
 		} finally {
-			in.close();
+			Closer.close(in);
 		}
 
 	}

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
+import org.insightech.er.util.Closer;
 
 public class DB2TableImportManager extends ImportFromDBManagerBase {
 
@@ -133,8 +134,8 @@ public class DB2TableImportManager extends ImportFromDBManagerBase {
 			return null;
 
 		} finally {
-			this.close(rs);
-			this.close(stmt);
+			Closer.close(rs);
+			Closer.close(stmt);
 		}
 	}
 

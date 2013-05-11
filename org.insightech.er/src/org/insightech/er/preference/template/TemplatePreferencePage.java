@@ -18,6 +18,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.preference.PreferenceInitializer;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.io.IOUtils;
 
 public class TemplatePreferencePage extends
@@ -134,22 +135,8 @@ public class TemplatePreferencePage extends
 				Activator.showExceptionDialog(ioe);
 
 			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (IOException e1) {
-						Activator.showExceptionDialog(e1);
-					}
-
-				}
-				if (out != null) {
-					try {
-						out.close();
-					} catch (IOException e1) {
-						Activator.showExceptionDialog(e1);
-					}
-				}
-
+				Closer.closeWithAlert(in);
+				Closer.closeWithAlert(out);
 			}
 		}
 	}

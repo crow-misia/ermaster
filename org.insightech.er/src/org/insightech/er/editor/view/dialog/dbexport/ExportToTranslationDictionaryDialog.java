@@ -34,6 +34,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.TableV
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.preference.PreferenceInitializer;
 import org.insightech.er.util.Check;
+import org.insightech.er.util.Closer;
 
 public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 
@@ -159,13 +160,7 @@ public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 		} catch (IOException e) {
 			Activator.showExceptionDialog(e);
 		} finally {
-			if (writer != null) {
-				try {
-					writer.close();
-				} catch (IOException e) {
-					Activator.showExceptionDialog(e);
-				}
-			}
+			Closer.closeWithAlert(writer);
 		}
 	}
 

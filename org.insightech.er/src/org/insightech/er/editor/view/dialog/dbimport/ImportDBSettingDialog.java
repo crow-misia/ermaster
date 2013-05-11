@@ -11,6 +11,7 @@ import org.insightech.er.common.exception.InputException;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.view.dialog.common.AbstractDBSettingDialog;
 import org.insightech.er.preference.PreferenceInitializer;
+import org.insightech.er.util.Closer;
 
 public class ImportDBSettingDialog extends AbstractDBSettingDialog {
 
@@ -58,13 +59,7 @@ public class ImportDBSettingDialog extends AbstractDBSettingDialog {
 			throw new InputException("error.database.not.found");
 
 		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					Activator.showExceptionDialog(e);
-				}
-			}
+			Closer.closeWithAlert(con);
 		}
 	}
 

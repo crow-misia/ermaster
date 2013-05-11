@@ -46,6 +46,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Ta
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.util.Check;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
 public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
@@ -255,9 +256,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 
 		} finally {
-			if (columnSet != null) {
-				columnSet.close();
-			}
+			Closer.close(columnSet);
 		}
 	}
 
@@ -350,8 +349,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			return null;
 
 		} finally {
-			this.close(rs);
-			this.close(stmt);
+			Closer.close(rs);
+			Closer.close(stmt);
 		}
 	}
 
@@ -511,8 +510,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 
 		} finally {
-			this.close(rs);
-			this.close(stmt);
+			Closer.close(rs);
+			Closer.close(stmt);
 		}
 
 		return autoIncrementColumnName;
@@ -579,10 +578,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				index.addColumnName(columnName, desc);
 			}
 
-		} catch (SQLException e) {
-			throw e;
 		} finally {
-			this.close(indexSet);
+			Closer.close(indexSet);
 		}
 
 		for (Iterator<Index> iter = indexes.iterator(); iter.hasNext();) {
@@ -647,7 +644,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			// Microsoft Access does not support getPrimaryKeys
 
 		} finally {
-			this.close(primaryKeySet);
+			Closer.close(primaryKeySet);
 		}
 
 		return primaryKeys;
@@ -880,7 +877,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			tableForeignKeyDataMap = null;
 
 		} finally {
-			this.close(foreignKeySet);
+			Closer.close(foreignKeySet);
 		}
 	}
 
@@ -958,7 +955,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			// microsoft access does not support getImportedKeys
 
 		} finally {
-			this.close(foreignKeySet);
+			Closer.close(foreignKeySet);
 		}
 	}
 
@@ -1182,8 +1179,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			return null;
 
 		} finally {
-			this.close(rs);
-			this.close(stmt);
+			Closer.close(rs);
+			Closer.close(stmt);
 		}
 	}
 
@@ -1452,21 +1449,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			metaData.getIndexInfo(null, "SYS", "ALERT_QT", false, false);
 
 		} finally {
-			if (con != null) {
-				con.close();
-			}
-		}
-	}
-
-	protected void close(ResultSet rs) throws SQLException {
-		if (rs != null) {
-			rs.close();
-		}
-	}
-
-	protected void close(Statement stmt) throws SQLException {
-		if (stmt != null) {
-			stmt.close();
+			Closer.close(con);
 		}
 	}
 
