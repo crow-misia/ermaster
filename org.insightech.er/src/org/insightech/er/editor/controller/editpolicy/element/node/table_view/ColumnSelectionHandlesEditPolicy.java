@@ -97,12 +97,13 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 	@Override
 	public void showTargetFeedback(Request request) {
 		if (request instanceof DirectEditRequest) {
-			ZoomManager zoomManager = ((ScalableFreeformRootEditPart) this
+			final ZoomManager zoomManager = ((ScalableFreeformRootEditPart) this
 					.getHost().getRoot()).getZoomManager();
-			double zoom = zoomManager.getZoom();
+			final Rectangle clientArea = zoomManager.getViewport().getClientArea();
+			final double zoom = zoomManager.getZoom();
 
 			Rectangle columnRectangle = this.getColumnRectangle();
-			int center = (int) ((columnRectangle.y + (columnRectangle.height / 2)) * zoom);
+			int center = (int) ((columnRectangle.y + (columnRectangle.height / 2)) * zoom) - clientArea.y;
 
 			DirectEditRequest directEditRequest = (DirectEditRequest) request;
 

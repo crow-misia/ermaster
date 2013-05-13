@@ -13,19 +13,16 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 public class TableLayout extends AbstractHintLayout {
 
-	private int colnum;
+	private final int colnum;
 
-	private int separatorWidth;
+	private final int separatorWidth;
 
-	private List<IFigure> separators;
+	private final List<IFigure> separators;
 
 	public TableLayout(int colnum) {
 		super();
 
-		this.colnum = colnum;
-		if (this.colnum <= 0) {
-			this.colnum = 1;
-		}
+		this.colnum = Math.max(colnum, 1);
 
 		this.separators = new ArrayList<IFigure>();
 		this.separatorWidth = 1;
