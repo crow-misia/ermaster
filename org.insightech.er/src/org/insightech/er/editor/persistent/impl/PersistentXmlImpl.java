@@ -1,7 +1,6 @@
 package org.insightech.er.editor.persistent.impl;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -72,11 +71,10 @@ import org.insightech.er.util.Format;
 import org.insightech.er.util.NameValue;
 
 public class PersistentXmlImpl extends Persistent {
-
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
 
-	private class PersistentContext {
+	private final class PersistentContext {
 		private Map<ColumnGroup, Integer> columnGroupMap = new HashMap<ColumnGroup, Integer>();
 
 		private Map<ConnectionElement, Integer> connectionMap = new HashMap<ConnectionElement, Integer>();
@@ -100,12 +98,12 @@ public class PersistentXmlImpl extends Persistent {
 		int columnGroupCount = 0;
 		int columnCount = 0;
 		for (ColumnGroup columnGroup : diagramContents.getGroups()) {
-			context.columnGroupMap.put(columnGroup, new Integer(
+			context.columnGroupMap.put(columnGroup, Integer.valueOf(
 					columnGroupCount));
 			columnGroupCount++;
 
 			for (NormalColumn normalColumn : columnGroup.getColumns()) {
-				context.columnMap.put(normalColumn, new Integer(columnCount));
+				context.columnMap.put(normalColumn, Integer.valueOf(columnCount));
 				columnCount++;
 			}
 		}
@@ -115,13 +113,13 @@ public class PersistentXmlImpl extends Persistent {
 		int complexUniqueKeyCount = 0;
 
 		for (NodeElement content : diagramContents.getContents()) {
-			context.nodeElementMap.put(content, new Integer(nodeElementCount));
+			context.nodeElementMap.put(content, Integer.valueOf(nodeElementCount));
 			nodeElementCount++;
 
 			List<ConnectionElement> connections = content.getIncomings();
 
 			for (ConnectionElement connection : connections) {
-				context.connectionMap.put(connection, new Integer(
+				context.connectionMap.put(connection, Integer.valueOf(
 						connectionCount));
 				connectionCount++;
 			}
@@ -134,7 +132,7 @@ public class PersistentXmlImpl extends Persistent {
 
 				for (Column column : columns) {
 					if (column instanceof NormalColumn) {
-						context.columnMap.put(column, new Integer(columnCount));
+						context.columnMap.put(column, Integer.valueOf(columnCount));
 
 						columnCount++;
 					}
@@ -143,7 +141,7 @@ public class PersistentXmlImpl extends Persistent {
 				for (ComplexUniqueKey complexUniqueKey : table
 						.getComplexUniqueKeyList()) {
 					context.complexUniqueKeyMap.put(complexUniqueKey,
-							new Integer(complexUniqueKeyCount));
+							Integer.valueOf(complexUniqueKeyCount));
 
 					complexUniqueKeyCount++;
 				}
@@ -153,20 +151,20 @@ public class PersistentXmlImpl extends Persistent {
 
 		int wordCount = 0;
 		for (Word word : diagramContents.getDictionary().getWordList()) {
-			context.wordMap.put(word, new Integer(wordCount));
+			context.wordMap.put(word, Integer.valueOf(wordCount));
 			wordCount++;
 		}
 
 		int tablespaceCount = 0;
 		for (Tablespace tablespace : diagramContents.getTablespaceSet()) {
-			context.tablespaceMap.put(tablespace, new Integer(tablespaceCount));
+			context.tablespaceMap.put(tablespace, Integer.valueOf(tablespaceCount));
 			tablespaceCount++;
 		}
 
 		int environmentCount = 0;
 		for (Environment environment : diagramContents.getSettings()
 				.getEnvironmentSetting().getEnvironments()) {
-			context.environmentMap.put(environment, new Integer(
+			context.environmentMap.put(environment, Integer.valueOf(
 					environmentCount));
 			environmentCount++;
 		}
@@ -194,41 +192,26 @@ public class PersistentXmlImpl extends Persistent {
 	 */
 	@Override
 	public InputStream createInputStream(ERDiagram diagram) throws IOException {
-		InputStream inputStream = null;
+		final String xml = this.createXML(diagram);
 
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-		String xml = this.createXML(diagram);
-
-		out.write(xml.getBytes("UTF-8"));
-
-		inputStream = new ByteArrayInputStream(out.toByteArray());
-
-		return inputStream;
+		return new ByteArrayInputStream(xml.getBytes("UTF-8"));
 	}
 
-	private static String tab(String str) {
-		str = str.replaceAll("\n\t", "\n\t\t");
-		str = str.replaceAll("\n<", "\n\t<");
-
-		return "\t" + str;
-	}
-
-	private String createXML(ERDiagram diagram) {
-		StringBuilder xml = new StringBuilder();
+	private String createXML(final ERDiagram diagram) {
+		final StringBuilder xml = new StringBuilder();
 
 		xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		xml.append("<diagram>\n");
 
 		if (diagram.getDbSetting() != null) {
-			xml.append("\t<dbsetting>\n")
-					.append(tab(tab(this.createXML(diagram.getDbSetting()))))
-					.append("\t</dbsetting>\n");
+			xml.append("\t<dbsetting>\n");
+			createXML(xml, "\t\t", diagram.getDbSetting());
+			xml.append("\t</dbsetting>\n");
 		}
 		if (diagram.getPageSetting() != null) {
-			xml.append("\t<page_setting>\n")
-					.append(tab(tab(this.createXML(diagram.getPageSetting()))))
-					.append("\t</page_setting>\n");
+			xml.append("\t<page_setting>\n");
+			createXML(xml, "\t\t", diagram.getPageSetting());
+			xml.append("\t</page_setting>\n");
 		}
 
 		xml.append("\t<category_index>")
@@ -244,7 +227,7 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append("\t\t<g>").append(defaultColor[1]).append("</g>\n");
 		xml.append("\t\t<b>").append(defaultColor[2]).append("</b>\n");
 		xml.append("\t</default_color>\n");
-		xml.append(tab(this.createXMLColor(diagram.getColor())));
+		createXMLColor(xml, "\t", diagram.getColor());
 		xml.append("\t<font_name>").append(escape(diagram.getFontName()))
 				.append("</font_name>\n");
 		xml.append("\t<font_size>").append(diagram.getFontSize())
@@ -252,444 +235,381 @@ public class PersistentXmlImpl extends Persistent {
 
 		PersistentContext context = this.getCurrentContext(diagram);
 
-		xml.append(tab(this.createXML(diagram.getDiagramContents(), context)));
-		xml.append(tab(this.createXML(diagram.getChangeTrackingList())));
+		createXML(xml, "\t", diagram.getDiagramContents(), context);
+		createXML(xml, "\t", diagram.getChangeTrackingList());
 
 		xml.append("</diagram>\n");
 
 		return xml.toString();
 	}
 
-	private String createXML(DBSetting dbSetting) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<dbsystem>").append(escape(dbSetting.getDbsystem()))
+ 	private void createXML(final StringBuilder xml, final String tab, final DBSetting dbSetting) {
+		xml.append(tab).append("<dbsystem>").append(escape(dbSetting.getDbsystem()))
 				.append("</dbsystem>\n");
-		xml.append("<server>").append(escape(dbSetting.getServer()))
+		xml.append(tab).append("<server>").append(escape(dbSetting.getServer()))
 				.append("</server>\n");
-		xml.append("<port>").append(dbSetting.getPort()).append("</port>\n");
-		xml.append("<database>").append(escape(dbSetting.getDatabase()))
+		xml.append(tab).append("<port>").append(dbSetting.getPort()).append("</port>\n");
+		xml.append(tab).append("<database>").append(escape(dbSetting.getDatabase()))
 				.append("</database>\n");
-		xml.append("<user>").append(escape(dbSetting.getUser()))
+		xml.append(tab).append("<user>").append(escape(dbSetting.getUser()))
 				.append("</user>\n");
-		xml.append("<password>").append(escape(dbSetting.getPassword()))
+		xml.append(tab).append("<password>").append(escape(dbSetting.getPassword()))
 				.append("</password>\n");
-		xml.append("<use_default_driver>")
+		xml.append(tab).append("<use_default_driver>")
 				.append(dbSetting.isUseDefaultDriver())
 				.append("</use_default_driver>\n");
-		xml.append("<url>").append(escape(dbSetting.getUrl()))
+		xml.append(tab).append("<url>").append(escape(dbSetting.getUrl()))
 				.append("</url>\n");
-		xml.append("<driver_class_name>")
+		xml.append(tab).append("<driver_class_name>")
 				.append(escape(dbSetting.getDriverClassName()))
 				.append("</driver_class_name>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(PageSetting pageSetting) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<direction_horizontal>")
+ 	private void createXML(final StringBuilder xml, final String tab, final PageSetting pageSetting) {
+		xml.append(tab).append("<direction_horizontal>")
 				.append(pageSetting.isDirectionHorizontal())
 				.append("</direction_horizontal>\n");
-		xml.append("<scale>").append(pageSetting.getScale())
+		xml.append(tab).append("<scale>").append(pageSetting.getScale())
 				.append("</scale>\n");
-		xml.append("<paper_size>").append(escape(pageSetting.getPaperSize()))
+		xml.append(tab).append("<paper_size>").append(escape(pageSetting.getPaperSize()))
 				.append("</paper_size>\n");
-		xml.append("<top_margin>").append(pageSetting.getTopMargin())
+		xml.append(tab).append("<top_margin>").append(pageSetting.getTopMargin())
 				.append("</top_margin>\n");
-		xml.append("<left_margin>").append(pageSetting.getLeftMargin())
+		xml.append(tab).append("<left_margin>").append(pageSetting.getLeftMargin())
 				.append("</left_margin>\n");
-		xml.append("<bottom_margin>").append(pageSetting.getBottomMargin())
+		xml.append(tab).append("<bottom_margin>").append(pageSetting.getBottomMargin())
 				.append("</bottom_margin>\n");
-		xml.append("<right_margin>").append(pageSetting.getRightMargin())
+		xml.append(tab).append("<right_margin>").append(pageSetting.getRightMargin())
 				.append("</right_margin>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(DiagramContents diagramContents,
+ 	private void createXML(final StringBuilder xml, final String tab, final DiagramContents diagramContents,
 			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+		createXML(xml, tab, diagramContents.getSettings(), context);
+		createXML(xml, tab, diagramContents.getDictionary(), context);
+		createXML(xml, tab, diagramContents.getTablespaceSet(), context);
+		createXML(xml, tab, diagramContents.getContents(), context);
+		createXML(xml, tab, diagramContents.getGroups(), context);
+		createXML(xml, tab, diagramContents.getTestDataList(), context);
 
-		xml.append(this.createXML(diagramContents.getSettings(), context));
-		xml.append(this.createXML(diagramContents.getDictionary(), context));
-		xml.append(this.createXML(diagramContents.getTablespaceSet(), context));
-		xml.append(this.createXML(diagramContents.getContents(), context));
-		xml.append(this.createXML(diagramContents.getGroups(), context));
-		xml.append(this.createXML(diagramContents.getTestDataList(), context));
-
-		xml.append(this.createXML(diagramContents.getSequenceSet()));
-		xml.append(this.createXML(diagramContents.getTriggerSet()));
-
-		return xml.toString();
+		createXML(xml, tab, diagramContents.getSequenceSet());
+		createXML(xml, tab, diagramContents.getTriggerSet());
 	}
 
-	private String createXML(GroupSet columnGroups, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final GroupSet columnGroups, final PersistentContext context) {
+		xml.append(tab).append("<column_groups>\n");
 
-		xml.append("<column_groups>\n");
-
+		final String tab2 = tab + "\t";
 		for (ColumnGroup columnGroup : columnGroups) {
-			xml.append(tab(tab(this.createXML(columnGroup, context))));
+			createXML(xml, tab2, columnGroup, context);
 		}
 
-		xml.append("</column_groups>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</column_groups>\n");
 	}
 
-	private String createXML(List<TestData> testDataList,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final List<TestData> testDataList,
+			final PersistentContext context) {
+		xml.append(tab).append("<test_data_list>\n");
 
-		xml.append("<test_data_list>\n");
-
+		final String tab2 = tab + "\t";
 		for (TestData testData : testDataList) {
-			xml.append(tab(tab(this.createXML(testData, context))));
+			createXML(xml, tab2, testData, context);
 		}
 
-		xml.append("</test_data_list>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</test_data_list>\n");
 	}
 
-	private String createXML(TriggerSet triggerSet) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final TriggerSet triggerSet) {
+		xml.append(tab).append("<trigger_set>\n");
 
-		xml.append("<trigger_set>\n");
-
+		final String tab2 = tab + "\t";
 		for (Trigger trigger : triggerSet) {
-			xml.append(tab(this.createXML(trigger)));
+			createXML(xml, tab2, trigger);
 		}
 
-		xml.append("</trigger_set>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</trigger_set>\n");
 	}
 
-	private String createXML(Trigger trigger) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Trigger trigger) {
+		xml.append(tab).append("<trigger>\n");
 
-		xml.append("<trigger>\n");
-
-		xml.append("\t<name>").append(escape(trigger.getName()))
+		xml.append(tab).append("\t<name>").append(escape(trigger.getName()))
 				.append("</name>\n");
-		xml.append("\t<schema>").append(escape(trigger.getSchema()))
+		xml.append(tab).append("\t<schema>").append(escape(trigger.getSchema()))
 				.append("</schema>\n");
-		xml.append("\t<sql>").append(escape(trigger.getSql()))
+		xml.append(tab).append("\t<sql>").append(escape(trigger.getSql()))
 				.append("</sql>\n");
-		xml.append("\t<description>").append(escape(trigger.getDescription()))
+		xml.append(tab).append("\t<description>").append(escape(trigger.getDescription()))
 				.append("</description>\n");
 
-		xml.append("</trigger>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</trigger>\n");
 	}
 
-	private String createXML(SequenceSet sequenceSet) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final SequenceSet sequenceSet) {
+		xml.append(tab).append("<sequence_set>\n");
 
-		xml.append("<sequence_set>\n");
-
+		final String tab2 = tab + "\t";
 		for (Sequence sequence : sequenceSet) {
-			xml.append(tab(this.createXML(sequence)));
+			createXML(xml, tab2, sequence);
 		}
 
-		xml.append("</sequence_set>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</sequence_set>\n");
 	}
 
-	private String createXML(Sequence sequence) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Sequence sequence) {
+		xml.append(tab).append("<sequence>\n");
 
-		xml.append("<sequence>\n");
-
-		xml.append("\t<name>").append(escape(sequence.getName()))
+		xml.append(tab).append("\t<name>").append(escape(sequence.getName()))
 				.append("</name>\n");
-		xml.append("\t<schema>").append(escape(sequence.getSchema()))
+		xml.append(tab).append("\t<schema>").append(escape(sequence.getSchema()))
 				.append("</schema>\n");
-		xml.append("\t<increment>")
+		xml.append(tab).append("\t<increment>")
 				.append(Format.toString(sequence.getIncrement()))
 				.append("</increment>\n");
-		xml.append("\t<min_value>")
+		xml.append(tab).append("\t<min_value>")
 				.append(Format.toString(sequence.getMinValue()))
 				.append("</min_value>\n");
-		xml.append("\t<max_value>")
+		xml.append(tab).append("\t<max_value>")
 				.append(Format.toString(sequence.getMaxValue()))
 				.append("</max_value>\n");
-		xml.append("\t<start>").append(Format.toString(sequence.getStart()))
+		xml.append(tab).append("\t<start>").append(Format.toString(sequence.getStart()))
 				.append("</start>\n");
-		xml.append("\t<cache>").append(Format.toString(sequence.getCache()))
+		xml.append(tab).append("\t<cache>").append(Format.toString(sequence.getCache()))
 				.append("</cache>\n");
-		xml.append("\t<cycle>").append(sequence.isCycle()).append("</cycle>\n");
-		xml.append("\t<order>").append(sequence.isOrder()).append("</order>\n");
-		xml.append("\t<description>").append(escape(sequence.getDescription()))
+		xml.append(tab).append("\t<cycle>").append(sequence.isCycle()).append("</cycle>\n");
+		xml.append(tab).append("\t<order>").append(sequence.isOrder()).append("</order>\n");
+		xml.append(tab).append("\t<description>").append(escape(sequence.getDescription()))
 				.append("</description>\n");
-		xml.append("\t<data_type>").append(escape(sequence.getDataType()))
+		xml.append(tab).append("\t<data_type>").append(escape(sequence.getDataType()))
 				.append("</data_type>\n");
-		xml.append("\t<decimal_size>")
+		xml.append(tab).append("\t<decimal_size>")
 				.append(Format.toString(sequence.getDecimalSize()))
 				.append("</decimal_size>\n");
 
-		xml.append("</sequence>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</sequence>\n");
 	}
 
-	private String createXML(TablespaceSet tablespaceSet,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final TablespaceSet tablespaceSet,
+			final PersistentContext context) {
+		xml.append(tab).append("<tablespace_set>\n");
 
-		xml.append("<tablespace_set>\n");
-
+		final String tab2 = tab + "\t";
 		for (Tablespace tablespace : tablespaceSet) {
-			xml.append(tab(this.createXML(tablespace, context)));
+			createXML(xml, tab2, tablespace, context);
 		}
 
-		xml.append("</tablespace_set>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</tablespace_set>\n");
 	}
 
-	private String createXML(Tablespace tablespace, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Tablespace tablespace, final PersistentContext context) {
+		xml.append(tab).append("<tablespace>\n");
 
-		xml.append("<tablespace>\n");
-
+		final String tab2 = tab + "\t";
 		if (context != null) {
-			xml.append("\t<id>").append(context.tablespaceMap.get(tablespace))
+			xml.append(tab2).append("<id>").append(context.tablespaceMap.get(tablespace))
 					.append("</id>\n");
 		}
-		xml.append("\t<name>").append(escape(tablespace.getName()))
+		xml.append(tab2).append("<name>").append(escape(tablespace.getName()))
 				.append("</name>\n");
 
+		final String tab3 = tab + "\t\t";
 		for (Map.Entry<Environment, TablespaceProperties> entry : tablespace
 				.getPropertiesMap().entrySet()) {
 			Environment environment = entry.getKey();
 			TablespaceProperties tablespaceProperties = entry.getValue();
 
-			xml.append("\t<properties>\n");
+			xml.append(tab2).append("<properties>\n");
 
-			xml.append("\t\t<environment_id>")
+			xml.append(tab3).append("<environment_id>")
 					.append(context.environmentMap.get(environment))
 					.append("</environment_id>\n");
 
 			if (tablespaceProperties instanceof DB2TablespaceProperties) {
-				xml.append(tab(tab(this
-						.createXML((DB2TablespaceProperties) tablespaceProperties))));
+				createXML(xml, tab3, (DB2TablespaceProperties) tablespaceProperties);
 
 			} else if (tablespaceProperties instanceof MySQLTablespaceProperties) {
-				xml.append(tab(tab(this
-						.createXML((MySQLTablespaceProperties) tablespaceProperties))));
+				createXML(xml, tab3, (MySQLTablespaceProperties) tablespaceProperties);
 
 			} else if (tablespaceProperties instanceof OracleTablespaceProperties) {
-				xml.append(tab(tab(this
-						.createXML((OracleTablespaceProperties) tablespaceProperties))));
+				createXML(xml, tab3, (OracleTablespaceProperties) tablespaceProperties);
 
 			} else if (tablespaceProperties instanceof PostgresTablespaceProperties) {
-				xml.append(tab(tab(this
-						.createXML((PostgresTablespaceProperties) tablespaceProperties))));
+				createXML(xml, tab3, (PostgresTablespaceProperties) tablespaceProperties);
+
 			}
 
-			xml.append("\t</properties>\n");
+			xml.append(tab2).append("</properties>\n");
 		}
 
-		xml.append("</tablespace>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</tablespace>\n");
 	}
 
-	private String createXML(DB2TablespaceProperties tablespace) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<buffer_pool_name>")
+ 	private void createXML(final StringBuilder xml, final String tab, final DB2TablespaceProperties tablespace) {
+		xml.append(tab).append("<buffer_pool_name>")
 				.append(escape(tablespace.getBufferPoolName()))
 				.append("</buffer_pool_name>\n");
-		xml.append("<container>").append(escape(tablespace.getContainer()))
+		xml.append(tab).append("<container>").append(escape(tablespace.getContainer()))
 				.append("</container>\n");
-		// xml.append("<container_device_path>").append(
+		// xml.append(tab).append("<container_device_path>").append(
 		// escape(tablespace.getContainerDevicePath())).append(
 		// "</container_device_path>\n");
-		// xml.append("<container_directory_path>").append(
+		// xml.append(tab).append("<container_directory_path>").append(
 		// escape(tablespace.getContainerDirectoryPath())).append(
 		// "</container_directory_path>\n");
-		// xml.append("<container_file_path>").append(
+		// xml.append(tab).append("<container_file_path>").append(
 		// escape(tablespace.getContainerFilePath())).append(
 		// "</container_file_path>\n");
-		// xml.append("<container_page_num>").append(
+		// xml.append(tab).append("<container_page_num>").append(
 		// escape(tablespace.getContainerPageNum())).append(
 		// "</container_page_num>\n");
-		xml.append("<extent_size>").append(escape(tablespace.getExtentSize()))
+		xml.append(tab).append("<extent_size>").append(escape(tablespace.getExtentSize()))
 				.append("</extent_size>\n");
-		xml.append("<managed_by>").append(escape(tablespace.getManagedBy()))
+		xml.append(tab).append("<managed_by>").append(escape(tablespace.getManagedBy()))
 				.append("</managed_by>\n");
-		xml.append("<page_size>").append(escape(tablespace.getPageSize()))
+		xml.append(tab).append("<page_size>").append(escape(tablespace.getPageSize()))
 				.append("</page_size>\n");
-		xml.append("<prefetch_size>")
+		xml.append(tab).append("<prefetch_size>")
 				.append(escape(tablespace.getPrefetchSize()))
 				.append("</prefetch_size>\n");
-		xml.append("<type>").append(escape(tablespace.getType()))
+		xml.append(tab).append("<type>").append(escape(tablespace.getType()))
 				.append("</type>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(MySQLTablespaceProperties tablespace) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<data_file>").append(escape(tablespace.getDataFile()))
+ 	private void createXML(final StringBuilder xml, final String tab, final MySQLTablespaceProperties tablespace) {
+		xml.append(tab).append("<data_file>").append(escape(tablespace.getDataFile()))
 				.append("</data_file>\n");
-		xml.append("<engine>").append(escape(tablespace.getEngine()))
+		xml.append(tab).append("<engine>").append(escape(tablespace.getEngine()))
 				.append("</engine>\n");
-		xml.append("<extent_size>").append(escape(tablespace.getExtentSize()))
+		xml.append(tab).append("<extent_size>").append(escape(tablespace.getExtentSize()))
 				.append("</extent_size>\n");
-		xml.append("<initial_size>")
+		xml.append(tab).append("<initial_size>")
 				.append(escape(tablespace.getInitialSize()))
 				.append("</initial_size>\n");
-		xml.append("<log_file_group>")
+		xml.append(tab).append("<log_file_group>")
 				.append(escape(tablespace.getLogFileGroup()))
 				.append("</log_file_group>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(OracleTablespaceProperties tablespace) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<auto_extend>").append(tablespace.isAutoExtend())
+ 	private void createXML(final StringBuilder xml, final String tab, final OracleTablespaceProperties tablespace) {
+		xml.append(tab).append("<auto_extend>").append(tablespace.isAutoExtend())
 				.append("</auto_extend>\n");
-		xml.append("<auto_segment_space_management>")
+		xml.append(tab).append("<auto_segment_space_management>")
 				.append(tablespace.isAutoSegmentSpaceManagement())
 				.append("</auto_segment_space_management>\n");
-		xml.append("<logging>").append(tablespace.isLogging())
+		xml.append(tab).append("<logging>").append(tablespace.isLogging())
 				.append("</logging>\n");
-		xml.append("<offline>").append(tablespace.isOffline())
+		xml.append(tab).append("<offline>").append(tablespace.isOffline())
 				.append("</offline>\n");
-		xml.append("<temporary>").append(tablespace.isTemporary())
+		xml.append(tab).append("<temporary>").append(tablespace.isTemporary())
 				.append("</temporary>\n");
-		xml.append("<auto_extend_max_size>")
+		xml.append(tab).append("<auto_extend_max_size>")
 				.append(escape(tablespace.getAutoExtendMaxSize()))
 				.append("</auto_extend_max_size>\n");
-		xml.append("<auto_extend_size>")
+		xml.append(tab).append("<auto_extend_size>")
 				.append(escape(tablespace.getAutoExtendSize()))
 				.append("</auto_extend_size>\n");
-		xml.append("<data_file>").append(escape(tablespace.getDataFile()))
+		xml.append(tab).append("<data_file>").append(escape(tablespace.getDataFile()))
 				.append("</data_file>\n");
-		xml.append("<file_size>").append(escape(tablespace.getFileSize()))
+		xml.append(tab).append("<file_size>").append(escape(tablespace.getFileSize()))
 				.append("</file_size>\n");
-		xml.append("<initial>").append(escape(tablespace.getInitial()))
+		xml.append(tab).append("<initial>").append(escape(tablespace.getInitial()))
 				.append("</initial>\n");
-		xml.append("<max_extents>").append(escape(tablespace.getMaxExtents()))
+		xml.append(tab).append("<max_extents>").append(escape(tablespace.getMaxExtents()))
 				.append("</max_extents>\n");
-		xml.append("<min_extents>").append(escape(tablespace.getMinExtents()))
+		xml.append(tab).append("<min_extents>").append(escape(tablespace.getMinExtents()))
 				.append("</min_extents>\n");
-		xml.append("<minimum_extent_size>")
+		xml.append(tab).append("<minimum_extent_size>")
 				.append(escape(tablespace.getMinimumExtentSize()))
 				.append("</minimum_extent_size>\n");
-		xml.append("<next>").append(escape(tablespace.getNext()))
+		xml.append(tab).append("<next>").append(escape(tablespace.getNext()))
 				.append("</next>\n");
-		xml.append("<pct_increase>")
+		xml.append(tab).append("<pct_increase>")
 				.append(escape(tablespace.getPctIncrease()))
 				.append("</pct_increase>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(PostgresTablespaceProperties tablespace) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<location>").append(escape(tablespace.getLocation()))
+ 	private void createXML(final StringBuilder xml, final String tab, final PostgresTablespaceProperties tablespace) {
+		xml.append(tab).append("<location>").append(escape(tablespace.getLocation()))
 				.append("</location>\n");
-		xml.append("<owner>").append(escape(tablespace.getOwner()))
+		xml.append(tab).append("<owner>").append(escape(tablespace.getOwner()))
 				.append("</owner>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(Settings settings, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Settings settings, final PersistentContext context) {
+		xml.append(tab).append("<settings>\n");
 
-		xml.append("<settings>\n");
-
-		xml.append("\t<database>").append(escape(settings.getDatabase()))
+		final String tab2 = tab + "\t";
+		xml.append(tab2).append("<database>").append(escape(settings.getDatabase()))
 				.append("</database>\n");
-		xml.append("\t<capital>").append(settings.isCapital())
+		xml.append(tab2).append("<capital>").append(settings.isCapital())
 				.append("</capital>\n");
-		xml.append("\t<table_style>").append(escape(settings.getTableStyle()))
+		xml.append(tab2).append("<table_style>").append(escape(settings.getTableStyle()))
 				.append("</table_style>\n");
-		xml.append("\t<notation>").append(escape(settings.getNotation()))
+		xml.append(tab2).append("<notation>").append(escape(settings.getNotation()))
 				.append("</notation>\n");
-		xml.append("\t<notation_level>").append(settings.getNotationLevel())
+		xml.append(tab2).append("<notation_level>").append(settings.getNotationLevel())
 				.append("</notation_level>\n");
-		xml.append("\t<notation_expand_group>")
+		xml.append(tab2).append("<notation_expand_group>")
 				.append(settings.isNotationExpandGroup())
 				.append("</notation_expand_group>\n");
-		xml.append("\t<view_mode>").append(settings.getViewMode())
+		xml.append(tab2).append("<view_mode>").append(settings.getViewMode())
 				.append("</view_mode>\n");
-		xml.append("\t<outline_view_mode>")
+		xml.append(tab2).append("<outline_view_mode>")
 				.append(settings.getOutlineViewMode())
 				.append("</outline_view_mode>\n");
-		xml.append("\t<view_order_by>").append(settings.getViewOrderBy())
+		xml.append(tab2).append("<view_order_by>").append(settings.getViewOrderBy())
 				.append("</view_order_by>\n");
 
-		xml.append("\t<auto_ime_change>").append(settings.isAutoImeChange())
+		xml.append(tab2).append("<auto_ime_change>").append(settings.isAutoImeChange())
 				.append("</auto_ime_change>\n");
-		xml.append("\t<validate_physical_name>")
+		xml.append(tab2).append("<validate_physical_name>")
 				.append(settings.isValidatePhysicalName())
 				.append("</validate_physical_name>\n");
-		xml.append("\t<use_bezier_curve>").append(settings.isUseBezierCurve())
+		xml.append(tab2).append("<use_bezier_curve>").append(settings.isUseBezierCurve())
 				.append("</use_bezier_curve>\n");
-		xml.append("\t<suspend_validator>")
+		xml.append(tab2).append("<suspend_validator>")
 				.append(settings.isSuspendValidator())
 				.append("</suspend_validator>\n");
 
-		xml.append(tab(this.createXML(settings.getExportSetting(), context)));
-		xml.append(tab(this.createXML(settings.getCategorySetting(), context)));
-		xml.append(tab(this.createXML(settings.getTranslationSetting(), context)));
-		xml.append(tab(this.createXML(settings.getModelProperties(), context)));
-		xml.append(tab(this.createXML(
-				(TableProperties) settings.getTableViewProperties(), context)));
-		xml.append(tab(this.createXML(settings.getEnvironmentSetting(), context)));
+		createXML(xml, tab2, settings.getExportSetting(), context);
+		createXML(xml, tab2, settings.getCategorySetting(), context);
+		createXML(xml, tab2, settings.getTranslationSetting(), context);
+		createXML(xml, tab2, settings.getModelProperties(), context);
+		createXML(xml, tab2, (TableProperties) settings.getTableViewProperties(), context);
+		createXML(xml, tab2, settings.getEnvironmentSetting(), context);
 
-		xml.append("</settings>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</settings>\n");
 	}
 
-	private String createXML(ColumnGroup columnGroup, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ColumnGroup columnGroup, final PersistentContext context) {
+		xml.append(tab).append("<column_group>\n");
 
-		xml.append("<column_group>\n");
-
-		xml.append("\t<id>").append(context.columnGroupMap.get(columnGroup))
+		final String tab2 = tab + "\t";
+		xml.append(tab2).append("<id>").append(context.columnGroupMap.get(columnGroup))
 				.append("</id>\n");
 
-		xml.append("\t<group_name>").append(escape(columnGroup.getGroupName()))
+		xml.append(tab2).append("<group_name>").append(escape(columnGroup.getGroupName()))
 				.append("</group_name>\n");
 
-		xml.append("\t<columns>\n");
+		xml.append(tab2).append("<columns>\n");
 
+		final String tab3 = tab + "\t\t";
 		for (NormalColumn normalColumn : columnGroup.getColumns()) {
-			xml.append(tab(tab(this.createXML(normalColumn, context))));
+			createXML(xml, tab3, normalColumn, context);
 		}
 
-		xml.append("\t</columns>\n");
+		xml.append(tab2).append("</columns>\n");
 
-		xml.append("</column_group>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</column_group>\n");
 	}
 
-	private String createXML(TestData testData, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final TestData testData, final PersistentContext context) {
+		xml.append(tab).append("<test_data>\n");
 
-		xml.append("<test_data>\n");
-
-		xml.append("\t<name>").append(escape(testData.getName()))
+		final String tab2 = tab + "\t";
+		xml.append(tab2).append("<name>").append(escape(testData.getName()))
 				.append("</name>\n");
-		xml.append("\t<export_order>").append(testData.getExportOrder())
+		xml.append(tab2).append("<export_order>").append(testData.getExportOrder())
 				.append("</export_order>\n");
 
 		Map<ERTable, TableTestData> tableTestDataMap = testData
@@ -699,666 +619,572 @@ public class PersistentXmlImpl extends Persistent {
 			ERTable table = entry.getKey();
 			TableTestData tableTestData = entry.getValue();
 
-			xml.append(tab(createXML(tableTestData, table, context)));
+			createXML(xml, tab2, tableTestData, table, context);
 		}
 
-		xml.append("</test_data>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</test_data>\n");
 	}
 
-	private String createXML(TableTestData tableTestData, ERTable table,
+ 	private void createXML(final StringBuilder xml, final String tab, final TableTestData tableTestData, final ERTable table,
 			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+		xml.append(tab).append("<table_test_data>\n");
 
-		xml.append("<table_test_data>\n");
-
-		xml.append("\t<table_id>").append(context.nodeElementMap.get(table))
+		xml.append(tab).append("\t<table_id>").append(context.nodeElementMap.get(table))
 				.append("</table_id>\n");
 
 		DirectTestData directTestData = tableTestData.getDirectTestData();
 		RepeatTestData repeatTestData = tableTestData.getRepeatTestData();
 
-		xml.append(tab(createXML(directTestData, table, context)));
-		xml.append(tab(createXML(repeatTestData, table, context)));
+		final String tab2 = tab + "\t";
+		createXML(xml, tab2, directTestData, table, context);
+		createXML(xml, tab2, repeatTestData, table, context);
 
-		xml.append("</table_test_data>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</table_test_data>\n");
 	}
 
-	private String createXML(DirectTestData directTestData, ERTable table,
+ 	private void createXML(final StringBuilder xml, final String tab, final DirectTestData directTestData, ERTable table,
 			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<direct_test_data>\n");
+		xml.append(tab).append("<direct_test_data>\n");
 
 		for (Map<NormalColumn, String> data : directTestData.getDataList()) {
-			xml.append("\t<data>\n");
+			xml.append(tab).append("\t<data>\n");
 			for (NormalColumn normalColumn : table.getExpandedColumns()) {
-				xml.append("\t\t<column_data>\n");
-				xml.append("\t\t\t<column_id>")
+				xml.append(tab).append("\t\t<column_data>\n");
+				xml.append(tab).append("\t\t\t<column_id>")
 						.append(context.columnMap.get(normalColumn))
 						.append("</column_id>\n");
-				xml.append("\t\t\t<value>")
+				xml.append(tab).append("\t\t\t<value>")
 						.append(escape(data.get(normalColumn)))
 						.append("</value>\n");
-				xml.append("\t\t</column_data>\n");
+				xml.append(tab).append("\t\t</column_data>\n");
 			}
-			xml.append("\t</data>\n");
+			xml.append(tab).append("\t</data>\n");
 		}
 
-		xml.append("</direct_test_data>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</direct_test_data>\n");
 	}
 
-	private String createXML(RepeatTestData repeatTestData, ERTable table,
+ 	private void createXML(final StringBuilder xml, final String tab, final RepeatTestData repeatTestData, ERTable table,
 			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<repeat_test_data>\n");
-		xml.append("\t<test_data_num>").append(repeatTestData.getTestDataNum())
+		xml.append(tab).append("<repeat_test_data>\n");
+		xml.append(tab).append("\t<test_data_num>").append(repeatTestData.getTestDataNum())
 				.append("</test_data_num>\n");
-		xml.append("\t<data_def_list>\n");
+		xml.append(tab).append("\t<data_def_list>\n");
 
+		final String tab2 = tab + "\t";
 		for (NormalColumn normalColumn : table.getExpandedColumns()) {
-			xml.append(tab(tab(this.createXML(
+			createXML(xml, tab2,
 					repeatTestData.getDataDef(normalColumn), normalColumn,
-					context))));
+					context);
 		}
 
-		xml.append("\t</data_def_list>\n");
-		xml.append("</repeat_test_data>\n");
-
-		return xml.toString();
+		xml.append(tab).append("\t</data_def_list>\n");
+		xml.append(tab).append("</repeat_test_data>\n");
 	}
 
-	private String createXML(RepeatTestDataDef repeatTestDataDef,
+ 	private void createXML(final StringBuilder xml, final String tab, final RepeatTestDataDef repeatTestDataDef,
 			NormalColumn column, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
 		Integer columnId = context.columnMap.get(column);
 
 		if (columnId != null) {
-			xml.append("<data_def>\n");
-			xml.append("\t<column_id>").append(columnId)
+			xml.append(tab).append("<data_def>\n");
+			xml.append(tab).append("\t<column_id>").append(columnId)
 					.append("</column_id>\n");
-			xml.append("\t<type>").append(escape(repeatTestDataDef.getType()))
+			xml.append(tab).append("\t<type>").append(escape(repeatTestDataDef.getType()))
 					.append("</type>\n");
-			xml.append("\t<repeat_num>")
+			xml.append(tab).append("\t<repeat_num>")
 					.append(Format.toString((repeatTestDataDef.getRepeatNum())))
 					.append("</repeat_num>\n");
-			xml.append("\t<template>")
+			xml.append(tab).append("\t<template>")
 					.append(escape(repeatTestDataDef.getTemplate()))
 					.append("</template>\n");
-			xml.append("\t<from>")
+			xml.append(tab).append("\t<from>")
 					.append(Format.toString((repeatTestDataDef.getFrom())))
 					.append("</from>\n");
-			xml.append("\t<to>")
+			xml.append(tab).append("\t<to>")
 					.append(Format.toString((repeatTestDataDef.getTo())))
 					.append("</to>\n");
-			xml.append("\t<increment>")
+			xml.append(tab).append("\t<increment>")
 					.append(Format.toString((repeatTestDataDef.getIncrement())))
 					.append("</increment>\n");
 			for (String select : repeatTestDataDef.getSelects()) {
-				xml.append("\t<select>").append(escape(select))
+				xml.append(tab).append("\t<select>").append(escape(select))
 						.append("</select>\n");
 			}
-			xml.append("\t<modified_values>\n");
+			xml.append(tab).append("\t<modified_values>\n");
 			for (Integer modifiedRow : repeatTestDataDef.getModifiedValues()
 					.keySet()) {
-				xml.append("\t\t<modified_value>\n");
-				xml.append("\t\t\t<row>").append(modifiedRow)
+				xml.append(tab).append("\t\t<modified_value>\n");
+				xml.append(tab).append("\t\t\t<row>").append(modifiedRow)
 						.append("</row>\n");
-				xml.append("\t\t\t<value>")
+				xml.append(tab).append("\t\t\t<value>")
 						.append(escape(repeatTestDataDef.getModifiedValues()
 								.get(modifiedRow))).append("</value>\n");
-				xml.append("\t\t</modified_value>\n");
+				xml.append(tab).append("\t\t</modified_value>\n");
 			}
-			xml.append("\t</modified_values>\n");
+			xml.append(tab).append("\t</modified_values>\n");
 
-			xml.append("</data_def>\n");
+			xml.append(tab).append("</data_def>\n");
 		}
-
-		return xml.toString();
 	}
 
-	private String createXML(ChangeTrackingList changeTrackingList) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ChangeTrackingList changeTrackingList) {
+		xml.append(tab).append("<change_tracking_list>\n");
 
-		xml.append("<change_tracking_list>\n");
-
+		final String tab2 = tab + "\t";
 		for (ChangeTracking changeTracking : changeTrackingList.getList()) {
-			xml.append(tab(this.createXML(changeTracking)));
+			createXML(xml, tab2, changeTracking);
 		}
 
-		xml.append("</change_tracking_list>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</change_tracking_list>\n");
 	}
 
-	private String createXML(ChangeTracking changeTracking) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ChangeTracking changeTracking) {
+		xml.append(tab).append("<change_tracking>\n");
 
-		xml.append("<change_tracking>\n");
-
-		xml.append("\t<updated_date>")
+		final String tab2 = tab + "\t";
+		xml.append(tab2).append("<updated_date>")
 				.append(DATE_FORMAT.format(changeTracking.getUpdatedDate()))
 				.append("</updated_date>\n");
-		xml.append("\t<comment>").append(escape(changeTracking.getComment()))
+		xml.append(tab2).append("<comment>").append(escape(changeTracking.getComment()))
 				.append("</comment>\n");
 
 		PersistentContext context = this
 				.getChangeTrackingContext(changeTracking);
 
-		xml.append(tab(this.createXML(changeTracking.getDiagramContents(),
-				context)));
+		createXML(xml, tab2, changeTracking.getDiagramContents(),
+				context);
 
-		xml.append("</change_tracking>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</change_tracking>\n");
 	}
 
-	private String createXML(ExportSetting exportSetting,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ExportSetting exportSetting,
+			final PersistentContext context) {
+		xml.append(tab).append("<export_setting>\n");
 
-		xml.append("<export_setting>\n");
-
-		xml.append("\t<category_name_to_export>")
+		xml.append(tab).append("\t<category_name_to_export>")
 				.append(escape(exportSetting.getCategoryNameToExport()))
 				.append("</category_name_to_export>\n");
-		xml.append("\t<ddl_output>")
+		xml.append(tab).append("\t<ddl_output>")
 				.append(escape(exportSetting.getDdlOutput()))
 				.append("</ddl_output>\n");
-		xml.append("\t<excel_output>")
+		xml.append(tab).append("\t<excel_output>")
 				.append(escape(exportSetting.getExcelOutput()))
 				.append("</excel_output>\n");
-		xml.append("\t<excel_template>")
+		xml.append(tab).append("\t<excel_template>")
 				.append(escape(exportSetting.getExcelTemplate()))
 				.append("</excel_template>\n");
-		xml.append("\t<image_output>")
+		xml.append(tab).append("\t<image_output>")
 				.append(escape(exportSetting.getImageOutput()))
 				.append("</image_output>\n");
-		xml.append("\t<put_diagram_on_excel>")
+		xml.append(tab).append("\t<put_diagram_on_excel>")
 				.append(exportSetting.isPutERDiagramOnExcel())
 				.append("</put_diagram_on_excel>\n");
-		xml.append("\t<use_logical_name_as_sheet>")
+		xml.append(tab).append("\t<use_logical_name_as_sheet>")
 				.append(exportSetting.isUseLogicalNameAsSheet())
 				.append("</use_logical_name_as_sheet>\n");
-		xml.append("\t<open_after_saved>")
+		xml.append(tab).append("\t<open_after_saved>")
 				.append(exportSetting.isOpenAfterSaved())
 				.append("</open_after_saved>\n");
 
 		DDLTarget ddlTarget = exportSetting.getDdlTarget();
 
-		xml.append("\t<create_comment>").append(ddlTarget.createComment)
+		xml.append(tab).append("\t<create_comment>").append(ddlTarget.createComment)
 				.append("</create_comment>\n");
-		xml.append("\t<create_foreignKey>").append(ddlTarget.createForeignKey)
+		xml.append(tab).append("\t<create_foreignKey>").append(ddlTarget.createForeignKey)
 				.append("</create_foreignKey>\n");
-		xml.append("\t<create_index>").append(ddlTarget.createIndex)
+		xml.append(tab).append("\t<create_index>").append(ddlTarget.createIndex)
 				.append("</create_index>\n");
-		xml.append("\t<create_sequence>").append(ddlTarget.createSequence)
+		xml.append(tab).append("\t<create_sequence>").append(ddlTarget.createSequence)
 				.append("</create_sequence>\n");
-		xml.append("\t<create_table>").append(ddlTarget.createTable)
+		xml.append(tab).append("\t<create_table>").append(ddlTarget.createTable)
 				.append("</create_table>\n");
-		xml.append("\t<create_tablespace>").append(ddlTarget.createTablespace)
+		xml.append(tab).append("\t<create_tablespace>").append(ddlTarget.createTablespace)
 				.append("</create_tablespace>\n");
-		xml.append("\t<create_trigger>").append(ddlTarget.createTrigger)
+		xml.append(tab).append("\t<create_trigger>").append(ddlTarget.createTrigger)
 				.append("</create_trigger>\n");
-		xml.append("\t<create_view>").append(ddlTarget.createView)
+		xml.append(tab).append("\t<create_view>").append(ddlTarget.createView)
 				.append("</create_view>\n");
 
-		xml.append("\t<drop_index>").append(ddlTarget.dropIndex)
+		xml.append(tab).append("\t<drop_index>").append(ddlTarget.dropIndex)
 				.append("</drop_index>\n");
-		xml.append("\t<drop_sequence>").append(ddlTarget.dropSequence)
+		xml.append(tab).append("\t<drop_sequence>").append(ddlTarget.dropSequence)
 				.append("</drop_sequence>\n");
-		xml.append("\t<drop_table>").append(ddlTarget.dropTable)
+		xml.append(tab).append("\t<drop_table>").append(ddlTarget.dropTable)
 				.append("</drop_table>\n");
-		xml.append("\t<drop_tablespace>").append(ddlTarget.dropTablespace)
+		xml.append(tab).append("\t<drop_tablespace>").append(ddlTarget.dropTablespace)
 				.append("</drop_tablespace>\n");
-		xml.append("\t<drop_trigger>").append(ddlTarget.dropTrigger)
+		xml.append(tab).append("\t<drop_trigger>").append(ddlTarget.dropTrigger)
 				.append("</drop_trigger>\n");
-		xml.append("\t<drop_view>").append(ddlTarget.dropView)
+		xml.append(tab).append("\t<drop_view>").append(ddlTarget.dropView)
 				.append("</drop_view>\n");
 
-		xml.append("\t<inline_column_comment>")
+		xml.append(tab).append("\t<inline_column_comment>")
 				.append(ddlTarget.inlineColumnComment)
 				.append("</inline_column_comment>\n");
-		xml.append("\t<inline_table_comment>")
+		xml.append(tab).append("\t<inline_table_comment>")
 				.append(ddlTarget.inlineTableComment)
 				.append("</inline_table_comment>\n");
 
-		xml.append("\t<comment_value_description>")
+		xml.append(tab).append("\t<comment_value_description>")
 				.append(ddlTarget.commentValueDescription)
 				.append("</comment_value_description>\n");
-		xml.append("\t<comment_value_logical_name>")
+		xml.append(tab).append("\t<comment_value_logical_name>")
 				.append(ddlTarget.commentValueLogicalName)
 				.append("</comment_value_logical_name>\n");
-		xml.append("\t<comment_value_logical_name_description>")
+		xml.append(tab).append("\t<comment_value_logical_name_description>")
 				.append(ddlTarget.commentValueLogicalNameDescription)
 				.append("</comment_value_logical_name_description>\n");
-		xml.append("\t<comment_replace_line_feed>")
+		xml.append(tab).append("\t<comment_replace_line_feed>")
 				.append(ddlTarget.commentReplaceLineFeed)
 				.append("</comment_replace_line_feed>\n");
-		xml.append("\t<comment_replace_string>")
+		xml.append(tab).append("\t<comment_replace_string>")
 				.append(Format.null2blank(ddlTarget.commentReplaceString))
 				.append("</comment_replace_string>\n");
 
-		xml.append(tab(this.createXML(exportSetting.getExportJavaSetting(),
-				context)));
-		xml.append(tab(this.createXML(exportSetting.getExportTestDataSetting(),
-				context)));
+		final String tab2 = tab + "\t";
+		createXML(xml, tab2, exportSetting.getExportJavaSetting(), context);
+		createXML(xml, tab2, exportSetting.getExportTestDataSetting(), context);
 
-		xml.append("</export_setting>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</export_setting>\n");
 	}
 
-	private String createXML(ExportJavaSetting exportJavaSetting,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ExportJavaSetting exportJavaSetting,
+			final PersistentContext context) {
+		xml.append(tab).append("<export_java_setting>\n");
 
-		xml.append("<export_java_setting>\n");
-
-		xml.append("\t<java_output>")
+		xml.append(tab).append("\t<java_output>")
 				.append(escape(exportJavaSetting.getJavaOutput()))
 				.append("</java_output>\n");
-		xml.append("\t<package_name>")
+		xml.append(tab).append("\t<package_name>")
 				.append(escape(exportJavaSetting.getPackageName()))
 				.append("</package_name>\n");
-		xml.append("\t<class_name_suffix>")
+		xml.append(tab).append("\t<class_name_suffix>")
 				.append(escape(exportJavaSetting.getClassNameSuffix()))
 				.append("</class_name_suffix>\n");
-		xml.append("\t<src_file_encoding>")
+		xml.append(tab).append("\t<src_file_encoding>")
 				.append(escape(exportJavaSetting.getSrcFileEncoding()))
 				.append("</src_file_encoding>\n");
-		xml.append("\t<with_hibernate>")
+		xml.append(tab).append("\t<with_hibernate>")
 				.append(exportJavaSetting.isWithHibernate())
 				.append("</with_hibernate>\n");
 
-		xml.append("</export_java_setting>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</export_java_setting>\n");
 	}
 
-	private String createXML(ExportTestDataSetting exportTestDataSetting,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ExportTestDataSetting exportTestDataSetting,
+			final PersistentContext context) {
+		xml.append(tab).append("<export_testdata_setting>\n");
 
-		xml.append("<export_testdata_setting>\n");
-
-		xml.append("\t<file_encoding>")
+		xml.append(tab).append("\t<file_encoding>")
 				.append(escape(exportTestDataSetting.getExportFileEncoding()))
 				.append("</file_encoding>\n");
-		xml.append("\t<file_path>")
+		xml.append(tab).append("\t<file_path>")
 				.append(escape(exportTestDataSetting.getExportFilePath()))
 				.append("</file_path>\n");
-		xml.append("\t<format>")
+		xml.append(tab).append("\t<format>")
 				.append(exportTestDataSetting.getExportFormat())
 				.append("</format>\n");
 
-		xml.append("</export_testdata_setting>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</export_testdata_setting>\n");
 	}
 
-	private String createXML(CategorySetting categorySettings,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<category_settings>\n");
-		xml.append("\t<free_layout>").append(categorySettings.isFreeLayout())
+ 	private void createXML(final StringBuilder xml, final String tab, final CategorySetting categorySettings,
+			final PersistentContext context) {
+		xml.append(tab).append("<category_settings>\n");
+		xml.append(tab).append("\t<free_layout>").append(categorySettings.isFreeLayout())
 				.append("</free_layout>\n");
-		xml.append("\t<show_referred_tables>")
+		xml.append(tab).append("\t<show_referred_tables>")
 				.append(categorySettings.isShowReferredTables())
 				.append("</show_referred_tables>\n");
 
-		xml.append("\t<categories>\n");
+		xml.append(tab).append("\t<categories>\n");
 
+		final String tab2 = tab + "\t";
 		for (Category category : categorySettings.getAllCategories()) {
-			xml.append(tab(tab(this.createXML(category,
-					categorySettings.isSelected(category), context))));
+			createXML(xml, tab2, category,
+					categorySettings.isSelected(category), context);
 		}
 
-		xml.append("\t</categories>\n");
+		xml.append(tab).append("\t</categories>\n");
 
-		xml.append("</category_settings>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</category_settings>\n");
 	}
 
-	private String createXML(TranslationSetting translationSettings,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<translation_settings>\n");
-		xml.append("\t<use>").append(translationSettings.isUse())
+ 	private void createXML(final StringBuilder xml, final String tab, final TranslationSetting translationSettings,
+			final PersistentContext context) {
+		xml.append(tab).append("<translation_settings>\n");
+		xml.append(tab).append("\t<use>").append(translationSettings.isUse())
 				.append("</use>\n");
 
-		xml.append("\t<translations>\n");
+		xml.append(tab).append("\t<translations>\n");
 
+		final String tab2 = tab + "\t";
 		for (String translation : translationSettings.getSelectedTranslations()) {
-			xml.append(tab(tab(this.createTranslationXML(translation, context))));
+			createTranslationXML(xml, tab2, translation, context);
 		}
 
-		xml.append("\t</translations>\n");
+		xml.append(tab).append("\t</translations>\n");
 
-		xml.append("</translation_settings>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</translation_settings>\n");
 	}
 
-	private String createXML(Category category, boolean isSelected,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Category category, final boolean isSelected,
+			final PersistentContext context) {
+		xml.append(tab).append("<category>\n");
 
-		xml.append("<category>\n");
+		createXMLNodeElement(xml, tab + "\t", category, context);
 
-		xml.append(tab(this.createXMLNodeElement(category, context)));
-
-		xml.append("\t<name>").append(escape(category.getName()))
+		xml.append(tab).append("\t<name>").append(escape(category.getName()))
 				.append("</name>\n");
-		xml.append("\t<selected>").append(isSelected).append("</selected>\n");
+		xml.append(tab).append("\t<selected>").append(isSelected).append("</selected>\n");
 
 		for (NodeElement nodeElement : category.getContents()) {
-			xml.append("\t<node_element>")
+			xml.append(tab).append("\t<node_element>")
 					.append(context.nodeElementMap.get(nodeElement))
 					.append("</node_element>\n");
 		}
 
-		xml.append("</category>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</category>\n");
 	}
 
-	private String createTranslationXML(String translation,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<translation>\n");
-		xml.append("\t<name>").append(escape(translation)).append("</name>\n");
-		xml.append("</translation>\n");
-
-		return xml.toString();
+	private void createTranslationXML(final StringBuilder xml, final String tab, final String translation, final PersistentContext context) {
+		xml.append(tab).append("<translation>\n");
+		xml.append(tab).append("\t<name>").append(escape(translation)).append("</name>\n");
+		xml.append(tab).append("</translation>\n");
 	}
 
-	private String createXML(NodeSet contents, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<contents>\n");
+ 	private void createXML(final StringBuilder xml, final String tab, final NodeSet contents, PersistentContext context) {
+		xml.append(tab).append("<contents>\n");
 
 		for (NodeElement content : contents) {
-			String subxml = null;
-
 			if (content instanceof ERTable) {
-				subxml = this.createXML((ERTable) content, context);
+				createXML(xml, tab + "\t", (ERTable) content, context);
 
 			} else if (content instanceof Note) {
-				subxml = this.createXML((Note) content, context);
+				createXML(xml, tab + "\t", (Note) content, context);
 
 			} else if (content instanceof View) {
-				subxml = this.createXML((View) content, context);
+				createXML(xml, tab + "\t", (View) content, context);
 
 			} else if (content instanceof InsertedImage) {
-				subxml = this.createXML((InsertedImage) content, context);
+				createXML(xml, tab + "\t", (InsertedImage) content, context);
 
 			}
-
-			xml.append(tab(subxml));
 		}
 
-		xml.append("</contents>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</contents>\n");
 	}
 
-	private String createXMLNodeElement(NodeElement nodeElement,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<id>")
+	private void createXMLNodeElement(final StringBuilder xml, final String tab, final NodeElement nodeElement,
+			final PersistentContext context) {
+		xml.append(tab).append("<id>")
 				.append(Format.toString(context.nodeElementMap.get(nodeElement)))
 				.append("</id>\n");
-		xml.append("<height>").append(nodeElement.getHeight())
+		xml.append(tab).append("<height>").append(nodeElement.getHeight())
 				.append("</height>\n");
-		xml.append("<width>").append(nodeElement.getWidth())
+		xml.append(tab).append("<width>").append(nodeElement.getWidth())
 				.append("</width>\n");
-		xml.append("\t<font_name>").append(escape(nodeElement.getFontName()))
+		xml.append(tab).append("<font_name>").append(escape(nodeElement.getFontName()))
 				.append("</font_name>\n");
-		xml.append("\t<font_size>").append(nodeElement.getFontSize())
+		xml.append(tab).append("<font_size>").append(nodeElement.getFontSize())
 				.append("</font_size>\n");
-		xml.append("<x>").append(nodeElement.getX()).append("</x>\n");
-		xml.append("<y>").append(nodeElement.getY()).append("</y>\n");
-		xml.append(this.createXMLColor(nodeElement.getColor()));
+		xml.append(tab).append("<x>").append(nodeElement.getX()).append("</x>\n");
+		xml.append(tab).append("<y>").append(nodeElement.getY()).append("</y>\n");
+		createXMLColor(xml, tab, nodeElement.getColor());
 
 		List<ConnectionElement> incomings = nodeElement.getIncomings();
-		xml.append(this.createXMLConnections(incomings, context));
-
-		return xml.toString();
+		createXMLConnections(xml, tab, incomings, context);
 	}
 
-	private String createXMLColor(int[] colors) {
-		StringBuilder xml = new StringBuilder();
-
+	private void createXMLColor(final StringBuilder xml, final String tab, int[] colors) {
 		if (colors != null) {
-			xml.append("<color>\n");
-			xml.append("\t<r>").append(colors[0]).append("</r>\n");
-			xml.append("\t<g>").append(colors[1]).append("</g>\n");
-			xml.append("\t<b>").append(colors[2]).append("</b>\n");
-			xml.append("</color>\n");
+			xml.append(tab).append("<color>\n");
+			xml.append(tab).append("\t<r>").append(colors[0]).append("</r>\n");
+			xml.append(tab).append("\t<g>").append(colors[1]).append("</g>\n");
+			xml.append(tab).append("\t<b>").append(colors[2]).append("</b>\n");
+			xml.append(tab).append("</color>\n");
 		}
-
-		return xml.toString();
 	}
 
-	private String createXML(ERTable table, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ERTable table, PersistentContext context) {
+		xml.append(tab).append("<table>\n");
 
-		xml.append("<table>\n");
+		final String tab2 = tab + "\t";
+		createXMLNodeElement(xml, tab2, table, context);
 
-		xml.append(tab(this.createXMLNodeElement(table, context)));
-
-		xml.append("\t<physical_name>").append(escape(table.getPhysicalName()))
+		xml.append(tab).append("\t<physical_name>").append(escape(table.getPhysicalName()))
 				.append("</physical_name>\n");
-		xml.append("\t<logical_name>").append(escape(table.getLogicalName()))
+		xml.append(tab).append("\t<logical_name>").append(escape(table.getLogicalName()))
 				.append("</logical_name>\n");
-		xml.append("\t<description>").append(escape(table.getDescription()))
+		xml.append(tab).append("\t<description>").append(escape(table.getDescription()))
 				.append("</description>\n");
-		xml.append("\t<constraint>").append(escape(table.getConstraint()))
+		xml.append(tab).append("\t<constraint>").append(escape(table.getConstraint()))
 				.append("</constraint>\n");
-		xml.append("\t<primary_key_name>")
+		xml.append(tab).append("\t<primary_key_name>")
 				.append(escape(table.getPrimaryKeyName()))
 				.append("</primary_key_name>\n");
-		xml.append("\t<option>").append(escape(table.getOption()))
+		xml.append(tab).append("\t<option>").append(escape(table.getOption()))
 				.append("</option>\n");
 
 		List<Column> columns = table.getColumns();
-		xml.append(tab(this.createXMLColumns(columns, context)));
+		createXMLColumns(xml, tab2, columns, context);
 
 		List<Index> indexes = table.getIndexes();
-		xml.append(tab(this.createXMLIndexes(indexes, context)));
+		createXMLIndexes(xml, tab2, indexes, context);
 
 		List<ComplexUniqueKey> complexUniqueKeyList = table
 				.getComplexUniqueKeyList();
-		xml.append(tab(this.createXMLComplexUniqueKeyList(complexUniqueKeyList,
-				context)));
+		createXMLComplexUniqueKeyList(xml, tab2, complexUniqueKeyList,
+				context);
 
 		TableProperties tableProperties = (TableProperties) table
 				.getTableViewProperties();
-		xml.append(tab(this.createXML(tableProperties, context)));
+		createXML(xml, tab2, tableProperties, context);
 
-		xml.append("</table>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</table>\n");
 	}
 
-	private String createXML(View view, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final View view, final PersistentContext context) {
+		xml.append(tab).append("<view>\n");
 
-		xml.append("<view>\n");
+		final String tab2 = tab + "\t";
+		createXMLNodeElement(xml, tab2, view, context);
 
-		xml.append(tab(this.createXMLNodeElement(view, context)));
-
-		xml.append("\t<physical_name>").append(escape(view.getPhysicalName()))
+		xml.append(tab).append("\t<physical_name>").append(escape(view.getPhysicalName()))
 				.append("</physical_name>\n");
-		xml.append("\t<logical_name>").append(escape(view.getLogicalName()))
+		xml.append(tab).append("\t<logical_name>").append(escape(view.getLogicalName()))
 				.append("</logical_name>\n");
-		xml.append("\t<description>").append(escape(view.getDescription()))
+		xml.append(tab).append("\t<description>").append(escape(view.getDescription()))
 				.append("</description>\n");
-		xml.append("\t<sql>").append(escape(view.getSql())).append("</sql>\n");
+		xml.append(tab).append("\t<sql>").append(escape(view.getSql())).append("</sql>\n");
 
 		List<Column> columns = view.getColumns();
-		xml.append(tab(this.createXMLColumns(columns, context)));
+		createXMLColumns(xml, tab2, columns, context);
 
 		ViewProperties viewProperties = (ViewProperties) view
 				.getTableViewProperties();
-		xml.append(tab(this.createXML(viewProperties, context)));
+		createXML(xml, tab2, viewProperties, context);
 
-		xml.append("</view>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</view>\n");
 	}
 
-	private String createXML(ModelProperties modelProperties,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final ModelProperties modelProperties,
+			final PersistentContext context) {
+		xml.append(tab).append("<model_properties>\n");
 
-		xml.append("<model_properties>\n");
+		final String tab2 = tab + "\t";
+		createXMLNodeElement(xml, tab2, modelProperties, context);
 
-		xml.append(tab(this.createXMLNodeElement(modelProperties, context)));
-
-		xml.append("\t<display>").append(modelProperties.isDisplay())
+		xml.append(tab).append("\t<display>").append(modelProperties.isDisplay())
 				.append("</display>\n");
-		xml.append("\t<creation_date>")
+		xml.append(tab).append("\t<creation_date>")
 				.append(DATE_FORMAT.format(modelProperties.getCreationDate()))
 				.append("</creation_date>\n");
-		xml.append("\t<updated_date>")
+		xml.append(tab).append("\t<updated_date>")
 				.append(DATE_FORMAT.format(modelProperties.getUpdatedDate()))
 				.append("</updated_date>\n");
 
 		for (NameValue property : modelProperties.getProperties()) {
-			xml.append(tab(this.createXML(property, context)));
+			createXML(xml, tab2, property, context);
 		}
 
-		xml.append("</model_properties>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</model_properties>\n");
 	}
 
-	private String createXML(NameValue property, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final NameValue property, PersistentContext context) {
+		xml.append(tab).append("<model_property>\n");
 
-		xml.append("<model_property>\n");
-
-		xml.append("\t<name>").append(escape(property.getName()))
+		xml.append(tab).append("\t<name>").append(escape(property.getName()))
 				.append("</name>\n");
-		xml.append("\t<value>").append(escape(property.getValue()))
+		xml.append(tab).append("\t<value>").append(escape(property.getValue()))
 				.append("</value>\n");
 
-		xml.append("</model_property>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</model_property>\n");
 	}
 
-	private String createXML(Note note, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Note note, PersistentContext context) {
+		xml.append(tab).append("<note>\n");
 
-		xml.append("<note>\n");
-
-		xml.append(tab(this.createXMLNodeElement(note, context)));
-		xml.append("\t<text>").append(escape(note.getText()))
+		final String tab2 = tab + "\t";
+		createXMLNodeElement(xml, tab2, note, context);
+		xml.append(tab).append("\t<text>").append(escape(note.getText()))
 				.append("</text>\n");
 
-		xml.append("</note>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</note>\n");
 	}
 
-	private String createXML(InsertedImage insertedImage,
+ 	private void createXML(final StringBuilder xml, final String tab, final InsertedImage insertedImage,
 			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+		xml.append(tab).append("<image>\n");
 
-		xml.append("<image>\n");
-
-		xml.append(tab(this.createXMLNodeElement(insertedImage, context)));
-		xml.append("\t<data>").append(insertedImage.getBase64EncodedData())
+		final String tab2 = tab + "\t";
+		createXMLNodeElement(xml, tab2, insertedImage, context);
+		xml.append(tab).append("\t<data>").append(insertedImage.getBase64EncodedData())
 				.append("</data>\n");
-		xml.append("\t<hue>").append(insertedImage.getHue()).append("</hue>\n");
-		xml.append("\t<saturation>").append(insertedImage.getSaturation())
+		xml.append(tab).append("\t<hue>").append(insertedImage.getHue()).append("</hue>\n");
+		xml.append(tab).append("\t<saturation>").append(insertedImage.getSaturation())
 				.append("</saturation>\n");
-		xml.append("\t<brightness>").append(insertedImage.getBrightness())
+		xml.append(tab).append("\t<brightness>").append(insertedImage.getBrightness())
 				.append("</brightness>\n");
-		xml.append("\t<alpha>").append(insertedImage.getAlpha())
+		xml.append(tab).append("\t<alpha>").append(insertedImage.getAlpha())
 				.append("</alpha>\n");
-		xml.append("\t<fix_aspect_ratio>")
+		xml.append(tab).append("\t<fix_aspect_ratio>")
 				.append(insertedImage.isFixAspectRatio())
 				.append("</fix_aspect_ratio>\n");
 
-		xml.append("</image>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</image>\n");
 	}
 
-	private String createXMLColumns(List<Column> columns,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+	private void createXMLColumns(final StringBuilder xml, final String tab, final List<Column> columns,
+			final PersistentContext context) {
+		xml.append(tab).append("<columns>\n");
 
-		xml.append("<columns>\n");
-
+		final String tab2 = tab + "\t";
 		for (Column column : columns) {
 
 			if (column instanceof ColumnGroup) {
-				xml.append(tab(this.createXMLId((ColumnGroup) column, context)));
+				createXMLId(xml, tab2, (ColumnGroup) column, context);
 
 			} else if (column instanceof NormalColumn) {
-				xml.append(tab(this.createXML((NormalColumn) column, context)));
+				createXML(xml, tab2, (NormalColumn) column, context);
 
 			}
 		}
 
-		xml.append("</columns>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</columns>\n");
 	}
 
-	private String createXMLId(ColumnGroup columnGroup,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<column_group>")
+	private void createXMLId(final StringBuilder xml, final String tab, final ColumnGroup columnGroup,
+			final PersistentContext context) {
+		xml.append(tab).append("<column_group>")
 				.append(context.columnGroupMap.get(columnGroup))
 				.append("</column_group>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(NormalColumn normalColumn,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<normal_column>\n");
+ 	private void createXML(final StringBuilder xml, final String tab, final NormalColumn normalColumn,
+			final PersistentContext context) {
+		xml.append(tab).append("<normal_column>\n");
 
 		Integer wordId = null;
 
 		if (context != null) {
 			wordId = context.wordMap.get(normalColumn.getWord());
 			if (wordId != null) {
-				xml.append("\t<word_id>").append(wordId).append("</word_id>\n");
+				xml.append(tab).append("\t<word_id>").append(wordId).append("</word_id>\n");
 			}
 
-			xml.append("\t<id>").append(context.columnMap.get(normalColumn))
+			xml.append(tab).append("\t<id>").append(context.columnMap.get(normalColumn))
 					.append("</id>\n");
 			for (NormalColumn referencedColumn : normalColumn
 					.getReferencedColumnList()) {
-				xml.append("\t<referenced_column>")
+				xml.append(tab).append("\t<referenced_column>")
 						.append(Format.toString(context.columnMap
 								.get(referencedColumn)))
 						.append("</referenced_column>\n");
 			}
 			for (Relation relation : normalColumn.getRelationList()) {
-				xml.append("\t<relation>")
+				xml.append(tab).append("\t<relation>")
 						.append(context.connectionMap.get(relation))
 						.append("</relation>\n");
 			}
@@ -1369,338 +1195,283 @@ public class PersistentXmlImpl extends Persistent {
 		String physicalName = normalColumn.getForeignKeyPhysicalName();
 		SqlType sqlType = normalColumn.getType();
 
-		xml.append("\t<description>").append(escape(description))
+		xml.append(tab).append("\t<description>").append(escape(description))
 				.append("</description>\n");
-		xml.append("\t<unique_key_name>")
+		xml.append(tab).append("\t<unique_key_name>")
 				.append(escape(normalColumn.getUniqueKeyName()))
 				.append("</unique_key_name>\n");
-		xml.append("\t<logical_name>").append(escape(logicalName))
+		xml.append(tab).append("\t<logical_name>").append(escape(logicalName))
 				.append("</logical_name>\n");
-		xml.append("\t<physical_name>").append(escape(physicalName))
+		xml.append(tab).append("\t<physical_name>").append(escape(physicalName))
 				.append("</physical_name>\n");
 
 		String type = "";
 		if (sqlType != null) {
 			type = sqlType.getId();
 		}
-		xml.append("\t<type>").append(type).append("</type>\n");
+		xml.append(tab).append("\t<type>").append(type).append("</type>\n");
 
-		xml.append("\t<constraint>")
+		xml.append(tab).append("\t<constraint>")
 				.append(escape(normalColumn.getConstraint()))
 				.append("</constraint>\n");
-		xml.append("\t<default_value>")
+		xml.append(tab).append("\t<default_value>")
 				.append(escape(normalColumn.getDefaultValue()))
 				.append("</default_value>\n");
 
-		xml.append("\t<auto_increment>").append(normalColumn.isAutoIncrement())
+		xml.append(tab).append("\t<auto_increment>").append(normalColumn.isAutoIncrement())
 				.append("</auto_increment>\n");
-		xml.append("\t<foreign_key>").append(normalColumn.isForeignKey())
+		xml.append(tab).append("\t<foreign_key>").append(normalColumn.isForeignKey())
 				.append("</foreign_key>\n");
-		xml.append("\t<not_null>").append(normalColumn.isNotNull())
+		xml.append(tab).append("\t<not_null>").append(normalColumn.isNotNull())
 				.append("</not_null>\n");
-		xml.append("\t<primary_key>").append(normalColumn.isPrimaryKey())
+		xml.append(tab).append("\t<primary_key>").append(normalColumn.isPrimaryKey())
 				.append("</primary_key>\n");
-		xml.append("\t<unique_key>").append(normalColumn.isUniqueKey())
+		xml.append(tab).append("\t<unique_key>").append(normalColumn.isUniqueKey())
 				.append("</unique_key>\n");
 
-		xml.append("\t<character_set>")
+		xml.append(tab).append("\t<character_set>")
 				.append(escape(normalColumn.getCharacterSet()))
 				.append("</character_set>\n");
-		xml.append("\t<collation>").append(escape(normalColumn.getCollation()))
+		xml.append(tab).append("\t<collation>").append(escape(normalColumn.getCollation()))
 				.append("</collation>\n");
 
-		xml.append(tab(this.createXML(normalColumn.getAutoIncrementSetting())));
-		xml.append("</normal_column>\n");
-
-		return xml.toString();
+		createXML(xml, tab + "\t", normalColumn.getAutoIncrementSetting());
+		xml.append(tab).append("</normal_column>\n");
 	}
 
-	private String createXMLConnections(List<ConnectionElement> incomings,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+	private void createXMLConnections(final StringBuilder xml, final String tab, final List<ConnectionElement> incomings,
+			final PersistentContext context) {
+		xml.append(tab).append("<connections>\n");
 
-		xml.append("<connections>\n");
-
+		final String tab2 = tab + "\t";
 		for (ConnectionElement connection : incomings) {
 
 			if (connection instanceof CommentConnection) {
-				xml.append(tab(this.createXML((CommentConnection) connection,
-						context)));
+				createXML(xml, tab2, (CommentConnection) connection, context);
 
 			} else if (connection instanceof Relation) {
-				xml.append(tab(this.createXML((Relation) connection, context)));
+				createXML(xml, tab2, (Relation) connection, context);
 			}
 
 		}
 
-		xml.append("</connections>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</connections>\n");
 	}
 
-	private String createXMLConnectionElement(ConnectionElement connection,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<id>").append(context.connectionMap.get(connection))
+	private void createXMLConnectionElement(final StringBuilder xml, final String tab, final ConnectionElement connection,
+			final PersistentContext context) {
+		xml.append(tab).append("<id>").append(context.connectionMap.get(connection))
 				.append("</id>\n");
-		xml.append("<source>")
+		xml.append(tab).append("<source>")
 				.append(context.nodeElementMap.get(connection.getSource()))
 				.append("</source>\n");
-		xml.append("<target>")
+		xml.append(tab).append("<target>")
 				.append(context.nodeElementMap.get(connection.getTarget()))
 				.append("</target>\n");
 
+		final String tab2 = tab + "\t";
 		for (Bendpoint bendpoint : connection.getBendpoints()) {
-			xml.append(tab(this.createXML(bendpoint)));
+			createXML(xml, tab2, bendpoint);
 		}
-
-		return xml.toString();
 	}
 
-	private String createXML(Bendpoint bendpoint) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Bendpoint bendpoint) {
+		xml.append(tab).append("<bendpoint>\n");
 
-		xml.append("<bendpoint>\n");
-
-		xml.append("\t<relative>").append(bendpoint.isRelative())
+		xml.append(tab).append("\t<relative>").append(bendpoint.isRelative())
 				.append("</relative>\n");
-		xml.append("\t<x>").append(bendpoint.getX()).append("</x>\n");
-		xml.append("\t<y>").append(bendpoint.getY()).append("</y>\n");
+		xml.append(tab).append("\t<x>").append(bendpoint.getX()).append("</x>\n");
+		xml.append(tab).append("\t<y>").append(bendpoint.getY()).append("</y>\n");
 
-		xml.append("</bendpoint>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</bendpoint>\n");
 	}
 
-	private String createXML(CommentConnection connection,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final CommentConnection connection,
+			final PersistentContext context) {
+		xml.append(tab).append("<comment_connection>\n");
 
-		xml.append("<comment_connection>\n");
+		createXMLConnectionElement(xml, tab + "\t", connection, context);
 
-		xml.append(tab(this.createXMLConnectionElement(connection, context)));
-
-		xml.append("</comment_connection>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</comment_connection>\n");
 	}
 
-	private String createXML(Relation relation, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Relation relation, final PersistentContext context) {
+		xml.append(tab).append("<relation>\n");
 
-		xml.append("<relation>\n");
+		createXMLConnectionElement(xml, tab + "\t", relation, context);
 
-		xml.append(tab(this.createXMLConnectionElement(relation, context)));
-
-		xml.append("\t<child_cardinality>")
+		xml.append(tab).append("\t<child_cardinality>")
 				.append(escape(relation.getChildCardinality()))
 				.append("</child_cardinality>\n");
-		xml.append("\t<parent_cardinality>")
+		xml.append(tab).append("\t<parent_cardinality>")
 				.append(escape(relation.getParentCardinality()))
 				.append("</parent_cardinality>\n");
-		xml.append("\t<reference_for_pk>").append(relation.isReferenceForPK())
+		xml.append(tab).append("\t<reference_for_pk>").append(relation.isReferenceForPK())
 				.append("</reference_for_pk>\n");
-		xml.append("\t<name>").append(escape(relation.getName()))
+		xml.append(tab).append("\t<name>").append(escape(relation.getName()))
 				.append("</name>\n");
-		xml.append("\t<on_delete_action>")
+		xml.append(tab).append("\t<on_delete_action>")
 				.append(escape(relation.getOnDeleteAction()))
 				.append("</on_delete_action>\n");
-		xml.append("\t<on_update_action>")
+		xml.append(tab).append("\t<on_update_action>")
 				.append(escape(relation.getOnUpdateAction()))
 				.append("</on_update_action>\n");
-		xml.append("\t<source_xp>").append(relation.getSourceXp())
+		xml.append(tab).append("\t<source_xp>").append(relation.getSourceXp())
 				.append("</source_xp>\n");
-		xml.append("\t<source_yp>").append(relation.getSourceYp())
+		xml.append(tab).append("\t<source_yp>").append(relation.getSourceYp())
 				.append("</source_yp>\n");
-		xml.append("\t<target_xp>").append(relation.getTargetXp())
+		xml.append(tab).append("\t<target_xp>").append(relation.getTargetXp())
 				.append("</target_xp>\n");
-		xml.append("\t<target_yp>").append(relation.getTargetYp())
+		xml.append(tab).append("\t<target_yp>").append(relation.getTargetYp())
 				.append("</target_yp>\n");
-		xml.append("\t<referenced_column>")
+		xml.append(tab).append("\t<referenced_column>")
 				.append(context.columnMap.get(relation.getReferencedColumn()))
 				.append("</referenced_column>\n");
-		xml.append("\t<referenced_complex_unique_key>")
+		xml.append(tab).append("\t<referenced_complex_unique_key>")
 				.append(context.complexUniqueKeyMap.get(relation
 						.getReferencedComplexUniqueKey()))
 				.append("</referenced_complex_unique_key>\n");
 
-		xml.append("</relation>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</relation>\n");
 	}
 
-	private String createXMLIndexes(List<Index> indexes,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+	private void createXMLIndexes(final StringBuilder xml, final String tab, final List<Index> indexes,
+			final PersistentContext context) {
+		xml.append(tab).append("<indexes>\n");
 
-		xml.append("<indexes>\n");
-
-		for (Index index : indexes) {
-			xml.append(tab(this.createXML(index, context)));
+		final String tab2 = tab + "\t";
+		for (final Index index : indexes) {
+			createXML(xml, tab2, index, context);
 		}
 
-		xml.append("</indexes>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</indexes>\n");
 	}
 
-	private String createXMLComplexUniqueKeyList(
-			List<ComplexUniqueKey> complexUniqueKeyList,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+	private void createXMLComplexUniqueKeyList(
+			final StringBuilder xml, final String tab, final List<ComplexUniqueKey> complexUniqueKeyList,
+			final PersistentContext context) {
+		xml.append(tab).append("<complex_unique_key_list>\n");
 
-		xml.append("<complex_unique_key_list>\n");
-
+		final String tab2 = tab + "\t";
 		for (ComplexUniqueKey complexUniqueKey : complexUniqueKeyList) {
-			xml.append(tab(this.createXML(complexUniqueKey, context)));
+			createXML(xml, tab2, complexUniqueKey, context);
 		}
 
-		xml.append("</complex_unique_key_list>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</complex_unique_key_list>\n");
 	}
 
-	private String createXML(EnvironmentSetting environmentSetting,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<environment_setting>\n");
+ 	private void createXML(final StringBuilder xml, final String tab, final EnvironmentSetting environmentSetting,
+			final PersistentContext context) {
+		xml.append(tab).append("<environment_setting>\n");
 
 		for (Environment environment : environmentSetting.getEnvironments()) {
-			xml.append("\t<environment>\n");
+			xml.append(tab).append("\t<environment>\n");
 
 			Integer environmentId = context.environmentMap.get(environment);
-			xml.append("\t\t<id>").append(environmentId).append("</id>\n");
-			xml.append("\t\t<name>").append(environment.getName())
+			xml.append(tab).append("\t\t<id>").append(environmentId).append("</id>\n");
+			xml.append(tab).append("\t\t<name>").append(environment.getName())
 					.append("</name>\n");
 
-			xml.append("\t</environment>\n");
+			xml.append(tab).append("\t</environment>\n");
 		}
 
-		xml.append("</environment_setting>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</environment_setting>\n");
 	}
 
-	private String createXML(TableProperties tableProperties,
-			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<table_properties>\n");
+ 	private void createXML(final StringBuilder xml, final String tab, final TableProperties tableProperties,
+			final PersistentContext context) {
+		xml.append(tab).append("<table_properties>\n");
 
 		Integer tablespaceId = context.tablespaceMap.get(tableProperties
 				.getTableSpace());
 		if (tablespaceId != null) {
-			xml.append("\t<tablespace_id>").append(tablespaceId)
+			xml.append(tab).append("\t<tablespace_id>").append(tablespaceId)
 					.append("</tablespace_id>\n");
 		}
 
-		xml.append("\t<schema>").append(escape(tableProperties.getSchema()))
+		xml.append(tab).append("\t<schema>").append(escape(tableProperties.getSchema()))
 				.append("</schema>\n");
 
+		final String tab2 = tab + "\t";
 		if (tableProperties instanceof MySQLTableProperties) {
-			xml.append(tab(this
-					.createXML((MySQLTableProperties) tableProperties)));
+			createXML(xml, tab2, (MySQLTableProperties) tableProperties);
 
 		} else if (tableProperties instanceof PostgresTableProperties) {
-			xml.append(tab(this
-					.createXML((PostgresTableProperties) tableProperties)));
+			createXML(xml, tab2, (PostgresTableProperties) tableProperties);
 
 		} else if (tableProperties instanceof OracleTableProperties) {
-			xml.append(tab(this
-					.createXML((OracleTableProperties) tableProperties)));
+			createXML(xml, tab2, (OracleTableProperties) tableProperties);
 		}
 
-		xml.append("</table_properties>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</table_properties>\n");
 	}
 
-	private String createXML(MySQLTableProperties tableProperties) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<character_set>")
+ 	private void createXML(final StringBuilder xml, final String tab, final MySQLTableProperties tableProperties) {
+		xml.append(tab).append("<character_set>")
 				.append(escape(tableProperties.getCharacterSet()))
 				.append("</character_set>\n");
-		xml.append("<collation>")
+		xml.append(tab).append("<collation>")
 				.append(escape(tableProperties.getCollation()))
 				.append("</collation>\n");
-		xml.append("<storage_engine>")
+		xml.append(tab).append("<storage_engine>")
 				.append(escape(tableProperties.getStorageEngine()))
 				.append("</storage_engine>\n");
-		xml.append("<primary_key_length_of_text>")
+		xml.append(tab).append("<primary_key_length_of_text>")
 				.append(tableProperties.getPrimaryKeyLengthOfText())
 				.append("</primary_key_length_of_text>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(PostgresTableProperties tableProperties) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<without_oids>").append(tableProperties.isWithoutOIDs())
+ 	private void createXML(final StringBuilder xml, final String tab, final PostgresTableProperties tableProperties) {
+		xml.append(tab).append("<without_oids>").append(tableProperties.isWithoutOIDs())
 				.append("</without_oids>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(OracleTableProperties tableProperties) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<character_set>")
+ 	private void createXML(final StringBuilder xml, final String tab, final OracleTableProperties tableProperties) {
+		xml.append(tab).append("<character_set>")
 				.append(escape(tableProperties.getCharacterSet()))
 				.append("</character_set>\n");
-
-		return xml.toString();
 	}
 
-	private String createXML(ViewProperties viewProperties,
+ 	private void createXML(final StringBuilder xml, final String tab, final ViewProperties viewProperties,
 			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<view_properties>\n");
+		xml.append(tab).append("<view_properties>\n");
 
 		Integer tablespaceId = context.tablespaceMap.get(viewProperties
 				.getTableSpace());
 		if (tablespaceId != null) {
-			xml.append("\t<tablespace_id>").append(tablespaceId)
+			xml.append(tab).append("\t<tablespace_id>").append(tablespaceId)
 					.append("</tablespace_id>\n");
 		}
 
-		xml.append("<schema>").append(escape(viewProperties.getSchema()))
+		xml.append(tab).append("<schema>").append(escape(viewProperties.getSchema()))
 				.append("</schema>\n");
 
-		xml.append("</view_properties>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</view_properties>\n");
 	}
 
-	private String createXML(Index index, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Index index, PersistentContext context) {
+		xml.append(tab).append("<inidex>\n");
 
-		xml.append("<inidex>\n");
-
-		xml.append("\t<full_text>").append(index.isFullText())
+		xml.append(tab).append("\t<full_text>").append(index.isFullText())
 				.append("</full_text>\n");
-		xml.append("\t<non_unique>").append(index.isNonUnique())
+		xml.append(tab).append("\t<non_unique>").append(index.isNonUnique())
 				.append("</non_unique>\n");
-		xml.append("\t<name>").append(escape(index.getName()))
+		xml.append(tab).append("\t<name>").append(escape(index.getName()))
 				.append("</name>\n");
-		xml.append("\t<type>").append(escape(index.getType()))
+		xml.append(tab).append("\t<type>").append(escape(index.getType()))
 				.append("</type>\n");
-		xml.append("\t<description>").append(escape(index.getDescription()))
+		xml.append(tab).append("\t<description>").append(escape(index.getDescription()))
 				.append("</description>\n");
 
-		xml.append("\t<columns>\n");
+		xml.append(tab).append("\t<columns>\n");
 
 		List<Boolean> descs = index.getDescs();
 
 		int count = 0;
 
 		for (Column column : index.getColumns()) {
-			xml.append("\t\t<column>\n");
-			xml.append("\t\t\t<id>").append(context.columnMap.get(column))
+			xml.append(tab).append("\t\t<column>\n");
+			xml.append(tab).append("\t\t\t<id>").append(context.columnMap.get(column))
 					.append("</id>\n");
 
 			Boolean desc = Boolean.FALSE;
@@ -1708,103 +1479,90 @@ public class PersistentXmlImpl extends Persistent {
 			if (descs.size() > count) {
 				desc = descs.get(count);
 			}
-			xml.append("\t\t\t<desc>").append(desc).append("</desc>\n");
-			xml.append("\t\t</column>\n");
+			xml.append(tab).append("\t\t\t<desc>").append(desc).append("</desc>\n");
+			xml.append(tab).append("\t\t</column>\n");
 
 			count++;
 		}
 
-		xml.append("\t</columns>\n");
+		xml.append(tab).append("\t</columns>\n");
 
-		xml.append("</inidex>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</inidex>\n");
 	}
 
-	private String createXML(ComplexUniqueKey complexUniqueKey,
+ 	private void createXML(final StringBuilder xml, final String tab, final ComplexUniqueKey complexUniqueKey,
 			PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+		xml.append(tab).append("<complex_unique_key>\n");
 
-		xml.append("<complex_unique_key>\n");
-
-		xml.append("\t<id>")
+		xml.append(tab).append("\t<id>")
 				.append(context.complexUniqueKeyMap.get(complexUniqueKey))
 				.append("</id>\n");
-		xml.append("\t<name>")
+		xml.append(tab).append("\t<name>")
 				.append(Format.null2blank(complexUniqueKey.getUniqueKeyName()))
 				.append("</name>\n");
-		xml.append("\t<columns>\n");
+		xml.append(tab).append("\t<columns>\n");
 
 		for (NormalColumn column : complexUniqueKey.getColumnList()) {
-			xml.append("\t\t<column>\n");
-			xml.append("\t\t\t<id>").append(context.columnMap.get(column))
+			xml.append(tab).append("\t\t<column>\n");
+			xml.append(tab).append("\t\t\t<id>").append(context.columnMap.get(column))
 					.append("</id>\n");
-			xml.append("\t\t</column>\n");
+			xml.append(tab).append("\t\t</column>\n");
 		}
 
-		xml.append("\t</columns>\n");
+		xml.append(tab).append("\t</columns>\n");
 
-		xml.append("</complex_unique_key>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</complex_unique_key>\n");
 	}
 
-	private String createXML(Dictionary dictionary, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
+ 	private void createXML(final StringBuilder xml, final String tab, final Dictionary dictionary, PersistentContext context) {
+		xml.append(tab).append("<dictionary>\n");
 
-		xml.append("<dictionary>\n");
-
+		final String tab2 = tab + "\t";
 		for (Word word : dictionary.getWordList()) {
-			xml.append(tab(this.createXML(word, context)));
+			createXML(xml, tab2, word, context);
 		}
 
-		xml.append("</dictionary>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</dictionary>\n");
 	}
 
-	private String createXML(Word word, PersistentContext context) {
-		StringBuilder xml = new StringBuilder();
-
-		xml.append("<word>\n");
+ 	private void createXML(final StringBuilder xml, final String tab, final Word word, final PersistentContext context) {
+		xml.append(tab).append("<word>\n");
 
 		if (context != null) {
-			xml.append("\t<id>").append(context.wordMap.get(word))
+			xml.append(tab).append("\t<id>").append(context.wordMap.get(word))
 					.append("</id>\n");
 		}
 
-		xml.append("\t<length>").append(word.getTypeData().getLength())
+		xml.append(tab).append("\t<length>").append(word.getTypeData().getLength())
 				.append("</length>\n");
-		xml.append("\t<decimal>").append(word.getTypeData().getDecimal())
+		xml.append(tab).append("\t<decimal>").append(word.getTypeData().getDecimal())
 				.append("</decimal>\n");
 
 		Integer arrayDimension = word.getTypeData().getArrayDimension();
-		xml.append("\t<array>").append(word.getTypeData().isArray())
+		xml.append(tab).append("\t<array>").append(word.getTypeData().isArray())
 				.append("</array>\n");
-		xml.append("\t<array_dimension>").append(arrayDimension)
+		xml.append(tab).append("\t<array_dimension>").append(arrayDimension)
 				.append("</array_dimension>\n");
 
-		xml.append("\t<unsigned>").append(word.getTypeData().isUnsigned())
+		xml.append(tab).append("\t<unsigned>").append(word.getTypeData().isUnsigned())
 				.append("</unsigned>\n");
-		xml.append("\t<args>").append(escape(word.getTypeData().getArgs()))
+		xml.append(tab).append("\t<args>").append(escape(word.getTypeData().getArgs()))
 				.append("</args>\n");
 
-		xml.append("\t<description>").append(escape(word.getDescription()))
+		xml.append(tab).append("\t<description>").append(escape(word.getDescription()))
 				.append("</description>\n");
-		xml.append("\t<logical_name>").append(escape(word.getLogicalName()))
+		xml.append(tab).append("\t<logical_name>").append(escape(word.getLogicalName()))
 				.append("</logical_name>\n");
-		xml.append("\t<physical_name>").append(escape(word.getPhysicalName()))
+		xml.append(tab).append("\t<physical_name>").append(escape(word.getPhysicalName()))
 				.append("</physical_name>\n");
 
 		String type = "";
 		if (word.getType() != null) {
 			type = word.getType().getId();
 		}
-		xml.append("\t<type>").append(type).append("</type>\n");
+		xml.append(tab).append("\t<type>").append(type).append("</type>\n");
 
-		xml.append("</word>\n");
-
-		return xml.toString();
+		xml.append(tab).append("</word>\n");
 	}
 
 	public static String escape(String s) {
@@ -1812,25 +1570,15 @@ public class PersistentXmlImpl extends Persistent {
 			return "";
 		}
 
-		StringBuilder result = new StringBuilder(s.length() + 10);
-		for (int i = 0; i < s.length(); ++i) {
+		final int n = s.length();
+		StringBuilder result = new StringBuilder(n + 10);
+		for (int i = 0; i < n; ++i) {
 			appendEscapedChar(result, s.charAt(i));
 		}
 		return result.toString();
 	}
 
-	private static void appendEscapedChar(StringBuilder buffer, char c) {
-		String replacement = getReplacement(c);
-		if (replacement != null) {
-			buffer.append('&');
-			buffer.append(replacement);
-			buffer.append(';');
-		} else {
-			buffer.append(c);
-		}
-	}
-
-	private static String getReplacement(char c) {
+	private static void appendEscapedChar(final StringBuilder buf, final char c) {
 		// Encode special XML characters into the equivalent character
 		// references.
 		// The first five are defined by default for all XML documents.
@@ -1838,23 +1586,33 @@ public class PersistentXmlImpl extends Persistent {
 		// being converted to spaces on deserialization
 		switch (c) {
 		case '<':
-			return "lt"; //$NON-NLS-1$
+			buf.append("&lt;");
+			return;
 		case '>':
-			return "gt"; //$NON-NLS-1$
+			buf.append("&gt;");
+			return;
 		case '"':
-			return "quot"; //$NON-NLS-1$
+			buf.append("&quot;");
+			return;
 		case '\'':
-			return "apos"; //$NON-NLS-1$
+			buf.append("&apos;");
+			return;
 		case '&':
-			return "amp"; //$NON-NLS-1$
+			buf.append("&amp;");
+			return;
 		case '\r':
-			return "#x0D"; //$NON-NLS-1$
+			buf.append("&#x0D;");
+			return;
 		case '\n':
-			return "#x0A"; //$NON-NLS-1$
+			buf.append("&#x0A;");
+			return;
 		case '\u0009':
-			return "#x09"; //$NON-NLS-1$
+			buf.append("&#x09;");
+			return;
+		default:
+			buf.append(c);
+			return;
 		}
-		return null;
 	}
 
 }

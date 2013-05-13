@@ -35,13 +35,14 @@ public class ERDiagramPropertySource implements IPropertySource {
 		if (id.equals("database")) {
 			List<String> dbList = DBManagerFactory.getAllDBList();
 
-			for (int i = 0; i < dbList.size(); i++) {
+			final int n = dbList.size();
+			for (int i = 0; i < n; i++) {
 				if (dbList.get(i).equals(this.diagram.getDatabase())) {
-					return new Integer(i);
+					return Integer.valueOf(i);
 				}
 			}
 
-			return new Integer(0);
+			return Integer.valueOf(0);
 		}
 
 		return null;

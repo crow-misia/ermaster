@@ -88,12 +88,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class XMLLoader {
-
 	private ERDiagram diagram;
 
 	private String database;
 
-	private class LoadContext {
+	private final class LoadContext {
 		private Map<String, NodeElement> nodeElementMap;
 
 		private Map<String, NormalColumn> columnMap;

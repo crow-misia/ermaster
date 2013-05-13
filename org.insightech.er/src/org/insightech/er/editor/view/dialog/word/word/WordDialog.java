@@ -46,7 +46,7 @@ public class WordDialog extends AbstractWordDialog {
 		Integer length = null;
 		if (!text.equals("")) {
 			int len = Integer.parseInt(text);
-			length = new Integer(len);
+			length = Integer.valueOf(len);
 		}
 
 		text = decimalText.getText();
@@ -54,7 +54,7 @@ public class WordDialog extends AbstractWordDialog {
 		Integer decimal = null;
 		if (!text.equals("")) {
 			int len = Integer.parseInt(text);
-			decimal = new Integer(len);
+			decimal = Integer.valueOf(len);
 		}
 
 		boolean array = false;
@@ -65,7 +65,7 @@ public class WordDialog extends AbstractWordDialog {
 
 			if (!text.equals("")) {
 				int len = Integer.parseInt(text);
-				arrayDimension = new Integer(len);
+				arrayDimension = Integer.valueOf(len);
 			}
 
 			array = this.arrayCheck.getSelection();

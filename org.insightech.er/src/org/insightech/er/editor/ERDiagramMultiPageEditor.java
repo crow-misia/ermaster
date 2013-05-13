@@ -51,6 +51,7 @@ import org.insightech.er.editor.model.settings.CategorySetting;
 import org.insightech.er.editor.persistent.Persistent;
 import org.insightech.er.editor.view.dialog.category.CategoryNameChangeDialog;
 import org.insightech.er.editor.view.outline.ERDiagramOutlinePage;
+import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
 /**
@@ -225,12 +226,13 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 		Persistent persistent = Persistent.getInstance();
 
 		IFile file = ((IFileEditorInput) this.getEditorInput()).getFile();
+		InputStream source = null;
 
 		try {
 			diagram.getDiagramContents().getSettings().getModelProperties()
 					.setUpdatedDate(new Date());
 
-			InputStream source = persistent.createInputStream(this.diagram);
+			source = persistent.createInputStream(this.diagram);
 
 			if (!file.exists()) {
 				file.create(source, true, monitor);
@@ -241,6 +243,8 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 
 		} catch (Exception e) {
 			Activator.showExceptionDialog(e);
+		} finally {
+			Closer.close(source);
 		}
 
 		for (int i = 0; i < this.getPageCount(); i++) {

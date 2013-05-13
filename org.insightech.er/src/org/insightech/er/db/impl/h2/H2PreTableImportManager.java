@@ -1,6 +1,5 @@
 package org.insightech.er.db.impl.h2;
 
-import java.io.Closeable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

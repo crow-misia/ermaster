@@ -29,7 +29,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		Integer id = (Integer) idMap.get(object);
 
 		if (id == null) {
-			id = new Integer(idMap.size());
+			id = Integer.valueOf(idMap.size());
 			this.idMap.put(object, id);
 		}
 
