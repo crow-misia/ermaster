@@ -380,7 +380,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	public List<String> validate() {
 		List<String> errorMessage = new ArrayList<String>();
 
-		if (this.isAutoExtend() && Check.isEmptyTrim(this.getAutoExtendSize())) {
+		if (this.isAutoExtend() && Check.isBlank(this.getAutoExtendSize())) {
 			errorMessage.add("error.tablespace.auto.extend.size.empty");
 		}
 

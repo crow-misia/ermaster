@@ -8,6 +8,7 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.view.dialog.element.view.ViewDialog;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class SqlTabWrapper extends ValidatableTabWrapper {
@@ -45,13 +46,13 @@ public class SqlTabWrapper extends ValidatableTabWrapper {
 	 */
 	@Override
 	public void validatePage() throws InputException {
-		String text = sqlText.getText().trim();
+		String text = sqlText.getText();
 
-		if (text.equals("")) {
+		if (Check.isBlank(text)) {
 			throw new InputException("error.view.sql.empty");
 		}
 
-		this.copyData.setSql(text);
+		this.copyData.setSql(text.trim());
 	}
 
 	@Override

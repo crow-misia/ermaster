@@ -31,6 +31,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 import org.insightech.er.editor.model.settings.CategorySetting;
 import org.insightech.er.editor.model.settings.Settings;
+import org.insightech.er.util.Check;
 
 public class CategoryManageDialog extends AbstractDialog {
 
@@ -338,7 +339,7 @@ public class CategoryManageDialog extends AbstractDialog {
 			public void widgetSelected(SelectionEvent e) {
 				String name = categoryNameText.getText().trim();
 
-				if (name.equals("")) {
+				if (Check.isEmpty(name)) {
 					return;
 				}
 
@@ -369,7 +370,7 @@ public class CategoryManageDialog extends AbstractDialog {
 			public void widgetSelected(SelectionEvent e) {
 				String name = categoryNameText.getText().trim();
 
-				if (name.equals("")) {
+				if (Check.isEmpty(name)) {
 					return;
 				}
 

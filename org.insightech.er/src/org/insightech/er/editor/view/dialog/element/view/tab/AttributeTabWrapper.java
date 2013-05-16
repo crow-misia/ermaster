@@ -126,7 +126,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 		String text = logicalNameText.getText().trim();
 		this.copyData.setLogicalName(text);
 
-		if (text.equals("")) {
+		if (Check.isEmpty(text)) {
 			throw new InputException("error.table.logical.name.empty");
 		}
 

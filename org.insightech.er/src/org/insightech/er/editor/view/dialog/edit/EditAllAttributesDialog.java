@@ -696,7 +696,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 					String text = ((Text) control).getText().trim();
 
 					try {
-						if (!text.equals("")) {
+						if (Check.isNotEmpty(text)) {
 							int len = Integer.parseInt(text);
 							if (len < 0) {
 								this.errorMessage = "error.column.length.zero";
@@ -728,7 +728,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 					String text = ((Text) control).getText().trim();
 
 					try {
-						if (!text.equals("")) {
+						if (Check.isNotEmpty(text)) {
 							int decimal = Integer.parseInt(text);
 							if (decimal < 0) {
 								this.errorMessage = "error.column.decimal.zero";

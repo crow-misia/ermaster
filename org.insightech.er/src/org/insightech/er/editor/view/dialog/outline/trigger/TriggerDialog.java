@@ -47,11 +47,12 @@ public class TriggerDialog extends AbstractDialog {
 
 	@Override
 	protected String getErrorMessage() {
-		String text = nameText.getText().trim();
-		if (text.equals("")) {
+		String text = nameText.getText();
+		if (Check.isBlank(text)) {
 			return "error.trigger.name.empty";
 		}
 
+		text = text.trim();
 		if (!Check.isAlphabet(text)) {
 			return "error.trigger.name.not.alphabet";
 		}
@@ -62,7 +63,7 @@ public class TriggerDialog extends AbstractDialog {
 		}
 
 		text = sqlText.getText();
-		if (text.equals("")) {
+		if (Check.isBlank(text)) {
 			return "error.trigger.sql.empty";
 		}
 

@@ -756,7 +756,7 @@ public abstract class DDLCreator {
 		ddl.append(" ON ");
 		ddl.append(filter(table.getNameWithSchema(diagram.getDatabase())));
 
-		if (index.getType() != null && !index.getType().trim().equals("")) {
+		if (Check.isNotBlank(index.getType())) {
 			ddl.append(" USING ");
 			ddl.append(index.getType().trim());
 		}
@@ -807,7 +807,7 @@ public abstract class DDLCreator {
 				diagram.getDatabase())));
 		ddl.append("\r\n");
 		ddl.append("\tADD ");
-		if (relation.getName() != null && !relation.getName().trim().equals("")) {
+		if (Check.isNotBlank(relation.getName())) {
 			ddl.append("CONSTRAINT ");
 			ddl.append(filter(relation.getName()));
 			ddl.append(" ");
@@ -1083,7 +1083,7 @@ public abstract class DDLCreator {
 					.getTableViewProperties().getSchema();
 		}
 
-		if (!Check.isEmpty(schema)) {
+		if (Check.isNotEmpty(schema)) {
 			sb.append(schema);
 			sb.append(".");
 		}
@@ -1104,7 +1104,7 @@ public abstract class DDLCreator {
 		if (this.ddlTarget.commentValueLogicalNameDescription) {
 			comment = Format.null2blank(logicalName);
 
-			if (!Check.isEmpty(description)) {
+			if (Check.isNotEmpty(description)) {
 				comment = comment + " : " + Format.null2blank(description);
 			}
 

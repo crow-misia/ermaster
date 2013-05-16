@@ -131,7 +131,7 @@ public class MySQLAdvancedComposite extends AdvancedComposite {
 		Integer length = null;
 
 		try {
-			if (!Check.isEmptyTrim(str)) {
+			if (Check.isNotBlank(str)) {
 				length = Integer.valueOf(str);
 			}
 		} catch (Exception e) {

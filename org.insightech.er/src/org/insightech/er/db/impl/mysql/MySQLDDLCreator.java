@@ -57,18 +57,18 @@ public class MySQLDDLCreator extends DDLCreator {
 			String comment = this.filterComment(table.getLogicalName(),
 					table.getDescription(), false);
 
-			if (!Check.isEmpty(comment)) {
+			if (Check.isNotEmpty(comment)) {
 				postDDL.append(" COMMENT = '");
 				postDDL.append(comment.replaceAll("'", "''"));
 				postDDL.append("'");
 			}
 		}
 
-		if (!Check.isEmpty(characterSet)) {
+		if (Check.isNotEmpty(characterSet)) {
 			postDDL.append(" DEFAULT CHARACTER SET ");
 			postDDL.append(characterSet);
 
-			if (!Check.isEmpty(collation)) {
+			if (Check.isNotEmpty(collation)) {
 				postDDL.append(" COLLATE ");
 				postDDL.append(collation);
 			}
@@ -101,17 +101,17 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
 				normalColumn.getTypeData(), this.getDiagram().getDatabase())));
 
-		if (!Check.isEmpty(normalColumn.getCharacterSet())) {
+		if (Check.isNotEmpty(normalColumn.getCharacterSet())) {
 			ddl.append(" CHARACTER SET ");
 			ddl.append(normalColumn.getCharacterSet());
 
-			if (!Check.isEmpty(normalColumn.getCollation())) {
+			if (Check.isNotEmpty(normalColumn.getCollation())) {
 				ddl.append(" COLLATE ");
 				ddl.append(normalColumn.getCollation());
 			}
 		}
 
-		if (!Check.isEmpty(normalColumn.getDefaultValue())) {
+		if (Check.isNotEmpty(normalColumn.getDefaultValue())) {
 			String defaultValue = normalColumn.getDefaultValue();
 			if (ResourceString.getResourceString("label.current.date.time")
 					.equals(defaultValue)) {
@@ -142,7 +142,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		String constraint = Format.null2blank(normalColumn.getConstraint());
-		if (!"".equals(constraint)) {
+		if (Check.isNotEmpty(constraint)) {
 			ddl.append(" ");
 			ddl.append(constraint);
 		}
@@ -155,7 +155,7 @@ public class MySQLDDLCreator extends DDLCreator {
 			String comment = this.filterComment(normalColumn.getLogicalName(),
 					normalColumn.getDescription(), true);
 
-			if (!Check.isEmpty(comment)) {
+			if (Check.isNotEmpty(comment)) {
 				ddl.append(" COMMENT '");
 				ddl.append(comment.replaceAll("'", "''"));
 				ddl.append("'");
@@ -277,7 +277,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append("INDEX ");
 		ddl.append(filter(index.getName()));
 
-		if (index.getType() != null && !index.getType().trim().equals("")) {
+		if (Check.isNotBlank(index.getType())) {
 			ddl.append(" USING ");
 			ddl.append(index.getType().trim());
 		}

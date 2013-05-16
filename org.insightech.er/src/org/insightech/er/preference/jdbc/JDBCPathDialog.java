@@ -76,8 +76,8 @@ public final class JDBCPathDialog extends AbstractDialog {
 		if (this.database != null) {
 			DBManager dbManager = DBManagerFactory.getDBManager(this.database);
 
-			if (dbManager.getDriverClassName().equals(this.driverClassName)
-					&& !dbManager.getDriverClassName().equals("")) {
+			if (Check.isNotEmpty(dbManager.getDriverClassName())
+					&& dbManager.getDriverClassName().equals(this.driverClassName)) {
 				this.editable = false;
 			}
 

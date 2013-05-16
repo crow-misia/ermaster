@@ -28,6 +28,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Co
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.view.dialog.word.AbstractWordDialog;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public abstract class AbstractColumnDialog extends AbstractWordDialog {
@@ -196,7 +197,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 	protected void perfomeOK() {
 		String text = lengthText.getText();
 		Integer length = null;
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			int len = Integer.parseInt(text);
 			length = Integer.valueOf(len);
 		}
@@ -204,7 +205,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		text = decimalText.getText();
 
 		Integer decimal = null;
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			int len = Integer.parseInt(text);
 			decimal = Integer.valueOf(len);
 		}
@@ -215,7 +216,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		if (this.arrayDimensionText != null) {
 			text = arrayDimensionText.getText();
 
-			if (!text.equals("")) {
+			if (Check.isNotEmpty(text)) {
 				int len = Integer.parseInt(text);
 				arrayDimension = Integer.valueOf(len);
 			}

@@ -7,6 +7,7 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.db.impl.mysql.MySQLAdvancedComposite;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
 import org.insightech.er.editor.view.dialog.outline.tablespace.TablespaceDialog;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class MySQLTablespaceDialog extends TablespaceDialog {
@@ -86,22 +87,22 @@ public class MySQLTablespaceDialog extends TablespaceDialog {
 		}
 
 		String text = this.dataFile.getText().trim();
-		if (text.equals("")) {
+		if (Check.isEmpty(text)) {
 			return "error.tablespace.data.file.empty";
 		}
 
 		text = this.logFileGroup.getText().trim();
-		if (text.equals("")) {
+		if (Check.isEmpty(text)) {
 			return "error.tablespace.log.file.group.empty";
 		}
 
 		text = this.initialSize.getText().trim();
-		if (text.equals("")) {
+		if (Check.isEmpty(text)) {
 			return "error.tablespace.initial.size.empty";
 		}
 
 		text = this.engine.getText().trim();
-		if (text.equals("")) {
+		if (Check.isEmpty(text)) {
 			return "error.tablespace.storage.engine.empty";
 		}
 

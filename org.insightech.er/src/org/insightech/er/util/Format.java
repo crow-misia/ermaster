@@ -5,7 +5,7 @@ import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 
-public class Format {
+public final class Format {
 
 	public static String formatType(SqlType sqlType, TypeData typeData,
 			String database) {

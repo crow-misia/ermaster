@@ -299,7 +299,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (logicalNameText.getText().equals("")) {
+				if (Check.isEmpty(logicalNameText.getText())) {
 					logicalNameText.setText(physicalNameText.getText());
 				}
 			}
@@ -311,8 +311,8 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 				String logicalName = logicalNameText.getText();
 				String physicalName = physicalNameText.getText();
 
-				if (oldPhysicalName.equals(logicalName)
-						|| logicalName.equals("")) {
+				if (Check.isEmpty(logicalName) ||
+						oldPhysicalName.equals(logicalName)) {
 					logicalNameText.setText(physicalName);
 					oldPhysicalName = physicalName;
 				}
@@ -352,7 +352,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 		text = lengthText.getText();
 
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			try {
 				int len = Integer.parseInt(text);
 				if (len < 0) {
@@ -366,7 +366,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 		text = decimalText.getText();
 
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			try {
 				int len = Integer.parseInt(text);
 				if (len < 0) {
@@ -381,7 +381,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		if (arrayDimensionText != null) {
 			text = arrayDimensionText.getText();
 
-			if (!text.equals("")) {
+			if (Check.isNotEmpty(text)) {
 				try {
 					int len = Integer.parseInt(text);
 					if (len < 1) {
@@ -406,7 +406,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			text = argsText.getText();
 
 			if (selectedType.doesNeedArgs()) {
-				if (text.equals("")) {
+				if (Check.isEmpty(text)) {
 					return "error.column.type.enum.set";
 				}
 			}

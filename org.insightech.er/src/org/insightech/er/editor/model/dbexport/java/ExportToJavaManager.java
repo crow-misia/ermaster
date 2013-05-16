@@ -385,7 +385,7 @@ public class ExportToJavaManager {
 
 	private String replaceClassInfo(String content, String classDescription,
 			String className, String classNameSufix) {
-		if (Check.isEmptyTrim(this.exportJavaSetting.getPackageName())) {
+		if (Check.isBlank(this.exportJavaSetting.getPackageName())) {
 			content = content.replaceAll("package @package;\r\n\r\n", "");
 
 		} else {

@@ -11,7 +11,7 @@ import java.util.Date;
  * @author generator
  * @version $Id: CsvWriter.java,v 1.1 2008/08/17 10:49:17 h_nakajima Exp $
  */
-public class CsvWriter {
+public final class CsvWriter {
 
 	private static final DateFormat DEFAULT_FORMAT = new SimpleDateFormat(
 			"yyyy/MM/dd");

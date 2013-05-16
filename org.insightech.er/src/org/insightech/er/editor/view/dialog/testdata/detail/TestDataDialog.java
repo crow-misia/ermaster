@@ -31,6 +31,7 @@ import org.insightech.er.editor.model.testdata.TableTestData;
 import org.insightech.er.editor.model.testdata.TestData;
 import org.insightech.er.editor.view.dialog.testdata.detail.tab.DirectTestDataTabWrapper;
 import org.insightech.er.editor.view.dialog.testdata.detail.tab.RepeatTestDataTabWrapper;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class TestDataDialog extends AbstractDialog {
@@ -330,9 +331,9 @@ public class TestDataDialog extends AbstractDialog {
 
 	@Override
 	protected String getErrorMessage() {
-		String text = this.nameText.getText().trim();
+		String text = this.nameText.getText();
 
-		if (text.equals("")) {
+		if (Check.isBlank(text)) {
 			return "error.testdata.name.empty";
 		}
 

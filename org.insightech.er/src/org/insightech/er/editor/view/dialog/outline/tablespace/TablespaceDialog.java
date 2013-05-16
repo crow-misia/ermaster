@@ -63,11 +63,12 @@ public abstract class TablespaceDialog extends AbstractDialog {
 
 	@Override
 	protected String getErrorMessage() {
-		String text = this.nameText.getText().trim();
-		if (text.equals("")) {
+		String text = this.nameText.getText();
+		if (Check.isBlank(text)) {
 			return "error.tablespace.name.empty";
 		}
 
+		text = text.trim();
 		if (!Check.isAlphabet(text)) {
 			return "error.tablespace.name.not.alphabet";
 		}

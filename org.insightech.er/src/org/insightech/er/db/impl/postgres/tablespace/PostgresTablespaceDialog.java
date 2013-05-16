@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Text;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
 import org.insightech.er.editor.view.dialog.outline.tablespace.TablespaceDialog;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class PostgresTablespaceDialog extends TablespaceDialog {
@@ -56,8 +57,8 @@ public class PostgresTablespaceDialog extends TablespaceDialog {
 			return errorMessage;
 		}
 
-		String text = this.location.getText().trim();
-		if (text.equals("")) {
+		String text = this.location.getText();
+		if (Check.isBlank(text)) {
 			return "error.tablespace.location.empty";
 		}
 

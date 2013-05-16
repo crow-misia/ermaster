@@ -147,13 +147,13 @@ public class MySQLTablespaceProperties implements TablespaceProperties {
 	public List<String> validate() {
 		List<String> errorMessage = new ArrayList<String>();
 
-		if (Check.isEmptyTrim(this.getDataFile())) {
+		if (Check.isBlank(this.getDataFile())) {
 			errorMessage.add("error.tablespace.data.file.empty");
 		}
-		if (Check.isEmptyTrim(this.getLogFileGroup())) {
+		if (Check.isBlank(this.getLogFileGroup())) {
 			errorMessage.add("error.tablespace.log.file.group.empty");
 		}
-		if (Check.isEmptyTrim(this.getEngine())) {
+		if (Check.isBlank(this.getEngine())) {
 			errorMessage.add("error.tablespace.storage.engine.empty");
 		}
 

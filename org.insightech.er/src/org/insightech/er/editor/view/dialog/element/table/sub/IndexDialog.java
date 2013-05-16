@@ -577,12 +577,13 @@ public final class IndexDialog extends AbstractDialog {
 	 */
 	@Override
 	protected String getErrorMessage() {
-		String text = nameText.getText().trim();
+		String text = nameText.getText();
 
-		if (text.equals("")) {
+		if (Check.isBlank(text)) {
 			return "error.index.name.empty";
 		}
 
+		text = text.trim();
 		if (!Check.isAlphabet(text)) {
 			return "error.index.name.not.alphabet";
 		}

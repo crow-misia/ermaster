@@ -131,7 +131,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 		String text = logicalNameText.getText().trim();
 		this.copyData.setLogicalName(text);
 
-		if (text.equals("")) {
+		if (Check.isEmpty(text)) {
 			throw new InputException("error.table.logical.name.empty");
 		}
 
@@ -373,7 +373,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 				String physicalName = physicalNameText.getText();
 
 				if (oldPhysicalName.equals(logicalName)
-						|| logicalName.equals("")) {
+						|| Check.isEmpty(logicalName)) {
 					logicalNameText.setText(physicalName);
 					oldPhysicalName = physicalName;
 				}

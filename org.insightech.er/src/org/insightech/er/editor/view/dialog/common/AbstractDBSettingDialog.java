@@ -217,7 +217,7 @@ public abstract class AbstractDBSettingDialog extends AbstractDialog {
 
 		String text = this.port.getText();
 
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			try {
 				int port = Integer.parseInt(text);
 				if (port < 0) {

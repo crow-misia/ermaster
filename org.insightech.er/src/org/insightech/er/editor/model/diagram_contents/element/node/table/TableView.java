@@ -22,6 +22,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Co
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Dictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public abstract class TableView extends NodeElement implements ObjectModel,
@@ -409,11 +410,11 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 
 		String schema = this.tableViewProperties.getSchema();
 
-		if (schema == null || schema.equals("")) {
+		if (Check.isEmpty(schema)) {
 			schema = commonTableViewProperties.getSchema();
 		}
 
-		if (schema != null && !schema.equals("")) {
+		if (Check.isNotEmpty(schema)) {
 			sb.append(schema);
 			sb.append(".");
 		}

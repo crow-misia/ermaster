@@ -16,6 +16,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSe
 import org.insightech.er.editor.view.dialog.common.ERTableComposite;
 import org.insightech.er.editor.view.dialog.common.ERTableCompositeHolder;
 import org.insightech.er.editor.view.dialog.word.column.real.GroupColumnDialog;
+import org.insightech.er.util.Check;
 
 public class GroupDialog extends AbstractDialog implements
 		ERTableCompositeHolder {
@@ -73,9 +74,7 @@ public class GroupDialog extends AbstractDialog implements
 	@Override
 	protected String getErrorMessage() {
 		if (this.groupNameText.getEnabled()) {
-			String text = this.groupNameText.getText().trim();
-
-			if (text.equals("")) {
+			if (Check.isBlank(this.groupNameText.getText())) {
 				return "error.group.name.empty";
 			}
 		}

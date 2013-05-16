@@ -14,6 +14,7 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
 import org.insightech.er.editor.view.dialog.outline.tablespace.TablespaceDialog;
 import org.insightech.er.editor.view.dialog.outline.tablespace.TablespaceSizeCaluculatorDialog;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class OracleTablespaceDialog extends TablespaceDialog {
@@ -221,8 +222,8 @@ public class OracleTablespaceDialog extends TablespaceDialog {
 		}
 
 		if (this.autoExtend.getSelection()) {
-			String text = this.autoExtendSize.getText().trim();
-			if (text.equals("")) {
+			String text = this.autoExtendSize.getText();
+			if (Check.isBlank(text)) {
 				return "error.tablespace.auto.extend.size.empty";
 			}
 		}

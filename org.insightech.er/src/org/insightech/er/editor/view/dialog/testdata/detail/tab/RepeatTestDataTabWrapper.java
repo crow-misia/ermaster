@@ -20,6 +20,7 @@ import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.view.dialog.testdata.detail.RepeatTestDataSettingDialog;
 import org.insightech.er.editor.view.dialog.testdata.detail.TestDataDialog;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
@@ -242,7 +243,7 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 	public int getTestDataNum() {
 		String text = testDataNumText.getText();
 		int num = 0;
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			try {
 				num = Integer.parseInt(text);
 			} catch (Exception e) {

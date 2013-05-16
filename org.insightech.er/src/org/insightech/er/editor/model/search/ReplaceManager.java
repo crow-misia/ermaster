@@ -271,7 +271,7 @@ public class ReplaceManager {
 				return null;
 			}
 
-			if (!str.equals("")) {
+			if (Check.isNotEmpty(str)) {
 				TypeData oldTypeData = word.getTypeData();
 				TypeData newTypeData = new TypeData(Integer.parseInt(str),
 						oldTypeData.getDecimal(), oldTypeData.isArray(),
@@ -293,7 +293,7 @@ public class ReplaceManager {
 				return null;
 			}
 
-			if (!str.equals("")) {
+			if (Check.isNotEmpty(str)) {
 				TypeData oldTypeData = word.getTypeData();
 				TypeData newTypeData = new TypeData(oldTypeData.getLength(),
 						Integer.parseInt(str), oldTypeData.isArray(),
@@ -324,7 +324,7 @@ public class ReplaceManager {
 	}
 
 	private static boolean checkAlphabet(int type, String str) {
-		if (str == null || str.equals("")) {
+		if (Check.isEmpty(str)) {
 			return true;
 		}
 
@@ -340,7 +340,7 @@ public class ReplaceManager {
 	}
 
 	private static boolean checkDigit(int type, String str) {
-		if (str == null || str.equals("")) {
+		if (Check.isEmpty(str)) {
 			return true;
 		}
 
@@ -363,10 +363,8 @@ public class ReplaceManager {
 
 	private static boolean checkRequired(int type, String str) {
 		for (int requiredType : REQUIRED_TYPES) {
-			if (type == requiredType) {
-				if (str == null || str.trim().equals("")) {
-					return false;
-				}
+			if (type == requiredType && Check.isBlank(str)) {
+				return false;
 			}
 		}
 

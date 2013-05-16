@@ -6,6 +6,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.view.dialog.word.AbstractWordDialog;
+import org.insightech.er.util.Check;
 
 public class WordDialog extends AbstractWordDialog {
 
@@ -32,8 +33,8 @@ public class WordDialog extends AbstractWordDialog {
 	 */
 	@Override
 	protected String getErrorMessage() {
-		String text = logicalNameText.getText().trim();
-		if (text.equals("")) {
+		String text = logicalNameText.getText();
+		if (Check.isBlank(text)) {
 			return "error.column.logical.name.empty";
 		}
 
@@ -44,7 +45,7 @@ public class WordDialog extends AbstractWordDialog {
 	protected void perfomeOK() {
 		String text = lengthText.getText();
 		Integer length = null;
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			int len = Integer.parseInt(text);
 			length = Integer.valueOf(len);
 		}
@@ -52,7 +53,7 @@ public class WordDialog extends AbstractWordDialog {
 		text = decimalText.getText();
 
 		Integer decimal = null;
-		if (!text.equals("")) {
+		if (Check.isNotEmpty(text)) {
 			int len = Integer.parseInt(text);
 			decimal = Integer.valueOf(len);
 		}
@@ -63,7 +64,7 @@ public class WordDialog extends AbstractWordDialog {
 		if (this.arrayDimensionText != null) {
 			text = arrayDimensionText.getText();
 
-			if (!text.equals("")) {
+			if (Check.isNotEmpty(text)) {
 				int len = Integer.parseInt(text);
 				arrayDimension = Integer.valueOf(len);
 			}

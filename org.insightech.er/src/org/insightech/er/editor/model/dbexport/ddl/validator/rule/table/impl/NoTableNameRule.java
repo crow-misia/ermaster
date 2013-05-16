@@ -5,6 +5,7 @@ import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.dbexport.ddl.validator.ValidateResult;
 import org.insightech.er.editor.model.dbexport.ddl.validator.rule.table.TableRule;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
+import org.insightech.er.util.Check;
 
 public class NoTableNameRule extends TableRule {
 
@@ -13,8 +14,7 @@ public class NoTableNameRule extends TableRule {
 	 */
 	@Override
 	public boolean validate(ERTable table) {
-		if (table.getPhysicalName() == null
-				|| table.getPhysicalName().trim().equals("")) {
+		if (Check.isBlank(table.getPhysicalName())) {
 			ValidateResult validateResult = new ValidateResult();
 			validateResult.setMessage(ResourceString
 					.getResourceString("error.validate.no.table.name"));

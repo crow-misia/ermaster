@@ -75,7 +75,7 @@ public class PostgresTablespaceProperties implements TablespaceProperties {
 	public List<String> validate() {
 		List<String> errorMessage = new ArrayList<String>();
 
-		if (Check.isEmptyTrim(this.getLocation())) {
+		if (Check.isBlank(this.getLocation())) {
 			errorMessage.add("error.tablespace.location.empty");
 		}
 

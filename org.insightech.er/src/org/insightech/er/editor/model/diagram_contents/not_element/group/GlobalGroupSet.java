@@ -12,6 +12,7 @@ import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
+import org.insightech.er.util.Check;
 
 public class GlobalGroupSet {
 
@@ -185,7 +186,7 @@ public class GlobalGroupSet {
 	}
 
 	private static Integer toInteger(String str) {
-		if (str == null || str.equals("")) {
+		if (Check.isEmpty(str)) {
 			return null;
 		}
 

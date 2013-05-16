@@ -54,7 +54,7 @@ public class OracleDDLCreator extends DDLCreator {
 				String comment = this.filterComment(normalColumn
 						.getLogicalName(), normalColumn.getDescription(), true);
 
-				if (!Check.isEmpty(comment)) {
+				if (Check.isNotEmpty(comment)) {
 					StringBuilder ddl = new StringBuilder();
 
 					ddl.append("COMMENT ON COLUMN ");
@@ -80,7 +80,7 @@ public class OracleDDLCreator extends DDLCreator {
 							.getLogicalName(), normalColumn.getDescription(),
 							true);
 
-					if (!Check.isEmpty(comment)) {
+					if (Check.isNotEmpty(comment)) {
 						StringBuilder ddl = new StringBuilder();
 
 						ddl.append("COMMENT ON COLUMN ");
@@ -116,7 +116,7 @@ public class OracleDDLCreator extends DDLCreator {
 				this.getDiagram().getDatabase())));
 		ddl.append("\r\n");
 		ddl.append("\tADD ");
-		if (relation.getName() != null && !relation.getName().trim().equals("")) {
+		if (Check.isNotBlank(relation.getName())) {
 			ddl.append("CONSTRAINT ");
 			ddl.append(filter(relation.getName()));
 			ddl.append(" ");
@@ -185,11 +185,11 @@ public class OracleDDLCreator extends DDLCreator {
 		ddl.append(filter(tablespace.getName()));
 		ddl.append("\r\n");
 
-		if (!Check.isEmpty(tablespaceProperties.getDataFile())) {
+		if (Check.isNotEmpty(tablespaceProperties.getDataFile())) {
 			ddl.append(" DATAFILE ");
 			ddl.append(tablespaceProperties.getDataFile());
 
-			if (!Check.isEmpty(tablespaceProperties.getFileSize())) {
+			if (Check.isNotEmpty(tablespaceProperties.getFileSize())) {
 				ddl.append(" SIZE ");
 				ddl.append(tablespaceProperties.getFileSize());
 			}
@@ -201,7 +201,7 @@ public class OracleDDLCreator extends DDLCreator {
 			ddl.append(" AUTOEXTEND ON NEXT ");
 			ddl.append(tablespaceProperties.getAutoExtendSize());
 
-			if (!Check.isEmpty(tablespaceProperties.getAutoExtendMaxSize())) {
+			if (Check.isNotEmpty(tablespaceProperties.getAutoExtendMaxSize())) {
 				ddl.append(" MAXSIZE ");
 				ddl.append(tablespaceProperties.getAutoExtendMaxSize());
 			}
@@ -209,34 +209,34 @@ public class OracleDDLCreator extends DDLCreator {
 			ddl.append("\r\n");
 		}
 
-		if (!Check.isEmpty(tablespaceProperties.getMinimumExtentSize())) {
+		if (Check.isNotEmpty(tablespaceProperties.getMinimumExtentSize())) {
 			ddl.append(" MINIMUM EXTENT ");
 			ddl.append(tablespaceProperties.getMinimumExtentSize());
 			ddl.append("\r\n");
 		}
 
 		ddl.append(" DEFAULT STORAGE(\r\n");
-		if (!Check.isEmpty(tablespaceProperties.getInitial())) {
+		if (Check.isNotEmpty(tablespaceProperties.getInitial())) {
 			ddl.append("  INITIAL ");
 			ddl.append(tablespaceProperties.getInitial());
 			ddl.append("\r\n");
 		}
-		if (!Check.isEmpty(tablespaceProperties.getNext())) {
+		if (Check.isNotEmpty(tablespaceProperties.getNext())) {
 			ddl.append("  NEXT ");
 			ddl.append(tablespaceProperties.getNext());
 			ddl.append("\r\n");
 		}
-		if (!Check.isEmpty(tablespaceProperties.getMinExtents())) {
+		if (Check.isNotEmpty(tablespaceProperties.getMinExtents())) {
 			ddl.append("  MINEXTENTS ");
 			ddl.append(tablespaceProperties.getMinExtents());
 			ddl.append("\r\n");
 		}
-		if (!Check.isEmpty(tablespaceProperties.getMaxExtents())) {
+		if (Check.isNotEmpty(tablespaceProperties.getMaxExtents())) {
 			ddl.append("  MAXEXTEMTS ");
 			ddl.append(tablespaceProperties.getMaxExtents());
 			ddl.append("\r\n");
 		}
-		if (!Check.isEmpty(tablespaceProperties.getPctIncrease())) {
+		if (Check.isNotEmpty(tablespaceProperties.getPctIncrease())) {
 			ddl.append("  PCTINCREASE ");
 			ddl.append(tablespaceProperties.getPctIncrease());
 			ddl.append("\r\n");
@@ -283,7 +283,7 @@ public class OracleDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && Check.isNotEmpty(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
 			ddl.append(description.replaceAll("\n", "\n-- "));

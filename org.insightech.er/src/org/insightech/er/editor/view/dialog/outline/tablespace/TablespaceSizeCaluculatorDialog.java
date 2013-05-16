@@ -31,6 +31,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.view.dialog.common.EditableTable;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
@@ -341,11 +342,11 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 	public void setData(Point xy, Control control) {
 		this.errorMessage = null;
 
-		String text = ((Text) control).getText().trim();
+		String text = ((Text) control).getText();
 
 		try {
-			if (!text.equals("")) {
-				int num = Integer.parseInt(text);
+			if (Check.isNotBlank(text)) {
+				int num = Integer.parseInt(text.trim());
 				if (num < 0) {
 					this.errorMessage = "error.record.num.zero";
 					return;

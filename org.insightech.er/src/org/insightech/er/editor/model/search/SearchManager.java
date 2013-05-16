@@ -15,6 +15,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.NameValue;
 
 public class SearchManager {
@@ -138,7 +139,7 @@ public class SearchManager {
 		// すべて検索（置換）
 		this.all = all;
 
-		if (keyword.equals("")) {
+		if (Check.isEmpty(keyword)) {
 			return null;
 		}
 
