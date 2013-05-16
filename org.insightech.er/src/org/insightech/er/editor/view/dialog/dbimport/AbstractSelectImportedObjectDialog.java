@@ -26,6 +26,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.StringObjectModel;
 import org.insightech.er.editor.model.dbimport.DBObject;
 import org.insightech.er.editor.model.dbimport.DBObjectSet;
+import org.insightech.er.util.Check;
 
 public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog {
 
@@ -206,7 +207,7 @@ public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog 
 		for (Map.Entry<String, List<DBObject>> entry : dbObjectSet
 				.getSchemaDbObjectListMap().entrySet()) {
 			String schemaName = entry.getKey();
-			if ("".equals(schemaName)) {
+			if (Check.isEmpty(schemaName)) {
 				schemaName = ResourceString.getResourceString("label.none");
 			}
 			TreeNode schemaNode = new TreeNode(

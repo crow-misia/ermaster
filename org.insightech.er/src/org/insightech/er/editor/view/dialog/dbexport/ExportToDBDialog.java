@@ -54,7 +54,7 @@ public class ExportToDBDialog extends AbstractDialog {
 
 	@Override
 	protected String getErrorMessage() {
-		if ("".equals(this.textArea.getText().trim())) {
+		if (Check.isBlank(this.textArea.getText())) {
 			return "";
 		}
 

@@ -16,6 +16,7 @@ import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.editor.model.settings.PageSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.tracking.ChangeTrackingList;
+import org.insightech.er.util.Check;
 
 public class ERDiagram extends ViewableModel {
 
@@ -141,7 +142,7 @@ public class ERDiagram extends ViewableModel {
 
 		this.getDiagramContents().getSettings().setDatabase(str);
 
-		if (str != null && !str.equals(oldDatabase)) {
+		if (!Check.equals(str, oldDatabase)) {
 			this.firePropertyChange(PROPERTY_CHANGE_DATABASE, oldDatabase,
 					getDatabase());
 			this.changeAll();

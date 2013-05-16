@@ -34,6 +34,7 @@ import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPartFac
 import org.insightech.er.editor.controller.editpart.element.PagableFreeformRootEditPart;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 import org.osgi.framework.BundleContext;
 
@@ -328,7 +329,7 @@ public class Activator extends AbstractUIPlugin {
 		String dir = null;
 		String fileName = null;
 
-		if (filePath != null && !"".equals(filePath.trim())) {
+		if (Check.isNotBlank(filePath)) {
 			File file = new File(filePath.trim());
 
 			dir = file.getParent();
@@ -356,7 +357,7 @@ public class Activator extends AbstractUIPlugin {
 	public static String showDirectoryDialog(String filePath) {
 		String fileName = null;
 
-		if (filePath != null && !"".equals(filePath.trim())) {
+		if (Check.isNotBlank(filePath)) {
 			File file = new File(filePath.trim());
 			fileName = file.getPath();
 		}

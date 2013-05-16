@@ -252,10 +252,10 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		if (wordIndex > 0) {
 			word = new CopyWord(wordList.get(wordIndex - 1));
 
-			if (!"".equals(physicalName)) {
+			if (Check.isNotEmpty(physicalName)) {
 				word.setPhysicalName(physicalName);
 			}
-			if (!"".equals(logicalName)) {
+			if (Check.isNotEmpty(logicalName)) {
 				word.setLogicalName(logicalName);
 			}
 			word.setDescription(description);

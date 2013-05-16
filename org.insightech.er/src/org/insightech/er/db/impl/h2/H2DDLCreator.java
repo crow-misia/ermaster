@@ -79,7 +79,7 @@ public class H2DDLCreator extends DDLCreator {
 		if (!index.isNonUnique()) {
 			ddl.append("UNIQUE ");
 		}
-		if (!"".equals(index.getType().trim())) {
+		if (Check.isNotBlank(index.getType())) {
 			ddl.append(index.getType().trim());
 			ddl.append(' ');
 		}
@@ -132,8 +132,7 @@ public class H2DDLCreator extends DDLCreator {
 
 		if (!Check.isEmpty(normalColumn.getDefaultValue())) {
 			String defaultValue = normalColumn.getDefaultValue();
-			if (ResourceString.getResourceString("label.current.date.time")
-					.equals(defaultValue)) {
+			if (Check.equals(ResourceString.getResourceString("label.current.date.time"), defaultValue)) {
 				defaultValue = this.getDBManager().getCurrentTimeValue()[0];
 			}
 
@@ -183,7 +182,7 @@ public class H2DDLCreator extends DDLCreator {
 		}
 
 		String constraint = Format.null2blank(normalColumn.getConstraint());
-		if (!"".equals(constraint)) {
+		if (Check.isNotBlank(constraint)) {
 			ddl.append(" CHECK ");
 			ddl.append(constraint);
 		}

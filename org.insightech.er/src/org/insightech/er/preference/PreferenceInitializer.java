@@ -187,7 +187,7 @@ public final class PreferenceInitializer extends AbstractPreferenceInitializer {
 				path = store
 						.getString(PreferenceInitializer.JDBC_DRIVER_PATH_PREFIX
 								+ i);
-				if (path != null && !"".equals(path)) {
+				if (Check.isNotEmpty(path)) {
 					break;
 				}
 			}
@@ -274,7 +274,7 @@ public final class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 		for (int i = 1; i <= num; i++) {
 			DBSetting dbSetting = PreferenceInitializer.getDBSetting(i);
-			if (database != null && !database.equals(dbSetting.getDbsystem())) {
+			if (database == null || !database.equals(dbSetting.getDbsystem())) {
 				continue;
 			}
 			dbSettingList.add(dbSetting);

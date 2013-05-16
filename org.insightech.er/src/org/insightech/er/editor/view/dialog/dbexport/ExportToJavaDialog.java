@@ -28,6 +28,7 @@ import org.insightech.er.editor.model.dbexport.java.ExportToJavaWithProgressMana
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
@@ -168,7 +169,7 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 		String outputDir = Format.null2blank(exportSetting.getJavaOutput());
 
-		if ("".equals(outputDir)) {
+		if (Check.isEmpty(outputDir)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
 			outputDir = file.getParent().getLocation().toOSString();
@@ -183,7 +184,7 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 		String srcFileEncoding = Format.null2blank(exportSetting
 				.getSrcFileEncoding());
-		if (!"".equals(srcFileEncoding)) {
+		if (Check.isNotEmpty(srcFileEncoding)) {
 			this.fileEncodingCombo.setText(srcFileEncoding);
 		}
 

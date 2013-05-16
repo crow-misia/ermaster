@@ -17,6 +17,7 @@ import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.settings.TranslationSetting;
 import org.insightech.er.preference.PreferenceInitializer;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 
 public class TranslationResources {
@@ -84,11 +85,12 @@ public class TranslationResources {
 				continue;
 			}
 
-			String key = line.substring(0, index).trim();
-			if ("".equals(key)) {
+			String key = line.substring(0, index);
+			if (Check.isBlank(key)) {
 				continue;
 			}
 
+			key = key.trim();
 			String value = line.substring(index + 1).trim();
 			this.translationMap.put(key, value);
 

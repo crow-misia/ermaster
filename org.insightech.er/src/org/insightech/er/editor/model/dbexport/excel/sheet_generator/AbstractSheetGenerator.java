@@ -18,6 +18,7 @@ import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDe
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
+import org.insightech.er.util.Check;
 import org.insightech.er.util.POIUtils;
 import org.insightech.er.util.POIUtils.CellLocation;
 
@@ -160,7 +161,7 @@ public abstract class AbstractSheetGenerator {
 			if (Boolean.TRUE.equals(obj)) {
 				String value = keywordsValueMap.get(keyword);
 
-				if (value != null && !"".equals(value)) {
+				if (Check.isNotEmpty(value)) {
 					return value;
 				}
 			} else {

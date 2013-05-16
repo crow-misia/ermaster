@@ -163,12 +163,11 @@ public class ComplexUniqueKeyTabWrapper extends ValidatableTabWrapper {
 			public void widgetSelected(SelectionEvent e) {
 				String name = nameText.getText().trim();
 
-				if (!"".equals(name)) {
-					if (!Check.isAlphabet(name)) {
-						Activator
-								.showErrorDialog("error.unique.key.name.not.alphabet");
-						return;
-					}
+				if (Check.isNotEmpty(name) &&
+						!Check.isAlphabet(name)) {
+					Activator
+							.showErrorDialog("error.unique.key.name.not.alphabet");
+					return;
 				}
 
 				List<NormalColumn> columnList = new ArrayList<NormalColumn>();

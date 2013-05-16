@@ -275,7 +275,7 @@ public abstract class DDLCreator {
 				}
 
 				String description = tablespace.getDescription();
-				if (this.semicolon && !Check.isEmpty(description)
+				if (this.semicolon && Check.isNotBlank(description)
 						&& this.ddlTarget.inlineTableComment) {
 					ddl.append("-- ");
 					ddl.append(description.replaceAll("\n", "\n-- "));
@@ -502,7 +502,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String tableDescription = table.getDescription();
-		if (this.semicolon && !Check.isEmpty(tableDescription)
+		if (this.semicolon && Check.isNotBlank(tableDescription)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
 			ddl.append(tableDescription.replaceAll("\n", "\n-- "));
@@ -548,7 +548,7 @@ public abstract class DDLCreator {
 		for (ComplexUniqueKey complexUniqueKey : complexUniqueKeyList) {
 			ddl.append(",\r\n");
 			ddl.append("\t");
-			if (!Check.isEmpty(complexUniqueKey.getUniqueKeyName())) {
+			if (Check.isNotBlank(complexUniqueKey.getUniqueKeyName())) {
 				ddl.append("CONSTRAINT ");
 				ddl.append(complexUniqueKey.getUniqueKeyName());
 				ddl.append(" ");
@@ -569,7 +569,7 @@ public abstract class DDLCreator {
 		}
 
 		String constraint = Format.null2blank(table.getConstraint()).trim();
-		if (!"".equals(constraint)) {
+		if (Check.isNotBlank(constraint)) {
 			constraint = constraint.replaceAll("\r\n", "\r\n\t");
 
 			ddl.append(",\r\n");
@@ -583,7 +583,7 @@ public abstract class DDLCreator {
 		ddl.append(this.getPostDDL(table));
 
 		String option = Format.null2blank(table.getOption()).trim();
-		if (!"".equals(option)) {
+		if (Check.isNotBlank(option)) {
 			ddl.append("\r\n");
 			ddl.append(option);
 		}
@@ -603,7 +603,7 @@ public abstract class DDLCreator {
 		if (primaryKeys.size() != 0) {
 			ddl.append(",\r\n");
 			ddl.append("\t");
-			if (!Check.isEmpty(table.getPrimaryKeyName())) {
+			if (Check.isNotBlank(table.getPrimaryKeyName())) {
 				ddl.append("CONSTRAINT ");
 				ddl.append(table.getPrimaryKeyName());
 				ddl.append(" ");
@@ -638,7 +638,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = normalColumn.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && Check.isNotBlank(description)
 				&& this.ddlTarget.inlineColumnComment) {
 			ddl.append("\t-- ");
 			ddl.append(description.replaceAll("\n", "\n\t-- "));
@@ -675,7 +675,7 @@ public abstract class DDLCreator {
 		}
 
 		if (normalColumn.isUniqueKey()) {
-			if (!Check.isEmpty(normalColumn.getUniqueKeyName())) {
+			if (Check.isNotBlank(normalColumn.getUniqueKeyName())) {
 				ddl.append(" CONSTRAINT ");
 				ddl.append(normalColumn.getUniqueKeyName());
 			}
@@ -683,7 +683,7 @@ public abstract class DDLCreator {
 		}
 
 		String constraint = Format.null2blank(normalColumn.getConstraint());
-		if (!"".equals(constraint)) {
+		if (Check.isNotBlank(constraint)) {
 			ddl.append(" ");
 			ddl.append(constraint);
 		}
