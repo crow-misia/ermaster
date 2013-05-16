@@ -1,5 +1,7 @@
 package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +93,8 @@ public abstract class AbstractSheetGenerator {
 	protected static final String KEYWORD_PHYSICAL_FOREIGN_KEY_NAME = "$PFKN";
 
 	protected static final String KEYWORD_TABLE_DESCRIPTION = "$TDSC";
+
+	protected static final String KEYWORD_SHEET_NAME = "$SHTN";
 
 	private static final String[] KEYWORDS_OF_COLUMN = { KEYWORD_ORDER,
 			KEYWORD_LOGICAL_TABLE_NAME, KEYWORD_PHYSICAL_TABLE_NAME,
@@ -553,4 +557,12 @@ public abstract class AbstractSheetGenerator {
 	public abstract int getKeywordsColumnNo();
 
 	public abstract String[] getKeywords();
+
+	public static String getDateString(final SimpleDateFormat format, final Date date) {
+		try {
+			return format.format(date);
+		} catch (Exception e) {
+			return date.toString();
+		}
+	}
 }

@@ -17,8 +17,6 @@ import org.insightech.er.util.POIUtils.CellLocation;
 
 public class ColumnSheetGenerator extends AbstractSheetGenerator {
 
-	private static final String KEYWORD_SHEET_NAME = "$SHTN";
-
 	private ColumnTemplate columnTemplate;
 
 	private void clear() {

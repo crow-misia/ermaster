@@ -29,9 +29,6 @@ public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 	// 説明
 	private static final String KEYWORD_DESCRIPTION = "$DSC";
 
-	// シート名
-	private static final String KEYWORD_SHEET_NAME = "$SHTN";
-
 	private static final String[] FIND_KEYWORDS_LIST = { KEYWORD_SHEET_TYPE,
 			KEYWORD_NAME, KEYWORD_DESCRIPTION };
 

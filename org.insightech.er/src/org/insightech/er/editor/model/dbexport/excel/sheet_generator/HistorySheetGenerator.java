@@ -1,6 +1,5 @@
 package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
@@ -29,9 +28,6 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 
 	// 日付フォーマット
 	private static final String KEYWORD_DATE_FORMAT = "$FMT";
-
-	// シート名
-	private static final String KEYWORD_SHEET_NAME = "$SHTN";
 
 	private static final String[] FIND_KEYWORDS_LIST = { KEYWORD_DATE,
 			KEYWORD_CONTENTS };
@@ -74,6 +70,9 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 			HSSFFont linkCellFont = null;
 			int linkCol = -1;
 
+			final SimpleDateFormat format = new SimpleDateFormat(
+					this.keywordsValueMap.get(KEYWORD_DATE_FORMAT));
+
 			for (ChangeTracking changeTracking : diagram
 					.getChangeTrackingList().getList()) {
 				HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
@@ -89,17 +88,7 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 
 					} else {
 						if (KEYWORD_DATE.equals(template)) {
-							DateFormat format = new SimpleDateFormat(
-									this.keywordsValueMap
-											.get(KEYWORD_DATE_FORMAT));
-							try {
-								value = format.format(changeTracking
-										.getUpdatedDate());
-
-							} catch (Exception e) {
-								value = changeTracking.getUpdatedDate()
-										.toString();
-							}
+							value = getDateString(format, changeTracking.getUpdatedDate());
 
 						} else if (KEYWORD_CONTENTS.equals(template)) {
 							value = changeTracking.getComment();
