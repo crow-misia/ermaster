@@ -159,7 +159,7 @@ public abstract class AbstractSheetGenerator {
 		return keywordsValueMap;
 	}
 
-	protected String getValue(Map<String, String> keywordsValueMap,
+	protected static String getValue(Map<String, String> keywordsValueMap,
 			String keyword, Object obj) {
 		if (obj instanceof Boolean) {
 			if (Boolean.TRUE.equals(obj)) {
@@ -213,14 +213,14 @@ public abstract class AbstractSheetGenerator {
 		String str = template;
 
 		for (String keyword : KEYWORDS_OF_COLUMN) {
-			str = str.replaceAll("\\" + keyword, this.getKeywordValue(
+			str = str.replaceAll("\\" + keyword, getKeywordValue(
 					keywordsValueMap, normalColumn, tableView, keyword));
 		}
 
 		return str;
 	}
 
-	private String getKeywordValue(Map<String, String> keywordsValueMap,
+	private static String getKeywordValue(Map<String, String> keywordsValueMap,
 			NormalColumn normalColumn, TableView tableView, String keyword) {
 		Object obj = null;
 
@@ -367,7 +367,7 @@ public abstract class AbstractSheetGenerator {
 
 		}
 
-		return this.getValue(keywordsValueMap, keyword, obj);
+		return getValue(keywordsValueMap, keyword, obj);
 	}
 
 	protected ColumnTemplate loadColumnTemplate(HSSFWorkbook workbook,

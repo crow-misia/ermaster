@@ -101,19 +101,19 @@ public class TableSheetGenerator extends AbstractSheetGenerator {
 
 	public void setTableData(HSSFWorkbook workbook, HSSFSheet sheet,
 			ERTable table) {
-		POIUtils.replace(sheet, KEYWORD_LOGICAL_TABLE_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_LOGICAL_TABLE_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_LOGICAL_TABLE_NAME, table
 						.getLogicalName()));
 
-		POIUtils.replace(sheet, KEYWORD_PHYSICAL_TABLE_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_PHYSICAL_TABLE_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_PHYSICAL_TABLE_NAME, table
 						.getPhysicalName()));
 
-		POIUtils.replace(sheet, KEYWORD_TABLE_DESCRIPTION, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_TABLE_DESCRIPTION, getValue(
 				this.keywordsValueMap, KEYWORD_TABLE_DESCRIPTION, table
 						.getDescription()));
 
-		POIUtils.replace(sheet, KEYWORD_TABLE_CONSTRAINT, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_TABLE_CONSTRAINT, getValue(
 				this.keywordsValueMap, KEYWORD_TABLE_CONSTRAINT, table
 						.getConstraint()));
 

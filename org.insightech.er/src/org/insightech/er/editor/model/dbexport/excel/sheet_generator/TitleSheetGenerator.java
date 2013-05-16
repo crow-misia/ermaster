@@ -27,26 +27,23 @@ public class TitleSheetGenerator extends AbstractSheetGenerator {
 	// 会社名
 	private static final String KEYWORD_COMPANY_NAME = "$CMPN";
 
-    // 部署名
-    private static final String KEYWORD_DEPARTMENT_NAME = "$DEPN";
+	// 部署名
+	private static final String KEYWORD_DEPARTMENT_NAME = "$DEPN";
 
-    // 作成者
-    private static final String KEYWORD_AUTHOR = "$AUTH";
+	// 作成者
+	private static final String KEYWORD_AUTHOR = "$AUTH";
 
-    // 作成日時
-    private static final String KEYWORD_CREATE_DATE = "$CRDT";
+	// 作成日時
+	private static final String KEYWORD_CREATE_DATE = "$CRDT";
 
-    // 更新者
-    private static final String KEYWORD_UPDATER = "$UPDR";
+	// 更新者
+	private static final String KEYWORD_UPDATER = "$UPDR";
 
-    // 作成日時
-    private static final String KEYWORD_UPDATE_DATE = "$UPDT";
+	// 作成日時
+	private static final String KEYWORD_UPDATE_DATE = "$UPDT";
 
-    // 日付フォーマット
-    private static final String KEYWORD_DATE_FORMAT = "$FMT";
-
-    // シート名
-    private static final String KEYWORD_SHEET_NAME = "$SHTN";
+	// 日付フォーマット
+	private static final String KEYWORD_DATE_FORMAT = "$FMT";
 
 	@Override
 	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
@@ -76,29 +73,29 @@ public class TitleSheetGenerator extends AbstractSheetGenerator {
 		final SimpleDateFormat format = new SimpleDateFormat(
 				this.keywordsValueMap.get(KEYWORD_DATE_FORMAT));
 
-        POIUtils.replace(sheet, KEYWORD_PROJECT_NAME,
-                map.get(ModelProperties.KEY_PROJECT_NAME));
+		POIUtils.replace(sheet, KEYWORD_PROJECT_NAME,
+				map.get(ModelProperties.KEY_PROJECT_NAME));
 
-        POIUtils.replace(sheet, KEYWORD_MODEL_NAME,
-                map.get(ModelProperties.KEY_MODEL_NAME));
+		POIUtils.replace(sheet, KEYWORD_MODEL_NAME,
+				map.get(ModelProperties.KEY_MODEL_NAME));
 
-        POIUtils.replace(sheet, KEYWORD_VERSION,
-                map.get(ModelProperties.KEY_VERSION));
+		POIUtils.replace(sheet, KEYWORD_VERSION,
+				map.get(ModelProperties.KEY_VERSION));
 
-        POIUtils.replace(sheet, KEYWORD_COMPANY_NAME,
-                map.get(ModelProperties.KEY_COMPANY_NAME));
+		POIUtils.replace(sheet, KEYWORD_COMPANY_NAME,
+				map.get(ModelProperties.KEY_COMPANY_NAME));
 
-        POIUtils.replace(sheet, KEYWORD_DEPARTMENT_NAME,
-                map.get(ModelProperties.KEY_DEPARTMENT_NAME));
+		POIUtils.replace(sheet, KEYWORD_DEPARTMENT_NAME,
+				map.get(ModelProperties.KEY_DEPARTMENT_NAME));
 
-        POIUtils.replace(sheet, KEYWORD_AUTHOR,
-                map.get(ModelProperties.KEY_AUTHOR));
+		POIUtils.replace(sheet, KEYWORD_AUTHOR,
+				map.get(ModelProperties.KEY_AUTHOR));
 
-        POIUtils.replace(sheet, KEYWORD_UPDATER,
-                map.get(ModelProperties.KEY_UPDATER));
+		POIUtils.replace(sheet, KEYWORD_UPDATER,
+				map.get(ModelProperties.KEY_UPDATER));
 
-        POIUtils.replace(sheet, KEYWORD_CREATE_DATE,
-                getDateString(format, properties.getCreationDate()));
+		POIUtils.replace(sheet, KEYWORD_CREATE_DATE,
+				getDateString(format, properties.getCreationDate()));
 
         POIUtils.replace(sheet, KEYWORD_UPDATE_DATE,
                 getDateString(format, properties.getUpdatedDate()));

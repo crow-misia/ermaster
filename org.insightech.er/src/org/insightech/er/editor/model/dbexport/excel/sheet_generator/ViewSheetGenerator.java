@@ -83,19 +83,19 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 	 * @param view
 	 */
 	public void setViewData(HSSFWorkbook workbook, HSSFSheet sheet, View view) {
-		POIUtils.replace(sheet, KEYWORD_LOGICAL_VIEW_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_LOGICAL_VIEW_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_LOGICAL_VIEW_NAME, view
 						.getLogicalName()));
 
-		POIUtils.replace(sheet, KEYWORD_PHYSICAL_VIEW_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_PHYSICAL_VIEW_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_PHYSICAL_VIEW_NAME, view
 						.getPhysicalName()));
 
-		POIUtils.replace(sheet, KEYWORD_VIEW_DESCRIPTION, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_VIEW_DESCRIPTION, getValue(
 				this.keywordsValueMap, KEYWORD_VIEW_DESCRIPTION, view
 						.getDescription()));
 
-		POIUtils.replace(sheet, KEYWORD_VIEW_SQL, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_VIEW_SQL, getValue(
 				this.keywordsValueMap, KEYWORD_VIEW_SQL, view.getSql()));
 
 		CellLocation cellLocation = POIUtils.findCell(sheet,

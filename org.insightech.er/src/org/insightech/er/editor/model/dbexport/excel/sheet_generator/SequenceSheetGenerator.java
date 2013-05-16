@@ -39,28 +39,28 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 	 */
 	public void setSequenceData(HSSFWorkbook workbook, HSSFSheet sheet,
 			Sequence sequence) {
-		POIUtils.replace(sheet, KEYWORD_SEQUENCE_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_SEQUENCE_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_SEQUENCE_NAME, sequence
 						.getName()));
-		POIUtils.replace(sheet, KEYWORD_SEQUENCE_DESCRIPTION, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_SEQUENCE_DESCRIPTION, getValue(
 				this.keywordsValueMap, KEYWORD_SEQUENCE_DESCRIPTION, sequence
 						.getDescription()));
-		POIUtils.replace(sheet, KEYWORD_INCREMENT, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_INCREMENT, getValue(
 				this.keywordsValueMap, KEYWORD_INCREMENT, Format
 						.toString(sequence.getIncrement())));
-		POIUtils.replace(sheet, KEYWORD_MIN, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_MIN, getValue(
 				this.keywordsValueMap, KEYWORD_MIN, Format.toString(sequence
 						.getMinValue())));
-		POIUtils.replace(sheet, KEYWORD_MAX, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_MAX, getValue(
 				this.keywordsValueMap, KEYWORD_MAX, Format.toString(sequence
 						.getMaxValue())));
-		POIUtils.replace(sheet, KEYWORD_START, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_START, getValue(
 				this.keywordsValueMap, KEYWORD_START, Format.toString(sequence
 						.getStart())));
-		POIUtils.replace(sheet, KEYWORD_CACHE, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_CACHE, getValue(
 				this.keywordsValueMap, KEYWORD_CACHE, Format.toString(sequence
 						.getCache())));
-		POIUtils.replace(sheet, KEYWORD_CYCLE, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_CYCLE, getValue(
 				this.keywordsValueMap, KEYWORD_CYCLE, sequence.isCycle()));
 	}
 

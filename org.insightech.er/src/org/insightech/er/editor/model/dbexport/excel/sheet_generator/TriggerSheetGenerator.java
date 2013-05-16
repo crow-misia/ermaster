@@ -29,15 +29,15 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 	public void setTriggerData(HSSFWorkbook workbook, HSSFSheet sheet,
 			Trigger trigger) {
 		POIUtils
-				.replace(sheet, KEYWORD_TRIGGER_NAME, this.getValue(
+				.replace(sheet, KEYWORD_TRIGGER_NAME, getValue(
 						this.keywordsValueMap, KEYWORD_TRIGGER_NAME, trigger
 								.getName()));
 
-		POIUtils.replace(sheet, KEYWORD_TRIGGER_DESCRIPTION, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_TRIGGER_DESCRIPTION, getValue(
 				this.keywordsValueMap, KEYWORD_TRIGGER_DESCRIPTION, trigger
 						.getDescription()));
 
-		POIUtils.replace(sheet, KEYWORD_TRIGGER_SQL, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_TRIGGER_SQL, getValue(
 				this.keywordsValueMap, KEYWORD_TRIGGER_SQL, trigger.getSql()));
 	}
 

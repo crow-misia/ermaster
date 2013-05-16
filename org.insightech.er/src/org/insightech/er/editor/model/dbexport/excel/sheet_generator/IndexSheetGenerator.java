@@ -69,21 +69,21 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 	 * @param index
 	 */
 	public void setIndexData(HSSFWorkbook workbook, HSSFSheet sheet, Index index) {
-		POIUtils.replace(sheet, KEYWORD_PHYSICAL_INDEX_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_PHYSICAL_INDEX_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_PHYSICAL_INDEX_NAME, index
 						.getName()));
-		POIUtils.replace(sheet, KEYWORD_INDEX_TYPE, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_INDEX_TYPE, getValue(
 				this.keywordsValueMap, KEYWORD_INDEX_TYPE, index.getType()));
-		POIUtils.replace(sheet, KEYWORD_UNIQUE_INDEX, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_UNIQUE_INDEX, getValue(
 				this.keywordsValueMap, KEYWORD_UNIQUE_INDEX, !index
 						.isNonUnique()));
-		POIUtils.replace(sheet, KEYWORD_PHYSICAL_TABLE_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_PHYSICAL_TABLE_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_PHYSICAL_TABLE_NAME, index
 						.getTable().getPhysicalName()));
-		POIUtils.replace(sheet, KEYWORD_LOGICAL_TABLE_NAME, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_LOGICAL_TABLE_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_LOGICAL_TABLE_NAME, index
 						.getTable().getLogicalName()));
-		POIUtils.replace(sheet, KEYWORD_INDEX_DESCRIPTION, this.getValue(
+		POIUtils.replace(sheet, KEYWORD_INDEX_DESCRIPTION, getValue(
 				this.keywordsValueMap, KEYWORD_INDEX_DESCRIPTION, index
 						.getDescription()));
 

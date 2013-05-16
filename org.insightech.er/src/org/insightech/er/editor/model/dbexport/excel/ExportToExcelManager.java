@@ -35,6 +35,7 @@ import org.insightech.er.editor.model.dbexport.excel.sheet_generator.TableSheetG
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.TitleSheetGenerator;
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.TriggerSheetGenerator;
 import org.insightech.er.editor.model.dbexport.excel.sheet_generator.ViewSheetGenerator;
+import org.insightech.er.editor.model.dbexport.excel.sheet_generator.WordSheetGenerator;
 import org.insightech.er.util.POIUtils;
 import org.insightech.er.util.io.FileUtils;
 
@@ -65,6 +66,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		SHEET_GENERATOR_LIST.add(new CategorySheetGenerator());
 		SHEET_GENERATOR_LIST.add(new HistorySheetGenerator());
 		SHEET_GENERATOR_LIST.add(new TitleSheetGenerator());
+		SHEET_GENERATOR_LIST.add(new WordSheetGenerator());
 	}
 
 	public static class LoopDefinition {
