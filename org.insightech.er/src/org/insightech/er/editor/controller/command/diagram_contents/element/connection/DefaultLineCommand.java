@@ -7,31 +7,26 @@ import org.insightech.er.editor.controller.command.AbstractCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Bendpoint;
 import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
-import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 
 public class DefaultLineCommand extends AbstractCommand {
 
-	private int sourceXp;
+	private final int sourceXp;
 
-	private int sourceYp;
+	private final int sourceYp;
 
-	private int targetXp;
+	private final int targetXp;
 
-	private int targetYp;
+	private final int targetYp;
 
 	private ConnectionElement connection;
 
 	private List<Bendpoint> oldBendpointList;
 
 	public DefaultLineCommand(ERDiagram diagram, ConnectionElement connection) {
-		if (connection instanceof Relation) {
-			Relation relation = (Relation) connection;
-
-			this.sourceXp = relation.getSourceXp();
-			this.sourceYp = relation.getSourceYp();
-			this.targetXp = relation.getTargetXp();
-			this.targetYp = relation.getTargetYp();
-		}
+		this.sourceXp = connection.getSourceXp();
+		this.sourceYp = connection.getSourceYp();
+		this.targetXp = connection.getTargetXp();
+		this.targetYp = connection.getTargetYp();
 
 		this.connection = connection;
 		this.oldBendpointList = this.connection.getBendpoints();
@@ -43,13 +38,10 @@ public class DefaultLineCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.connection.setBendpoints(new ArrayList<Bendpoint>());
-		if (connection instanceof Relation) {
-			Relation relation = (Relation) connection;
 
-			relation.setSourceLocationp(-1, -1);
-			relation.setTargetLocationp(-1, -1);
-			relation.setParentMove();
-		}
+		this.connection.setSourceLocationp(-1, -1);
+		this.connection.setTargetLocationp(-1, -1);
+		this.connection.setParentMove();
 	}
 
 	/**
@@ -58,12 +50,9 @@ public class DefaultLineCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.connection.setBendpoints(this.oldBendpointList);
-		if (connection instanceof Relation) {
-			Relation relation = (Relation) connection;
 
-			relation.setSourceLocationp(this.sourceXp, this.sourceYp);
-			relation.setTargetLocationp(this.targetXp, this.targetYp);
-			relation.setParentMove();
-		}
+		this.connection.setSourceLocationp(this.sourceXp, this.sourceYp);
+		this.connection.setTargetLocationp(this.targetXp, this.targetYp);
+		this.connection.setParentMove();
 	}
 }

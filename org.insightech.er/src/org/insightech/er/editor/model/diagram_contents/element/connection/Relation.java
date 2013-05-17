@@ -31,14 +31,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	private NormalColumn referencedColumn;
 
-	private int sourceXp;
-
-	private int sourceYp;
-
-	private int targetXp;
-
-	private int targetYp;
-
 	public Relation() {
 		this(false, null, null);
 	}
@@ -52,11 +44,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 		this.referenceForPK = referenceForPK;
 		this.referencedComplexUniqueKey = referencedComplexUniqueKey;
 		this.referencedColumn = referencedColumn;
-
-		this.sourceXp = -1;
-		this.sourceYp = -1;
-		this.targetXp = -1;
-		this.targetYp = -1;
 
 		this.parentCardinality = "1";
 		this.childCardinality = "1..n";
@@ -213,9 +200,7 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	public void setChildCardinality(String childCardinality) {
 		this.childCardinality = childCardinality;
-		firePropertyChange(
-				ConnectionElement.PROPERTY_CHANGE_CONNECTION_ATTRIBUTE, null,
-				null);
+		setParentMove();
 	}
 
 	public String getParentCardinality() {
@@ -224,9 +209,7 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	public void setParentCardinality(String parentCardinality) {
 		this.parentCardinality = parentCardinality;
-		firePropertyChange(
-				ConnectionElement.PROPERTY_CHANGE_CONNECTION_ATTRIBUTE, null,
-				null);
+		setParentMove();
 	}
 
 	public void setName(String name) {
@@ -359,32 +342,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	public ComplexUniqueKey getReferencedComplexUniqueKey() {
 		return this.referencedComplexUniqueKey;
-	}
-
-	public int getSourceXp() {
-		return sourceXp;
-	}
-
-	public void setSourceLocationp(int sourceXp, int sourceYp) {
-		this.sourceXp = sourceXp;
-		this.sourceYp = sourceYp;
-	}
-
-	public int getSourceYp() {
-		return sourceYp;
-	}
-
-	public int getTargetXp() {
-		return targetXp;
-	}
-
-	public void setTargetLocationp(int targetXp, int targetYp) {
-		this.targetXp = targetXp;
-		this.targetYp = targetYp;
-	}
-
-	public int getTargetYp() {
-		return targetYp;
 	}
 
 	public boolean isReferedStrictly() {

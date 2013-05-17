@@ -1268,6 +1268,14 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append(tab).append("<target>")
 				.append(context.nodeElementMap.get(connection.getTarget()))
 				.append("</target>\n");
+		xml.append(tab).append("\t<source_xp>").append(connection.getSourceXp())
+				.append("</source_xp>\n");
+		xml.append(tab).append("\t<source_yp>").append(connection.getSourceYp())
+				.append("</source_yp>\n");
+		xml.append(tab).append("\t<target_xp>").append(connection.getTargetXp())
+				.append("</target_xp>\n");
+		xml.append(tab).append("\t<target_yp>").append(connection.getTargetYp())
+				.append("</target_yp>\n");
 
 		final String tab2 = tab + "\t";
 		for (Bendpoint bendpoint : connection.getBendpoints()) {
@@ -1316,14 +1324,6 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append(tab).append("\t<on_update_action>")
 				.append(escape(relation.getOnUpdateAction()))
 				.append("</on_update_action>\n");
-		xml.append(tab).append("\t<source_xp>").append(relation.getSourceXp())
-				.append("</source_xp>\n");
-		xml.append(tab).append("\t<source_yp>").append(relation.getSourceYp())
-				.append("</source_yp>\n");
-		xml.append(tab).append("\t<target_xp>").append(relation.getTargetXp())
-				.append("</target_xp>\n");
-		xml.append(tab).append("\t<target_yp>").append(relation.getTargetYp())
-				.append("</target_yp>\n");
 		xml.append(tab).append("\t<referenced_column>")
 				.append(context.columnMap.get(relation.getReferencedColumn()))
 				.append("</referenced_column>\n");

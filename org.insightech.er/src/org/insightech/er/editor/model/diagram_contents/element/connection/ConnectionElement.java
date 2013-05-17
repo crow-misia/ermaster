@@ -21,7 +21,48 @@ public abstract class ConnectionElement extends AbstractModel {
 	protected NodeElement target;
 
 	// ベンド・ポイントの位置情報のリスト
-	private List<Bendpoint> bendPoints = new ArrayList<Bendpoint>();
+	private transient List<Bendpoint> bendPoints = new ArrayList<Bendpoint>();
+
+	private int sourceXp;
+
+	private int sourceYp;
+
+	private int targetXp;
+
+	private int targetYp;
+
+	public ConnectionElement() {
+		this.sourceXp = -1;
+		this.sourceYp = -1;
+		this.targetXp = -1;
+		this.targetYp = -1;
+	}
+
+	public int getSourceXp() {
+		return sourceXp;
+	}
+
+	public void setSourceLocationp(int sourceXp, int sourceYp) {
+		this.sourceXp = sourceXp;
+		this.sourceYp = sourceYp;
+	}
+
+	public int getSourceYp() {
+		return sourceYp;
+	}
+
+	public int getTargetXp() {
+		return targetXp;
+	}
+
+	public void setTargetLocationp(int targetXp, int targetYp) {
+		this.targetXp = targetXp;
+		this.targetYp = targetYp;
+	}
+
+	public int getTargetYp() {
+		return targetYp;
+	}
 
 	public NodeElement getSource() {
 		return source;
