@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.outline;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
@@ -38,7 +39,7 @@ import org.insightech.er.editor.view.action.outline.trigger.CreateTriggerAction;
 
 public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 
-	private static Map<Class, String> ACTION_MAP = new HashMap<Class, String>();
+	private static Map<Class<?>, String> ACTION_MAP = new HashMap<Class<?>, String>();
 
 	static {
 		ACTION_MAP.put(SequenceSetOutlineEditPart.class,
@@ -125,24 +126,22 @@ public class ERDiagramOutlinePopupMenuManager extends MenuManager {
 						} else {
 							EditPart editPart = (EditPart) selectedEditParts
 									.get(0);
-							for (Class clazz : ACTION_MAP.keySet()) {
-								String actionId = ACTION_MAP.get(clazz);
+							for (final Entry<Class<?>, String> entry : ACTION_MAP.entrySet()) {
+								final Class<?> clazz = entry.getKey();
+								final String actionId = entry.getValue();
 
-								if (!clazz.isInstance(editPart)) {
-									enabled(actionId, false);
-
-								} else {
+								if (clazz.isInstance(editPart)) {
 									if (CreateSequenceAction.ID
 											.equals(actionId)
 											&& !DBManagerFactory.getDBManager(
 													diagram).isSupported(
 													DBManager.SUPPORT_SEQUENCE)) {
 										enabled(actionId, false);
-
 									} else {
 										enabled(actionId, true);
-
 									}
+								} else {
+									enabled(actionId, false);
 								}
 							}
 						}

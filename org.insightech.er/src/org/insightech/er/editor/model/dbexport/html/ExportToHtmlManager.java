@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
@@ -31,7 +32,7 @@ import org.insightech.er.util.io.IOUtils;
 
 public class ExportToHtmlManager {
 
-	private static final Map PROPERTIES = ResourceString
+	private static final Map<String, String> PROPERTIES = ResourceString
 			.getResources("html.report.");
 
 	private static final String[] FIX_FILES = { "help-doc.html", "index.html",
@@ -88,8 +89,8 @@ public class ExportToHtmlManager {
 
 	public void doProcess() throws IOException, InterruptedException {
 		// 固定ファイルのコピー
-		for (int i = 0; i < FIX_FILES.length; i++) {
-			this.copyOut(FIX_FILES[i], FIX_FILES[i]);
+		for (final String file : FIX_FILES) {
+			this.copyOut(file, file);
 		}
 
 		// テンプレートから生成
@@ -206,9 +207,8 @@ public class ExportToHtmlManager {
 	}
 
 	private static String replaceProperties(String content) {
-		for (Object key : PROPERTIES.keySet()) {
-			content = content.replaceAll(String.valueOf(key), String
-					.valueOf(PROPERTIES.get(key)));
+		for (final Entry<String, String> entry : PROPERTIES. entrySet()) {
+			content = content.replaceAll(entry.getKey(), entry.getValue());
 		}
 
 		return content;
