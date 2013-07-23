@@ -5,26 +5,26 @@ import java.util.List;
 
 import org.insightech.er.editor.model.ERDiagram;
 
-public interface HtmlReportPageGenerator {
+public interface HtmlReportPageGenerator<T> {
 
-	public String generatePackageFrame(ERDiagram diagram) throws IOException;
+	String generatePackageFrame(ERDiagram diagram) throws IOException;
 
-	public String generatePackageSummary(
-			HtmlReportPageGenerator prevPageGenerator,
-			HtmlReportPageGenerator nextPageGenerator, ERDiagram diagram)
+	String generatePackageSummary(
+			HtmlReportPageGenerator<?> prevPageGenerator,
+			HtmlReportPageGenerator<?> nextPageGenerator, ERDiagram diagram)
 			throws IOException;
 
-	public String generateContent(ERDiagram diagram, Object object,
+	String generateContent(ERDiagram diagram, T object,
 			Object prevObject, Object nextObject) throws IOException;
 
-	public String getPageTitle();
+	String getPageTitle();
 
-	public String getType();
+	String getType();
 
-	public String getObjectId(Object object);
+	String getObjectId(Object object);
 
-	public String getObjectName(Object object);
+	String getObjectName(T object);
 
-	public List<Object> getObjectList(ERDiagram diagram);
+	List<T> getObjectList(ERDiagram diagram);
 
 }

@@ -7,11 +7,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
+import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.dbexport.html.page_generator.HtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.element.node.Location;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 
-public class ExportToHtmlWithProgressManager extends ExportToHtmlManager
+public class ExportToHtmlWithProgressManager extends ExportToHtmlManager<ObjectModel>
 		implements IRunnableWithProgress {
 
 	private Exception exception;
@@ -56,8 +57,8 @@ public class ExportToHtmlWithProgressManager extends ExportToHtmlManager
 	}
 
 	@Override
-	protected void doPreTask(HtmlReportPageGenerator pageGenerator,
-			Object object) {
+	protected void doPreTask(HtmlReportPageGenerator<ObjectModel> pageGenerator,
+			ObjectModel object) {
 		this.monitor
 				.subTask("writing : " + pageGenerator.getObjectName(object));
 	}

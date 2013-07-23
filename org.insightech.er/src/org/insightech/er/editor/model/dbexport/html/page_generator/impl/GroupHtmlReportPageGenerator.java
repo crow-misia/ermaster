@@ -11,7 +11,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 
 public class GroupHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<ColumnGroup> {
 
 	public GroupHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -24,22 +24,17 @@ public class GroupHtmlReportPageGenerator extends
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List list = diagram.getDiagramContents().getGroups().getGroupList();
-
-		return list;
+	public List<ColumnGroup> getObjectList(ERDiagram diagram) {
+		return diagram.getDiagramContents().getGroups().getGroupList();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object)
+	public String[] getContentArgs(ERDiagram diagram, ColumnGroup columnGroup)
 			throws IOException {
-		ColumnGroup columnGroup = (ColumnGroup) object;
-
 		List<NormalColumn> normalColumnList = columnGroup.getColumns();
 
 		String attributeTable = this.generateAttributeTable(diagram,
@@ -56,9 +51,7 @@ public class GroupHtmlReportPageGenerator extends
 				attributeDetailTable };
 	}
 
-	public String getObjectName(Object object) {
-		ColumnGroup columnGroup = (ColumnGroup) object;
-
+	public String getObjectName(ColumnGroup columnGroup) {
 		return columnGroup.getGroupName();
 	}
 
@@ -66,7 +59,7 @@ public class GroupHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
+	public String getObjectSummary(ColumnGroup object) {
 		return null;
 	}
 

@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
+import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.dbexport.html.page_generator.HtmlReportPageGenerator;
 import org.insightech.er.editor.model.dbexport.html.page_generator.OverviewHtmlReportPageGenerator;
 import org.insightech.er.editor.model.dbexport.html.page_generator.impl.CategoryHtmlReportPageGenerator;
@@ -30,7 +31,7 @@ import org.insightech.er.util.Closer;
 import org.insightech.er.util.io.FileUtils;
 import org.insightech.er.util.io.IOUtils;
 
-public class ExportToHtmlManager {
+public class ExportToHtmlManager<T extends ObjectModel> {
 
 	private static final Map<String, String> PROPERTIES = ResourceString
 			.getResources("html.report.");
@@ -43,9 +44,9 @@ public class ExportToHtmlManager {
 
 	private static final String TEMPLATE_DIR = "html/";
 
-	protected List<HtmlReportPageGenerator> htmlReportPageGeneratorList = new ArrayList<HtmlReportPageGenerator>();
+	protected List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList = new ArrayList<HtmlReportPageGenerator<T>>();
 
-	protected OverviewHtmlReportPageGenerator overviewPageGenerator;
+	protected OverviewHtmlReportPageGenerator<T> overviewPageGenerator;
 
 	private String outputDir;
 
@@ -53,6 +54,7 @@ public class ExportToHtmlManager {
 
 	private Map<TableView, Location> tableLocationMap;
 
+	@SuppressWarnings("unchecked")
 	public ExportToHtmlManager(String outputDir, ERDiagram diagram,
 			Map<TableView, Location> tableLocationMap) {
 		this.outputDir = outputDir;
@@ -61,27 +63,27 @@ public class ExportToHtmlManager {
 
 		Map<Object, Integer> idMap = new HashMap<Object, Integer>();
 
-		this.overviewPageGenerator = new OverviewHtmlReportPageGenerator(idMap);
+		this.overviewPageGenerator = new OverviewHtmlReportPageGenerator<T>(idMap);
 		htmlReportPageGeneratorList
-				.add(new TableHtmlReportPageGenerator(idMap));
+				.add((HtmlReportPageGenerator<T>) new TableHtmlReportPageGenerator(idMap));
 		htmlReportPageGeneratorList
-				.add(new IndexHtmlReportPageGenerator(idMap));
-		htmlReportPageGeneratorList.add(new SequenceHtmlReportPageGenerator(
+				.add((HtmlReportPageGenerator<T>) new IndexHtmlReportPageGenerator(idMap));
+		htmlReportPageGeneratorList.add((HtmlReportPageGenerator<T>) new SequenceHtmlReportPageGenerator(
 				idMap));
-		htmlReportPageGeneratorList.add(new ViewHtmlReportPageGenerator(idMap));
-		htmlReportPageGeneratorList.add(new TriggerHtmlReportPageGenerator(
+		htmlReportPageGeneratorList.add((HtmlReportPageGenerator<T>) new ViewHtmlReportPageGenerator(idMap));
+		htmlReportPageGeneratorList.add((HtmlReportPageGenerator<T>) new TriggerHtmlReportPageGenerator(
 				idMap));
 		htmlReportPageGeneratorList
-				.add(new GroupHtmlReportPageGenerator(idMap));
-		htmlReportPageGeneratorList.add(new TablespaceHtmlReportPageGenerator(
+				.add((HtmlReportPageGenerator<T>) new GroupHtmlReportPageGenerator(idMap));
+		htmlReportPageGeneratorList.add((HtmlReportPageGenerator<T>) new TablespaceHtmlReportPageGenerator(
 				idMap));
-		htmlReportPageGeneratorList.add(new WordHtmlReportPageGenerator(idMap));
-		htmlReportPageGeneratorList.add(new CategoryHtmlReportPageGenerator(
+		htmlReportPageGeneratorList.add((HtmlReportPageGenerator<T>) new WordHtmlReportPageGenerator(idMap));
+		htmlReportPageGeneratorList.add((HtmlReportPageGenerator<T>) new CategoryHtmlReportPageGenerator(
 				idMap));
 	}
 
-	protected void doPreTask(HtmlReportPageGenerator pageGenerator,
-			Object object) {
+	protected void doPreTask(HtmlReportPageGenerator<T> pageGenerator,
+			T object) {
 	}
 
 	protected void doPostTask() throws InterruptedException {
@@ -118,20 +120,17 @@ public class ExportToHtmlManager {
 		this.writeOut("overview-summary.html", overviewSummary);
 
 		// オブジェクトタイプ毎の階層
-		for (int i = 0; i < htmlReportPageGeneratorList.size(); i++) {
-
-			HtmlReportPageGenerator pageGenerator = (HtmlReportPageGenerator) htmlReportPageGeneratorList
+		for (int i = 0, n = htmlReportPageGeneratorList.size(); i < n; i++) {
+			HtmlReportPageGenerator<T> pageGenerator = htmlReportPageGeneratorList
 					.get(i);
 			try {
-				HtmlReportPageGenerator prevPageGenerator = null;
+				HtmlReportPageGenerator<T> prevPageGenerator = null;
 				if (i != 0) {
-					prevPageGenerator = (HtmlReportPageGenerator) htmlReportPageGeneratorList
-							.get(i - 1);
+					prevPageGenerator = htmlReportPageGeneratorList.get(i - 1);
 				}
-				HtmlReportPageGenerator nextPageGenerator = null;
+				HtmlReportPageGenerator<?> nextPageGenerator = null;
 				if (i != htmlReportPageGeneratorList.size() - 1) {
-					nextPageGenerator = (HtmlReportPageGenerator) htmlReportPageGeneratorList
-							.get(i + 1);
+					nextPageGenerator = htmlReportPageGeneratorList.get(i + 1);
 				}
 
 				String type = pageGenerator.getType();
@@ -143,9 +142,9 @@ public class ExportToHtmlManager {
 						prevPageGenerator, nextPageGenerator, diagram);
 				this.writeOut(type + "/package-summary.html", template);
 
-				List<Object> objectList = pageGenerator.getObjectList(diagram);
-				for (int j = 0; j < objectList.size(); j++) {
-					Object object = objectList.get(j);
+				List<T> objectList = pageGenerator.getObjectList(diagram);
+				for (int j = 0, m = objectList.size(); j < m; j++) {
+					T object = objectList.get(j);
 
 					this.doPreTask(pageGenerator, object);
 

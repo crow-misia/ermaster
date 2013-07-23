@@ -18,7 +18,7 @@ import org.insightech.er.editor.model.settings.Environment;
 import org.insightech.er.util.Format;
 
 public class TablespaceHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<Tablespace> {
 
 	public TablespaceHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -31,23 +31,18 @@ public class TablespaceHtmlReportPageGenerator extends
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List list = diagram.getDiagramContents().getTablespaceSet()
+	public List<Tablespace> getObjectList(ERDiagram diagram) {
+		return diagram.getDiagramContents().getTablespaceSet()
 				.getTablespaceList();
-
-		return list;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object)
+	public String[] getContentArgs(ERDiagram diagram, Tablespace tablespace)
 			throws IOException {
-		Tablespace tablespace = (Tablespace) object;
-
 		String environments = this
 				.generateEnvironmentTable(diagram, tablespace);
 
@@ -76,9 +71,7 @@ public class TablespaceHtmlReportPageGenerator extends
 		return new String[] { environments, usedTableTable };
 	}
 
-	public String getObjectName(Object object) {
-		Tablespace tablespace = (Tablespace) object;
-
+	public String getObjectName(Tablespace tablespace) {
 		return tablespace.getName();
 	}
 
@@ -86,7 +79,7 @@ public class TablespaceHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
+	public String getObjectSummary(Tablespace tablespace) {
 		return null;
 	}
 

@@ -15,7 +15,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnG
 import org.insightech.er.util.Format;
 
 public class WordHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<Word> {
 
 	public WordHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -28,22 +28,17 @@ public class WordHtmlReportPageGenerator extends
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List list = diagram.getDiagramContents().getDictionary().getWordList();
-
-		return list;
+	public List<Word> getObjectList(ERDiagram diagram) {
+		return diagram.getDiagramContents().getDictionary().getWordList();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object)
+	public String[] getContentArgs(ERDiagram diagram, Word word)
 			throws IOException {
-		Word word = (Word) object;
-
 		String logicalName = word.getLogicalName();
 		String physicalName = word.getPhysicalName();
 		String type = "";
@@ -75,9 +70,7 @@ public class WordHtmlReportPageGenerator extends
 				usedTableTable };
 	}
 
-	public String getObjectName(Object object) {
-		Word word = (Word) object;
-
+	public String getObjectName(Word word) {
 		return word.getLogicalName();
 	}
 
@@ -85,7 +78,7 @@ public class WordHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
+	public String getObjectSummary(Word word) {
 		return null;
 	}
 }

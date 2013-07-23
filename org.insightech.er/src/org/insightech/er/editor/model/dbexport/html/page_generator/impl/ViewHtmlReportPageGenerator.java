@@ -12,7 +12,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.util.Format;
 
 public class ViewHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<View> {
 
 	public ViewHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -25,13 +25,10 @@ public class ViewHtmlReportPageGenerator extends
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List list = diagram.getDiagramContents().getContents().getViewSet()
+	public List<View> getObjectList(ERDiagram diagram) {
+		return diagram.getDiagramContents().getContents().getViewSet()
 				.getList();
-
-		return list;
 	}
 
 	/**
@@ -40,11 +37,8 @@ public class ViewHtmlReportPageGenerator extends
 	 * @throws IOException
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object)
-			throws IOException {
-		View view = (View) object;
-
-		String description = Format.null2blank(view.getDescription());
+	public String[] getContentArgs(ERDiagram diagram, View view)
+			throws IOException {		String description = Format.null2blank(view.getDescription());
 
 		List<NormalColumn> normalColumnList = view.getExpandedColumns();
 
@@ -69,9 +63,7 @@ public class ViewHtmlReportPageGenerator extends
 				foreignKeyTable, attributeDetailTable };
 	}
 
-	public String getObjectName(Object object) {
-		View view = (View) object;
-
+	public String getObjectName(View view) {
 		return view.getName();
 	}
 
@@ -79,9 +71,7 @@ public class ViewHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
-		View view = (View) object;
-
+	public String getObjectSummary(View view) {
 		return view.getDescription();
 	}
 }

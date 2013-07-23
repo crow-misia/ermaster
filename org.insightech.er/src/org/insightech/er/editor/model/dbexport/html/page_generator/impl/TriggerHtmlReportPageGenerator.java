@@ -9,7 +9,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigg
 import org.insightech.er.util.Format;
 
 public class TriggerHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<Trigger> {
 
 	public TriggerHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -22,31 +22,24 @@ public class TriggerHtmlReportPageGenerator extends
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List list = diagram.getDiagramContents().getTriggerSet()
+	public List<Trigger> getObjectList(ERDiagram diagram) {
+		return diagram.getDiagramContents().getTriggerSet()
 				.getTriggerList();
-
-		return list;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object) {
-		Trigger trigger = (Trigger) object;
-
+	public String[] getContentArgs(ERDiagram diagram, Trigger trigger) {
 		String description = Format.null2blank(trigger.getDescription());
 		String sql = Format.null2blank(trigger.getSql());
 
 		return new String[] { description, sql };
 	}
 
-	public String getObjectName(Object object) {
-		Trigger trigger = (Trigger) object;
-
+	public String getObjectName(Trigger trigger) {
 		return trigger.getName();
 	}
 
@@ -54,9 +47,7 @@ public class TriggerHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
-		Trigger trigger = (Trigger) object;
-
+	public String getObjectSummary(Trigger trigger) {
 		return trigger.getDescription();
 	}
 }

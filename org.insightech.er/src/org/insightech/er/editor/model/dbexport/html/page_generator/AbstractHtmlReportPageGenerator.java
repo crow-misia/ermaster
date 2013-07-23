@@ -16,8 +16,8 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.index.
 import org.insightech.er.editor.model.diagram_contents.element.node.table.unique_key.ComplexUniqueKey;
 import org.insightech.er.util.Format;
 
-public abstract class AbstractHtmlReportPageGenerator implements
-		HtmlReportPageGenerator {
+public abstract class AbstractHtmlReportPageGenerator<T> implements
+		HtmlReportPageGenerator<T> {
 
 	private Map<Object, Integer> idMap;
 
@@ -26,14 +26,14 @@ public abstract class AbstractHtmlReportPageGenerator implements
 	}
 
 	public String getObjectId(Object object) {
-		Integer id = (Integer) idMap.get(object);
+		Integer id = idMap.get(object);
 
 		if (id == null) {
 			id = Integer.valueOf(idMap.size());
 			this.idMap.put(object, id);
 		}
 
-		return String.valueOf(id);
+		return id.toString();
 	}
 
 	public String getPageTitle() {
@@ -57,7 +57,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		String template = ExportToHtmlManager
 				.getTemplate("types/package-frame/package-frame_row_template.html");
 
-		for (Object object : this.getObjectList(diagram)) {
+		for (T object : this.getObjectList(diagram)) {
 			Object[] args = this.getPackageFrameRowArgs(object);
 			String row = MessageFormat.format(template, args);
 
@@ -67,16 +67,14 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		return sb.toString();
 	}
 
-	public String[] getPackageFrameRowArgs(Object object) {
+	public String[] getPackageFrameRowArgs(T object) {
 		return new String[] { this.getObjectId(object),
 				this.getObjectName(object) };
 	}
 
-	public abstract List<Object> getObjectList(ERDiagram diagram);
-
 	public String generatePackageSummary(
-			HtmlReportPageGenerator prevPageGenerator,
-			HtmlReportPageGenerator nextPageGenerator, ERDiagram diagram)
+			HtmlReportPageGenerator<?> prevPageGenerator,
+			HtmlReportPageGenerator<?> nextPageGenerator, ERDiagram diagram)
 			throws IOException {
 		String template = ExportToHtmlManager
 				.getTemplate("types/package-summary/package-summary_template.html");
@@ -114,7 +112,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		String template = ExportToHtmlManager
 				.getTemplate("types/package-summary/package-summary_row_template.html");
 
-		for (Object object : this.getObjectList(diagram)) {
+		for (T object : this.getObjectList(diagram)) {
 			Object[] args = this.getPackageSummaryRowArgs(object);
 			String row = MessageFormat.format(template, args);
 
@@ -124,13 +122,13 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		return sb.toString();
 	}
 
-	public String[] getPackageSummaryRowArgs(Object object) {
+	public String[] getPackageSummaryRowArgs(T object) {
 		return new String[] { this.getObjectId(object),
 				Format.null2blank(this.getObjectName(object)),
 				Format.null2blank(this.getObjectSummary(object)) };
 	}
 
-	public String generateContent(ERDiagram diagram, Object object,
+	public String generateContent(ERDiagram diagram, T object,
 			Object prevObject, Object nextObject) throws IOException {
 		String template = ExportToHtmlManager
 				.getTemplate("types/contents_template.html");
@@ -168,9 +166,9 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		return MessageFormat.format(template, args);
 	}
 
-	public abstract String getObjectSummary(Object object);
+	public abstract String getObjectSummary(T object);
 
-	public abstract String[] getContentArgs(ERDiagram diagram, Object object)
+	public abstract String[] getContentArgs(ERDiagram diagram, T object)
 			throws IOException;
 
 	protected String generateAttributeTable(ERDiagram diagram,
@@ -182,11 +180,11 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 		for (NormalColumn normalColumn : normalColumnList) {
 			String type = null;
-			if (normalColumn.getType() != null) {
+			if (normalColumn.getType() == null) {
+				type = "";
+			} else {
 				type = Format.formatType(normalColumn.getType(), normalColumn
 						.getTypeData(), diagram.getDatabase());
-			} else {
-				type = "";
 			}
 
 			Object[] args = { this.getObjectId(normalColumn),
@@ -215,11 +213,11 @@ public abstract class AbstractHtmlReportPageGenerator implements
 		for (NormalColumn normalColumn : normalColumnList) {
 			String type = null;
 
-			if (normalColumn.getType() != null) {
+			if (normalColumn.getType() == null) {
+				type = "";
+			} else {
 				type = Format.formatType(normalColumn.getType(), normalColumn
 						.getTypeData(), diagram.getDatabase());
-			} else {
-				type = "";
 			}
 
 			Object[] args = {
@@ -282,16 +280,15 @@ public abstract class AbstractHtmlReportPageGenerator implements
 					.getLogicalName());
 			Boolean desc = descs.get(i);
 			String descStr = null;
-			if (desc != null) {
+			if (desc == null) {
+				descStr = "";
+			} else {
 				if (desc.booleanValue()) {
 					descStr = "DESC";
 
 				} else {
 					descStr = "ASC";
 				}
-
-			} else {
-				descStr = "";
 			}
 
 			Object[] args = { tableId, columnId, columnPhysicalName,
@@ -385,10 +382,10 @@ public abstract class AbstractHtmlReportPageGenerator implements
 			String name = Format.null2blank(index.getName());
 			String type = Format.null2blank(index.getType());
 			String unique = null;
-			if (!index.isNonUnique()) {
-				unique = "UNIQUE";
-			} else {
+			if (index.isNonUnique()) {
 				unique = "";
+			} else {
+				unique = "UNIQUE";
 			}
 
 			Object[] args = { id, name, type, unique };

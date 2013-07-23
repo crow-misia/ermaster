@@ -9,7 +9,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequ
 import org.insightech.er.util.Format;
 
 public class SequenceHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<Sequence> {
 
 	public SequenceHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -22,22 +22,17 @@ public class SequenceHtmlReportPageGenerator extends
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List list = diagram.getDiagramContents().getSequenceSet()
+	public List<Sequence> getObjectList(ERDiagram diagram) {
+		return diagram.getDiagramContents().getSequenceSet()
 				.getSequenceList();
-
-		return list;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object) {
-		Sequence sequence = (Sequence) object;
-
+	public String[] getContentArgs(ERDiagram diagram, Sequence sequence) {
 		return new String[] { Format.null2blank(sequence.getDescription()),
 				this.getValue(sequence.getIncrement()),
 				this.getValue(sequence.getMinValue()),
@@ -55,9 +50,7 @@ public class SequenceHtmlReportPageGenerator extends
 		}
 	}
 
-	public String getObjectName(Object object) {
-		Sequence sequence = (Sequence) object;
-
+	public String getObjectName(Sequence sequence) {
 		return sequence.getName();
 	}
 
@@ -65,9 +58,7 @@ public class SequenceHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
-		Sequence sequence = (Sequence) object;
-
+	public String getObjectSummary(Sequence sequence) {
 		return sequence.getDescription();
 	}
 }

@@ -14,7 +14,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.index.
 import org.insightech.er.util.Format;
 
 public class TableHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<ERTable> {
 
 	public TableHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -27,23 +27,18 @@ public class TableHtmlReportPageGenerator extends
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List list = diagram.getDiagramContents().getContents().getTableSet()
+	public List<ERTable> getObjectList(ERDiagram diagram) {
+		return diagram.getDiagramContents().getContents().getTableSet()
 				.getList();
-
-		return list;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object)
+	public String[] getContentArgs(ERDiagram diagram, ERTable table)
 			throws IOException {
-		ERTable table = (ERTable) object;
-
 		String description = table.getDescription();
 
 		List<NormalColumn> normalColumnList = table.getExpandedColumns();
@@ -88,9 +83,7 @@ public class TableHtmlReportPageGenerator extends
 				indexSummaryTable, indexMatrix, attributeDetailTable };
 	}
 
-	public String getObjectName(Object object) {
-		ERTable table = (ERTable) object;
-
+	public String getObjectName(ERTable table) {
 		return table.getName();
 	}
 
@@ -98,9 +91,7 @@ public class TableHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
-		ERTable table = (ERTable) object;
-
+	public String getObjectSummary(ERTable table) {
 		return table.getDescription();
 	}
 }

@@ -14,7 +14,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.index.
 import org.insightech.er.util.Format;
 
 public class IndexHtmlReportPageGenerator extends
-		AbstractHtmlReportPageGenerator {
+		AbstractHtmlReportPageGenerator<Index> {
 
 	public IndexHtmlReportPageGenerator(Map<Object, Integer> idMap) {
 		super(idMap);
@@ -28,8 +28,8 @@ public class IndexHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Object> getObjectList(ERDiagram diagram) {
-		List<Object> list = new ArrayList<Object>();
+	public List<Index> getObjectList(ERDiagram diagram) {
+		List<Index> list = new ArrayList<Index>();
 
 		for (NodeElement nodeElement : diagram.getDiagramContents()
 				.getContents()) {
@@ -46,10 +46,8 @@ public class IndexHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[] getContentArgs(ERDiagram diagram, Object object)
+	public String[] getContentArgs(ERDiagram diagram, Index index)
 			throws IOException {
-		Index index = (Index) object;
-
 		ERTable table = index.getTable();
 
 		String description = Format.null2blank(index.getDescription());
@@ -76,9 +74,7 @@ public class IndexHtmlReportPageGenerator extends
 		return Format.null2blank(index.getType());
 	}
 
-	public String getObjectName(Object object) {
-		Index index = (Index) object;
-
+	public String getObjectName(Index index) {
 		return index.getName();
 	}
 
@@ -86,17 +82,14 @@ public class IndexHtmlReportPageGenerator extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getObjectSummary(Object object) {
-		Index index = (Index) object;
-
+	public String getObjectSummary(Index index) {
 		return index.getDescription();
 	}
 
 	private String getUniqueString(Index index) {
-		if (!index.isNonUnique()) {
-			return "UNIQUE";
-		} else {
+		if (index.isNonUnique()) {
 			return "";
 		}
+		return "UNIQUE";
 	}
 }

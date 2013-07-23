@@ -10,7 +10,7 @@ import org.insightech.er.editor.model.dbexport.html.ExportToHtmlManager;
 import org.insightech.er.editor.model.diagram_contents.element.node.Location;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 
-public class OverviewHtmlReportPageGenerator {
+public class OverviewHtmlReportPageGenerator<T> {
 
 	private Map<Object, Integer> idMap;
 
@@ -19,18 +19,18 @@ public class OverviewHtmlReportPageGenerator {
 	}
 
 	public String getObjectId(Object object) {
-		Integer id = (Integer) idMap.get(object);
+		Integer id = idMap.get(object);
 
 		if (id == null) {
 			id = Integer.valueOf(idMap.size());
 			this.idMap.put(object, id);
 		}
 
-		return String.valueOf(id);
+		return id.toString();
 	}
 
 	public String generateFrame(
-			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
+			List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList)
 			throws IOException {
 		String template = ExportToHtmlManager
 				.getTemplate("overview/overview-frame_template.html");
@@ -40,14 +40,14 @@ public class OverviewHtmlReportPageGenerator {
 	}
 
 	private String generateFrameTable(
-			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
+			List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList)
 			throws IOException {
 		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("overview/overview-frame_row_template.html");
 
-		for (HtmlReportPageGenerator pageGenerator : htmlReportPageGeneratorList) {
+		for (HtmlReportPageGenerator<?> pageGenerator : htmlReportPageGeneratorList) {
 			Object[] args = { pageGenerator.getType(),
 					pageGenerator.getPageTitle() };
 			String row = MessageFormat.format(template, args);
@@ -60,7 +60,7 @@ public class OverviewHtmlReportPageGenerator {
 
 	public String generateSummary(String imageSrc,
 			Map<TableView, Location> tableLocationMap,
-			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
+			List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList)
 			throws IOException {
 
 		String template = ExportToHtmlManager
@@ -114,14 +114,14 @@ public class OverviewHtmlReportPageGenerator {
 	}
 
 	private String generateSummaryTable(
-			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
+			List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList)
 			throws IOException {
 		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("overview/overview-summary_row_template.html");
 
-		for (HtmlReportPageGenerator pageGenerator : htmlReportPageGeneratorList) {
+		for (HtmlReportPageGenerator<T> pageGenerator : htmlReportPageGeneratorList) {
 			Object[] args = { pageGenerator.getType(),
 					pageGenerator.getPageTitle() };
 			String row = MessageFormat.format(template, args);
@@ -133,7 +133,7 @@ public class OverviewHtmlReportPageGenerator {
 	}
 
 	public String generateAllClasses(ERDiagram diagram,
-			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
+			List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList)
 			throws IOException {
 		String template = ExportToHtmlManager
 				.getTemplate("allclasses_template.html");
@@ -145,18 +145,16 @@ public class OverviewHtmlReportPageGenerator {
 	}
 
 	private String generateAllClassesTable(ERDiagram diagram,
-			List<HtmlReportPageGenerator> htmlReportPageGeneratorList)
+			List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList)
 			throws IOException {
 		StringBuilder sb = new StringBuilder();
 
 		String template = ExportToHtmlManager
 				.getTemplate("allclasses_row_template.html");
 
-		for (int i = 0; i < htmlReportPageGeneratorList.size(); i++) {
-			HtmlReportPageGenerator pageGenerator = htmlReportPageGeneratorList
-					.get(i);
+		for (final HtmlReportPageGenerator<T> pageGenerator : htmlReportPageGeneratorList) {
 
-			for (Object object : pageGenerator.getObjectList(diagram)) {
+			for (final T object : pageGenerator.getObjectList(diagram)) {
 				Object[] args = {
 						pageGenerator.getType() + "/"
 								+ pageGenerator.getObjectId(object) + ".html",
@@ -171,12 +169,10 @@ public class OverviewHtmlReportPageGenerator {
 	}
 
 	public int countAllClasses(ERDiagram diagram,
-			List<HtmlReportPageGenerator> htmlReportPageGeneratorList) {
+			List<HtmlReportPageGenerator<T>> htmlReportPageGeneratorList) {
 		int count = 0;
 
-		for (int i = 0; i < htmlReportPageGeneratorList.size(); i++) {
-			HtmlReportPageGenerator pageGenerator = htmlReportPageGeneratorList
-					.get(i);
+		for (final HtmlReportPageGenerator<T> pageGenerator : htmlReportPageGeneratorList) {
 			count += pageGenerator.getObjectList(diagram).size();
 		}
 
