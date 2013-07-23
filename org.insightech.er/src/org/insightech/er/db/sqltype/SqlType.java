@@ -47,7 +47,7 @@ public final class SqlType implements Serializable {
 
 	private String name;
 
-	private Class javaClass;
+	private Class<?> javaClass;
 
 	private boolean needArgs;
 
@@ -100,15 +100,11 @@ public final class SqlType implements Serializable {
 						return true;
 					}
 					return false;
-
-				} else {
-					return false;
 				}
-
-			} else {
-				if (this.alias.equals(other.alias) && this.size == other.size) {
-					return true;
-				}
+				return false;
+			}
+			if (this.alias.equals(other.alias) && this.size == other.size) {
+				return true;
 			}
 
 			return false;
@@ -129,7 +125,7 @@ public final class SqlType implements Serializable {
 
 	}
 
-	public SqlType(String name, Class javaClass, boolean needArgs,
+	public SqlType(String name, Class<?> javaClass, boolean needArgs,
 			boolean fullTextIndexable) {
 		this.name = name;
 		this.javaClass = javaClass;
@@ -163,7 +159,7 @@ public final class SqlType implements Serializable {
 		return this.name;
 	}
 
-	public Class getJavaClass() {
+	public Class<?> getJavaClass() {
 		return this.javaClass;
 	}
 

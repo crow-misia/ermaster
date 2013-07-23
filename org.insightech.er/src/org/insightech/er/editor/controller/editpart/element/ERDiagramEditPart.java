@@ -210,12 +210,12 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Map<NodeElement, EditPart> getModelToEditPart() {
 		Map<NodeElement, EditPart> modelToEditPart = new HashMap<NodeElement, EditPart>();
-		List children = getChildren();
+		List<EditPart> children = getChildren();
 
-		for (int i = 0; i < children.size(); i++) {
-			EditPart editPart = (EditPart) children.get(i);
+		for (final EditPart editPart : children) {
 			modelToEditPart.put((NodeElement) editPart.getModel(), editPart);
 		}
 

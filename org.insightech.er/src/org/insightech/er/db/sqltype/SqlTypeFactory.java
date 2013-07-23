@@ -18,10 +18,12 @@ import org.insightech.er.util.POIUtils;
 public class SqlTypeFactory {
 
 	public static void load() throws IOException, ClassNotFoundException {
-		InputStream in = SqlTypeFactory.class
-				.getResourceAsStream("/SqlType.xls");
+		InputStream in = null;
 
 		try {
+			in = SqlTypeFactory.class
+					.getResourceAsStream("/SqlType.xls");
+
 			HSSFWorkbook workBook = POIUtils.readExcelBook(in);
 
 			HSSFSheet sheet = workBook.getSheetAt(0);
@@ -31,7 +33,7 @@ public class SqlTypeFactory {
 
 			HSSFRow headerRow = sheet.getRow(0);
 
-			for (int colNum = 4; colNum < headerRow.getLastCellNum(); colNum++) {
+			for (int colNum = 4, colEnd = headerRow.getLastCellNum(); colNum < colEnd; colNum++) {
 				String dbId = POIUtils.getCellValue(sheet, 0, colNum);
 
 				Map<SqlType, String> aliasMap = new LinkedHashMap<SqlType, String>();
@@ -43,14 +45,14 @@ public class SqlTypeFactory {
 
 			SqlType.setDBAliasMap(dbAliasMap, dbSqlTypeMap);
 
-			for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+			for (int rowNum = 1, rowEnd = sheet.getLastRowNum(); rowNum <= rowEnd; rowNum++) {
 				HSSFRow row = sheet.getRow(rowNum);
 
 				String sqlTypeId = POIUtils.getCellValue(sheet, rowNum, 0);
 				if (Check.isEmpty(sqlTypeId)) {
 					break;
 				}
-				Class javaClass = Class.forName(POIUtils.getCellValue(sheet,
+				Class<?> javaClass = Class.forName(POIUtils.getCellValue(sheet,
 						rowNum, 1));
 				boolean needArgs = POIUtils.getBooleanCellValue(sheet, rowNum,
 						2);
@@ -60,7 +62,7 @@ public class SqlTypeFactory {
 				SqlType sqlType = new SqlType(sqlTypeId, javaClass, needArgs,
 						fullTextIndexable);
 
-				for (int colNum = 4; colNum < row.getLastCellNum(); colNum++) {
+				for (int colNum = 4, colEnd = row.getLastCellNum(); colNum < colEnd; colNum++) {
 
 					String dbId = POIUtils.getCellValue(sheet, 0, colNum);
 

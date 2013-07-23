@@ -218,7 +218,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List getModelSourceConnections() {
+	protected List<ConnectionElement> getModelSourceConnections() {
 		NodeElement element = (NodeElement) this.getModel();
 		return element.getOutgoings();
 	}
@@ -227,7 +227,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List getModelTargetConnections() {
+	protected List<ConnectionElement> getModelTargetConnections() {
 		NodeElement element = (NodeElement) this.getModel();
 		return element.getIncomings();
 	}
@@ -251,7 +251,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 	public void changeSettings(Settings settings) {
 		this.refresh();
 
-		for (Object object : this.getSourceConnections()) {
+		for (final Object object : this.getSourceConnections()) {
 			ERDiagramConnectionEditPart editPart = (ERDiagramConnectionEditPart) object;
 			ERDiagramConnection connection = (ERDiagramConnection) editPart
 					.getFigure();
@@ -271,7 +271,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 	@Override
 	public void setSelected(int value) {
 		if (value != 0) {
-			for (Object editPartObject : this.getViewer()
+			for (final Object editPartObject : this.getViewer()
 					.getSelectedEditParts()) {
 				if (editPartObject instanceof ColumnEditPart) {
 					((ColumnEditPart) editPartObject).setSelected(0);
@@ -299,5 +299,5 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 		super.performRequest(request);
 	}
 
-	abstract protected void performRequestOpen();
+	protected abstract void performRequestOpen();
 }

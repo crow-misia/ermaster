@@ -51,8 +51,8 @@ public abstract class TableViewEditPart extends NodeElementEditPart implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List getModelChildren() {
-		List<Object> modelChildren = new ArrayList<Object>();
+	protected List<Column> getModelChildren() {
+		List<Column> modelChildren = new ArrayList<Column>();
 
 		TableView tableView = (TableView) this.getModel();
 
