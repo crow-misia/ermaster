@@ -107,36 +107,36 @@ public class Activator extends AbstractUIPlugin {
 		super.initializeImageRegistry(reg);
 
 		reg.put(ImageKey.ALIGN_BOTTOM,
-				loadImageDescriptor("icons/alignbottom.gif"));
+				loadImageDescriptor("icons/alignbottom.png"));
 		reg.put(ImageKey.ALIGN_CENTER,
-				loadImageDescriptor("icons/aligncenter.gif"));
+				loadImageDescriptor("icons/aligncenter.png"));
 		reg
 				.put(ImageKey.ALIGN_LEFT,
-						loadImageDescriptor("icons/alignleft.gif"));
+						loadImageDescriptor("icons/alignleft.png"));
 		reg.put(ImageKey.ALIGN_MIDDLE,
-				loadImageDescriptor("icons/alignmid.gif"));
+				loadImageDescriptor("icons/alignmid.png"));
 		reg.put(ImageKey.ALIGN_RIGHT,
-				loadImageDescriptor("icons/alignright.gif"));
-		reg.put(ImageKey.ALIGN_TOP, loadImageDescriptor("icons/aligntop.gif"));
-		reg.put(ImageKey.ARROW, loadImageDescriptor("icons/arrow16.gif"));
-		reg.put(ImageKey.CATEGORY, loadImageDescriptor("icons/category.gif"));
+				loadImageDescriptor("icons/alignright.png"));
+		reg.put(ImageKey.ALIGN_TOP, loadImageDescriptor("icons/aligntop.png"));
+		reg.put(ImageKey.ARROW, loadImageDescriptor("icons/arrow16.png"));
+		reg.put(ImageKey.CATEGORY, loadImageDescriptor("icons/category.png"));
 		reg.put(ImageKey.CHANGE_BACKGROUND_COLOR,
-				loadImageDescriptor("icons/color.gif"));
+				loadImageDescriptor("icons/color.png"));
 		reg.put(ImageKey.CHANGE_BACKGROUND_COLOR_DISABLED,
-				loadImageDescriptor("icons/square.gif"));
+				loadImageDescriptor("icons/square.png"));
 		reg.put(ImageKey.CHECK, loadImageDescriptor("icons/tick.png"));
 		reg.put(ImageKey.CHECK_GREY, loadImageDescriptor("icons/tick_grey.png"));
 		reg.put(ImageKey.COMMENT_CONNECTION,
-				loadImageDescriptor("icons/comment_connection.gif"));
+				loadImageDescriptor("icons/comment_connection.png"));
 		reg.put(ImageKey.DATABASE, loadImageDescriptor("icons/database2.png"));
 		reg.put(ImageKey.DATABASE_CONNECT,
 				loadImageDescriptor("icons/database_connect.png"));
 		reg.put(ImageKey.DICTIONARY,
-				loadImageDescriptor("icons/dictionary.gif"));
+				loadImageDescriptor("icons/dictionary.png"));
 		reg.put(ImageKey.DICTIONARY_OPEN,
-				loadImageDescriptor("icons/dictionary_open.gif"));
+				loadImageDescriptor("icons/dictionary_open.png"));
 		reg.put(ImageKey.EDIT, loadImageDescriptor("icons/pencil.png"));
-		reg.put(ImageKey.ERROR, loadImageDescriptor("icons/error.gif"));
+		reg.put(ImageKey.ERROR, loadImageDescriptor("icons/error.png"));
 		reg.put(ImageKey.EXPORT_DDL,
 				loadImageDescriptor("icons/document-attribute-d.png"));
 		reg.put(ImageKey.EXPORT_TO_CSV,
@@ -155,41 +155,41 @@ public class Activator extends AbstractUIPlugin {
 				loadImageDescriptor("icons/tables--arrow.png"));
 		reg.put(ImageKey.FIND, loadImageDescriptor("icons/binocular.png"));
 		reg.put(ImageKey.FOREIGN_KEY,
-				loadImageDescriptor("icons/foreign_key.gif"));
+				loadImageDescriptor("icons/foreign_key.png"));
 		reg.put(ImageKey.GRID, loadImageDescriptor("icons/grid.png"));
 		reg.put(ImageKey.GRID_SNAP, loadImageDescriptor("icons/grid-snap.png"));
-		reg.put(ImageKey.GROUP, loadImageDescriptor("icons/group.gif"));
+		reg.put(ImageKey.GROUP, loadImageDescriptor("icons/group.png"));
 		reg.put(ImageKey.HORIZONTAL_LINE,
-				loadImageDescriptor("icons/horizontal_line.gif"));
+				loadImageDescriptor("icons/horizontal_line.png"));
 		reg.put(ImageKey.HORIZONTAL_LINE_DISABLED,
-				loadImageDescriptor("icons/horizontal_line_disabled.gif"));
+				loadImageDescriptor("icons/horizontal_line_disabled.png"));
 		reg.put(ImageKey.IMAGE, loadImageDescriptor("icons/image--plus.png"));
-		reg.put(ImageKey.INDEX, loadImageDescriptor("icons/index.gif"));
+		reg.put(ImageKey.INDEX, loadImageDescriptor("icons/index.png"));
 		reg.put(ImageKey.LOCK_EDIT,
 				loadImageDescriptor("icons/lock--pencil.png"));
 		reg.put(ImageKey.MATCH_HEIGHT,
-				loadImageDescriptor("icons/matchheight.gif"));
+				loadImageDescriptor("icons/matchheight.png"));
 		reg.put(ImageKey.MATCH_WIDTH,
-				loadImageDescriptor("icons/matchwidth.gif"));
-		reg.put(ImageKey.NOTE, loadImageDescriptor("icons/note.gif"));
+				loadImageDescriptor("icons/matchwidth.png"));
+		reg.put(ImageKey.NOTE, loadImageDescriptor("icons/note.png"));
 		reg.put(ImageKey.OPTION, loadImageDescriptor("icons/wrench.png"));
 		reg.put(ImageKey.PAGE_SETTING_H, loadImageDescriptor("images/h.png"));
 		reg.put(ImageKey.PAGE_SETTING_V, loadImageDescriptor("images/v.png"));
 		reg.put(ImageKey.PALETTE, loadImageDescriptor("icons/palette.png"));
-		reg.put(ImageKey.PRIMARY_KEY, loadImageDescriptor("icons/pkey.gif"));
+		reg.put(ImageKey.PRIMARY_KEY, loadImageDescriptor("icons/pkey.png"));
 		reg.put(ImageKey.RELATION_1_N,
-				loadImageDescriptor("icons/relation_1_n.gif"));
+				loadImageDescriptor("icons/relation_1_n.png"));
 		reg.put(ImageKey.RELATION_N_N,
-				loadImageDescriptor("icons/relation_n_n.gif"));
+				loadImageDescriptor("icons/relation_n_n.png"));
 		reg.put(ImageKey.RELATION_SELF,
-				loadImageDescriptor("icons/relation_self.gif"));
+				loadImageDescriptor("icons/relation_self.png"));
 		reg.put(ImageKey.RESIZE,
 				loadImageDescriptor("icons/application-resize-actual.png"));
-		reg.put(ImageKey.SEQUENCE, loadImageDescriptor("icons/sequence.gif"));
+		reg.put(ImageKey.SEQUENCE, loadImageDescriptor("icons/sequence.png"));
 		reg.put(ImageKey.TITLEBAR_BACKGROUND,
-				loadImageDescriptor("images/aqua-bg.gif"));
-		reg.put(ImageKey.TABLE, loadImageDescriptor("icons/table.gif"));
-		reg.put(ImageKey.TABLE_NEW, loadImageDescriptor("icons/table_new.gif"));
+				loadImageDescriptor("images/aqua-bg.png"));
+		reg.put(ImageKey.TABLE, loadImageDescriptor("icons/table.png"));
+		reg.put(ImageKey.TABLE_NEW, loadImageDescriptor("icons/table_new.png"));
 		reg.put(ImageKey.TABLESPACE, loadImageDescriptor("icons/database.png"));
 		reg.put(ImageKey.TEST_DATA,
 				loadImageDescriptor("icons/tables--pencil.png"));
@@ -197,11 +197,11 @@ public class Activator extends AbstractUIPlugin {
 		reg.put(ImageKey.TRIGGER,
 				loadImageDescriptor("icons/arrow-turn-000-left.png"));
 		reg.put(ImageKey.VERTICAL_LINE,
-				loadImageDescriptor("icons/vertical_line.gif"));
+				loadImageDescriptor("icons/vertical_line.png"));
 		reg.put(ImageKey.VERTICAL_LINE_DISABLED,
-				loadImageDescriptor("icons/vertical_line_disabled.gif"));
-		reg.put(ImageKey.VIEW, loadImageDescriptor("icons/view.gif"));
-		reg.put(ImageKey.WORD, loadImageDescriptor("icons/word_3.gif"));
+				loadImageDescriptor("icons/vertical_line_disabled.png"));
+		reg.put(ImageKey.VIEW, loadImageDescriptor("icons/view.png"));
+		reg.put(ImageKey.WORD, loadImageDescriptor("icons/word_3.png"));
 		reg.put(ImageKey.ZOOM_IN,
 				loadImageDescriptor("icons/magnifier-zoom.png"));
 		reg.put(ImageKey.ZOOM_OUT,

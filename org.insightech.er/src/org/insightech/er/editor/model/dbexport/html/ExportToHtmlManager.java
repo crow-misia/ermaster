@@ -37,8 +37,8 @@ public class ExportToHtmlManager {
 	private static final String[] FIX_FILES = { "help-doc.html", "index.html",
 			"stylesheet.css" };
 
-	public static final String[] ICON_FILES = { "icons/pkey.gif",
-			"icons/foreign_key.gif" };
+	public static final String[] ICON_FILES = { "icons/pkey.png",
+			"icons/foreign_key.png" };
 
 	private static final String TEMPLATE_DIR = "html/";
 

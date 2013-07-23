@@ -11,7 +11,7 @@
       <wizard
             category="org.insightech.er"
             class="org.insightech.er.wizard.NewDiagramWizard"
-            icon="icons/table.gif"
+            icon="icons/table.png"
             id="org.insightech.er.wizard.NewDiagramWizard"
             name="%wizard.title"/>
    </extension>
@@ -50,7 +50,7 @@
             class="org.insightech.er.editor.ERDiagramMultiPageEditor"
             extensions="erm"
             contributorClass="org.insightech.er.editor.view.contributor.ERDiagramMultiPageEditorActionBarContributor"
-            icon="icons/table.gif"
+            icon="icons/table.png"
             id="org.insightech.er.editors.ERDiagramMultiPageEditor"
             name="%plugin.name">
       </editor>
@@ -61,7 +61,7 @@
       <editor
             class="org.insightech.er.editor.TestEditor"
             extensions="erm2"
-            icon="icons/table.gif"
+            icon="icons/table.png"
             id="org.insightech.er.editors.TestEditor"
             name="%plugin.name">
       </editor>
