@@ -99,11 +99,10 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 		if (request instanceof DirectEditRequest) {
 			final ZoomManager zoomManager = ((ScalableFreeformRootEditPart) this
 					.getHost().getRoot()).getZoomManager();
-			final Rectangle clientArea = zoomManager.getViewport().getClientArea();
 			final double zoom = zoomManager.getZoom();
 
-			Rectangle columnRectangle = this.getColumnRectangle();
-			int center = (int) ((columnRectangle.y + (columnRectangle.height / 2)) * zoom) - clientArea.y;
+			final Rectangle columnRectangle = this.getColumnRectangle();
+			final int center = getCenter(zoomManager);
 
 			DirectEditRequest directEditRequest = (DirectEditRequest) request;
 
@@ -408,9 +407,8 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 	}
 
 	private int getColumnIndex(DirectEditRequest editRequest) {
-		ZoomManager zoomManager = ((ScalableFreeformRootEditPart) this
+		final ZoomManager zoomManager = ((ScalableFreeformRootEditPart) this
 				.getHost().getRoot()).getZoomManager();
-		double zoom = zoomManager.getZoom();
 
 		ColumnEditPart columnEditPart = (ColumnEditPart) this.getHost();
 
@@ -425,13 +423,19 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 		}
 		int index = columns.indexOf(column);
 
-		Rectangle columnRectangle = this.getColumnRectangle();
-		int center = (int) ((columnRectangle.y + (columnRectangle.height / 2)) * zoom);
-
+		final int center = getCenter(zoomManager);
 		if (editRequest.getLocation().y >= center) {
 			index++;
 		}
 
 		return index;
+	}
+
+	private int getCenter(final ZoomManager zoomManager) {
+		final double zoom = zoomManager.getZoom();
+		final Rectangle clientArea = zoomManager.getViewport().getClientArea();
+
+		final Rectangle columnRectangle = this.getColumnRectangle();
+		return (int) ((columnRectangle.y + (columnRectangle.height / 2)) * zoom) - clientArea.y;
 	}
 }
