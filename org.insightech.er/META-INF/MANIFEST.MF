@@ -22,9 +22,9 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  template/,
  icons/,
- lib/commons-codec-1.6.jar,
- lib/poi-3.9-20121203.jar
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+ lib/poi-3.9-20121203.jar,
+ lib/commons-codec-1.8.jar
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-LazyStart: true
 Bundle-Vendor: Insightech.org
 Export-Package: org.insightech.er,
