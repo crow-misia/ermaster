@@ -1,7 +1,6 @@
 package org.insightech.er.editor.view.dialog.tracking;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.Command;
@@ -34,11 +33,11 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
 import org.insightech.er.util.Check;
+import org.insightech.er.util.DateUtil;
 
 public class ChangeTrackingDialog extends Dialog {
 
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"yyyy/MM/dd HH:mm:ss");
+	private static final ThreadLocal<DateFormat> DATE_FORMAT = DateUtil.YYYYMMDDHHMMSS;
 
 	private Table changeTrackingTable;
 
@@ -360,7 +359,7 @@ public class ChangeTrackingDialog extends Dialog {
 			TableItem tableItem = new TableItem(this.changeTrackingTable,
 					SWT.NONE);
 
-			String date = DATE_FORMAT.format(changeTracking.getUpdatedDate());
+			String date = DATE_FORMAT.get().format(changeTracking.getUpdatedDate());
 			tableItem.setText(0, date);
 
 			if (!Check.isEmpty(changeTracking.getComment())) {

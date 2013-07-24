@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,12 +66,12 @@ import org.insightech.er.editor.model.testdata.TestData;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
 import org.insightech.er.editor.model.tracking.ChangeTrackingList;
 import org.insightech.er.editor.persistent.Persistent;
+import org.insightech.er.util.DateUtil;
 import org.insightech.er.util.Format;
 import org.insightech.er.util.NameValue;
 
 public class PersistentXmlImpl extends Persistent {
-	public static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
+	public static final ThreadLocal<DateFormat> DATE_FORMAT = DateUtil.YYYYMMDDHHMMSSbar;
 
 	private final class PersistentContext {
 		private Map<ColumnGroup, Integer> columnGroupMap = new HashMap<ColumnGroup, Integer>();
@@ -744,7 +743,7 @@ public class PersistentXmlImpl extends Persistent {
 
 		final String tab2 = tab + "\t";
 		xml.append(tab2).append("<updated_date>")
-				.append(DATE_FORMAT.format(changeTracking.getUpdatedDate()))
+				.append(DATE_FORMAT.get().format(changeTracking.getUpdatedDate()))
 				.append("</updated_date>\n");
 		xml.append(tab2).append("<comment>").append(escape(changeTracking.getComment()))
 				.append("</comment>\n");
@@ -891,56 +890,62 @@ public class PersistentXmlImpl extends Persistent {
 
  	private void createXML(final StringBuilder xml, final String tab, final CategorySetting categorySettings,
 			final PersistentContext context) {
+		final String tab2 = tab + "\t";
+		final String tab3 = tab2 + "\t";
+
 		xml.append(tab).append("<category_settings>\n");
-		xml.append(tab).append("\t<free_layout>").append(categorySettings.isFreeLayout())
+		xml.append(tab2).append("<free_layout>").append(categorySettings.isFreeLayout())
 				.append("</free_layout>\n");
-		xml.append(tab).append("\t<show_referred_tables>")
+		xml.append(tab2).append("<show_referred_tables>")
 				.append(categorySettings.isShowReferredTables())
 				.append("</show_referred_tables>\n");
 
-		xml.append(tab).append("\t<categories>\n");
+		xml.append(tab2).append("<categories>\n");
 
-		final String tab2 = tab + "\t";
 		for (Category category : categorySettings.getAllCategories()) {
-			createXML(xml, tab2, category,
+			createXML(xml, tab3, category,
 					categorySettings.isSelected(category), context);
 		}
 
-		xml.append(tab).append("\t</categories>\n");
+		xml.append(tab2).append("</categories>\n");
 
 		xml.append(tab).append("</category_settings>\n");
 	}
 
  	private void createXML(final StringBuilder xml, final String tab, final TranslationSetting translationSettings,
 			final PersistentContext context) {
+		final String tab2 = tab + "\t";
+		final String tab3 = tab2 + "\t";
+
 		xml.append(tab).append("<translation_settings>\n");
-		xml.append(tab).append("\t<use>").append(translationSettings.isUse())
+		xml.append(tab2).append("<use>").append(translationSettings.isUse())
 				.append("</use>\n");
 
-		xml.append(tab).append("\t<translations>\n");
+		xml.append(tab2).append("<translations>\n");
 
-		final String tab2 = tab + "\t";
 		for (String translation : translationSettings.getSelectedTranslations()) {
-			createTranslationXML(xml, tab2, translation, context);
+			createTranslationXML(xml, tab3, translation, context);
 		}
 
-		xml.append(tab).append("\t</translations>\n");
+		xml.append(tab2).append("</translations>\n");
 
 		xml.append(tab).append("</translation_settings>\n");
 	}
 
  	private void createXML(final StringBuilder xml, final String tab, final Category category, final boolean isSelected,
 			final PersistentContext context) {
+		final String tab2 = tab + "\t";
+
 		xml.append(tab).append("<category>\n");
 
-		createXMLNodeElement(xml, tab + "\t", category, context);
+		createXMLNodeElement(xml, tab2, category, context);
 
-		xml.append(tab).append("\t<name>").append(escape(category.getName()))
+		xml.append(tab2).append("<name>").append(escape(category.getName()))
 				.append("</name>\n");
-		xml.append(tab).append("\t<selected>").append(isSelected).append("</selected>\n");
+		xml.append(tab2).append("<selected>").append(isSelected).append("</selected>\n");
 
 		for (NodeElement nodeElement : category.getContents()) {
-			xml.append(tab).append("\t<node_element>")
+			xml.append(tab2).append("<node_element>")
 					.append(context.nodeElementMap.get(nodeElement))
 					.append("</node_element>\n");
 		}
@@ -955,20 +960,22 @@ public class PersistentXmlImpl extends Persistent {
 	}
 
  	private void createXML(final StringBuilder xml, final String tab, final NodeSet contents, PersistentContext context) {
-		xml.append(tab).append("<contents>\n");
+ 		final String tab2 = tab + "\t";
+
+ 		xml.append(tab).append("<contents>\n");
 
 		for (NodeElement content : contents) {
 			if (content instanceof ERTable) {
-				createXML(xml, tab + "\t", (ERTable) content, context);
+				createXML(xml, tab2, (ERTable) content, context);
 
 			} else if (content instanceof Note) {
-				createXML(xml, tab + "\t", (Note) content, context);
+				createXML(xml, tab2, (Note) content, context);
 
 			} else if (content instanceof View) {
-				createXML(xml, tab + "\t", (View) content, context);
+				createXML(xml, tab2, (View) content, context);
 
 			} else if (content instanceof InsertedImage) {
-				createXML(xml, tab + "\t", (InsertedImage) content, context);
+				createXML(xml, tab2, (InsertedImage) content, context);
 
 			}
 		}
@@ -1074,15 +1081,16 @@ public class PersistentXmlImpl extends Persistent {
 		xml.append(tab).append("<model_properties>\n");
 
 		final String tab2 = tab + "\t";
+		final DateFormat dateFormat = DATE_FORMAT.get();
 		createXMLNodeElement(xml, tab2, modelProperties, context);
 
 		xml.append(tab).append("\t<display>").append(modelProperties.isDisplay())
 				.append("</display>\n");
 		xml.append(tab).append("\t<creation_date>")
-				.append(DATE_FORMAT.format(modelProperties.getCreationDate()))
+				.append(dateFormat.format(modelProperties.getCreationDate()))
 				.append("</creation_date>\n");
 		xml.append(tab).append("\t<updated_date>")
-				.append(DATE_FORMAT.format(modelProperties.getUpdatedDate()))
+				.append(dateFormat.format(modelProperties.getUpdatedDate()))
 				.append("</updated_date>\n");
 
 		for (NameValue property : modelProperties.getProperties()) {

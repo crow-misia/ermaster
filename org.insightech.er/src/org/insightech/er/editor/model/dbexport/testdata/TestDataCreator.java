@@ -1,6 +1,7 @@
 package org.insightech.er.editor.model.dbexport.testdata;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.model.testdata.TableTestData;
 import org.insightech.er.editor.model.testdata.TestData;
+import org.insightech.er.util.DateUtil;
 
 public abstract class TestDataCreator {
 
@@ -112,25 +114,22 @@ public abstract class TestDataCreator {
 			}
 
 			if (column.getType() != null && column.getType().isTimestamp()) {
-				SimpleDateFormat format1 = new SimpleDateFormat(
-						"yyyy-MM-dd HH:mm:ss.SSS");
+				DateFormat format = DateUtil.YYYYMMDDHHMMSSSSSbar.get();
 
 				try {
-					value = format1.format(format1.parse(value));
+					value = format.format(format.parse(value));
 
 				} catch (ParseException e1) {
-					SimpleDateFormat format2 = new SimpleDateFormat(
-							"yyyy-MM-dd HH:mm:ss");
+					format = DateUtil.YYYYMMDDHHMMSSbar.get();
 
 					try {
-						value = format2.format(format2.parse(value));
+						value = format.format(format.parse(value));
 
 					} catch (ParseException e2) {
-						SimpleDateFormat format3 = new SimpleDateFormat(
-								"yyyy-MM-dd");
+						format = DateUtil.YYYYMMDDbar.get();
 
 						try {
-							value = format3.format(format3.parse(value));
+							value = format.format(format.parse(value));
 
 						} catch (ParseException e3) {
 						}

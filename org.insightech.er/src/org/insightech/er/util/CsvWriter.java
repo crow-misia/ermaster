@@ -13,8 +13,7 @@ import java.util.Date;
  */
 public final class CsvWriter {
 
-	private static final DateFormat DEFAULT_FORMAT = new SimpleDateFormat(
-			"yyyy/MM/dd");
+	private static final ThreadLocal<DateFormat> DEFAULT_FORMAT = DateUtil.YYYYMMDD;
 
 	private static final String DELIMITER = ",";
 
@@ -33,7 +32,7 @@ public final class CsvWriter {
 	public CsvWriter(PrintWriter writer) {
 		this.writer = writer;
 		this.delimiter = "";
-		this.dateFormat = DEFAULT_FORMAT;
+		this.dateFormat = DEFAULT_FORMAT.get();
 	}
 
 	/**

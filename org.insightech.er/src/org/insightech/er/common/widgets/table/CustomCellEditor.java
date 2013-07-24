@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
@@ -19,6 +19,7 @@ import javax.swing.text.TextAction;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 import org.insightech.er.ResourceString;
+import org.insightech.er.util.DateUtil;
 
 public class CustomCellEditor extends DefaultCellEditor implements
 		TableCellEditor {
@@ -37,8 +38,7 @@ public class CustomCellEditor extends DefaultCellEditor implements
 			public void keyPressed(KeyEvent e) {
 				if ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
 					if (e.getKeyCode() == ';') {
-						SimpleDateFormat format = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss.SSS");
+						DateFormat format = DateUtil.YYYYMMDDHHMMSSSSSbar.get();
 						component.setText(format.format(new Date()));
 
 					} else if (e.getKeyCode() == 'v' || e.getKeyCode() == 'V') {

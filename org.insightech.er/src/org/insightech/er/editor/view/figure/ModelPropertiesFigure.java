@@ -1,7 +1,6 @@
 package org.insightech.er.editor.view.figure;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,14 +14,12 @@ import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.swt.graphics.Color;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.view.figure.layout.TableLayout;
+import org.insightech.er.util.DateUtil;
 import org.insightech.er.util.NameValue;
 
 public class ModelPropertiesFigure extends RectangleFigure {
 
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"yyyy/MM/dd HH:mm:ss");
-
-	private static final long serialVersionUID = 7613144432550730126L;
+	private static final ThreadLocal<DateFormat> DATE_FORMAT = DateUtil.YYYYMMDDHHMMSS;
 
 	private Color foregroundColor;
 
@@ -80,10 +77,11 @@ public class ModelPropertiesFigure extends RectangleFigure {
 			this.addRow(property.getName(), property.getValue(), tableStyle);
 		}
 
+		final DateFormat dateFormat = DATE_FORMAT.get();
 		this.addRow(ResourceString.getResourceString("label.creation.date"),
-				DATE_FORMAT.format(creationDate), tableStyle);
+				dateFormat.format(creationDate), tableStyle);
 		this.addRow(ResourceString.getResourceString("label.updated.date"),
-				DATE_FORMAT.format(updatedDate), tableStyle);
+				dateFormat.format(updatedDate), tableStyle);
 	}
 
 	private void decideColor(int[] color) {

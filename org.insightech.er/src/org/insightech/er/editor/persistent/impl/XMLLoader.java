@@ -424,7 +424,7 @@ public class XMLLoader {
 		String value = node.getFirstChild().getNodeValue();
 
 		try {
-			return PersistentXmlImpl.DATE_FORMAT.parse(value);
+			return PersistentXmlImpl.DATE_FORMAT.get().parse(value);
 
 		} catch (ParseException e) {
 			return null;
