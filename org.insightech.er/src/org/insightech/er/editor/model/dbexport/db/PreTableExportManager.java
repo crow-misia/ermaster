@@ -12,6 +12,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
 import org.insightech.er.editor.model.dbexport.ddl.DDLTarget;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.settings.DBSetting;
@@ -36,7 +37,7 @@ public abstract class PreTableExportManager {
 
 	private Environment environment;
 
-	private String ifExistsOption;
+	private DDLCreator ddlCreator;
 
 	private Set<String> newViewNames;
 
@@ -53,8 +54,8 @@ public abstract class PreTableExportManager {
 
 		this.metaData = con.getMetaData();
 
-		this.ifExistsOption = DBManagerFactory.getDBManager(this.diagram)
-				.getDDLCreator(this.diagram, false).getIfExistsOption();
+		this.ddlCreator = DBManagerFactory.getDBManager(this.diagram)
+				.getDDLCreator(this.diagram, false);
 
 		this.prepareNewNames();
 	}
@@ -133,10 +134,8 @@ public abstract class PreTableExportManager {
 	}
 
 	private String dropSequence(String sequenceName) throws SQLException {
-		String sql = "DROP SEQUENCE " + this.ifExistsOption + sequenceName
+		return "DROP SEQUENCE " + ddlCreator.getIfExistsOption(Sequence.class) + sequenceName
 				+ ";";
-
-		return sql;
 	}
 
 	private String dropViews() throws SQLException {
@@ -168,9 +167,7 @@ public abstract class PreTableExportManager {
 	}
 
 	private String dropView(String viewName) throws SQLException {
-		String sql = "DROP VIEW " + this.ifExistsOption + viewName + ";";
-
-		return sql;
+		return "DROP VIEW " + ddlCreator.getIfExistsOption(View.class) + viewName + ";";
 	}
 
 	protected String dropForeignKeys() throws SQLException {
@@ -256,9 +253,7 @@ public abstract class PreTableExportManager {
 	}
 
 	private String dropTable(String tableName) throws SQLException {
-		String sql = "DROP TABLE " + this.ifExistsOption + tableName + ";";
-
-		return sql;
+		return "DROP TABLE " + ddlCreator.getIfExistsOption(TableView.class) + tableName + ";";
 	}
 
 	private String executeDDL() throws SQLException {

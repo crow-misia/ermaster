@@ -247,7 +247,7 @@ public class PostgresDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP TRIGGER ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(Trigger.class));
 		ddl.append(filter(trigger.getName()));
 		ddl.append(" ON ");
 
@@ -264,7 +264,7 @@ public class PostgresDDLCreator extends DDLCreator {
 	}
 
 	@Override
-	public String getIfExistsOption() {
+	public String getIfExistsOption(final Class<?> clazz) {
 		return "IF EXISTS ";
 	}
 }

@@ -960,7 +960,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP INDEX ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(Index.class));
 		ddl.append(filter(index.getName()));
 		if (this.semicolon) {
 			ddl.append(";");
@@ -985,7 +985,7 @@ public abstract class DDLCreator {
 		}
 
 		ddl.append("DROP TABLE ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(TableView.class));
 		ddl.append(filter(table.getNameWithSchema(diagram.getDatabase())));
 
 		if (this.semicolon) {
@@ -1001,7 +1001,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP VIEW ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(View.class));
 		ddl.append(filter(this.getNameWithSchema(view.getTableViewProperties()
 				.getSchema(), view.getPhysicalName())));
 		if (this.semicolon) {
@@ -1015,7 +1015,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP TRIGGER ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(Trigger.class));
 		ddl.append(filter(trigger.getName()));
 		if (this.semicolon) {
 			ddl.append(";");
@@ -1029,7 +1029,7 @@ public abstract class DDLCreator {
 
 		ddl.append("DROP ");
 		ddl.append("TABLESPACE ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(Tablespace.class));
 		ddl.append(filter(tablespace.getName()));
 		if (this.semicolon) {
 			ddl.append(";");
@@ -1043,7 +1043,7 @@ public abstract class DDLCreator {
 
 		ddl.append("DROP ");
 		ddl.append("SEQUENCE ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(Sequence.class));
 		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(),
 				sequence.getName())));
 		if (this.semicolon) {
@@ -1093,7 +1093,7 @@ public abstract class DDLCreator {
 		return sb.toString();
 	}
 
-	public String getIfExistsOption() {
+	public String getIfExistsOption(final Class<?> clazz) {
 		return "";
 	}
 

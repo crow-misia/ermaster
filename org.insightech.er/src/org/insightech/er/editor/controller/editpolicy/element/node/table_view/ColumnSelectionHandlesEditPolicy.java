@@ -45,6 +45,7 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@SuppressWarnings("rawtypes")
 	protected List createSelectionHandles() {
 		List list = new ArrayList();
 

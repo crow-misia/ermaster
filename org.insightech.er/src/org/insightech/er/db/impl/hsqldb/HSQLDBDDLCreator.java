@@ -62,7 +62,10 @@ public class HSQLDBDDLCreator extends DDLCreator {
 		}
 
 		return ddl.toString();
-
 	}
 
+	@Override
+	public String getIfExistsOption(final Class<?> clazz) {
+		return "IF EXISTS ";
+	}
 }

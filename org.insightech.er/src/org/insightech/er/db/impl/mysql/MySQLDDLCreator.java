@@ -343,7 +343,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP INDEX ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(Index.class));
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
 		ddl.append(filter(table.getNameWithSchema(this.getDiagram()
@@ -383,4 +383,14 @@ public class MySQLDDLCreator extends DDLCreator {
 		return "";
 	}
 
+	@Override
+	public String getIfExistsOption(final Class<?> clazz) {
+		if (clazz == Index.class) {
+			return "";
+		}
+		if (clazz == Tablespace.class) {
+			return "";
+		}
+		return "IF EXISTS ";
+	}
 }

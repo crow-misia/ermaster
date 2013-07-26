@@ -16,7 +16,7 @@ public class SqlServer2008DDLCreator extends SqlServerDDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("DROP INDEX ");
-		ddl.append(this.getIfExistsOption());
+		ddl.append(this.getIfExistsOption(Index.class));
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
 		ddl.append(filter(table.getNameWithSchema(this.getDiagram()
