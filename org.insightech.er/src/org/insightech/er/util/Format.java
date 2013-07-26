@@ -9,10 +9,10 @@ public final class Format {
 
 	public static String formatType(SqlType sqlType, TypeData typeData,
 			String database) {
-		String type = null;
+		StringBuilder ret = new StringBuilder();
 
 		if (sqlType != null) {
-			type = sqlType.getAlias(database);
+			String type = sqlType.getAlias(database);
 			if (type != null) {
 				if (typeData.getLength() != null
 						&& typeData.getDecimal() != null) {
@@ -24,6 +24,8 @@ public final class Format {
 							"(" + typeData.getLength() + ")").replaceFirst(
 							"\\([a-z]\\)", "(" + typeData.getDecimal() + ")");
 
+					ret.append(type);
+
 				} else if (typeData.getLength() != null) {
 					String len = null;
 
@@ -33,34 +35,30 @@ public final class Format {
 						len = String.valueOf(typeData.getLength());
 					}
 
-					type = type.replaceAll("\\(.\\)", "(" + len + ")");
+					ret.append(type.replaceAll("\\(.\\)", "(" + len + ")"));
 
+				} else {
+					ret.append(type);
 				}
 
 				if (typeData.isArray() && PostgresDBManager.ID.equals(database)) {
-					for (int i=0; i <typeData.getArrayDimension(); i++) {
-						type += "[]";
+					for (int i=typeData.getArrayDimension(); i > 0; i--) {
+						ret.append("[]");
 					}
 				}
 
 				if (sqlType.isNumber() && typeData.isUnsigned()
 						&& MySQLDBManager.ID.equals(database)) {
-					type += " unsigned";
+					ret.append(" unsigned");
 				}
 
 				if (sqlType.doesNeedArgs()) {
-					type += "(" + typeData.getArgs() + ")";
+					ret.append('(').append(typeData.getArgs()).append(')');
 				}
-
-			} else {
-				type = "";
 			}
-
-		} else {
-			type = "";
 		}
 
-		return type;
+		return ret.toString();
 	}
 
 	public static String getFileSizeStr(long fileSize) {

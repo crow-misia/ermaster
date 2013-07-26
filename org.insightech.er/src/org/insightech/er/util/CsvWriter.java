@@ -114,7 +114,7 @@ public final class CsvWriter {
 	 * 出力先を閉じます
 	 */
 	public void close() {
-		this.writer.close();
+		Closer.close(this.writer);
 	}
 
 }

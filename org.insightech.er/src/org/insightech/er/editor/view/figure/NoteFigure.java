@@ -16,8 +16,6 @@ import org.eclipse.swt.graphics.Color;
 
 public class NoteFigure extends Shape {
 
-	private static final long serialVersionUID = 7613144432550730126L;
-
 	public static final int RETURN_WIDTH = 15;
 
 	private TextFlow label;
