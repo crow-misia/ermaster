@@ -84,7 +84,7 @@ public abstract class DDLCreator {
 			for (Tablespace tablespace : diagram.getDiagramContents()
 					.getTablespaceSet()) {
 				if (first) {
-					ddl.append("\r\n/* Drop Tablespaces */\r\n\r\n");
+					ddl.append("\r\n-- Drop Tablespaces\r\n\r\n");
 					first = false;
 				}
 
@@ -105,7 +105,7 @@ public abstract class DDLCreator {
 
 		for (Sequence sequence : diagram.getDiagramContents().getSequenceSet()) {
 			if (first) {
-				ddl.append("\r\n/* Drop Sequences */\r\n\r\n");
+				ddl.append("\r\n-- Drop Sequences\r\n\r\n");
 				first = false;
 			}
 			ddl.append(this.getDropDDL(sequence));
@@ -128,7 +128,7 @@ public abstract class DDLCreator {
 		for (View view : diagram.getDiagramContents().getContents()
 				.getViewSet()) {
 			if (first) {
-				ddl.append("\r\n/* Drop Views */\r\n\r\n");
+				ddl.append("\r\n-- Drop Views\r\n\r\n");
 				first = false;
 			}
 			ddl.append(this.getDropDDL(view));
@@ -150,7 +150,7 @@ public abstract class DDLCreator {
 
 		for (Trigger trigger : diagram.getDiagramContents().getTriggerSet()) {
 			if (first) {
-				ddl.append("\r\n/* Drop Triggers */\r\n\r\n");
+				ddl.append("\r\n-- Drop Triggers\r\n\r\n");
 				first = false;
 			}
 			ddl.append(this.getDropDDL(trigger));
@@ -180,7 +180,7 @@ public abstract class DDLCreator {
 
 			for (Index index : table.getIndexes()) {
 				if (first) {
-					ddl.append("\r\n/* Drop Indexes */\r\n\r\n");
+					ddl.append("\r\n-- Drop Indexes\r\n\r\n");
 					first = false;
 				}
 				ddl.append(this.getDropDDL(index, table));
@@ -212,7 +212,7 @@ public abstract class DDLCreator {
 			}
 
 			if (first) {
-				ddl.append("\r\n/* Drop Tables */\r\n\r\n");
+				ddl.append("\r\n-- Drop Tables\r\n\r\n");
 				first = false;
 			}
 
@@ -270,7 +270,7 @@ public abstract class DDLCreator {
 			for (Tablespace tablespace : diagram.getDiagramContents()
 					.getTablespaceSet()) {
 				if (first) {
-					ddl.append("\r\n/* Create Tablespaces */\r\n\r\n");
+					ddl.append("\r\n-- Create Tablespaces\r\n\r\n");
 					first = false;
 				}
 
@@ -311,7 +311,7 @@ public abstract class DDLCreator {
 			}
 
 			if (first) {
-				ddl.append("\r\n/* Create Tables */\r\n\r\n");
+				ddl.append("\r\n-- Create Tables\r\n\r\n");
 				first = false;
 			}
 
@@ -340,7 +340,7 @@ public abstract class DDLCreator {
 
 			for (Relation relation : table.getOutgoingRelations()) {
 				if (first) {
-					ddl.append("\r\n/* Create Foreign Keys */\r\n\r\n");
+					ddl.append("\r\n-- Create Foreign Keys\r\n\r\n");
 					first = false;
 				}
 				ddl.append(this.getDDL(relation));
@@ -368,7 +368,7 @@ public abstract class DDLCreator {
 
 			for (Index index : table.getIndexes()) {
 				if (first) {
-					ddl.append("\r\n/* Create Indexes */\r\n\r\n");
+					ddl.append("\r\n-- Create Indexes\r\n\r\n");
 					first = false;
 				}
 				ddl.append(this.getDDL(index, table));
@@ -393,7 +393,7 @@ public abstract class DDLCreator {
 				.getViewSet()) {
 
 			if (first) {
-				ddl.append("\r\n/* Create Views */\r\n\r\n");
+				ddl.append("\r\n-- Create Views\r\n\r\n");
 				first = false;
 			}
 			ddl.append(this.getDDL(view));
@@ -416,7 +416,7 @@ public abstract class DDLCreator {
 		for (Trigger trigger : diagram.getDiagramContents().getTriggerSet()) {
 
 			if (first) {
-				ddl.append("\r\n/* Create Triggers */\r\n\r\n");
+				ddl.append("\r\n-- Create Triggers\r\n\r\n");
 				first = false;
 			}
 			ddl.append(this.getDDL(trigger));
@@ -448,7 +448,7 @@ public abstract class DDLCreator {
 			}
 
 			if (first) {
-				ddl.append("\r\n/* Create Sequences */\r\n\r\n");
+				ddl.append("\r\n-- Create Sequences\r\n\r\n");
 				first = false;
 			}
 			ddl.append(this.getDDL(sequence));
@@ -479,7 +479,7 @@ public abstract class DDLCreator {
 
 			if (!commentDDLList.isEmpty()) {
 				if (first) {
-					ddl.append("\r\n/* Comments */\r\n\r\n");
+					ddl.append("\r\n-- Comments\r\n\r\n");
 					first = false;
 				}
 
