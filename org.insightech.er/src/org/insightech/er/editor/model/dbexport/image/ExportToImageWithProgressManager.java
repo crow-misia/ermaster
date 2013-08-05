@@ -15,8 +15,8 @@ public class ExportToImageWithProgressManager extends ExportToImageManager
 	private IProgressMonitor monitor;
 
 	public ExportToImageWithProgressManager(Image img, int format,
-			String saveFilePath) {
-		super(img, format, saveFilePath);
+			String formatName, String saveFilePath) {
+		super(img, format, formatName, saveFilePath);
 	}
 
 	/**

@@ -90,6 +90,7 @@ public class ExportToImageAction extends AbstractExportAction {
 			GraphicalViewer viewer, String saveFilePath)
 			throws InterruptedException {
 		int format = getFormatType(saveFilePath);
+		String formatName = getFormatName(format);
 
 		if (format == -1) {
 			Activator
@@ -103,7 +104,7 @@ public class ExportToImageAction extends AbstractExportAction {
 			img = createImage(viewer);
 
 			ExportToImageWithProgressManager exportToImageManager = new ExportToImageWithProgressManager(
-					img, format, saveFilePath);
+					img, format, formatName, saveFilePath);
 
 			monitor.run(true, true, exportToImageManager);
 
@@ -158,6 +159,19 @@ public class ExportToImageAction extends AbstractExportAction {
 		}
 
 		return format;
+	}
+
+	public static String getFormatName(int format) {
+		switch (format) {
+		case SWT.IMAGE_BMP:
+			return "bmp";
+		case SWT.IMAGE_PNG:
+			return "png";
+		case SWT.IMAGE_JPEG:
+			return "jpeg";
+		default:
+			return "png";
+		}
 	}
 
 	public static Image createImage(GraphicalViewer viewer) {

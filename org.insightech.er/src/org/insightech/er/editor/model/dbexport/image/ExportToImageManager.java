@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -23,34 +22,19 @@ public class ExportToImageManager {
 
 	private String formatName;
 
-	public ExportToImageManager(Image img, int format, String saveFilePath) {
+	public ExportToImageManager(Image img, int format, String formatName, String saveFilePath) {
 		this.img = img;
 		this.format = format;
+		this.formatName = formatName;
 		this.saveFilePath = saveFilePath;
 	}
 
 	public void doProcess() throws IOException, InterruptedException {
-		if (format == SWT.IMAGE_JPEG || format == SWT.IMAGE_BMP) {
-			writeJPGorBMP(img, saveFilePath, format);
-
-		} else if (format == SWT.IMAGE_PNG || format == SWT.IMAGE_GIF) {
-			writePNGorGIF(img, saveFilePath, formatName);
-		}
+		writeImage(img, saveFilePath, format, formatName);
 	}
 
-	private void writeJPGorBMP(Image image, String saveFilePath, int format)
-			throws IOException {
-		ImageData[] imgData = new ImageData[1];
-		imgData[0] = image.getImageData();
-
-		ImageLoader imgLoader = new ImageLoader();
-		imgLoader.data = imgData;
-		imgLoader.save(saveFilePath, format);
-	}
-
-	private void writePNGorGIF(Image image, String saveFilePath,
-			String formatName) throws IOException, InterruptedException {
-
+	private void writeImage(Image image, String saveFilePath, int format, String formatName)
+			throws IOException, InterruptedException {
 		try {
 			ImageLoader loader = new ImageLoader();
 			loader.data = new ImageData[] { image.getImageData() };
@@ -76,11 +60,13 @@ public class ExportToImageManager {
 			int y) throws InterruptedException {
 
 		ImageData data = image.getImageData();
+		final int width = image.getBounds().width;
+		final int height = image.getBounds().height;
 
-		for (int i = 0; i < image.getBounds().width; i++) {
+		for (int i = 0; i < width; i++) {
 
-			for (int j = 0; j < image.getBounds().height; j++) {
-				int tmp = 4 * (j * image.getBounds().width + i);
+			for (int j = 0; j < height; j++) {
+				int tmp = 4 * (j * width + i);
 
 				if (data.data.length > tmp + 2) {
 					int r = 0xff & data.data[tmp + 2];
@@ -96,7 +82,7 @@ public class ExportToImageManager {
 		}
 	}
 
-	protected void doPreTask(HtmlReportPageGenerator pageGenerator,
+	protected void doPreTask(HtmlReportPageGenerator<?> pageGenerator,
 			Object object) {
 	}
 
