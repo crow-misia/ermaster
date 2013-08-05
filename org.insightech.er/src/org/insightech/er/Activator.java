@@ -58,23 +58,6 @@ public class Activator extends AbstractUIPlugin {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		Resources.PINK.dispose();
-		Resources.ADDED_COLOR.dispose();
-		Resources.UPDATED_COLOR.dispose();
-		Resources.REMOVED_COLOR.dispose();
-		Resources.GRID_COLOR.dispose();
-		Resources.DEFAULT_TABLE_COLOR.dispose();
-		Resources.SELECTED_REFERENCED_COLUMN.dispose();
-		Resources.SELECTED_FOREIGNKEY_COLUMN.dispose();
-		Resources.SELECTED_REFERENCED_AND_FOREIGNKEY_COLUMN.dispose();
-		Resources.VERY_LIGHT_GRAY.dispose();
-		Resources.LINE_COLOR.dispose();
-
-		Resources.TEST_COLOR.dispose();
-		Resources.NOT_NULL_COLOR.dispose();
-		Resources.PRIMARY_COLOR.dispose();
-		Resources.FOREIGN_COLOR.dispose();
-
 		Resources.disposeColorMap();
 
 		plugin = null;
