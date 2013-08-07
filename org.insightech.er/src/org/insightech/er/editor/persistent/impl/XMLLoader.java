@@ -434,14 +434,12 @@ public class XMLLoader {
 	private Element getElement(Element element, String tagname) {
 		NodeList nodeList = element.getChildNodes();
 
-		if (nodeList.getLength() == 0) {
-			return null;
-		}
-
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
-				Element ele = (Element) nodeList.item(i);
-				if (ele.getTagName().equals(tagname)) {
+		final int n = nodeList.getLength();
+		for (int i = 0; i < n; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				Element ele = (Element) node;
+				if (tagname.equals(ele.getTagName())) {
 					return ele;
 				}
 			}
@@ -526,8 +524,9 @@ public class XMLLoader {
 
 		if (element != null) {
 			NodeList nodeList = element.getElementsByTagName("sequence");
+			final int n = nodeList.getLength();
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < n; i++) {
 				Element sequenceElemnt = (Element) nodeList.item(i);
 				Sequence sequence = this.loadSequence(sequenceElemnt);
 
@@ -560,8 +559,9 @@ public class XMLLoader {
 
 		if (element != null) {
 			NodeList nodeList = element.getElementsByTagName("trigger");
+			final int n = nodeList.getLength();
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < n; i++) {
 				Element triggerElemnt = (Element) nodeList.item(i);
 				Trigger trigger = this.loadTrigger(triggerElemnt);
 
@@ -587,8 +587,9 @@ public class XMLLoader {
 
 		if (element != null) {
 			NodeList nodeList = element.getElementsByTagName("tablespace");
+			final int n = nodeList.getLength();
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < n; i++) {
 				Element tablespaceElemnt = (Element) nodeList.item(i);
 				Tablespace tablespace = this.loadTablespace(tablespaceElemnt,
 						context);
@@ -606,8 +607,9 @@ public class XMLLoader {
 		tablespace.setName(this.getStringValue(element, "name"));
 
 		NodeList nodeList = element.getElementsByTagName("properties");
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < n; i++) {
 			Element propertiesElemnt = (Element) nodeList.item(i);
 
 			String environmentId = this.getStringValue(propertiesElemnt,
@@ -723,8 +725,9 @@ public class XMLLoader {
 
 		if (element != null) {
 			NodeList nodeList = element.getElementsByTagName("change_tracking");
+			final int n = nodeList.getLength();
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < n; i++) {
 				Element changeTrackingElemnt = (Element) nodeList.item(i);
 				ChangeTracking changeTracking = this
 						.loadChangeTracking(changeTrackingElemnt);
@@ -754,8 +757,9 @@ public class XMLLoader {
 		Element element = this.getElement(parent, "column_groups");
 
 		NodeList nodeList = element.getElementsByTagName("column_group");
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < n; i++) {
 			Element columnGroupElement = (Element) nodeList.item(i);
 
 			ColumnGroup columnGroup = new ColumnGroup();
@@ -784,8 +788,9 @@ public class XMLLoader {
 
 		if (element != null) {
 			NodeList nodeList = element.getElementsByTagName("test_data");
+			final int n = nodeList.getLength();
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < n; i++) {
 				Element testDataElement = (Element) nodeList.item(i);
 
 				TestData testData = new TestData();
@@ -802,8 +807,9 @@ public class XMLLoader {
 		testData.setExportOrder(this.getIntValue(element, "export_order"));
 
 		NodeList nodeList = element.getElementsByTagName("table_test_data");
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < n; i++) {
 			Element tableTestDataElement = (Element) nodeList.item(i);
 
 			TableTestData tableTestData = new TableTestData();
@@ -828,17 +834,19 @@ public class XMLLoader {
 		Element element = this.getElement(parent, "direct_test_data");
 
 		NodeList nodeList = element.getElementsByTagName("data");
+		final int n = nodeList.getLength();
 
 		List<Map<NormalColumn, String>> dataList = directTestData.getDataList();
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < n; i++) {
 			Element dataElement = (Element) nodeList.item(i);
 
 			NodeList columnNodeList = dataElement
 					.getElementsByTagName("column_data");
+			final int m = columnNodeList.getLength();
 
 			Map<NormalColumn, String> data = new HashMap<NormalColumn, String>();
 
-			for (int j = 0; j < columnNodeList.getLength(); j++) {
+			for (int j = 0; j < m; j++) {
 				Element columnDataElement = (Element) columnNodeList.item(j);
 
 				String columnId = this.getStringValue(columnDataElement,
@@ -864,8 +872,9 @@ public class XMLLoader {
 		Element dataDefListElement = this.getElement(element, "data_def_list");
 
 		NodeList nodeList = dataDefListElement.getElementsByTagName("data_def");
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < n; i++) {
 			Element dataDefElement = (Element) nodeList.item(i);
 
 			String columnId = this.getStringValue(dataDefElement, "column_id");
@@ -886,8 +895,9 @@ public class XMLLoader {
 			if (modifiedValuesElement != null) {
 				NodeList modifiedValueNodeList = modifiedValuesElement
 						.getElementsByTagName("modified_value");
+				final int m = modifiedValueNodeList.getLength();
 
-				for (int j = 0; j < modifiedValueNodeList.getLength(); j++) {
+				for (int j = 0; j < m; j++) {
 					Element modifiedValueNode = (Element) modifiedValueNodeList
 							.item(j);
 
@@ -910,8 +920,9 @@ public class XMLLoader {
 
 		if (element != null) {
 			NodeList nodeList = element.getElementsByTagName("word");
+			final int n = nodeList.getLength();
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < n; i++) {
 				Element wordElement = (Element) nodeList.item(i);
 
 				this.loadWord(wordElement, context);
@@ -948,14 +959,15 @@ public class XMLLoader {
 
 		Element element = this.getElement(parent, "columns");
 
-		NodeList groupList = element.getChildNodes();
+		NodeList nodeList = element.getChildNodes();
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < groupList.getLength(); i++) {
-			if (groupList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
 
-			Element columnElement = (Element) groupList.item(i);
+			Element columnElement = (Element) nodeList.item(i);
 
 			if ("column_group".equals(columnElement.getTagName())) {
 				ColumnGroup column = this.loadColumnGroup(columnElement,
@@ -1231,15 +1243,17 @@ public class XMLLoader {
 		Element categoriesElement = this.getElement(element, "categories");
 
 		NodeList nodeList = categoriesElement.getChildNodes();
+		final int n = nodeList.getLength();
 
 		List<Category> selectedCategories = new ArrayList<Category>();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+		for (int i = 0; i < n; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
 
-			Element categoryElement = (Element) nodeList.item(i);
+			Element categoryElement = (Element) node;
 
 			Category category = new Category();
 
@@ -1280,10 +1294,11 @@ public class XMLLoader {
 					"translations");
 
 			NodeList nodeList = translationsElement.getChildNodes();
+			final int n = nodeList.getLength();
 
-			List<String> selectedTranslations = new ArrayList<String>();
+			List<String> selectedTranslations = new ArrayList<String>(n);
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < n; i++) {
 				if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
 					continue;
 				}
@@ -1308,13 +1323,15 @@ public class XMLLoader {
 
 		if (element != null) {
 			NodeList nodeList = element.getChildNodes();
+			final int n = nodeList.getLength();
 
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+			for (int i = 0; i < n; i++) {
+				final Node node = nodeList.item(i);
+				if (node.getNodeType() != Node.ELEMENT_NODE) {
 					continue;
 				}
 
-				Element environmentElement = (Element) nodeList.item(i);
+				Element environmentElement = (Element) node;
 
 				String id = this.getStringValue(environmentElement, "id");
 				String name = this.getStringValue(environmentElement, "name");
@@ -1349,8 +1366,9 @@ public class XMLLoader {
 				"updated_date"));
 
 		NodeList nodeList = element.getElementsByTagName("model_property");
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < n; i++) {
 			Element propertyElement = (Element) nodeList.item(i);
 
 			NameValue nameValue = new NameValue(this.getStringValue(
@@ -1384,13 +1402,13 @@ public class XMLLoader {
 		Element element = this.getElement(parent, "contents");
 
 		NodeList nodeList = element.getChildNodes();
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+		for (int i = 0; i < n; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
-
-			Node node = nodeList.item(i);
 
 			if ("table".equals(node.getNodeName())) {
 				ERTable table = this.loadTable((Element) node, context);
@@ -1470,13 +1488,15 @@ public class XMLLoader {
 		Element element = this.getElement(parent, "indexes");
 
 		NodeList nodeList = element.getChildNodes();
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+		for (int i = 0; i < n; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
 
-			Element indexElement = (Element) nodeList.item(i);
+			Element indexElement = (Element) node;
 
 			String type = this.getStringValue(indexElement, "type");
 			if ("null".equals(type)) {
@@ -1501,20 +1521,22 @@ public class XMLLoader {
 			LoadContext context) {
 		Element element = this.getElement(parent, "columns");
 		NodeList nodeList = element.getChildNodes();
+		final int n = nodeList.getLength();
 
-		List<Boolean> descs = new ArrayList<Boolean>();
+		List<Boolean> descs = new ArrayList<Boolean>(n);
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+		for (int i = 0; i < n; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
 
-			Element columnElement = (Element) nodeList.item(i);
+			Element columnElement = (Element) node;
 
 			String id = this.getStringValue(columnElement, "id");
 			NormalColumn column = context.columnMap.get(id);
 
-			Boolean desc = new Boolean(this.getBooleanValue(columnElement,
+			Boolean desc = Boolean.valueOf(this.getBooleanValue(columnElement,
 					"desc"));
 
 			index.addColumn(column);
@@ -1534,13 +1556,15 @@ public class XMLLoader {
 		}
 
 		NodeList nodeList = element.getChildNodes();
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+		for (int i = 0; i < n; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
 
-			Element complexUniqueKeyElement = (Element) nodeList.item(i);
+			Element complexUniqueKeyElement = (Element) node;
 
 			String id = this.getStringValue(complexUniqueKeyElement, "id");
 			String name = this.getStringValue(complexUniqueKeyElement, "name");
@@ -1562,13 +1586,15 @@ public class XMLLoader {
 			Element parent, LoadContext context) {
 		Element element = this.getElement(parent, "columns");
 		NodeList nodeList = element.getChildNodes();
+		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+		for (int i = 0; i < n; i++) {
+			final Node node = nodeList.item(i);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
 
-			Element columnElement = (Element) nodeList.item(i);
+			Element columnElement = (Element) node;
 
 			String id = this.getStringValue(columnElement, "id");
 			NormalColumn column = context.columnMap.get(id);
