@@ -870,7 +870,7 @@ public abstract class DDLCreator {
 			ddl.append("\r\n");
 		}
 
-		ddl.append("CREATE VIEW ");
+		ddl.append(getCreateViewSQL());
 		ddl.append(filter(this.getNameWithSchema(view.getTableViewProperties()
 				.getSchema(), view.getPhysicalName())));
 		ddl.append(" AS ");
@@ -885,6 +885,10 @@ public abstract class DDLCreator {
 		}
 
 		return ddl.toString();
+	}
+
+	protected String getCreateViewSQL() {
+		return "CREATE VIEW ";
 	}
 
 	public String getDDL(Trigger trigger) {

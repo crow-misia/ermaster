@@ -388,4 +388,9 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 		return "IF EXISTS ";
 	}
+
+	@Override
+	protected String getCreateViewSQL() {
+		return "CREATE OR REPLACE VIEW ";
+	}
 }

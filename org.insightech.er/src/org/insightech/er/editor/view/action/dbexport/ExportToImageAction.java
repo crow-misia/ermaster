@@ -156,6 +156,8 @@ public class ExportToImageAction extends AbstractExportAction {
 		} else if (ext.equalsIgnoreCase("png")) {
 			format = SWT.IMAGE_PNG;
 
+		} else if (ext.equalsIgnoreCase("gif")) {
+			format = SWT.IMAGE_GIF;
 		}
 
 		return format;
@@ -167,6 +169,8 @@ public class ExportToImageAction extends AbstractExportAction {
 			return "bmp";
 		case SWT.IMAGE_PNG:
 			return "png";
+		case SWT.IMAGE_GIF:
+			return "gif";
 		case SWT.IMAGE_JPEG:
 			return "jpeg";
 		default:
@@ -241,7 +245,7 @@ public class ExportToImageAction extends AbstractExportAction {
 
 	@Override
 	protected String[] getFilterExtensions() {
-		return new String[] { "*.png", "*.jpeg", "*.bmp" };
+		return new String[] { "*.png", "*.jpeg", "*.bmp", "*.gif" };
 	}
 
 	public static Rectangle getBounds(ERDiagram diagram,

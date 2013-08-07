@@ -68,4 +68,9 @@ public class HSQLDBDDLCreator extends DDLCreator {
 	public String getIfExistsOption(final Class<?> clazz) {
 		return "IF EXISTS ";
 	}
+
+	@Override
+	protected String getCreateViewSQL() {
+		return "CREATE OR REPLACE VIEW ";
+	}
 }
