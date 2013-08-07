@@ -138,42 +138,37 @@ public class NormalColumn extends Column {
 	}
 
 	public String getLogicalName() {
-		if (this.getFirstReferencedColumn() != null) {
-			if (!Check.isEmpty(this.foreignKeyLogicalName)) {
-				return this.foreignKeyLogicalName;
-
-			} else {
-				return this.getFirstReferencedColumn().getLogicalName();
+		final NormalColumn c = this.getFirstReferencedColumn();
+		if (c != null) {
+			if (Check.isEmpty(this.foreignKeyLogicalName)) {
+				return c.getLogicalName();
 			}
+			return this.foreignKeyLogicalName;
 		}
 
 		return this.word.getLogicalName();
 	}
 
 	public String getPhysicalName() {
-		if (this.getFirstReferencedColumn() != null) {
-			if (!Check.isEmpty(this.foreignKeyPhysicalName)) {
-				return this.foreignKeyPhysicalName;
-
-			} else {
-				return this.getFirstReferencedColumn().getPhysicalName();
-			}
+		final NormalColumn c = this.getFirstReferencedColumn();
+		if (c == null) {
+			return this.word.getPhysicalName();
 		}
-
-		return this.word.getPhysicalName();
+		if (Check.isEmpty(this.foreignKeyPhysicalName)) {
+			return c.getPhysicalName();
+		}
+		return this.foreignKeyPhysicalName;
 	}
 
 	public String getDescription() {
-		if (this.getFirstReferencedColumn() != null) {
-			if (!Check.isEmpty(this.foreignKeyDescription)) {
-				return this.foreignKeyDescription;
-
-			} else {
-				return this.getFirstReferencedColumn().getDescription();
-			}
+		final NormalColumn c = this.getFirstReferencedColumn();
+		if (c == null) {
+			return this.word.getDescription();
 		}
-
-		return this.word.getDescription();
+		if (Check.isEmpty(this.foreignKeyDescription)) {
+			return c.getDescription();
+		}
+		return this.foreignKeyDescription;
 	}
 
 	public String getForeignKeyLogicalName() {
@@ -189,28 +184,28 @@ public class NormalColumn extends Column {
 	}
 
 	public SqlType getType() {
-		if (this.getFirstReferencedColumn() != null) {
-			SqlType type = this.getFirstReferencedColumn().getType();
+		final NormalColumn c = this.getFirstReferencedColumn();
+		if (c == null) {
+			return word.getType();
+		}
+		SqlType type = c.getType();
 
-			if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_SERIAL).equals(type)) {
-				return SqlType.valueOfId(SqlType.SQL_TYPE_ID_INTEGER);
-			} else if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_SERIAL)
-					.equals(type)) {
-				return SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_INT);
-			}
-
-			return type;
+		if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_SERIAL).equals(type)) {
+			return SqlType.valueOfId(SqlType.SQL_TYPE_ID_INTEGER);
+		} else if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_SERIAL)
+				.equals(type)) {
+			return SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_INT);
 		}
 
-		return word.getType();
+		return type;
 	}
 
 	public TypeData getTypeData() {
-		if (this.getFirstReferencedColumn() != null) {
-			return getFirstReferencedColumn().getTypeData();
+		final NormalColumn c = this.getFirstReferencedColumn();
+		if (c == null) {
+			return this.word.getTypeData();
 		}
-
-		return this.word.getTypeData();
+		return c.getTypeData();
 	}
 
 	public boolean isNotNull() {
@@ -269,10 +264,11 @@ public class NormalColumn extends Column {
 	public NormalColumn getRootReferencedColumn() {
 		NormalColumn root = this.getFirstReferencedColumn();
 
-		if (root != null) {
-			while (root.getFirstReferencedColumn() != null) {
-				root = root.getFirstReferencedColumn();
-			}
+		if (root == null) {
+			return null;
+		}
+		while (root.getFirstReferencedColumn() != null) {
+			root = root.getFirstReferencedColumn();
 		}
 
 		return root;
@@ -399,11 +395,7 @@ public class NormalColumn extends Column {
 	}
 
 	public boolean isForeignKey() {
-		if (!this.relationList.isEmpty()) {
-			return true;
-		}
-
-		return false;
+		return (!this.relationList.isEmpty());
 	}
 
 	public boolean isRefered() {
@@ -566,8 +558,7 @@ public class NormalColumn extends Column {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(", physicalName:" + this.getPhysicalName());
 		sb.append(", logicalName:" + this.getLogicalName());
 

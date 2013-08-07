@@ -17,8 +17,8 @@ import org.insightech.er.util.Format;
 
 public class MySQLDDLCreator extends DDLCreator {
 
-	public MySQLDDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public MySQLDDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(" ");
 
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
-				normalColumn.getTypeData(), this.getDiagram().getDatabase())));
+				normalColumn.getTypeData(), getDatabase())));
 
 		if (Check.isNotEmpty(normalColumn.getCharacterSet())) {
 			ddl.append(" CHARACTER SET ");
@@ -283,20 +283,16 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		ddl.append(" ON ");
-		ddl.append(filter(table.getNameWithSchema(this.getDiagram()
-				.getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 
 		ddl.append(" (");
-		boolean first = true;
 
 		int i = 0;
 		List<Boolean> descs = index.getDescs();
 
+		String comma = "";
 		for (NormalColumn column : index.getColumns()) {
-			if (!first) {
-				ddl.append(", ");
-
-			}
+			ddl.append(comma);
 
 			ddl.append(filter(column.getPhysicalName()));
 
@@ -311,7 +307,7 @@ public class MySQLDDLCreator extends DDLCreator {
 				}
 			}
 
-			first = false;
+			comma = ", ";
 			i++;
 		}
 
@@ -346,8 +342,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(this.getIfExistsOption(Index.class));
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
-		ddl.append(filter(table.getNameWithSchema(this.getDiagram()
-				.getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 
 		if (this.semicolon) {
 			ddl.append(";");
@@ -361,7 +356,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		SqlType type = primaryKey.getType();
 
 		if (type != null && type.isFullTextIndexable()
-				&& !type.isNeedLength(this.getDiagram().getDatabase())) {
+				&& !type.isNeedLength(getDatabase())) {
 			Integer length = null;
 
 			MySQLTableProperties tableProperties = (MySQLTableProperties) table

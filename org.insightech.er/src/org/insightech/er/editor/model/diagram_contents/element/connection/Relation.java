@@ -308,9 +308,9 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 	}
 
 	private void removeAllForeignKey() {
-		for (Iterator iter = this.getTargetTableView().getColumns().iterator(); iter
+		for (Iterator<Column> iter = this.getTargetTableView().getColumns().iterator(); iter
 				.hasNext();) {
-			Column column = (Column) iter.next();
+			Column column = iter.next();
 
 			if (column instanceof NormalColumn) {
 				NormalColumn normalColumn = (NormalColumn) column;
@@ -359,9 +359,7 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 	 */
 	@Override
 	public Relation clone() {
-		Relation clone = (Relation) super.clone();
-
-		return clone;
+		return (Relation) super.clone();
 	}
 
 	public int compareTo(Relation otherRelation) {

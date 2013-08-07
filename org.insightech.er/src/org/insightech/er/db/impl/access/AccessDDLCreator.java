@@ -8,8 +8,8 @@ import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Ta
 
 public class AccessDDLCreator extends DDLCreator {
 
-	public AccessDDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public AccessDDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	@Override
@@ -20,8 +20,7 @@ public class AccessDDLCreator extends DDLCreator {
 		ddl.append(this.getIfExistsOption(Index.class));
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
-		ddl.append(filter(table.getNameWithSchema(this.getDiagram()
-				.getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 
 		if (this.semicolon) {
 			ddl.append(";");

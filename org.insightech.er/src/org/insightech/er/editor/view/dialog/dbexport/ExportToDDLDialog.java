@@ -424,14 +424,14 @@ public class ExportToDDLDialog extends AbstractDialog {
 
 		try {
 			DDLCreator ddlCreator = DBManagerFactory.getDBManager(this.diagram)
-					.getDDLCreator(this.diagram, true);
+					.getDDLCreator(this.diagram);
 
 			int index = this.environmentCombo.getSelectionIndex();
 			Environment environment = this.diagram.getDiagramContents()
 					.getSettings().getEnvironmentSetting().getEnvironments()
 					.get(index);
 
-			ddlCreator.init(environment, ddlTarget);
+			ddlCreator.init(environment, ddlTarget, true, "\r\n");
 
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(saveFilePath), getEncoding())));

@@ -11,8 +11,8 @@ import org.insightech.er.util.Format;
 
 public class DB2DDLCreator extends DDLCreator {
 
-	public DB2DDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public DB2DDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	/**

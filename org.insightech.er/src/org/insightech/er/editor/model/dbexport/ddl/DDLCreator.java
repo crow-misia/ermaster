@@ -30,22 +30,25 @@ import org.insightech.er.util.Format;
 
 public abstract class DDLCreator {
 
-	private ERDiagram diagram;
+	private final ERDiagram diagram;
 
 	protected boolean semicolon;
+
+	protected String newline;
 
 	protected Environment environment;
 
 	protected DDLTarget ddlTarget;
 
-	public DDLCreator(ERDiagram diagram, boolean semicolon) {
+	public DDLCreator(ERDiagram diagram) {
 		this.diagram = diagram;
-		this.semicolon = semicolon;
 	}
 
-	public void init(Environment environment, DDLTarget ddlTarget) {
+	public final void init(Environment environment, DDLTarget ddlTarget, boolean semicolon, String newline) {
 		this.environment = environment;
 		this.ddlTarget = ddlTarget;
+		this.semicolon = semicolon;
+		this.newline = newline;
 	}
 
 	public String getDropDDL(ERDiagram diagram) {
@@ -78,15 +81,12 @@ public abstract class DDLCreator {
 	private String getDropTablespaces(ERDiagram diagram) {
 		StringBuilder ddl = new StringBuilder();
 
-		boolean first = true;
-
+		String comment = "\r\n-- Drop Tablespaces\r\n\r\n";
 		if (this.getDBManager().createTablespaceProperties() != null) {
 			for (Tablespace tablespace : diagram.getDiagramContents()
 					.getTablespaceSet()) {
-				if (first) {
-					ddl.append("\r\n-- Drop Tablespaces\r\n\r\n");
-					first = false;
-				}
+				ddl.append(comment);
+				comment = "";
 
 				ddl.append(this.getDropDDL(tablespace));
 				ddl.append("\r\n");
@@ -292,7 +292,7 @@ public abstract class DDLCreator {
 		return ddl.toString();
 	}
 
-	abstract protected String getDDL(Tablespace object);
+	protected abstract String getDDL(Tablespace object);
 
 	protected Iterable<ERTable> getTablesForCreateDDL() {
 		return diagram.getDiagramContents().getContents().getTableSet();
@@ -438,7 +438,7 @@ public abstract class DDLCreator {
 
 		List<String> autoSequenceNames = diagram.getDiagramContents()
 				.getContents().getTableSet()
-				.getAutoSequenceNames(diagram.getDatabase());
+				.getAutoSequenceNames(getDatabase());
 
 		for (Sequence sequence : diagram.getDiagramContents().getSequenceSet()) {
 			String sequenceName = this.getNameWithSchema(sequence.getSchema(),
@@ -509,7 +509,7 @@ public abstract class DDLCreator {
 			ddl.append("\r\n");
 		}
 		ddl.append("CREATE TABLE ");
-		ddl.append(filter(table.getNameWithSchema(diagram.getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 		ddl.append("\r\n(\r\n");
 
 		boolean first = true;
@@ -589,7 +589,7 @@ public abstract class DDLCreator {
 		}
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -650,9 +650,9 @@ public abstract class DDLCreator {
 		ddl.append(" ");
 
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
-				normalColumn.getTypeData(), diagram.getDatabase())));
+				normalColumn.getTypeData(), getDatabase())));
 
-		if (!Check.isEmpty(normalColumn.getDefaultValue())) {
+		if (Check.isNotEmpty(normalColumn.getDefaultValue())) {
 			String defaultValue = normalColumn.getDefaultValue();
 			if (ResourceString.getResourceString("label.current.date.time")
 					.equals(defaultValue)) {
@@ -740,7 +740,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = index.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && Check.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
 			ddl.append(description.replaceAll("\n", "\n-- "));
@@ -754,7 +754,7 @@ public abstract class DDLCreator {
 		ddl.append("INDEX ");
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
-		ddl.append(filter(table.getNameWithSchema(diagram.getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 
 		if (Check.isNotBlank(index.getType())) {
 			ddl.append(" USING ");
@@ -793,7 +793,7 @@ public abstract class DDLCreator {
 		ddl.append(")");
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -804,7 +804,7 @@ public abstract class DDLCreator {
 
 		ddl.append("ALTER TABLE ");
 		ddl.append(filter(relation.getTargetTableView().getNameWithSchema(
-				diagram.getDatabase())));
+				getDatabase())));
 		ddl.append("\r\n");
 		ddl.append("\tADD ");
 		if (Check.isNotBlank(relation.getName())) {
@@ -828,7 +828,7 @@ public abstract class DDLCreator {
 		ddl.append(")\r\n");
 		ddl.append("\tREFERENCES ");
 		ddl.append(filter(relation.getSourceTableView().getNameWithSchema(
-				diagram.getDatabase())));
+				getDatabase())));
 		ddl.append(" (");
 
 		first = true;
@@ -853,7 +853,7 @@ public abstract class DDLCreator {
 		ddl.append("\r\n");
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -863,7 +863,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = view.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && Check.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
 			ddl.append(description.replaceAll("\n", "\n-- "));
@@ -881,7 +881,7 @@ public abstract class DDLCreator {
 		ddl.append(sql);
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -891,7 +891,7 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = trigger.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && Check.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
 			ddl.append(description.replaceAll("\n", "\n-- "));
@@ -905,7 +905,7 @@ public abstract class DDLCreator {
 		ddl.append(filter(trigger.getSql()));
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -915,15 +915,14 @@ public abstract class DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && Check.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
 			ddl.append(description.replaceAll("\n", "\n-- "));
 			ddl.append("\r\n");
 		}
 
-		ddl.append("CREATE ");
-		ddl.append("SEQUENCE ");
+		ddl.append("CREATE SEQUENCE ");
 		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(),
 				sequence.getName())));
 		if (sequence.getIncrement() != null) {
@@ -950,7 +949,7 @@ public abstract class DDLCreator {
 			ddl.append(" CYCLE");
 		}
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -963,7 +962,7 @@ public abstract class DDLCreator {
 		ddl.append(this.getIfExistsOption(Index.class));
 		ddl.append(filter(index.getName()));
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -986,10 +985,10 @@ public abstract class DDLCreator {
 
 		ddl.append("DROP TABLE ");
 		ddl.append(this.getIfExistsOption(TableView.class));
-		ddl.append(filter(table.getNameWithSchema(diagram.getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		ddl.append("\r\n");
@@ -1005,7 +1004,7 @@ public abstract class DDLCreator {
 		ddl.append(filter(this.getNameWithSchema(view.getTableViewProperties()
 				.getSchema(), view.getPhysicalName())));
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -1018,7 +1017,7 @@ public abstract class DDLCreator {
 		ddl.append(this.getIfExistsOption(Trigger.class));
 		ddl.append(filter(trigger.getName()));
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -1027,12 +1026,11 @@ public abstract class DDLCreator {
 	public String getDropDDL(Tablespace tablespace) {
 		StringBuilder ddl = new StringBuilder();
 
-		ddl.append("DROP ");
-		ddl.append("TABLESPACE ");
+		ddl.append("DROP TABLESPACE ");
 		ddl.append(this.getIfExistsOption(Tablespace.class));
 		ddl.append(filter(tablespace.getName()));
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -1041,13 +1039,12 @@ public abstract class DDLCreator {
 	public String getDropDDL(Sequence sequence) {
 		StringBuilder ddl = new StringBuilder();
 
-		ddl.append("DROP ");
-		ddl.append("SEQUENCE ");
+		ddl.append("DROP SEQUENCE ");
 		ddl.append(this.getIfExistsOption(Sequence.class));
 		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(),
 				sequence.getName())));
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -1085,7 +1082,7 @@ public abstract class DDLCreator {
 
 		if (Check.isNotEmpty(schema)) {
 			sb.append(schema);
-			sb.append(".");
+			sb.append('.');
 		}
 
 		sb.append(name);
@@ -1104,7 +1101,7 @@ public abstract class DDLCreator {
 		if (this.ddlTarget.commentValueLogicalNameDescription) {
 			comment = Format.null2blank(logicalName);
 
-			if (Check.isNotEmpty(description)) {
+			if (Check.isNotBlank(description)) {
 				comment = comment + " : " + Format.null2blank(description);
 			}
 
@@ -1126,5 +1123,9 @@ public abstract class DDLCreator {
 		}
 
 		return comment;
+	}
+
+	protected final String getDatabase() {
+		return this.diagram.getDatabase();
 	}
 }

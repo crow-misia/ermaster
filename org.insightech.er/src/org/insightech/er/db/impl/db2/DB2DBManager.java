@@ -57,8 +57,8 @@ public class DB2DBManager extends DBManagerBase {
 		return new DB2TableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new DB2DDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new DB2DDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

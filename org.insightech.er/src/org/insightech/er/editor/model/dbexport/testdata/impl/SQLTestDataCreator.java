@@ -22,12 +22,10 @@ public class SQLTestDataCreator extends AbstractTextTestDataCreator {
 
 		StringBuilder valueSb = new StringBuilder();
 
-		boolean first = true;
+		String comma = "";
 		for (NormalColumn column : table.getExpandedColumns()) {
-			if (!first) {
-				sb.append(", ");
-				valueSb.append(", ");
-			}
+			sb.append(comma);
+			valueSb.append(comma);
 
 			sb.append(column.getPhysicalName());
 
@@ -42,7 +40,7 @@ public class SQLTestDataCreator extends AbstractTextTestDataCreator {
 				valueSb.append("null");
 			}
 
-			first = false;
+			comma = ", ";
 		}
 
 		sb.append(") VALUES (");
@@ -65,12 +63,10 @@ public class SQLTestDataCreator extends AbstractTextTestDataCreator {
 
 			StringBuilder valueSb = new StringBuilder();
 
-			boolean first = true;
+			String comma = "";
 			for (NormalColumn column : table.getExpandedColumns()) {
-				if (!first) {
-					sb.append(", ");
-					valueSb.append(", ");
-				}
+				sb.append(comma);
+				valueSb.append(comma);
 
 				sb.append(column.getPhysicalName());
 
@@ -89,7 +85,7 @@ public class SQLTestDataCreator extends AbstractTextTestDataCreator {
 					valueSb.append("null");
 				}
 
-				first = false;
+				comma = ", ";
 			}
 
 			sb.append(") VALUES (");

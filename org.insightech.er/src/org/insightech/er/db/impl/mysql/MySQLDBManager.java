@@ -64,8 +64,8 @@ public class MySQLDBManager extends DBManagerBase {
 		return new MySQLTableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new MySQLDDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new MySQLDDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

@@ -14,8 +14,8 @@ public class SqlServer2008DBManager extends SqlServerDBManager {
 	}
 
 	@Override
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new SqlServer2008DDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new SqlServer2008DDLCreator(diagram);
 	}
 
 }

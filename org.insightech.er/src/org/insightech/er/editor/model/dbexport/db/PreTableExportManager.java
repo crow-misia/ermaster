@@ -55,7 +55,8 @@ public abstract class PreTableExportManager {
 		this.metaData = con.getMetaData();
 
 		this.ddlCreator = DBManagerFactory.getDBManager(this.diagram)
-				.getDDLCreator(this.diagram, false);
+				.getDDLCreator(this.diagram);
+		this.ddlCreator.init(this.environment, new DDLTarget(), false, "\r\n");
 
 		this.prepareNewNames();
 	}
@@ -257,10 +258,6 @@ public abstract class PreTableExportManager {
 	}
 
 	private String executeDDL() throws SQLException {
-		DDLCreator ddlCreator = DBManagerFactory.getDBManager(this.diagram)
-				.getDDLCreator(this.diagram, true);
-		ddlCreator.init(this.environment, new DDLTarget());
-
 		return ddlCreator.getCreateDDL(this.diagram);
 	}
 

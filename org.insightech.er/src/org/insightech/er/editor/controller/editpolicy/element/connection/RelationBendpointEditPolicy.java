@@ -183,7 +183,7 @@ public class RelationBendpointEditPolicy extends ERDiagramBendpointEditPolicy {
 	}
 
 	@Override
-	protected List createSelectionHandles() {
+	protected List<BendpointMoveHandle> createSelectionHandles() {
 		Relation relation = (Relation) getHost().getModel();
 
 		if (relation.getSource() == relation.getTarget()) {

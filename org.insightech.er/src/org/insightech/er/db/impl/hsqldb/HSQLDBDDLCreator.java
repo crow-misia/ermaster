@@ -8,8 +8,8 @@ import org.insightech.er.util.Check;
 
 public class HSQLDBDDLCreator extends DDLCreator {
 
-	public HSQLDBDDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public HSQLDBDDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	@Override

@@ -23,8 +23,8 @@ public class PostgresDDLCreator extends DDLCreator {
 	private static final Pattern DROP_TRIGGER_TABLE_PATTERN = Pattern
 			.compile(".*\\s[oO][nN]\\s+(.+)\\s.*");
 
-	public PostgresDDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public PostgresDDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	/**
@@ -69,13 +69,12 @@ public class PostgresDDLCreator extends DDLCreator {
 			StringBuilder ddl = new StringBuilder();
 
 			ddl.append("COMMENT ON TABLE ");
-			ddl.append(filter(table.getNameWithSchema(this.getDiagram()
-					.getDatabase())));
+			ddl.append(filter(table.getNameWithSchema(getDatabase())));
 			ddl.append(" IS '");
 			ddl.append(tableComment.replaceAll("'", "''"));
 			ddl.append("'");
 			if (this.semicolon) {
-				ddl.append(";");
+				ddl.append(';');
 			}
 
 			ddlList.add(ddl.toString());
@@ -100,7 +99,7 @@ public class PostgresDDLCreator extends DDLCreator {
 					ddl.append(comment.replaceAll("'", "''"));
 					ddl.append("'");
 					if (this.semicolon) {
-						ddl.append(";");
+						ddl.append(';');
 					}
 
 					ddlList.add(ddl.toString());
@@ -126,7 +125,7 @@ public class PostgresDDLCreator extends DDLCreator {
 						ddl.append(comment.replaceAll("'", "''"));
 						ddl.append("'");
 						if (this.semicolon) {
-							ddl.append(";");
+							ddl.append(';');
 						}
 
 						ddlList.add(ddl.toString());
@@ -160,7 +159,7 @@ public class PostgresDDLCreator extends DDLCreator {
 		ddl.append("'\r\n");
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -177,8 +176,7 @@ public class PostgresDDLCreator extends DDLCreator {
 				|| sequence.isCycle()) {
 
 			ddl.append("ALTER SEQUENCE ");
-			ddl.append(filter(table.getNameWithSchema(this.getDiagram()
-					.getDatabase())
+			ddl.append(filter(table.getNameWithSchema(getDatabase())
 					+ "_" + column.getPhysicalName() + "_SEQ"));
 
 			if (sequence.getIncrement() != null) {
@@ -205,7 +203,7 @@ public class PostgresDDLCreator extends DDLCreator {
 				ddl.append(" CYCLE");
 			}
 			if (this.semicolon) {
-				ddl.append(";");
+				ddl.append(';');
 			}
 		}
 
@@ -257,7 +255,7 @@ public class PostgresDDLCreator extends DDLCreator {
 		}
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();

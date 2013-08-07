@@ -49,15 +49,12 @@ public class RelationOutlineEditPart extends AbstractOutlineEditPart {
 		int viewMode = diagram.getDiagramContents().getSettings()
 				.getOutlineViewMode();
 
-		boolean first = true;
 		StringBuilder sb = new StringBuilder();
 
+		String comma = "";
 		for (NormalColumn foreignKeyColumn : model.getForeignKeyColumns()) {
-			if (first) {
-				first = false;
-			} else {
-				sb.append(", ");
-			}
+			sb.append(comma);
+			comma = ", ";
 
 			if (viewMode == Settings.VIEW_MODE_PHYSICAL) {
 				sb

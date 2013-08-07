@@ -7,6 +7,7 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.BendpointEditPolicy;
+import org.eclipse.gef.handles.BendpointMoveHandle;
 import org.eclipse.gef.requests.BendpointRequest;
 import org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation.bendpoint.CreateBendpointCommand;
 import org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation.bendpoint.DeleteBendpointCommand;
@@ -76,7 +77,7 @@ public class ERDiagramBendpointEditPolicy extends BendpointEditPolicy {
 	}
 
 	@Override
-	protected List createSelectionHandles() {
+	protected List<BendpointMoveHandle> createSelectionHandles() {
 		this.showSelectedLine();
 		return super.createSelectionHandles();
 	}

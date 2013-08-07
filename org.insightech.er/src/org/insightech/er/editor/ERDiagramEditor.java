@@ -420,9 +420,10 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		ZoomOutAction zoomOutAction = new ZoomOutAction(manager);
 		ZoomAdjustAction zoomAdjustAction = new ZoomAdjustAction(manager);
 
-		this.getActionRegistry().registerAction(zoomInAction);
-		this.getActionRegistry().registerAction(zoomOutAction);
-		this.getActionRegistry().registerAction(zoomAdjustAction);
+		final ActionRegistry registry = this.getActionRegistry();
+		registry.registerAction(zoomInAction);
+		registry.registerAction(zoomOutAction);
+		registry.registerAction(zoomAdjustAction);
 
 		this.addKeyHandler(zoomInAction);
 		this.addKeyHandler(zoomOutAction);
@@ -431,20 +432,20 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		gridLayer.setForegroundColor(Resources.GRID_COLOR);
 
 		IAction action = new ToggleGridAction(viewer);
-		this.getActionRegistry().registerAction(action);
+		registry.registerAction(action);
 
 		action = new ChangeBackgroundColorAction(this, this.diagram);
-		this.getActionRegistry().registerAction(action);
+		registry.registerAction(action);
 		this.getSelectionActions().add(action.getId());
 
 		action = new TooltipAction(this);
-		this.getActionRegistry().registerAction(action);
+		registry.registerAction(action);
 
 		action = new LockEditAction(this);
-		this.getActionRegistry().registerAction(action);
+		registry.registerAction(action);
 
 		action = new ExportToDBAction(this);
-		this.getActionRegistry().registerAction(action);
+		registry.registerAction(action);
 
 		this.actionBarContributor = new ERDiagramActionBarContributor(
 				this.zoomComboContributionItem);

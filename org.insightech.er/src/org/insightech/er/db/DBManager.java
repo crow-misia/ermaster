@@ -50,7 +50,7 @@ public interface DBManager {
 	public TablespaceProperties checkTablespaceProperties(
 			TablespaceProperties tablespaceProperties);
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram);
 
 	public boolean isSupported(int support);
 

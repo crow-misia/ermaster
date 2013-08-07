@@ -17,8 +17,8 @@ import org.insightech.er.util.Check;
 
 public class OracleDDLCreator extends DDLCreator {
 
-	public OracleDDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public OracleDDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	/**
@@ -35,8 +35,7 @@ public class OracleDDLCreator extends DDLCreator {
 			StringBuilder ddl = new StringBuilder();
 
 			ddl.append("COMMENT ON TABLE ");
-			ddl.append(filter(table.getNameWithSchema(this.getDiagram()
-					.getDatabase())));
+			ddl.append(filter(table.getNameWithSchema(getDatabase())));
 			ddl.append(" IS '");
 			ddl.append(tableComment.replaceAll("'", "''"));
 			ddl.append("'");
@@ -112,8 +111,7 @@ public class OracleDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("ALTER TABLE ");
-		ddl.append(filter(relation.getTargetTableView().getNameWithSchema(
-				this.getDiagram().getDatabase())));
+		ddl.append(filter(relation.getTargetTableView().getNameWithSchema(getDatabase())));
 		ddl.append("\r\n");
 		ddl.append("\tADD ");
 		if (Check.isNotBlank(relation.getName())) {
@@ -123,15 +121,11 @@ public class OracleDDLCreator extends DDLCreator {
 		}
 		ddl.append("FOREIGN KEY (");
 
-		boolean first = true;
-
+		String comma = "";
 		for (NormalColumn column : relation.getForeignKeyColumns()) {
-			if (!first) {
-				ddl.append(", ");
-
-			}
+			ddl.append(comma);
 			ddl.append(filter(column.getPhysicalName()));
-			first = false;
+			comma = ", ";
 		}
 
 		ddl.append(")\r\n");
@@ -140,20 +134,16 @@ public class OracleDDLCreator extends DDLCreator {
 				this.getDiagram().getDatabase())));
 		ddl.append(" (");
 
-		first = true;
-
+		comma = "";
 		for (NormalColumn foreignKeyColumn : relation.getForeignKeyColumns()) {
-			if (!first) {
-				ddl.append(", ");
-
-			}
+			ddl.append(comma);
 
 			for (NormalColumn referencedColumn : foreignKeyColumn
 					.getReferencedColumnList()) {
 				if (referencedColumn.getColumnHolder() == relation
 						.getSourceTableView()) {
 					ddl.append(filter(referencedColumn.getPhysicalName()));
-					first = false;
+					comma = ", ";
 					break;
 				}
 			}

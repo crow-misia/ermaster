@@ -13,8 +13,8 @@ import org.insightech.er.util.Format;
 
 public class H2DDLCreator extends DDLCreator {
 
-	public H2DDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public H2DDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	@Override
@@ -86,20 +86,17 @@ public class H2DDLCreator extends DDLCreator {
 		ddl.append("INDEX ");
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
-		ddl.append(filter(table.getNameWithSchema(this.getDiagram().getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 
 		ddl.append(" (");
-		boolean first = true;
 
+		String comma = "";
 		for (NormalColumn column : index.getColumns()) {
-			if (!first) {
-				ddl.append(", ");
-
-			}
+			ddl.append(comma);
 
 			ddl.append(filter(column.getPhysicalName()));
 
-			first = false;
+			comma = ", ";
 		}
 
 		ddl.append(")");
@@ -128,7 +125,7 @@ public class H2DDLCreator extends DDLCreator {
 		ddl.append(" ");
 
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
-				normalColumn.getTypeData(), this.getDiagram().getDatabase())));
+				normalColumn.getTypeData(), getDatabase())));
 
 		if (!Check.isEmpty(normalColumn.getDefaultValue())) {
 			String defaultValue = normalColumn.getDefaultValue();

@@ -56,8 +56,8 @@ public class H2DBManager extends DBManagerBase {
 		return new H2TableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new H2DDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new H2DDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

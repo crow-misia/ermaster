@@ -54,8 +54,8 @@ public class StandardSQLDBManager extends DBManagerBase {
 		return new StandardSQLTableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new StandardSQLDDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new StandardSQLDDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

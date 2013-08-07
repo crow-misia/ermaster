@@ -56,8 +56,8 @@ public class AccessDBManager extends DBManagerBase {
 		return new AccessTableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new AccessDDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new AccessDDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

@@ -12,8 +12,8 @@ import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Ta
 
 public class SQLiteDDLCreator extends DDLCreator {
 
-	public SQLiteDDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public SQLiteDDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	@Override
@@ -41,35 +41,25 @@ public class SQLiteDDLCreator extends DDLCreator {
 		for (Relation relation : table.getIncomingRelations()) {
 			ddl.append(",\r\n\tFOREIGN KEY (");
 
-			boolean first = true;
-
+			String comma = "";
 			for (NormalColumn column : relation.getForeignKeyColumns()) {
-				if (!first) {
-					ddl.append(", ");
-
-				}
+				ddl.append(comma);
 				ddl.append(filter(column.getPhysicalName()));
-				first = false;
+				comma = ", ";
 			}
 
 			ddl.append(")\r\n");
 			ddl.append("\tREFERENCES ");
-			ddl.append(filter(relation.getSourceTableView().getNameWithSchema(
-					this.getDiagram().getDatabase())));
+			ddl.append(filter(relation.getSourceTableView().getNameWithSchema(getDatabase())));
 			ddl.append(" (");
 
-			first = true;
-
+			comma = "";
 			for (NormalColumn foreignKeyColumn : relation
 					.getForeignKeyColumns()) {
-				if (!first) {
-					ddl.append(", ");
-
-				}
-
+				ddl.append(comma);
 				ddl.append(filter(foreignKeyColumn
 						.getReferencedColumn(relation).getPhysicalName()));
-				first = false;
+				comma = ", ";
 			}
 
 			ddl.append(")");

@@ -54,8 +54,8 @@ public class SQLiteDBManager extends DBManagerBase {
 		return new SQLiteTableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new SQLiteDDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new SQLiteDDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

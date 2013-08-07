@@ -64,8 +64,8 @@ public class OracleDBManager extends DBManagerBase {
 		return new OracleTableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new OracleDDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new OracleDDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

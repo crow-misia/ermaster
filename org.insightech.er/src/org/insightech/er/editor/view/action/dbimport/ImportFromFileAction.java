@@ -26,6 +26,7 @@ import org.eclipse.ui.PlatformUI;
 import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
+import org.insightech.er.Resources;
 import org.insightech.er.editor.ERDiagramEditor;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ERDiagram;
@@ -137,7 +138,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 	}
 
 	protected String[] getFilterExtensions() {
-		return new String[] { "*.erm" };
+		return Resources.SUPPORT_EXTENSIONS;
 	}
 
 	private DBObjectSet getAllObjects(ERDiagram loadedDiagram) {

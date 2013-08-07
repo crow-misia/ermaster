@@ -531,7 +531,7 @@ public final class IndexDialog extends AbstractDialog {
 
 		tableItem.setText(0, column.getPhysicalName());
 
-		this.setTableEditor(column, tableItem, new Boolean(desc));
+		this.setTableEditor(column, tableItem, Boolean.valueOf(desc));
 	}
 
 	/**

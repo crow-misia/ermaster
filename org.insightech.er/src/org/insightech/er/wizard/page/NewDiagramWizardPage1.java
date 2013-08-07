@@ -13,14 +13,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
+import org.insightech.er.Resources;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.persistent.Persistent;
 
 public class NewDiagramWizardPage1 extends WizardNewFileCreationPage {
 
 	private ERDiagram diagram;
-
-	private static final String EXTENSION = ".erm";
 
 	public NewDiagramWizardPage1(IStructuredSelection selection) {
 		super(ResourceString.getResourceString("wizard.new.diagram.title"),
@@ -47,17 +46,24 @@ public class NewDiagramWizardPage1 extends WizardNewFileCreationPage {
 	protected boolean validatePage() {
 		boolean valid = super.validatePage();
 		if (valid) {
-			String fileName = this.getFileName();
-			if (fileName.indexOf(".") != -1 && !fileName.endsWith(EXTENSION)) {
+			String fileExtension = this.getFileExtension();
+			boolean isSupport = false;
+			for (final String ext : Resources.SUPPORT_EXTENSIONS) {
+				if (ext.equalsIgnoreCase(fileExtension)) {
+					isSupport = true;
+					break;
+				}
+			}
+			if (!isSupport) {
 				this.setErrorMessage(ResourceString
-						.getResourceString("error.erm.extension"));
+					.getResourceString("error.erm.extension"));
 				valid = false;
 			}
 		}
 		if (valid) {
 			String fileName = this.getFileName();
 			if (fileName.indexOf(".") == -1) {
-				fileName = fileName + EXTENSION;
+				fileName = fileName + Resources.DEFAULT_EXTENSION;
 			}
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot root = workspace.getRoot();
@@ -114,7 +120,7 @@ public class NewDiagramWizardPage1 extends WizardNewFileCreationPage {
 	public IFile createNewFile() {
 		String fileName = this.getFileName();
 		if (fileName.indexOf(".") == -1) {
-			this.setFileName(fileName + EXTENSION);
+			this.setFileName(fileName + Resources.DEFAULT_EXTENSION);
 		}
 
 		return super.createNewFile();

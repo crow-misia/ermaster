@@ -7,8 +7,8 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.index.
 
 public class SqlServer2008DDLCreator extends SqlServerDDLCreator {
 
-	public SqlServer2008DDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public SqlServer2008DDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	@Override
@@ -19,8 +19,7 @@ public class SqlServer2008DDLCreator extends SqlServerDDLCreator {
 		ddl.append(this.getIfExistsOption(Index.class));
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
-		ddl.append(filter(table.getNameWithSchema(this.getDiagram()
-				.getDatabase())));
+		ddl.append(filter(table.getNameWithSchema(getDatabase())));
 
 		if (this.semicolon) {
 			ddl.append(";");

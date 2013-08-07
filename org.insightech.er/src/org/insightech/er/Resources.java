@@ -8,6 +8,8 @@ import org.eclipse.swt.widgets.Display;
 
 public final class Resources {
 
+	private static final Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+
 	public static final int BUTTON_WIDTH = 60;
 	
 	public static final int DESCRIPTION_WIDTH = 400;
@@ -42,7 +44,9 @@ public final class Resources {
 
 	public static final Color NOT_NULL_COLOR = getColor(254, 228, 207);
 
-	private static final Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+	public static final String[] SUPPORT_EXTENSIONS = new String[] { ".erm", };
+
+	public static final String DEFAULT_EXTENSION = SUPPORT_EXTENSIONS[0];
 
 	public static final Color getColor(final int[] rgb) {
 		return getColor(rgb[0], rgb[1], rgb[2]);

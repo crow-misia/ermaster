@@ -57,8 +57,8 @@ public class PostgresDBManager extends DBManagerBase {
 		return new PostgresTableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new PostgresDDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new PostgresDDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {

@@ -10,8 +10,8 @@ import org.insightech.er.util.Check;
 
 public class SqlServerDDLCreator extends DDLCreator {
 
-	public SqlServerDDLCreator(ERDiagram diagram, boolean semicolon) {
-		super(diagram, semicolon);
+	public SqlServerDDLCreator(ERDiagram diagram) {
+		super(diagram);
 	}
 
 	/**

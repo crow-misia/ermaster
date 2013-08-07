@@ -56,8 +56,8 @@ public class HSQLDBDBManager extends DBManagerBase {
 		return new HSQLDBTableProperties();
 	}
 
-	public DDLCreator getDDLCreator(ERDiagram diagram, boolean semicolon) {
-		return new HSQLDBDDLCreator(diagram, semicolon);
+	public DDLCreator getDDLCreator(ERDiagram diagram) {
+		return new HSQLDBDDLCreator(diagram);
 	}
 
 	public String[] getIndexTypeList(ERTable table) {
