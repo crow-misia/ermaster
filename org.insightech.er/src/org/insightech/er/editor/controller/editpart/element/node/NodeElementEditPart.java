@@ -3,6 +3,7 @@ package org.insightech.er.editor.controller.editpart.element.node;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionAnchor;
@@ -37,7 +38,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.tracking.ChangeTrackingList;
 import org.insightech.er.editor.view.figure.connection.ERDiagramConnection;
-import org.insightech.er.util.Check;
 
 public abstract class NodeElementEditPart extends AbstractModelEditPart
 		implements NodeEditPart, DeleteableEditPart {
@@ -114,7 +114,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 		String fontName = nodeElement.getFontName();
 		int fontSize = nodeElement.getFontSize();
 
-		if (Check.isEmpty(fontName)) {
+		if (StringUtils.isEmpty(fontName)) {
 			FontData fontData = Display.getCurrent().getSystemFont()
 					.getFontData()[0];
 			fontName = fontData.getName();

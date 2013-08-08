@@ -10,8 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.insightech.er.ResourceString;
@@ -153,7 +153,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 
 		this.backup(excelFile, true);
 
-		HSSFWorkbook workbook = this.loadTemplateWorkbook(this.template,
+		Workbook workbook = this.loadTemplateWorkbook(this.template,
 				this.diagram);
 
 		// check whether the file is not opened by another process.
@@ -182,24 +182,24 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		POIUtils.writeExcelFile(excelFile, workbook);
 	}
 
-	private HSSFWorkbook loadTemplateWorkbook(InputStream template,
+	private Workbook loadTemplateWorkbook(InputStream template,
 			ERDiagram diagram) throws IOException {
 
-		HSSFWorkbook workbook = POIUtils.readExcelBook(template);
+		Workbook workbook = POIUtils.readExcelBook(template);
 
 		if (workbook == null) {
 			throw new IOException(ResourceString
 					.getResourceString("error.read.file"));
 		}
 
-		HSSFSheet wordsSheet = workbook.getSheet(WORDS_SHEET_NAME);
+		Sheet wordsSheet = workbook.getSheet(WORDS_SHEET_NAME);
 
 		if (wordsSheet == null) {
 			throw new IOException(ResourceString
 					.getResourceString("error.not.found.words.sheet"));
 		}
 
-		HSSFSheet loopsSheet = workbook.getSheet(LOOPS_SHEET_NAME);
+		Sheet loopsSheet = workbook.getSheet(LOOPS_SHEET_NAME);
 
 		if (loopsSheet == null) {
 			throw new IOException(ResourceString
@@ -218,8 +218,8 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		return workbook;
 	}
 
-	private void initLoopDefinitionMap(HSSFSheet loopsSheet) {
-		for (int i = 2; i <= loopsSheet.getLastRowNum(); i++) {
+	private void initLoopDefinitionMap(Sheet loopsSheet) {
+		for (int i = 2, n = loopsSheet.getLastRowNum(); i <= n; i++) {
 			String templateSheetName = POIUtils.getCellValue(loopsSheet, i, 0);
 			if (templateSheetName == null) {
 				break;
@@ -245,7 +245,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 	}
 
 	private void createSheetFromTemplate(IProgressMonitor monitor,
-			HSSFWorkbook workbook, ERDiagram diagram,
+			Workbook workbook, ERDiagram diagram,
 			boolean useLogicalNameAsSheetName) throws InterruptedException {
 		int originalSheetNum = workbook.getNumberOfSheets();
 
@@ -267,7 +267,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 				System.out.println("non sheet generator :  " + templateSheetName);
 				if (!isExcludeTarget(templateSheetName)) {
 					moveSheet(workbook, 0);
-					HSSFSheet sheet = workbook.getSheetAt(workbook.getNumberOfSheets() - 1);
+					Sheet sheet = workbook.getSheetAt(workbook.getNumberOfSheets() - 1);
 
 					this.sheetObjectMap.put(templateSheetName,
 							new StringObjectModel(templateSheetName));
@@ -309,11 +309,11 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		}
 	}
 
-	public static HSSFSheet moveSheet(HSSFWorkbook workbook, int sheetNo) {
-		HSSFSheet oldSheet = workbook.getSheetAt(sheetNo);
+	public static Sheet moveSheet(Workbook workbook, int sheetNo) {
+		Sheet oldSheet = workbook.getSheetAt(sheetNo);
 		String sheetName = oldSheet.getSheetName();
 		
-		HSSFSheet newSheet = workbook.cloneSheet(sheetNo);
+		Sheet newSheet = workbook.cloneSheet(sheetNo);
 		int newSheetNo = workbook.getSheetIndex(newSheet);
 		
 		workbook.removeSheetAt(sheetNo);
@@ -324,7 +324,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 	}
 
 	
-	private int countSheetFromTemplate(HSSFWorkbook workbook, ERDiagram diagram) {
+	private int countSheetFromTemplate(Workbook workbook, ERDiagram diagram) {
 		int count = 0;
 
 		for (int sheetNo = 0; sheetNo < workbook.getNumberOfSheets(); sheetNo++) {

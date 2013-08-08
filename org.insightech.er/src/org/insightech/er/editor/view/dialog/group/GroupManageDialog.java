@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -30,7 +31,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSe
 import org.insightech.er.editor.view.dialog.common.ERTableComposite;
 import org.insightech.er.editor.view.dialog.common.ERTableCompositeHolder;
 import org.insightech.er.editor.view.dialog.word.column.real.GroupColumnDialog;
-import org.insightech.er.util.Check;
 
 public class GroupManageDialog extends AbstractDialog implements
 		ERTableCompositeHolder {
@@ -273,7 +273,7 @@ public class GroupManageDialog extends AbstractDialog implements
 	@Override
 	protected String getErrorMessage() {
 		if (this.groupNameText.getEnabled()
-				&& Check.isBlank(this.groupNameText.getText())) {
+				&& StringUtils.isBlank(this.groupNameText.getText())) {
 			return "error.group.name.empty";
 		}
 

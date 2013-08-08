@@ -2,9 +2,9 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -23,7 +23,7 @@ public class ColumnSheetGenerator extends AbstractSheetGenerator {
 		this.columnTemplate = null;
 	}
 
-	public void setAllColumnsData(HSSFWorkbook workbook, HSSFSheet sheet,
+	public void setAllColumnsData(Workbook workbook, Sheet sheet,
 			ERDiagram diagram) {
 		this.clear();
 
@@ -32,7 +32,7 @@ public class ColumnSheetGenerator extends AbstractSheetGenerator {
 
 		if (cellLocation != null) {
 			int rowNum = cellLocation.r;
-			HSSFRow templateRow = sheet.getRow(rowNum);
+			Row templateRow = sheet.getRow(rowNum);
 
 			if (this.columnTemplate == null) {
 				this.columnTemplate = this.loadColumnTemplate(workbook, sheet,
@@ -50,7 +50,7 @@ public class ColumnSheetGenerator extends AbstractSheetGenerator {
 				}
 
 				for (NormalColumn normalColumn : table.getExpandedColumns()) {
-					HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
+					Row row = POIUtils.insertRow(sheet, rowNum++);
 					this.setColumnData(this.keywordsValueMap, columnTemplate,
 							row, normalColumn, table, order);
 					order++;
@@ -73,13 +73,13 @@ public class ColumnSheetGenerator extends AbstractSheetGenerator {
 	}
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
 			Map<String, LoopDefinition> loopDefinitionMap) {
 		String name = this.getSheetName();
-		HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
+		Sheet newSheet = createNewSheet(workbook, sheetNo, name,
 				sheetNameMap);
 
 		sheetObjectMap.put(workbook.getSheetName(workbook

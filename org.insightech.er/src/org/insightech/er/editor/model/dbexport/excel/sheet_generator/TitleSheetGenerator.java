@@ -3,8 +3,8 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -46,7 +46,7 @@ public class TitleSheetGenerator extends AbstractSheetGenerator {
 	private static final String KEYWORD_DATE_FORMAT = "$FMT";
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
@@ -54,7 +54,7 @@ public class TitleSheetGenerator extends AbstractSheetGenerator {
 
 		String sheetName = this.getSheetName();
 
-		HSSFSheet newSheet = createNewSheet(workbook, sheetNo, sheetName,
+		Sheet newSheet = createNewSheet(workbook, sheetNo, sheetName,
 				sheetNameMap);
 
 		sheetObjectMap.put(workbook.getSheetName(workbook
@@ -64,7 +64,7 @@ public class TitleSheetGenerator extends AbstractSheetGenerator {
 		monitor.worked(1);
 	}
 
-	public void setPropertyListData(HSSFWorkbook workbook, HSSFSheet sheet,
+	public void setPropertyListData(Workbook workbook, Sheet sheet,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram) {
 		final ModelProperties properties = diagram.getDiagramContents()
 				.getSettings().getModelProperties();

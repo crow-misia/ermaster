@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.element.view.tab;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Text;
@@ -8,7 +9,6 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.view.dialog.element.view.ViewDialog;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class SqlTabWrapper extends ValidatableTabWrapper {
@@ -48,7 +48,7 @@ public class SqlTabWrapper extends ValidatableTabWrapper {
 	public void validatePage() throws InputException {
 		String text = sqlText.getText();
 
-		if (Check.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			throw new InputException("error.view.sql.empty");
 		}
 

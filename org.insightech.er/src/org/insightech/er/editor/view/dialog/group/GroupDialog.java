@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.dialog.group;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -16,7 +17,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSe
 import org.insightech.er.editor.view.dialog.common.ERTableComposite;
 import org.insightech.er.editor.view.dialog.common.ERTableCompositeHolder;
 import org.insightech.er.editor.view.dialog.word.column.real.GroupColumnDialog;
-import org.insightech.er.util.Check;
 
 public class GroupDialog extends AbstractDialog implements
 		ERTableCompositeHolder {
@@ -74,7 +74,7 @@ public class GroupDialog extends AbstractDialog implements
 	@Override
 	protected String getErrorMessage() {
 		if (this.groupNameText.getEnabled()) {
-			if (Check.isBlank(this.groupNameText.getText())) {
+			if (StringUtils.isBlank(this.groupNameText.getText())) {
 				return "error.group.name.empty";
 			}
 		}

@@ -1,11 +1,11 @@
 package org.insightech.er.db.impl.postgres.tablespace;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
 import org.insightech.er.editor.view.dialog.outline.tablespace.TablespaceDialog;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class PostgresTablespaceDialog extends TablespaceDialog {
@@ -58,7 +58,7 @@ public class PostgresTablespaceDialog extends TablespaceDialog {
 		}
 
 		String text = this.location.getText();
-		if (Check.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			return "error.tablespace.location.empty";
 		}
 

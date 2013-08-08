@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -31,7 +32,6 @@ import org.insightech.er.editor.model.testdata.TableTestData;
 import org.insightech.er.editor.model.testdata.TestData;
 import org.insightech.er.editor.view.dialog.testdata.detail.tab.DirectTestDataTabWrapper;
 import org.insightech.er.editor.view.dialog.testdata.detail.tab.RepeatTestDataTabWrapper;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class TestDataDialog extends AbstractDialog {
@@ -333,7 +333,7 @@ public class TestDataDialog extends AbstractDialog {
 	protected String getErrorMessage() {
 		String text = this.nameText.getText();
 
-		if (Check.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			return "error.testdata.name.empty";
 		}
 

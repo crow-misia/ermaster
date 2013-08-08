@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
@@ -16,7 +17,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 import org.insightech.er.util.io.FileUtils;
@@ -385,7 +385,7 @@ public class ExportToJavaManager {
 
 	private String replaceClassInfo(String content, String classDescription,
 			String className, String classNameSufix) {
-		if (Check.isBlank(this.exportJavaSetting.getPackageName())) {
+		if (StringUtils.isBlank(this.exportJavaSetting.getPackageName())) {
 			content = content.replaceAll("package @package;\r\n\r\n", "");
 
 		} else {
@@ -403,7 +403,7 @@ public class ExportToJavaManager {
 	}
 
 	private String replaceExtendInfo(String content) throws IOException {
-		if (Check.isEmpty(this.exportJavaSetting.getExtendsClass())) {
+		if (StringUtils.isEmpty(this.exportJavaSetting.getExtendsClass())) {
 			content = content.replaceAll("@import extends\r\n", "");
 			content = content.replaceAll("@extends ", "");
 

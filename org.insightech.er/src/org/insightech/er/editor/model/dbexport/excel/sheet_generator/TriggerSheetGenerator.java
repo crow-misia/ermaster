@@ -2,8 +2,8 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -26,7 +26,7 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 	 * @param sheet
 	 * @param view
 	 */
-	public void setTriggerData(HSSFWorkbook workbook, HSSFSheet sheet,
+	public void setTriggerData(Workbook workbook, Sheet sheet,
 			Trigger trigger) {
 		POIUtils
 				.replace(sheet, KEYWORD_TRIGGER_NAME, getValue(
@@ -42,14 +42,14 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 	}
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
 			Map<String, LoopDefinition> loopDefinitionMap) {
 		for (Trigger trigger : diagram.getDiagramContents().getTriggerSet()) {
 			String name = trigger.getName();
-			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
+			Sheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook

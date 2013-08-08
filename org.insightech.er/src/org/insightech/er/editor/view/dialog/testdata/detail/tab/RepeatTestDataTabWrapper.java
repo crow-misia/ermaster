@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.testdata.detail.tab;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,7 +21,6 @@ import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
 import org.insightech.er.editor.view.dialog.testdata.detail.RepeatTestDataSettingDialog;
 import org.insightech.er.editor.view.dialog.testdata.detail.TestDataDialog;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
@@ -243,7 +243,7 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 	public int getTestDataNum() {
 		String text = testDataNumText.getText();
 		int num = 0;
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			try {
 				num = Integer.parseInt(text);
 			} catch (Exception e) {

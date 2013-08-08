@@ -3,13 +3,13 @@ package org.insightech.er.editor.model.diagram_contents.element.node.table.colum
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
-import org.insightech.er.util.Check;
 
 public class NormalColumn extends Column {
 
@@ -140,7 +140,7 @@ public class NormalColumn extends Column {
 	public String getLogicalName() {
 		final NormalColumn c = this.getFirstReferencedColumn();
 		if (c != null) {
-			if (Check.isEmpty(this.foreignKeyLogicalName)) {
+			if (StringUtils.isEmpty(this.foreignKeyLogicalName)) {
 				return c.getLogicalName();
 			}
 			return this.foreignKeyLogicalName;
@@ -154,7 +154,7 @@ public class NormalColumn extends Column {
 		if (c == null) {
 			return this.word.getPhysicalName();
 		}
-		if (Check.isEmpty(this.foreignKeyPhysicalName)) {
+		if (StringUtils.isEmpty(this.foreignKeyPhysicalName)) {
 			return c.getPhysicalName();
 		}
 		return this.foreignKeyPhysicalName;
@@ -165,7 +165,7 @@ public class NormalColumn extends Column {
 		if (c == null) {
 			return this.word.getDescription();
 		}
-		if (Check.isEmpty(this.foreignKeyDescription)) {
+		if (StringUtils.isEmpty(this.foreignKeyDescription)) {
 			return c.getDescription();
 		}
 		return this.foreignKeyDescription;

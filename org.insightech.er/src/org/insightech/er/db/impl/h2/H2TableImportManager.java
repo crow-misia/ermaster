@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 
 public class H2TableImportManager extends ImportFromDBManagerBase {
@@ -114,7 +114,7 @@ public class H2TableImportManager extends ImportFromDBManagerBase {
 				String dataType = rs.getString("DATA_TYPE");
 				sequence.setDataType(dataType);
 
-				if (Check.equals(dataType, "INTEGER")) {
+				if (StringUtils.equals(dataType, "INTEGER")) {
 					if (maxValue.intValue() == Integer.MAX_VALUE) {
 						maxValue = null;
 					}
@@ -122,7 +122,7 @@ public class H2TableImportManager extends ImportFromDBManagerBase {
 						minValue = null;
 					}
 
-				} else if (Check.equals(dataType, "BIGINT")) {
+				} else if (StringUtils.equals(dataType, "BIGINT")) {
 					if (maxValue.longValue() == Long.MAX_VALUE) {
 						maxValue = null;
 					}
@@ -142,7 +142,7 @@ public class H2TableImportManager extends ImportFromDBManagerBase {
 
 				sequence.setStart(rs.getLong("START_WITH"));
 
-				sequence.setCycle(Check.equals(rs.getString("CYCLE_OPTION"), "YES"));
+				sequence.setCycle(StringUtils.equals(rs.getString("CYCLE_OPTION"), "YES"));
 
 				return sequence;
 			}

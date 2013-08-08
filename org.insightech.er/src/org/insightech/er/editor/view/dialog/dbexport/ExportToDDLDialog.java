@@ -9,6 +9,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
@@ -52,7 +53,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.category.Cat
 import org.insightech.er.editor.model.settings.Environment;
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
@@ -497,7 +497,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 
 		String outputFile = Format.null2blank(exportSetting.getDdlOutput());
 
-		if (Check.isEmpty(outputFile)) {
+		if (StringUtils.isEmpty(outputFile)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
 			outputFile = file.getLocation().toOSString();

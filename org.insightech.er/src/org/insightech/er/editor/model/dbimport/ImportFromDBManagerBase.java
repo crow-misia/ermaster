@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.insightech.er.Activator;
@@ -45,7 +46,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequ
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 import org.insightech.er.editor.model.settings.DBSetting;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
@@ -740,10 +740,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 					.equalsIgnoreCase(autoIncrementColumnName);
 
 			String logicalName = null;
-			if (this.useCommentAsLogicalName && !Check.isEmpty(description)) {
+			if (this.useCommentAsLogicalName && StringUtils.isNotBlank(description)) {
 				logicalName = description.replaceAll("[\r\n]", "");
 			}
-			if (Check.isEmpty(logicalName)) {
+			if (StringUtils.isEmpty(logicalName)) {
 				logicalName = this.translationResources.translate(columnName);
 			}
 

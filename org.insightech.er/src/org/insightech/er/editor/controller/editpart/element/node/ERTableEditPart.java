@@ -1,5 +1,6 @@
 package org.insightech.er.editor.controller.editpart.element.node;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -22,7 +23,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigg
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.element.table.TableDialog;
 import org.insightech.er.editor.view.figure.table.TableFigure;
-import org.insightech.er.util.Check;
 
 public class ERTableEditPart extends TableViewEditPart implements IResizable {
 
@@ -74,14 +74,14 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 		String tableName = copyTable.getPhysicalName();
 
 		if (OracleDBManager.ID.equals(diagram.getDatabase())
-				&& !Check.isEmpty(tableName)) {
+				&& StringUtils.isNotEmpty(tableName)) {
 			NormalColumn autoIncrementColumn = copyTable
 					.getAutoIncrementColumn();
 
 			if (autoIncrementColumn != null) {
 				String columnName = autoIncrementColumn.getPhysicalName();
 
-				if (!Check.isEmpty(columnName)) {
+				if (StringUtils.isNotEmpty(columnName)) {
 					String triggerName = "TRI_" + tableName + "_" + columnName;
 					String sequenceName = "SEQ_" + tableName + "_" + columnName;
 
@@ -137,7 +137,7 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 					String columnName = oldAutoIncrementColumn
 							.getPhysicalName();
 
-					if (!Check.isEmpty(columnName)) {
+					if (StringUtils.isNotEmpty(columnName)) {
 						String triggerName = "TRI_" + oldTableName + "_"
 								+ columnName;
 						String sequenceName = "SEQ_" + oldTableName + "_"

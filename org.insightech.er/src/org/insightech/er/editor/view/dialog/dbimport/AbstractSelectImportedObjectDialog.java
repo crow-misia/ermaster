@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
@@ -26,7 +27,6 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.StringObjectModel;
 import org.insightech.er.editor.model.dbimport.DBObject;
 import org.insightech.er.editor.model.dbimport.DBObjectSet;
-import org.insightech.er.util.Check;
 
 public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog {
 
@@ -207,7 +207,7 @@ public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog 
 		for (Map.Entry<String, List<DBObject>> entry : dbObjectSet
 				.getSchemaDbObjectListMap().entrySet()) {
 			String schemaName = entry.getKey();
-			if (Check.isEmpty(schemaName)) {
+			if (StringUtils.isEmpty(schemaName)) {
 				schemaName = ResourceString.getResourceString("label.none");
 			}
 			TreeNode schemaNode = new TreeNode(

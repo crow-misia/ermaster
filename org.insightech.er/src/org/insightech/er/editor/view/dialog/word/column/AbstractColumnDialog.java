@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.dialog.word.column;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -28,7 +29,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Co
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.view.dialog.word.AbstractWordDialog;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public abstract class AbstractColumnDialog extends AbstractWordDialog {
@@ -197,7 +197,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 	protected void perfomeOK() {
 		String text = lengthText.getText();
 		Integer length = null;
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			int len = Integer.parseInt(text);
 			length = Integer.valueOf(len);
 		}
@@ -205,7 +205,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		text = decimalText.getText();
 
 		Integer decimal = null;
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			int len = Integer.parseInt(text);
 			decimal = Integer.valueOf(len);
 		}
@@ -216,7 +216,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		if (this.arrayDimensionText != null) {
 			text = arrayDimensionText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				int len = Integer.parseInt(text);
 				arrayDimension = Integer.valueOf(len);
 			}
@@ -252,10 +252,10 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		if (wordIndex > 0) {
 			word = new CopyWord(wordList.get(wordIndex - 1));
 
-			if (Check.isNotEmpty(physicalName)) {
+			if (StringUtils.isNotEmpty(physicalName)) {
 				word.setPhysicalName(physicalName);
 			}
-			if (Check.isNotEmpty(logicalName)) {
+			if (StringUtils.isNotEmpty(logicalName)) {
 				word.setLogicalName(logicalName);
 			}
 			word.setDescription(description);

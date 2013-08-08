@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.word;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -299,7 +300,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			 */
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (Check.isEmpty(logicalNameText.getText())) {
+				if (StringUtils.isEmpty(logicalNameText.getText())) {
 					logicalNameText.setText(physicalNameText.getText());
 				}
 			}
@@ -311,7 +312,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 				String logicalName = logicalNameText.getText();
 				String physicalName = physicalNameText.getText();
 
-				if (Check.isEmpty(logicalName) ||
+				if (StringUtils.isEmpty(logicalName) ||
 						oldPhysicalName.equals(logicalName)) {
 					logicalNameText.setText(physicalName);
 					oldPhysicalName = physicalName;
@@ -346,13 +347,13 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		}
 
 		String logicalName = this.logicalNameText.getText().trim();
-		if (Check.isEmpty(text) && Check.isEmpty(logicalName)) {
+		if (StringUtils.isEmpty(text) && StringUtils.isEmpty(logicalName)) {
 			return "error.column.name.empty";
 		}
 
 		text = lengthText.getText();
 
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			try {
 				int len = Integer.parseInt(text);
 				if (len < 0) {
@@ -366,7 +367,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 		text = decimalText.getText();
 
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			try {
 				int len = Integer.parseInt(text);
 				if (len < 0) {
@@ -381,7 +382,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		if (arrayDimensionText != null) {
 			text = arrayDimensionText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					int len = Integer.parseInt(text);
 					if (len < 1) {
@@ -406,7 +407,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			text = argsText.getText();
 
 			if (selectedType.doesNeedArgs()) {
-				if (Check.isEmpty(text)) {
+				if (StringUtils.isEmpty(text)) {
 					return "error.column.type.enum.set";
 				}
 			}

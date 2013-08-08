@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.h2;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
@@ -8,7 +9,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class H2DDLCreator extends DDLCreator {
@@ -27,10 +27,10 @@ public class H2DDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && StringUtils.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
-			ddl.append(description.replaceAll("\n", "\n-- "));
+			ddl.append(StringUtils.replace(description, "\n", "\n-- "));
 			ddl.append("\r\n");
 		}
 
@@ -38,7 +38,7 @@ public class H2DDLCreator extends DDLCreator {
 		ddl.append("SEQUENCE ");
 		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
 				.getName())));
-		if (!Check.isEmpty(sequence.getDataType())) {
+		if (StringUtils.isNotBlank(sequence.getDataType())) {
 			ddl.append(" AS ");
 			String dataType = sequence.getDataType();
 			ddl.append(dataType);
@@ -68,10 +68,10 @@ public class H2DDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = index.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && StringUtils.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
-			ddl.append(description.replaceAll("\n", "\n-- "));
+			ddl.append(StringUtils.replace(description, "\n", "\n-- "));
 			ddl.append("\r\n");
 		}
 
@@ -79,7 +79,7 @@ public class H2DDLCreator extends DDLCreator {
 		if (!index.isNonUnique()) {
 			ddl.append("UNIQUE ");
 		}
-		if (Check.isNotBlank(index.getType())) {
+		if (StringUtils.isNotBlank(index.getType())) {
 			ddl.append(index.getType().trim());
 			ddl.append(' ');
 		}
@@ -113,10 +113,10 @@ public class H2DDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = normalColumn.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && StringUtils.isNotBlank(description)
 				&& this.ddlTarget.inlineColumnComment) {
 			ddl.append("\t-- ");
-			ddl.append(description.replaceAll("\n", "\n-- "));
+			ddl.append(StringUtils.replace(description, "\n", "\n-- "));
 			ddl.append("\r\n");
 		}
 
@@ -127,9 +127,9 @@ public class H2DDLCreator extends DDLCreator {
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
 				normalColumn.getTypeData(), getDatabase())));
 
-		if (!Check.isEmpty(normalColumn.getDefaultValue())) {
+		if (StringUtils.isNotEmpty(normalColumn.getDefaultValue())) {
 			String defaultValue = normalColumn.getDefaultValue();
-			if (Check.equals(ResourceString.getResourceString("label.current.date.time"), defaultValue)) {
+			if (StringUtils.equals(ResourceString.getResourceString("label.current.date.time"), defaultValue)) {
 				defaultValue = this.getDBManager().getCurrentTimeValue()[0];
 			}
 
@@ -167,9 +167,9 @@ public class H2DDLCreator extends DDLCreator {
 			String comment = this.filterComment(normalColumn.getLogicalName(),
 					normalColumn.getDescription(), true);
 
-			if (!Check.isEmpty(comment)) {
+			if (StringUtils.isNotBlank(comment)) {
 				ddl.append(" COMMENT '");
-				ddl.append(comment.replaceAll("'", "''"));
+				ddl.append(StringUtils.replace(comment, "'", "''"));
 				ddl.append("'");
 			}
 		}
@@ -179,7 +179,7 @@ public class H2DDLCreator extends DDLCreator {
 		}
 
 		String constraint = Format.null2blank(normalColumn.getConstraint());
-		if (Check.isNotBlank(constraint)) {
+		if (StringUtils.isNotBlank(constraint)) {
 			ddl.append(" CHECK ");
 			ddl.append(constraint);
 		}

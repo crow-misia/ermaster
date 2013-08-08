@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
-import org.insightech.er.util.Check;
 
 public class OracleTablespaceProperties implements TablespaceProperties {
 
@@ -380,7 +380,7 @@ public class OracleTablespaceProperties implements TablespaceProperties {
 	public List<String> validate() {
 		List<String> errorMessage = new ArrayList<String>();
 
-		if (this.isAutoExtend() && Check.isBlank(this.getAutoExtendSize())) {
+		if (this.isAutoExtend() && StringUtils.isBlank(this.getAutoExtendSize())) {
 			errorMessage.add("error.tablespace.auto.extend.size.empty");
 		}
 

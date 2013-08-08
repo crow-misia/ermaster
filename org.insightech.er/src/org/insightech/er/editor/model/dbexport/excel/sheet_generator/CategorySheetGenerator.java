@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -18,7 +18,7 @@ import org.insightech.er.util.POIUtils;
 public class CategorySheetGenerator extends TableSheetGenerator {
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
@@ -31,14 +31,14 @@ public class CategorySheetGenerator extends TableSheetGenerator {
 
 		LoopDefinition loopDefinition = loopDefinitionMap.get(this
 				.getTemplateSheetName());
-		HSSFSheet oldSheet = workbook.getSheetAt(sheetNo);
+		Sheet oldSheet = workbook.getSheetAt(sheetNo);
 
 		List<ERTable> allTables = new ArrayList<ERTable>(diagram
 				.getDiagramContents().getContents().getTableSet().getList());
 
 		for (Category category : diagram.getDiagramContents().getSettings()
 				.getCategorySetting().getSelectedCategories()) {
-			HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
+			Sheet newSheet = createNewSheet(workbook, sheetNo,
 					category.getName(), sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook
@@ -66,15 +66,11 @@ public class CategorySheetGenerator extends TableSheetGenerator {
 			}
 
 			if (first) {
-				int rowIndex = loopDefinition.startLine - 1;
-
-				while (rowIndex <= newSheet.getLastRowNum()) {
-					HSSFRow row = newSheet.getRow(rowIndex);
+				for (int i = loopDefinition.startLine - 1, n = newSheet.getLastRowNum(); i <= n; i++) {
+					Row row = newSheet.getRow(i);
 					if (row != null) {
 						newSheet.removeRow(row);
 					}
-					
-					rowIndex++;
 				}
 			}
 
@@ -82,7 +78,7 @@ public class CategorySheetGenerator extends TableSheetGenerator {
 		}
 
 		if (!allTables.isEmpty()) {
-			HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
+			Sheet newSheet = createNewSheet(workbook, sheetNo,
 					loopDefinition.sheetName, sheetNameMap);
 
 			boolean first = true;

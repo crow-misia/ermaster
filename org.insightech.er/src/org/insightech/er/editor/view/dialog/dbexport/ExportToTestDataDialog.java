@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -37,7 +38,6 @@ import org.insightech.er.editor.model.dbexport.testdata.impl.DBUnitXLSTestDataCr
 import org.insightech.er.editor.model.dbexport.testdata.impl.SQLTestDataCreator;
 import org.insightech.er.editor.model.settings.export.ExportTestDataSetting;
 import org.insightech.er.editor.model.testdata.TestData;
-import org.insightech.er.util.Check;
 
 public class ExportToTestDataDialog extends AbstractDialog {
 
@@ -297,7 +297,7 @@ public class ExportToTestDataDialog extends AbstractDialog {
 		String outputDirectoryPath = this.exportTestDataSetting
 				.getExportFilePath();
 
-		if (Check.isEmpty(outputDirectoryPath)) {
+		if (StringUtils.isEmpty(outputDirectoryPath)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
 			outputDirectoryPath = file.getLocation().toOSString();
@@ -312,7 +312,7 @@ public class ExportToTestDataDialog extends AbstractDialog {
 		String outputFileEncoding = this.exportTestDataSetting
 				.getExportFileEncoding();
 
-		if (Check.isEmpty(outputFileEncoding)) {
+		if (StringUtils.isEmpty(outputFileEncoding)) {
 			outputFileEncoding = "UTF-8";
 		}
 

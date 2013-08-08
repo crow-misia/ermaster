@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.tracking;
 
 import java.text.DateFormat;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.dialogs.Dialog;
@@ -32,7 +33,6 @@ import org.insightech.er.editor.controller.command.tracking.UpdateChangeTracking
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.DateUtil;
 
 public class ChangeTrackingDialog extends Dialog {
@@ -362,7 +362,7 @@ public class ChangeTrackingDialog extends Dialog {
 			String date = DATE_FORMAT.get().format(changeTracking.getUpdatedDate());
 			tableItem.setText(0, date);
 
-			if (!Check.isEmpty(changeTracking.getComment())) {
+			if (StringUtils.isNotBlank(changeTracking.getComment())) {
 				tableItem.setText(1, changeTracking.getComment());
 			} else {
 				tableItem.setText(1, "*** empty log message ***");

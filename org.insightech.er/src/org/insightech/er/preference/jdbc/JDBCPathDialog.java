@@ -2,6 +2,7 @@ package org.insightech.er.preference.jdbc;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -17,7 +18,6 @@ import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.settings.JDBCDriverSetting;
 import org.insightech.er.preference.MultiFileFieldEditor;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public final class JDBCPathDialog extends AbstractDialog {
@@ -76,7 +76,7 @@ public final class JDBCPathDialog extends AbstractDialog {
 		if (this.database != null) {
 			DBManager dbManager = DBManagerFactory.getDBManager(this.database);
 
-			if (Check.isNotEmpty(dbManager.getDriverClassName())
+			if (StringUtils.isNotEmpty(dbManager.getDriverClassName())
 					&& dbManager.getDriverClassName().equals(this.driverClassName)) {
 				this.editable = false;
 			}
@@ -117,14 +117,14 @@ public final class JDBCPathDialog extends AbstractDialog {
 		if (this.databaseCombo != null) {
 			selectedDatabase = this.databaseCombo.getText();
 
-			if (Check.isEmpty(selectedDatabase)) {
+			if (StringUtils.isEmpty(selectedDatabase)) {
 				return "error.database.name.is.empty";
 			}
 		}
 
 		String text = this.driverClassNameText.getText();
 
-		if (Check.isEmpty(text)) {
+		if (StringUtils.isEmpty(text)) {
 			return "error.driver.class.name.is.empty";
 
 		} else {

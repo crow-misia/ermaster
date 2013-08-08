@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.insightech.er.db.sqltype.SqlType.TypeKey;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 import org.insightech.er.util.POIUtils;
 
@@ -24,14 +24,14 @@ public class SqlTypeFactory {
 			in = SqlTypeFactory.class
 					.getResourceAsStream("/SqlType.xls");
 
-			HSSFWorkbook workBook = POIUtils.readExcelBook(in);
+			Workbook workBook = POIUtils.readExcelBook(in);
 
-			HSSFSheet sheet = workBook.getSheetAt(0);
+			Sheet sheet = workBook.getSheetAt(0);
 
 			Map<String, Map<SqlType, String>> dbAliasMap = new HashMap<String, Map<SqlType, String>>();
 			Map<String, Map<TypeKey, SqlType>> dbSqlTypeMap = new HashMap<String, Map<TypeKey, SqlType>>();
 
-			HSSFRow headerRow = sheet.getRow(0);
+			Row headerRow = sheet.getRow(0);
 
 			for (int colNum = 4, colEnd = headerRow.getLastCellNum(); colNum < colEnd; colNum++) {
 				String dbId = POIUtils.getCellValue(sheet, 0, colNum);
@@ -46,10 +46,10 @@ public class SqlTypeFactory {
 			SqlType.setDBAliasMap(dbAliasMap, dbSqlTypeMap);
 
 			for (int rowNum = 1, rowEnd = sheet.getLastRowNum(); rowNum <= rowEnd; rowNum++) {
-				HSSFRow row = sheet.getRow(rowNum);
+				Row row = sheet.getRow(rowNum);
 
 				String sqlTypeId = POIUtils.getCellValue(sheet, rowNum, 0);
-				if (Check.isEmpty(sqlTypeId)) {
+				if (StringUtils.isEmpty(sqlTypeId)) {
 					break;
 				}
 				Class<?> javaClass = Class.forName(POIUtils.getCellValue(sheet,
@@ -66,11 +66,11 @@ public class SqlTypeFactory {
 
 					String dbId = POIUtils.getCellValue(sheet, 0, colNum);
 
-					if (Check.isEmpty(dbId)) {
+					if (StringUtils.isEmpty(dbId)) {
 						dbId = POIUtils.getCellValue(sheet, 0, colNum - 1);
 						String key = POIUtils.getCellValue(sheet, rowNum,
 								colNum);
-						if (!Check.isEmpty(key)) {
+						if (StringUtils.isNotEmpty(key)) {
 							sqlType.addToSqlTypeMap(key, dbId);
 						}
 
@@ -81,7 +81,7 @@ public class SqlTypeFactory {
 							String alias = POIUtils.getCellValue(sheet, rowNum,
 									colNum);
 
-							if (Check.isEmpty(alias)) {
+							if (StringUtils.isEmpty(alias)) {
 								alias = sqlTypeId;
 							}
 

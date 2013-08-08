@@ -1,12 +1,12 @@
 package org.insightech.er.db.impl.db2;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.impl.db2.tablespace.DB2TablespaceProperties;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class DB2DDLCreator extends DDLCreator {
@@ -58,7 +58,7 @@ public class DB2DDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("CREATE ");
-		if (!Check.isEmpty(tablespaceProperties.getType())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getType())) {
 			ddl.append(tablespaceProperties.getType());
 			ddl.append(" ");
 		}
@@ -67,7 +67,7 @@ public class DB2DDLCreator extends DDLCreator {
 		ddl.append(filter(tablespace.getName()));
 		ddl.append("\r\n");
 
-		if (!Check.isEmpty(tablespaceProperties.getPageSize())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getPageSize())) {
 			ddl.append(" PAGESIZE ");
 			ddl.append(tablespaceProperties.getPageSize());
 			ddl.append("\r\n");
@@ -79,19 +79,19 @@ public class DB2DDLCreator extends DDLCreator {
 		ddl.append(tablespaceProperties.getContainer());
 		ddl.append(")\r\n");
 
-		if (!Check.isEmpty(tablespaceProperties.getExtentSize())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getExtentSize())) {
 			ddl.append(" EXTENTSIZE ");
 			ddl.append(tablespaceProperties.getExtentSize());
 			ddl.append("\r\n");
 		}
 
-		if (!Check.isEmpty(tablespaceProperties.getPrefetchSize())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getPrefetchSize())) {
 			ddl.append(" PREFETCHSIZE ");
 			ddl.append(tablespaceProperties.getPrefetchSize());
 			ddl.append("\r\n");
 		}
 
-		if (!Check.isEmpty(tablespaceProperties.getBufferPoolName())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getBufferPoolName())) {
 			ddl.append(" BUFFERPOOL ");
 			ddl.append(tablespaceProperties.getBufferPoolName());
 			ddl.append("\r\n");
@@ -109,22 +109,20 @@ public class DB2DDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && StringUtils.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
-			ddl.append(description.replaceAll("\n", "\n-- "));
+			ddl.append(StringUtils.replace(description, "\n", "\n-- "));
 			ddl.append("\r\n");
 		}
 
-		ddl.append("CREATE ");
-		ddl.append("SEQUENCE ");
+		ddl.append("CREATE SEQUENCE ");
 		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
 				.getName())));
-		if (!Check.isEmpty(sequence.getDataType())) {
+		if (StringUtils.isNotBlank(sequence.getDataType())) {
 			ddl.append(" AS ");
 			String dataType = sequence.getDataType();
-			dataType = dataType.replaceAll("\\(p\\)", "("
-					+ Format.toString(sequence.getDecimalSize() + ")"));
+			dataType = StringUtils.replace(dataType, "(p)", "(" + Format.toString(sequence.getDecimalSize() + ")"));
 			ddl.append(dataType);
 		}
 		if (sequence.getIncrement() != null) {

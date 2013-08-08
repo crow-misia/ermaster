@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.dbimport.ImportFromDBManagerBase;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 
 public class DB2TableImportManager extends ImportFromDBManagerBase {
@@ -26,27 +26,27 @@ public class DB2TableImportManager extends ImportFromDBManagerBase {
 		ColumnData columnData = super.createColumnData(columnSet);
 		String type = columnData.type.toLowerCase();
 
-		if (Check.equals(type, "decimal")) {
+		if (StringUtils.equals(type, "decimal")) {
 			if (columnData.size == 5 && columnData.decimalDigits == 0) {
 				columnData.size = 0;
 			}
 
-		} else if (Check.equals(type, "clob")) {
+		} else if (StringUtils.equals(type, "clob")) {
 			if (columnData.size == 1048576) {
 				columnData.size = 0;
 			}
 
-		} else if (Check.equals(type, "blob")) {
+		} else if (StringUtils.equals(type, "blob")) {
 			if (columnData.size == 1048576) {
 				columnData.size = 0;
 			}
 
-		} else if (Check.equals(type, "dbclob")) {
+		} else if (StringUtils.equals(type, "dbclob")) {
 			if (columnData.size == 2097152) {
 				columnData.size = 0;
 			}
 
-		} else if (Check.equals(type, "decfloat")) {
+		} else if (StringUtils.equals(type, "decfloat")) {
 			if (columnData.size == 34) {
 				columnData.size = 0;
 			}
@@ -115,8 +115,8 @@ public class DB2TableImportManager extends ImportFromDBManagerBase {
 				sequence.setStart(rs.getLong("START"));
 				sequence.setCache(rs.getInt("CACHE"));
 
-				sequence.setCycle(Check.equals(rs.getString("CYCLE"), "Y"));
-				sequence.setOrder(Check.equals(rs.getString("ORDER"), "Y"));
+				sequence.setCycle(StringUtils.equals(rs.getString("CYCLE"), "Y"));
+				sequence.setOrder(StringUtils.equals(rs.getString("ORDER"), "Y"));
 
 				return sequence;
 			}

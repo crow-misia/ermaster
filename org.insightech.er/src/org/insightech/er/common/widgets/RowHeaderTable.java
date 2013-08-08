@@ -53,6 +53,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 import org.insightech.er.Activator;
@@ -61,7 +62,6 @@ import org.insightech.er.common.widgets.table.CellEditWorker;
 import org.insightech.er.common.widgets.table.CustomCellEditor;
 import org.insightech.er.common.widgets.table.HeaderClickListener;
 import org.insightech.er.common.widgets.table.PanelCellEditor;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
@@ -105,7 +105,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 					if (editor != null) {
 						Object value = editor.getCellEditorValue();
 
-						if (Check.isNotEmpty(value.toString())
+						if (StringUtils.isNotEmpty(value.toString())
 								&& getEditingRow() == getRowCount() - 1) {
 							cellEditWorker.addNewRow();
 						}

@@ -3,6 +3,7 @@ package org.insightech.er.db.impl.oracle;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.impl.oracle.tablespace.OracleTablespaceProperties;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
@@ -13,7 +14,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
-import org.insightech.er.util.Check;
 
 public class OracleDDLCreator extends DDLCreator {
 
@@ -31,16 +31,16 @@ public class OracleDDLCreator extends DDLCreator {
 		String tableComment = this.filterComment(table.getLogicalName(), table
 				.getDescription(), false);
 
-		if (!Check.isEmpty(tableComment)) {
+		if (StringUtils.isNotBlank(tableComment)) {
 			StringBuilder ddl = new StringBuilder();
 
 			ddl.append("COMMENT ON TABLE ");
 			ddl.append(filter(table.getNameWithSchema(getDatabase())));
 			ddl.append(" IS '");
-			ddl.append(tableComment.replaceAll("'", "''"));
+			ddl.append(StringUtils.replace(tableComment, "'", "''"));
 			ddl.append("'");
 			if (this.semicolon) {
-				ddl.append(";");
+				ddl.append(';');
 			}
 
 			ddlList.add(ddl.toString());
@@ -53,7 +53,7 @@ public class OracleDDLCreator extends DDLCreator {
 				String comment = this.filterComment(normalColumn
 						.getLogicalName(), normalColumn.getDescription(), true);
 
-				if (Check.isNotEmpty(comment)) {
+				if (StringUtils.isNotEmpty(comment)) {
 					StringBuilder ddl = new StringBuilder();
 
 					ddl.append("COMMENT ON COLUMN ");
@@ -62,10 +62,10 @@ public class OracleDDLCreator extends DDLCreator {
 					ddl.append(".");
 					ddl.append(filter(normalColumn.getPhysicalName()));
 					ddl.append(" IS '");
-					ddl.append(comment.replaceAll("'", "''"));
+					ddl.append(StringUtils.replace(comment, "'", "''"));
 					ddl.append("'");
 					if (this.semicolon) {
-						ddl.append(";");
+						ddl.append(';');
 					}
 
 					ddlList.add(ddl.toString());
@@ -79,7 +79,7 @@ public class OracleDDLCreator extends DDLCreator {
 							.getLogicalName(), normalColumn.getDescription(),
 							true);
 
-					if (Check.isNotEmpty(comment)) {
+					if (StringUtils.isNotEmpty(comment)) {
 						StringBuilder ddl = new StringBuilder();
 
 						ddl.append("COMMENT ON COLUMN ");
@@ -91,7 +91,7 @@ public class OracleDDLCreator extends DDLCreator {
 						ddl.append(comment.replaceAll("'", "''"));
 						ddl.append("'");
 						if (this.semicolon) {
-							ddl.append(";");
+							ddl.append(';');
 						}
 
 						ddlList.add(ddl.toString());
@@ -114,7 +114,7 @@ public class OracleDDLCreator extends DDLCreator {
 		ddl.append(filter(relation.getTargetTableView().getNameWithSchema(getDatabase())));
 		ddl.append("\r\n");
 		ddl.append("\tADD ");
-		if (Check.isNotBlank(relation.getName())) {
+		if (StringUtils.isNotBlank(relation.getName())) {
 			ddl.append("CONSTRAINT ");
 			ddl.append(filter(relation.getName()));
 			ddl.append(" ");
@@ -158,7 +158,7 @@ public class OracleDDLCreator extends DDLCreator {
 		}
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -175,11 +175,11 @@ public class OracleDDLCreator extends DDLCreator {
 		ddl.append(filter(tablespace.getName()));
 		ddl.append("\r\n");
 
-		if (Check.isNotEmpty(tablespaceProperties.getDataFile())) {
+		if (StringUtils.isNotEmpty(tablespaceProperties.getDataFile())) {
 			ddl.append(" DATAFILE ");
 			ddl.append(tablespaceProperties.getDataFile());
 
-			if (Check.isNotEmpty(tablespaceProperties.getFileSize())) {
+			if (StringUtils.isNotEmpty(tablespaceProperties.getFileSize())) {
 				ddl.append(" SIZE ");
 				ddl.append(tablespaceProperties.getFileSize());
 			}
@@ -191,7 +191,7 @@ public class OracleDDLCreator extends DDLCreator {
 			ddl.append(" AUTOEXTEND ON NEXT ");
 			ddl.append(tablespaceProperties.getAutoExtendSize());
 
-			if (Check.isNotEmpty(tablespaceProperties.getAutoExtendMaxSize())) {
+			if (StringUtils.isNotEmpty(tablespaceProperties.getAutoExtendMaxSize())) {
 				ddl.append(" MAXSIZE ");
 				ddl.append(tablespaceProperties.getAutoExtendMaxSize());
 			}
@@ -199,34 +199,34 @@ public class OracleDDLCreator extends DDLCreator {
 			ddl.append("\r\n");
 		}
 
-		if (Check.isNotEmpty(tablespaceProperties.getMinimumExtentSize())) {
+		if (StringUtils.isNotEmpty(tablespaceProperties.getMinimumExtentSize())) {
 			ddl.append(" MINIMUM EXTENT ");
 			ddl.append(tablespaceProperties.getMinimumExtentSize());
 			ddl.append("\r\n");
 		}
 
 		ddl.append(" DEFAULT STORAGE(\r\n");
-		if (Check.isNotEmpty(tablespaceProperties.getInitial())) {
+		if (StringUtils.isNotEmpty(tablespaceProperties.getInitial())) {
 			ddl.append("  INITIAL ");
 			ddl.append(tablespaceProperties.getInitial());
 			ddl.append("\r\n");
 		}
-		if (Check.isNotEmpty(tablespaceProperties.getNext())) {
+		if (StringUtils.isNotEmpty(tablespaceProperties.getNext())) {
 			ddl.append("  NEXT ");
 			ddl.append(tablespaceProperties.getNext());
 			ddl.append("\r\n");
 		}
-		if (Check.isNotEmpty(tablespaceProperties.getMinExtents())) {
+		if (StringUtils.isNotEmpty(tablespaceProperties.getMinExtents())) {
 			ddl.append("  MINEXTENTS ");
 			ddl.append(tablespaceProperties.getMinExtents());
 			ddl.append("\r\n");
 		}
-		if (Check.isNotEmpty(tablespaceProperties.getMaxExtents())) {
+		if (StringUtils.isNotEmpty(tablespaceProperties.getMaxExtents())) {
 			ddl.append("  MAXEXTEMTS ");
 			ddl.append(tablespaceProperties.getMaxExtents());
 			ddl.append("\r\n");
 		}
-		if (Check.isNotEmpty(tablespaceProperties.getPctIncrease())) {
+		if (StringUtils.isNotEmpty(tablespaceProperties.getPctIncrease())) {
 			ddl.append("  PCTINCREASE ");
 			ddl.append(tablespaceProperties.getPctIncrease());
 			ddl.append("\r\n");
@@ -262,7 +262,7 @@ public class OracleDDLCreator extends DDLCreator {
 		ddl.append("\r\n");
 
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();
@@ -273,7 +273,7 @@ public class OracleDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
-		if (this.semicolon && Check.isNotEmpty(description)
+		if (this.semicolon && StringUtils.isNotEmpty(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
 			ddl.append(description.replaceAll("\n", "\n-- "));
@@ -308,7 +308,7 @@ public class OracleDDLCreator extends DDLCreator {
 			ddl.append(" CYCLE");
 		}
 		if (this.semicolon) {
-			ddl.append(";");
+			ddl.append(';');
 		}
 
 		return ddl.toString();

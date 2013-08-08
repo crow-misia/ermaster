@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.impl.postgres.tablespace.PostgresTablespaceProperties;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
@@ -16,7 +17,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnG
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
-import org.insightech.er.util.Check;
 
 public class PostgresDDLCreator extends DDLCreator {
 
@@ -65,7 +65,7 @@ public class PostgresDDLCreator extends DDLCreator {
 		String tableComment = this.filterComment(table.getLogicalName(), table
 				.getDescription(), false);
 
-		if (!Check.isEmpty(tableComment)) {
+		if (StringUtils.isNotBlank(tableComment)) {
 			StringBuilder ddl = new StringBuilder();
 
 			ddl.append("COMMENT ON TABLE ");
@@ -87,7 +87,7 @@ public class PostgresDDLCreator extends DDLCreator {
 				String comment = this.filterComment(normalColumn
 						.getLogicalName(), normalColumn.getDescription(), true);
 
-				if (!Check.isEmpty(comment)) {
+				if (StringUtils.isNotBlank(comment)) {
 					StringBuilder ddl = new StringBuilder();
 
 					ddl.append("COMMENT ON COLUMN ");
@@ -113,7 +113,7 @@ public class PostgresDDLCreator extends DDLCreator {
 							.getLogicalName(), normalColumn.getDescription(),
 							true);
 
-					if (!Check.isEmpty(comment)) {
+					if (StringUtils.isNotBlank(comment)) {
 						StringBuilder ddl = new StringBuilder();
 
 						ddl.append("COMMENT ON COLUMN ");
@@ -148,7 +148,7 @@ public class PostgresDDLCreator extends DDLCreator {
 		ddl.append(filter(tablespace.getName()));
 		ddl.append("\r\n");
 
-		if (!Check.isEmpty(tablespaceProperties.getOwner())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getOwner())) {
 			ddl.append(" OWNER ");
 			ddl.append(tablespaceProperties.getOwner());
 			ddl.append("\r\n");
@@ -223,7 +223,7 @@ public class PostgresDDLCreator extends DDLCreator {
 								.getType().getId())) {
 					String autoIncrementSettingDDL = getAutoIncrementSettingDDL(
 							table, column);
-					if (!Check.isEmpty(autoIncrementSettingDDL)) {
+					if (StringUtils.isNotBlank(autoIncrementSettingDDL)) {
 						ddl.append(autoIncrementSettingDDL);
 						ddl.append("\r\n");
 						first = false;

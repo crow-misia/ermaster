@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.outline.tablespace;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
@@ -64,7 +65,7 @@ public abstract class TablespaceDialog extends AbstractDialog {
 	@Override
 	protected String getErrorMessage() {
 		String text = this.nameText.getText();
-		if (Check.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			return "error.tablespace.name.empty";
 		}
 

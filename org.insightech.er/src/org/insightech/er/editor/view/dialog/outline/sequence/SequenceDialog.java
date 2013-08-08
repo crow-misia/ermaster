@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.outline.sequence;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -136,7 +137,7 @@ public class SequenceDialog extends AbstractDialog {
 		}
 
 		String text = nameText.getText();
-		if (Check.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			return "error.sequence.name.empty";
 		}
 
@@ -155,7 +156,7 @@ public class SequenceDialog extends AbstractDialog {
 
 		text = incrementText.getText();
 
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			try {
 				Integer.parseInt(text);
 
@@ -167,7 +168,7 @@ public class SequenceDialog extends AbstractDialog {
 		if (this.minValueText != null) {
 			text = minValueText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					Long.parseLong(text);
 
@@ -180,7 +181,7 @@ public class SequenceDialog extends AbstractDialog {
 		if (this.maxValueText != null) {
 			text = maxValueText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					new BigDecimal(text);
 
@@ -192,7 +193,7 @@ public class SequenceDialog extends AbstractDialog {
 
 		text = startText.getText();
 
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			try {
 				Long.parseLong(text);
 
@@ -204,7 +205,7 @@ public class SequenceDialog extends AbstractDialog {
 		if (this.cacheText != null) {
 			text = cacheText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					int cache = Integer.parseInt(text);
 					if (DB2DBManager.ID.equals(this.diagram.getDatabase())) {
@@ -225,7 +226,7 @@ public class SequenceDialog extends AbstractDialog {
 		if (this.decimalSizeText != null) {
 			text = this.decimalSizeText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					int size = Integer.parseInt(text);
 					if (size < 0) {
@@ -260,32 +261,32 @@ public class SequenceDialog extends AbstractDialog {
 		Integer cache = null;
 
 		String text = incrementText.getText();
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			increment = Integer.valueOf(text);
 		}
 
 		if (this.minValueText != null) {
 			text = minValueText.getText();
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				minValue = Long.valueOf(text);
 			}
 		}
 
 		if (this.maxValueText != null) {
 			text = maxValueText.getText();
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				maxValue = new BigDecimal(text);
 			}
 		}
 
 		text = startText.getText();
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			start = Long.valueOf(text);
 		}
 
 		if (this.cacheText != null) {
 			text = cacheText.getText();
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				cache = Integer.valueOf(text);
 			}
 		}

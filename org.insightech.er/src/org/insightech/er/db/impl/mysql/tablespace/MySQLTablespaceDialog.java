@@ -1,5 +1,6 @@
 package org.insightech.er.db.impl.mysql.tablespace;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -7,7 +8,6 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.db.impl.mysql.MySQLAdvancedComposite;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
 import org.insightech.er.editor.view.dialog.outline.tablespace.TablespaceDialog;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class MySQLTablespaceDialog extends TablespaceDialog {
@@ -86,23 +86,23 @@ public class MySQLTablespaceDialog extends TablespaceDialog {
 			return errorMessage;
 		}
 
-		String text = this.dataFile.getText().trim();
-		if (Check.isEmpty(text)) {
+		String text = this.dataFile.getText();
+		if (StringUtils.isBlank(text)) {
 			return "error.tablespace.data.file.empty";
 		}
 
-		text = this.logFileGroup.getText().trim();
-		if (Check.isEmpty(text)) {
+		text = this.logFileGroup.getText();
+		if (StringUtils.isBlank(text)) {
 			return "error.tablespace.log.file.group.empty";
 		}
 
-		text = this.initialSize.getText().trim();
-		if (Check.isEmpty(text)) {
+		text = this.initialSize.getText();
+		if (StringUtils.isBlank(text)) {
 			return "error.tablespace.initial.size.empty";
 		}
 
-		text = this.engine.getText().trim();
-		if (Check.isEmpty(text)) {
+		text = this.engine.getText();
+		if (StringUtils.isBlank(text)) {
 			return "error.tablespace.storage.engine.empty";
 		}
 

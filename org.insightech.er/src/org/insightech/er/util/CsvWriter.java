@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * CSV出力クラス
  * 
@@ -56,7 +58,7 @@ public final class CsvWriter {
 		if (str == null) {
 			return "";
 		}
-		return str.replaceAll("\"", "\"\"");
+		return StringUtils.replace(str, "\"", "\"\"");
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.option.tab;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -19,7 +20,6 @@ import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.editor.model.settings.Environment;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.option.OptionSettingDialog;
-import org.insightech.er.util.Check;
 
 public class EnvironmentTabWrapper extends ValidatableTabWrapper {
 
@@ -121,10 +121,10 @@ public class EnvironmentTabWrapper extends ValidatableTabWrapper {
 			 */
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String name = nameText.getText().trim();
-				if (!Check.isEmpty(name)) {
+				String name = nameText.getText();
+				if (StringUtils.isNotBlank(name)) {
 					settings.getEnvironmentSetting().getEnvironments().add(
-							new Environment(name));
+							new Environment(name.trim()));
 					setData();
 					environmentList.select(environmentList.getItemCount() - 1);
 				}
@@ -143,11 +143,11 @@ public class EnvironmentTabWrapper extends ValidatableTabWrapper {
 					return;
 				}
 
-				String name = nameText.getText().trim();
-				if (!Check.isEmpty(name)) {
+				String name = nameText.getText();
+				if (StringUtils.isNotBlank(name)) {
 					Environment environment = settings.getEnvironmentSetting()
 							.getEnvironments().get(targetIndex);
-					environment.setName(name);
+					environment.setName(name.trim());
 					setData();
 					environmentList.select(targetIndex);
 				}

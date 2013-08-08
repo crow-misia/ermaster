@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -38,7 +38,7 @@ public class WordSheetGenerator extends AbstractSheetGenerator {
 		this.columnTemplate = null;
 	}
 
-	public void setAllColumnsData(HSSFWorkbook workbook, HSSFSheet sheet,
+	public void setAllColumnsData(Workbook workbook, Sheet sheet,
 			ERDiagram diagram) {
 		this.clear();
 
@@ -47,7 +47,7 @@ public class WordSheetGenerator extends AbstractSheetGenerator {
 
 		if (cellLocation != null) {
 			int rowNum = cellLocation.r;
-			HSSFRow templateRow = sheet.getRow(rowNum);
+			Row templateRow = sheet.getRow(rowNum);
 
 			if (this.columnTemplate == null) {
 				this.columnTemplate = loadColumnTemplate(workbook, sheet,
@@ -84,7 +84,7 @@ public class WordSheetGenerator extends AbstractSheetGenerator {
 
 			final String database = diagram.getDatabase();
 			for (final Word word : wordList) {
-				HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
+				Row row = POIUtils.insertRow(sheet, rowNum++);
 				setColumnData(this.keywordsValueMap, columnTemplate,
 						row, word, database, order);
 				order++;
@@ -96,11 +96,11 @@ public class WordSheetGenerator extends AbstractSheetGenerator {
 	}
 
 	protected static void setColumnData(Map<String, String> keywordsValueMap,
-			ColumnTemplate columnTemplate, HSSFRow row,
+			ColumnTemplate columnTemplate, Row row,
 			Word word, String database, int order) {
 
 		for (int columnNum : columnTemplate.columnTemplateMap.keySet()) {
-			HSSFCell cell = row.createCell(columnNum);
+			Cell cell = row.createCell(columnNum);
 			String template = columnTemplate.columnTemplateMap.get(columnNum);
 
 			String value = null;
@@ -172,13 +172,13 @@ public class WordSheetGenerator extends AbstractSheetGenerator {
 	}
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
 			Map<String, LoopDefinition> loopDefinitionMap) {
 		String name = this.getSheetName();
-		HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
+		Sheet newSheet = createNewSheet(workbook, sheetNo, name,
 				sheetNameMap);
 
 		sheetObjectMap.put(workbook.getSheetName(workbook

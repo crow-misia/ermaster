@@ -1,10 +1,10 @@
 package org.insightech.er.db.impl.hsqldb;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
-import org.insightech.er.util.Check;
 
 public class HSQLDBDDLCreator extends DDLCreator {
 
@@ -22,18 +22,17 @@ public class HSQLDBDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = sequence.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && StringUtils.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
-			ddl.append(description.replaceAll("\n", "\n-- "));
+			ddl.append(StringUtils.replace(description, "\n", "\n-- "));
 			ddl.append("\r\n");
 		}
 
-		ddl.append("CREATE ");
-		ddl.append("SEQUENCE ");
+		ddl.append("CREATE SEQUENCE ");
 		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
 				.getName())));
-		if (!Check.isEmpty(sequence.getDataType())) {
+		if (StringUtils.isNotBlank(sequence.getDataType())) {
 			ddl.append(" AS ");
 			String dataType = sequence.getDataType();
 			ddl.append(dataType);

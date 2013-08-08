@@ -2,6 +2,7 @@ package org.insightech.er.db.impl.mysql;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
@@ -12,7 +13,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class MySQLDDLCreator extends DDLCreator {
@@ -34,21 +34,21 @@ public class MySQLDDLCreator extends DDLCreator {
 				.getTableViewProperties();
 
 		String engine = tableProperties.getStorageEngine();
-		if (Check.isEmpty(engine)) {
+		if (StringUtils.isEmpty(engine)) {
 			engine = commonTableProperties.getStorageEngine();
 		}
 		String characterSet = tableProperties.getCharacterSet();
-		if (Check.isEmpty(characterSet)) {
+		if (StringUtils.isBlank(characterSet)) {
 			characterSet = commonTableProperties.getCharacterSet();
 		}
 
 		String collation = tableProperties.getCollation();
-		if (Check.isEmpty(collation)) {
+		if (StringUtils.isBlank(collation)) {
 			characterSet = commonTableProperties.getCharacterSet();
 		}
 
 		StringBuilder postDDL = new StringBuilder();
-		if (!Check.isEmpty(engine)) {
+		if (StringUtils.isNotBlank(engine)) {
 			postDDL.append(" ENGINE = ");
 			postDDL.append(engine);
 		}
@@ -57,18 +57,18 @@ public class MySQLDDLCreator extends DDLCreator {
 			String comment = this.filterComment(table.getLogicalName(),
 					table.getDescription(), false);
 
-			if (Check.isNotEmpty(comment)) {
+			if (StringUtils.isNotBlank(comment)) {
 				postDDL.append(" COMMENT = '");
-				postDDL.append(comment.replaceAll("'", "''"));
+				postDDL.append(StringUtils.replace(comment, "'", "''"));
 				postDDL.append("'");
 			}
 		}
 
-		if (Check.isNotEmpty(characterSet)) {
+		if (StringUtils.isNotBlank(characterSet)) {
 			postDDL.append(" DEFAULT CHARACTER SET ");
 			postDDL.append(characterSet);
 
-			if (Check.isNotEmpty(collation)) {
+			if (StringUtils.isNotBlank(collation)) {
 				postDDL.append(" COLLATE ");
 				postDDL.append(collation);
 			}
@@ -87,10 +87,10 @@ public class MySQLDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = normalColumn.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && StringUtils.isNotBlank(description)
 				&& this.ddlTarget.inlineColumnComment) {
 			ddl.append("\t-- ");
-			ddl.append(description.replaceAll("\n", "\n\t-- "));
+			ddl.append(StringUtils.replace(description, "\n", "\n\t-- "));
 			ddl.append("\r\n");
 		}
 
@@ -101,17 +101,17 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
 				normalColumn.getTypeData(), getDatabase())));
 
-		if (Check.isNotEmpty(normalColumn.getCharacterSet())) {
+		if (StringUtils.isNotBlank(normalColumn.getCharacterSet())) {
 			ddl.append(" CHARACTER SET ");
 			ddl.append(normalColumn.getCharacterSet());
 
-			if (Check.isNotEmpty(normalColumn.getCollation())) {
+			if (StringUtils.isNotBlank(normalColumn.getCollation())) {
 				ddl.append(" COLLATE ");
 				ddl.append(normalColumn.getCollation());
 			}
 		}
 
-		if (Check.isNotEmpty(normalColumn.getDefaultValue())) {
+		if (StringUtils.isNotEmpty(normalColumn.getDefaultValue())) {
 			String defaultValue = normalColumn.getDefaultValue();
 			if (ResourceString.getResourceString("label.current.date.time")
 					.equals(defaultValue)) {
@@ -134,7 +134,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		if (normalColumn.isUniqueKey()) {
-			if (!Check.isEmpty(normalColumn.getUniqueKeyName())) {
+			if (StringUtils.isNotBlank(normalColumn.getUniqueKeyName())) {
 				ddl.append(" CONSTRAINT ");
 				ddl.append(normalColumn.getUniqueKeyName());
 			}
@@ -142,7 +142,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		String constraint = Format.null2blank(normalColumn.getConstraint());
-		if (Check.isNotEmpty(constraint)) {
+		if (StringUtils.isNotBlank(constraint)) {
 			ddl.append(" ");
 			ddl.append(constraint);
 		}
@@ -155,9 +155,9 @@ public class MySQLDDLCreator extends DDLCreator {
 			String comment = this.filterComment(normalColumn.getLogicalName(),
 					normalColumn.getDescription(), true);
 
-			if (Check.isNotEmpty(comment)) {
+			if (StringUtils.isNotBlank(comment)) {
 				ddl.append(" COMMENT '");
-				ddl.append(comment.replaceAll("'", "''"));
+				ddl.append(StringUtils.replace(comment, "'", "''"));
 				ddl.append("'");
 			}
 		}
@@ -196,7 +196,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(tablespaceProperties.getLogFileGroup());
 		ddl.append("\r\n");
 
-		if (!Check.isEmpty(tablespaceProperties.getExtentSize())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getExtentSize())) {
 			ddl.append(" EXTENT_SIZE ");
 			ddl.append(tablespaceProperties.getExtentSize());
 			ddl.append("\r\n");
@@ -224,7 +224,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		if (this.ddlTarget.commentValueLogicalNameDescription) {
 			comment = Format.null2blank(logicalName);
 
-			if (!Check.isEmpty(description)) {
+			if (StringUtils.isNotBlank(description)) {
 				comment = comment + " : " + Format.null2blank(description);
 			}
 
@@ -237,11 +237,11 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		if (ddlTarget.commentReplaceLineFeed) {
-			comment = comment.replaceAll("\r\n",
+			comment = StringUtils.replace(comment, "\r\n",
 					Format.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\r",
+			comment = StringUtils.replace(comment, "\r",
 					Format.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\n",
+			comment = StringUtils.replace(comment, "\n",
 					Format.null2blank(ddlTarget.commentReplaceString));
 		}
 
@@ -263,10 +263,10 @@ public class MySQLDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		String description = index.getDescription();
-		if (this.semicolon && !Check.isEmpty(description)
+		if (this.semicolon && StringUtils.isNotBlank(description)
 				&& this.ddlTarget.inlineTableComment) {
 			ddl.append("-- ");
-			ddl.append(description.replaceAll("\n", "\n-- "));
+			ddl.append(StringUtils.replace(description, "\n", "\n-- "));
 			ddl.append("\r\n");
 		}
 
@@ -277,7 +277,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append("INDEX ");
 		ddl.append(filter(index.getName()));
 
-		if (Check.isNotBlank(index.getType())) {
+		if (StringUtils.isNotBlank(index.getType())) {
 			ddl.append(" USING ");
 			ddl.append(index.getType().trim());
 		}

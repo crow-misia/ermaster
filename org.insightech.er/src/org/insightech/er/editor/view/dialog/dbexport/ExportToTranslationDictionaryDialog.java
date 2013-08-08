@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -33,7 +34,6 @@ import org.insightech.er.editor.model.diagram_contents.DiagramContents;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.preference.PreferenceInitializer;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 
 public class ExportToTranslationDictionaryDialog extends AbstractDialog {
@@ -206,7 +206,7 @@ public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 		physicalName = physicalName.toLowerCase();
 		logicalName = logicalName.toLowerCase();
 
-		if (!Check.isEmpty(physicalName) && !Check.isEmpty(logicalName)
+		if (StringUtils.isNotEmpty(physicalName) && StringUtils.isNotEmpty(logicalName)
 				&& !resources.contains(physicalName)
 				&& !newDictionary.containsKey(physicalName)) {
 			newDictionary.put(physicalName, logicalName);

@@ -1,5 +1,6 @@
 package org.insightech.er.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.impl.mysql.MySQLDBManager;
 import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.db.sqltype.SqlType;
@@ -90,11 +91,9 @@ public final class Format {
 		return str;
 	}
 
-	public static String escapeSQL(String str) {
-		str = str.replaceAll("'", "''");
-		str = str.replaceAll("\\\\", "\\\\\\\\");
-
-		return str;
+	public static String escapeSQL(final String str) {
+		final String r = StringUtils.replace(str, "'", "''");
+		return StringUtils.replace(r, "\\", "\\\\");
 	}
 
 	public static String toString(Object value) {

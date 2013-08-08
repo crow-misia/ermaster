@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.URIUtil;
@@ -46,7 +47,6 @@ import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
 import org.insightech.er.preference.PreferenceInitializer;
 import org.insightech.er.preference.template.TemplatePreferencePage;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 import org.insightech.er.util.io.FileUtils;
@@ -398,7 +398,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 			this.templateCombo.select(0);
 		}
 
-		if (Check.isEmpty(outputExcel)) {
+		if (StringUtils.isEmpty(outputExcel)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
 			outputExcel = file.getLocation().toOSString();
@@ -406,7 +406,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 		outputExcel = outputExcel.substring(0, outputExcel.lastIndexOf("."))
 				+ ".xls";
 
-		if (Check.isEmpty(outputImage)) {
+		if (StringUtils.isEmpty(outputImage)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
 			outputImage = file.getLocation().toOSString();

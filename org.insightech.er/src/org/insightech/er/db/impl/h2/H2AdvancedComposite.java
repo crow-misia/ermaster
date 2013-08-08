@@ -9,9 +9,6 @@ public class H2AdvancedComposite extends AdvancedComposite {
 		super(parent);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void initComposite() {
 	}

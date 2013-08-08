@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.outline.trigger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -48,7 +49,7 @@ public class TriggerDialog extends AbstractDialog {
 	@Override
 	protected String getErrorMessage() {
 		String text = nameText.getText();
-		if (Check.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			return "error.trigger.name.empty";
 		}
 
@@ -63,7 +64,7 @@ public class TriggerDialog extends AbstractDialog {
 		}
 
 		text = sqlText.getText();
-		if (Check.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			return "error.trigger.sql.empty";
 		}
 

@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
-import org.insightech.er.util.Check;
 
 public class ChangeTrackingList implements Serializable {
 
@@ -200,46 +200,19 @@ public class ChangeTrackingList implements Serializable {
 	}
 
 	private boolean compareColumn(NormalColumn oldColumn, NormalColumn newColumn) {
-		if (!Check.equals(oldColumn.getPhysicalName(), newColumn
-				.getPhysicalName())) {
-			return false;
-		}
-		if (!Check.equals(oldColumn.getTypeData().getDecimal(), newColumn
-				.getTypeData().getDecimal())) {
-			return false;
-		}
-		if (!Check.equals(oldColumn.getDefaultValue(), newColumn
-				.getDefaultValue())) {
-			return false;
-		}
-		if (!Check.equals(oldColumn.getDescription(), newColumn
-				.getDescription())) {
-			return false;
-		}
-		if (!Check.equals(oldColumn.getTypeData().getLength(), newColumn
-				.getTypeData().getLength())) {
-			return false;
-		}
-		if (!Check.equals(oldColumn.getType(), newColumn.getType())) {
-			return false;
-		}
-		if (oldColumn.isAutoIncrement() != newColumn.isAutoIncrement()) {
-			return false;
-		}
-		if (oldColumn.isForeignKey() != newColumn.isForeignKey()) {
-			return false;
-		}
-		if (oldColumn.isNotNull() != newColumn.isNotNull()) {
-			return false;
-		}
-		if (oldColumn.isPrimaryKey() != newColumn.isPrimaryKey()) {
-			return false;
-		}
-		if (oldColumn.isUniqueKey() != newColumn.isUniqueKey()) {
-			return false;
-		}
-
-		return true;
+		return new EqualsBuilder()
+			.append(oldColumn.getPhysicalName(), newColumn.getPhysicalName())
+			.append(oldColumn.getTypeData().getDecimal(), newColumn.getTypeData().getDecimal())
+			.append(oldColumn.getDefaultValue(), newColumn.getDefaultValue())
+			.append(oldColumn.getDescription(), newColumn.getDescription())
+			.append(oldColumn.getTypeData().getLength(), newColumn.getTypeData().getLength())
+			.append(oldColumn.getType(), newColumn.getType())
+			.append(oldColumn.isAutoIncrement(), newColumn.isAutoIncrement())
+			.append(oldColumn.isForeignKey(), newColumn.isForeignKey())
+			.append(oldColumn.isNotNull(), newColumn.isNotNull())
+			.append(oldColumn.isPrimaryKey(), newColumn.isPrimaryKey())
+			.append(oldColumn.isUniqueKey(), newColumn.isUniqueKey())
+			.build();
 	}
 
 	public UpdatedNodeElement getUpdatedNodeElement(NodeElement nodeElement) {

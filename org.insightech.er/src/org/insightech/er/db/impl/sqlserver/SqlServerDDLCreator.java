@@ -1,12 +1,12 @@
 package org.insightech.er.db.impl.sqlserver;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.impl.db2.tablespace.DB2TablespaceProperties;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
-import org.insightech.er.util.Check;
 
 public class SqlServerDDLCreator extends DDLCreator {
 
@@ -57,7 +57,7 @@ public class SqlServerDDLCreator extends DDLCreator {
 		StringBuilder ddl = new StringBuilder();
 
 		ddl.append("CREATE ");
-		if (!Check.isEmpty(tablespaceProperties.getType())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getType())) {
 			ddl.append(tablespaceProperties.getType());
 			ddl.append(" ");
 		}
@@ -66,7 +66,7 @@ public class SqlServerDDLCreator extends DDLCreator {
 		ddl.append(filter(tablespace.getName()));
 		ddl.append("\r\n");
 
-		if (!Check.isEmpty(tablespaceProperties.getPageSize())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getPageSize())) {
 			ddl.append(" PAGESIZE ");
 			ddl.append(tablespaceProperties.getPageSize());
 			ddl.append("\r\n");
@@ -78,19 +78,19 @@ public class SqlServerDDLCreator extends DDLCreator {
 		ddl.append(tablespaceProperties.getContainer());
 		ddl.append(")\r\n");
 
-		if (!Check.isEmpty(tablespaceProperties.getExtentSize())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getExtentSize())) {
 			ddl.append(" EXTENTSIZE ");
 			ddl.append(tablespaceProperties.getExtentSize());
 			ddl.append("\r\n");
 		}
 
-		if (!Check.isEmpty(tablespaceProperties.getPrefetchSize())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getPrefetchSize())) {
 			ddl.append(" PREFETCHSIZE ");
 			ddl.append(tablespaceProperties.getPrefetchSize());
 			ddl.append("\r\n");
 		}
 
-		if (!Check.isEmpty(tablespaceProperties.getBufferPoolName())) {
+		if (StringUtils.isNotBlank(tablespaceProperties.getBufferPoolName())) {
 			ddl.append(" BUFFERPOOL ");
 			ddl.append(tablespaceProperties.getBufferPoolName());
 			ddl.append("\r\n");

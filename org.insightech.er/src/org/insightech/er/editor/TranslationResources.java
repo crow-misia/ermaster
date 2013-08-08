@@ -8,16 +8,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.settings.TranslationSetting;
 import org.insightech.er.preference.PreferenceInitializer;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 
 public class TranslationResources {
@@ -86,7 +86,7 @@ public class TranslationResources {
 			}
 
 			String key = line.substring(0, index);
-			if (Check.isBlank(key)) {
+			if (StringUtils.isBlank(key)) {
 				continue;
 			}
 

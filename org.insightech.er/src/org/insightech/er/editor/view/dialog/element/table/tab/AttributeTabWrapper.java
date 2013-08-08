@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.element.table.tab;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -131,7 +132,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 		String text = logicalNameText.getText().trim();
 		this.copyData.setLogicalName(text);
 
-		if (Check.isEmpty(text)) {
+		if (StringUtils.isEmpty(text)) {
 			throw new InputException("error.table.logical.name.empty");
 		}
 
@@ -373,7 +374,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 				String physicalName = physicalNameText.getText();
 
 				if (oldPhysicalName.equals(logicalName)
-						|| Check.isEmpty(logicalName)) {
+						|| StringUtils.isEmpty(logicalName)) {
 					logicalNameText.setText(physicalName);
 					oldPhysicalName = physicalName;
 				}

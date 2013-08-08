@@ -3,9 +3,9 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -38,7 +38,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 	}
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
@@ -63,7 +63,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 				name = view.getPhysicalName();
 			}
 
-			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
+			Sheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook
@@ -82,7 +82,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 	 * @param sheet
 	 * @param view
 	 */
-	public void setViewData(HSSFWorkbook workbook, HSSFSheet sheet, View view) {
+	public void setViewData(Workbook workbook, Sheet sheet, View view) {
 		POIUtils.replace(sheet, KEYWORD_LOGICAL_VIEW_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_LOGICAL_VIEW_NAME, view
 						.getLogicalName()));
@@ -103,7 +103,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 
 		if (cellLocation != null) {
 			int rowNum = cellLocation.r;
-			HSSFRow templateRow = sheet.getRow(rowNum);
+			Row templateRow = sheet.getRow(rowNum);
 
 			if (this.columnTemplate == null) {
 				this.columnTemplate = this.loadColumnTemplate(workbook, sheet,
@@ -113,7 +113,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 			int order = 1;
 
 			for (NormalColumn normalColumn : view.getExpandedColumns()) {
-				HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
+				Row row = POIUtils.insertRow(sheet, rowNum++);
 				this.setColumnData(this.keywordsValueMap, columnTemplate, row,
 						normalColumn, view, order);
 				order++;
@@ -128,7 +128,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 
 		if (fkCellLocation != null) {
 			int rowNum = fkCellLocation.r;
-			HSSFRow templateRow = sheet.getRow(rowNum);
+			Row templateRow = sheet.getRow(rowNum);
 
 			if (this.fkColumnTemplate == null) {
 				this.fkColumnTemplate = this.loadColumnTemplate(workbook,
@@ -139,7 +139,7 @@ public class ViewSheetGenerator extends AbstractSheetGenerator {
 
 			for (NormalColumn normalColumn : view.getExpandedColumns()) {
 				if (normalColumn.isForeignKey()) {
-					HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
+					Row row = POIUtils.insertRow(sheet, rowNum++);
 					this.setColumnData(this.keywordsValueMap,
 							this.fkColumnTemplate, row, normalColumn, view,
 							order);

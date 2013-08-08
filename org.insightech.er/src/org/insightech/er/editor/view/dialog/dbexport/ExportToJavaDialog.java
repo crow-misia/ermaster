@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.dialog.dbexport;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
@@ -28,7 +29,6 @@ import org.insightech.er.editor.model.dbexport.java.ExportToJavaWithProgressMana
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Closer;
 import org.insightech.er.util.Format;
 
@@ -169,7 +169,7 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 		String outputDir = Format.null2blank(exportSetting.getJavaOutput());
 
-		if (Check.isEmpty(outputDir)) {
+		if (StringUtils.isEmpty(outputDir)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
 					.getFile();
 			outputDir = file.getParent().getLocation().toOSString();
@@ -184,7 +184,7 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 		String srcFileEncoding = Format.null2blank(exportSetting
 				.getSrcFileEncoding());
-		if (Check.isNotEmpty(srcFileEncoding)) {
+		if (StringUtils.isNotEmpty(srcFileEncoding)) {
 			this.fileEncodingCombo.setText(srcFileEncoding);
 		}
 

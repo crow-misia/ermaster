@@ -2,9 +2,9 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -32,7 +32,7 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 	}
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
@@ -49,7 +49,7 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 			for (Index index : table.getIndexes()) {
 				String name = index.getName();
 
-				HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
+				Sheet newSheet = createNewSheet(workbook, sheetNo,
 						name, sheetNameMap);
 
 				sheetObjectMap.put(workbook.getSheetName(workbook
@@ -68,7 +68,7 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 	 * @param sheet
 	 * @param index
 	 */
-	public void setIndexData(HSSFWorkbook workbook, HSSFSheet sheet, Index index) {
+	public void setIndexData(Workbook workbook, Sheet sheet, Index index) {
 		POIUtils.replace(sheet, KEYWORD_PHYSICAL_INDEX_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_PHYSICAL_INDEX_NAME, index
 						.getName()));
@@ -92,7 +92,7 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 
 		if (cellLocation != null) {
 			int rowNum = cellLocation.r;
-			HSSFRow templateRow = sheet.getRow(rowNum);
+			Row templateRow = sheet.getRow(rowNum);
 
 			if (this.columnTemplate == null) {
 				this.columnTemplate = loadColumnTemplate(workbook, sheet,
@@ -102,7 +102,7 @@ public class IndexSheetGenerator extends AbstractSheetGenerator {
 			int order = 1;
 
 			for (NormalColumn normalColumn : index.getColumns()) {
-				HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
+				Row row = POIUtils.insertRow(sheet, rowNum++);
 				this.setColumnData(this.keywordsValueMap, columnTemplate, row,
 						normalColumn, index.getTable(), order);
 				order++;

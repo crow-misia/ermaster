@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.element.table.sub;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -11,7 +12,6 @@ import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class AutoIncrementSettingDialog extends AbstractDialog {
@@ -69,7 +69,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 	protected String getErrorMessage() {
 		String text = incrementText.getText();
 
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			try {
 				Integer.parseInt(text);
 
@@ -81,7 +81,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 		if (minValueText != null) {
 			text = minValueText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					Long.parseLong(text);
 
@@ -94,7 +94,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 		if (maxValueText != null) {
 			text = maxValueText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					new BigDecimal(text);
 
@@ -106,7 +106,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 
 		text = startText.getText();
 
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			try {
 				Long.parseLong(text);
 
@@ -118,7 +118,7 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 		if (cacheText != null) {
 			text = cacheText.getText();
 
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				try {
 					Integer.parseInt(text);
 
@@ -147,32 +147,32 @@ public class AutoIncrementSettingDialog extends AbstractDialog {
 		Integer cache = null;
 
 		String text = incrementText.getText();
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			increment = Integer.valueOf(text);
 		}
 
 		if (minValueText != null) {
 			text = minValueText.getText();
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				minValue = Long.valueOf(text);
 			}
 		}
 
 		if (maxValueText != null) {
 			text = maxValueText.getText();
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				maxValue = new BigDecimal(text);
 			}
 		}
 
 		text = startText.getText();
-		if (Check.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			start = Long.valueOf(text);
 		}
 
 		if (cacheText != null) {
 			text = cacheText.getText();
-			if (Check.isNotEmpty(text)) {
+			if (StringUtils.isNotEmpty(text)) {
 				cache = Integer.valueOf(text);
 			}
 		}

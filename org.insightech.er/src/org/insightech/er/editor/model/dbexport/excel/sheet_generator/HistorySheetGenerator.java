@@ -3,12 +3,11 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -36,7 +35,7 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
@@ -44,7 +43,7 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 
 		String sheetName = this.getSheetName();
 
-		HSSFSheet newSheet = createNewSheet(workbook, sheetNo, sheetName,
+		Sheet newSheet = createNewSheet(workbook, sheetNo, sheetName,
 				sheetNameMap);
 
 		sheetObjectMap.put(workbook.getSheetName(workbook
@@ -54,20 +53,20 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 		monitor.worked(1);
 	}
 
-	public void setHistoryListData(HSSFWorkbook workbook, HSSFSheet sheet,
+	public void setHistoryListData(Workbook workbook, Sheet sheet,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram) {
 		CellLocation cellLocation = POIUtils
 				.findCell(sheet, FIND_KEYWORDS_LIST);
 
 		if (cellLocation != null) {
 			int rowNum = cellLocation.r;
-			HSSFRow templateRow = sheet.getRow(rowNum);
+			Row templateRow = sheet.getRow(rowNum);
 
 			ColumnTemplate columnTemplate = this.loadColumnTemplate(workbook,
 					sheet, cellLocation);
 			int order = 1;
 
-			HSSFFont linkCellFont = null;
+			Font linkCellFont = null;
 			int linkCol = -1;
 
 			final SimpleDateFormat format = new SimpleDateFormat(
@@ -75,10 +74,10 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 
 			for (ChangeTracking changeTracking : diagram
 					.getChangeTrackingList().getList()) {
-				HSSFRow row = POIUtils.insertRow(sheet, rowNum++);
+				Row row = POIUtils.insertRow(sheet, rowNum++);
 
 				for (int columnNum : columnTemplate.columnTemplateMap.keySet()) {
-					HSSFCell cell = row.createCell(columnNum);
+					Cell cell = row.createCell(columnNum);
 					String template = columnTemplate.columnTemplateMap
 							.get(columnNum);
 
@@ -94,8 +93,7 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 							value = changeTracking.getComment();
 						}
 
-						HSSFRichTextString text = new HSSFRichTextString(value);
-						cell.setCellValue(text);
+						cell.setCellValue(value);
 					}
 
 					order++;
@@ -107,7 +105,7 @@ public class HistorySheetGenerator extends AbstractSheetGenerator {
 
 			if (linkCol != -1) {
 				for (int row = cellLocation.r; row < rowNum; row++) {
-					HSSFCell cell = sheet.getRow(row).getCell(linkCol);
+					Cell cell = sheet.getRow(row).getCell(linkCol);
 					cell.getCellStyle().setFont(linkCellFont);
 				}
 			}

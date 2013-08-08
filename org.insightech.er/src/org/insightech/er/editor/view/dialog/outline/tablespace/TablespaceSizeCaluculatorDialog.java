@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,7 +32,6 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.view.dialog.common.EditableTable;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.Format;
 
 public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
@@ -345,7 +345,7 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 		String text = ((Text) control).getText();
 
 		try {
-			if (Check.isNotBlank(text)) {
+			if (StringUtils.isNotBlank(text)) {
 				int num = Integer.parseInt(text.trim());
 				if (num < 0) {
 					this.errorMessage = "error.record.num.zero";

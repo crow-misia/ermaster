@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.diagram_contents.not_element.group;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -12,7 +13,6 @@ import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
-import org.insightech.er.util.Check;
 
 public class GlobalGroupSet {
 
@@ -186,7 +186,7 @@ public class GlobalGroupSet {
 	}
 
 	private static Integer toInteger(String str) {
-		if (Check.isEmpty(str)) {
+		if (StringUtils.isEmpty(str)) {
 			return null;
 		}
 

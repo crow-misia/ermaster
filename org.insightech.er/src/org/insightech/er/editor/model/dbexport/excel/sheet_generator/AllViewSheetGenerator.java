@@ -2,9 +2,9 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -15,7 +15,7 @@ import org.insightech.er.util.POIUtils;
 public class AllViewSheetGenerator extends ViewSheetGenerator {
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
@@ -25,14 +25,14 @@ public class AllViewSheetGenerator extends ViewSheetGenerator {
 		LoopDefinition loopDefinition = loopDefinitionMap.get(this
 				.getTemplateSheetName());
 
-		HSSFSheet newSheet = createNewSheet(workbook, sheetNo,
+		Sheet newSheet = createNewSheet(workbook, sheetNo,
 				loopDefinition.sheetName, sheetNameMap);
 
 		sheetObjectMap.put(workbook.getSheetName(workbook
 				.getSheetIndex(newSheet)), diagram.getDiagramContents()
 				.getContents().getViewSet());
 
-		HSSFSheet oldSheet = workbook.getSheetAt(sheetNo);
+		Sheet oldSheet = workbook.getSheetAt(sheetNo);
 
 		boolean first = true;
 
@@ -59,9 +59,9 @@ public class AllViewSheetGenerator extends ViewSheetGenerator {
 		}
 
 		if (first) {
-			for (int i = loopDefinition.startLine - 1; i <= newSheet
-					.getLastRowNum(); i++) {
-				HSSFRow row = newSheet.getRow(i);
+			for (int i = loopDefinition.startLine - 1, n = newSheet
+					.getLastRowNum(); i <= n; i++) {
+				Row row = newSheet.getRow(i);
 				if (row != null) {
 					newSheet.removeRow(row);
 				}

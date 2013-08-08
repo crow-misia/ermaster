@@ -1,11 +1,11 @@
 package org.insightech.er.editor.model.dbexport.ddl.validator.rule.table.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IMarker;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.dbexport.ddl.validator.ValidateResult;
 import org.insightech.er.editor.model.dbexport.ddl.validator.rule.table.TableRule;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
-import org.insightech.er.util.Check;
 
 public class NoTableNameRule extends TableRule {
 
@@ -14,7 +14,7 @@ public class NoTableNameRule extends TableRule {
 	 */
 	@Override
 	public boolean validate(ERTable table) {
-		if (Check.isBlank(table.getPhysicalName())) {
+		if (StringUtils.isBlank(table.getPhysicalName())) {
 			ValidateResult validateResult = new ValidateResult();
 			validateResult.setMessage(ResourceString
 					.getResourceString("error.validate.no.table.name"));

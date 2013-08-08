@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
-import org.insightech.er.util.Check;
 
 public class PostgresTablespaceProperties implements TablespaceProperties {
 
@@ -75,7 +75,7 @@ public class PostgresTablespaceProperties implements TablespaceProperties {
 	public List<String> validate() {
 		List<String> errorMessage = new ArrayList<String>();
 
-		if (Check.isBlank(this.getLocation())) {
+		if (StringUtils.isBlank(this.getLocation())) {
 			errorMessage.add("error.tablespace.location.empty");
 		}
 

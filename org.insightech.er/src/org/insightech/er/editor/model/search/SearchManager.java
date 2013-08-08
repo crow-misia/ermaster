@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
@@ -15,7 +16,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.NameValue;
 
 public class SearchManager {
@@ -139,7 +139,7 @@ public class SearchManager {
 		// すべて検索（置換）
 		this.all = all;
 
-		if (Check.isEmpty(keyword)) {
+		if (StringUtils.isEmpty(keyword)) {
 			return null;
 		}
 

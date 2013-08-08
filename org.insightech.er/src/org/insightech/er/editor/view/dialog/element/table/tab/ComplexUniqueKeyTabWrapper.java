@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -163,7 +164,7 @@ public class ComplexUniqueKeyTabWrapper extends ValidatableTabWrapper {
 			public void widgetSelected(SelectionEvent e) {
 				String name = nameText.getText().trim();
 
-				if (Check.isNotEmpty(name) &&
+				if (StringUtils.isNotEmpty(name) &&
 						!Check.isAlphabet(name)) {
 					Activator
 							.showErrorDialog("error.unique.key.name.not.alphabet");

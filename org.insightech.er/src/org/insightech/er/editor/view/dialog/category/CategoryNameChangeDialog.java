@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.category;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -7,7 +8,6 @@ import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
-import org.insightech.er.util.Check;
 
 public class CategoryNameChangeDialog extends AbstractDialog {
 
@@ -49,7 +49,7 @@ public class CategoryNameChangeDialog extends AbstractDialog {
 	protected String getErrorMessage() {
 		String text = categoryNameText.getText().trim();
 
-		if (Check.isEmpty(text)) {
+		if (StringUtils.isEmpty(text)) {
 			return "error.category.name.empty";
 		}
 

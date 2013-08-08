@@ -2,8 +2,8 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
@@ -37,7 +37,7 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 	 * @param sheet
 	 * @param sequence
 	 */
-	public void setSequenceData(HSSFWorkbook workbook, HSSFSheet sheet,
+	public void setSequenceData(Workbook workbook, Sheet sheet,
 			Sequence sequence) {
 		POIUtils.replace(sheet, KEYWORD_SEQUENCE_NAME, getValue(
 				this.keywordsValueMap, KEYWORD_SEQUENCE_NAME, sequence
@@ -65,7 +65,7 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 	}
 
 	@Override
-	public void generate(IProgressMonitor monitor, HSSFWorkbook workbook,
+	public void generate(IProgressMonitor monitor, Workbook workbook,
 			int sheetNo, boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,
@@ -74,7 +74,7 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 		for (Sequence sequence : diagram.getDiagramContents().getSequenceSet()) {
 			String name = sequence.getName();
 
-			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
+			Sheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
 			sheetObjectMap.put(workbook.getSheetName(workbook

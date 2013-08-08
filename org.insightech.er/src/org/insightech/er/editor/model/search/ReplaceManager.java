@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -271,7 +272,7 @@ public class ReplaceManager {
 				return null;
 			}
 
-			if (Check.isNotEmpty(str)) {
+			if (StringUtils.isNotEmpty(str)) {
 				TypeData oldTypeData = word.getTypeData();
 				TypeData newTypeData = new TypeData(Integer.parseInt(str),
 						oldTypeData.getDecimal(), oldTypeData.isArray(),
@@ -293,7 +294,7 @@ public class ReplaceManager {
 				return null;
 			}
 
-			if (Check.isNotEmpty(str)) {
+			if (StringUtils.isNotEmpty(str)) {
 				TypeData oldTypeData = word.getTypeData();
 				TypeData newTypeData = new TypeData(oldTypeData.getLength(),
 						Integer.parseInt(str), oldTypeData.isArray(),
@@ -324,7 +325,7 @@ public class ReplaceManager {
 	}
 
 	private static boolean checkAlphabet(int type, String str) {
-		if (Check.isEmpty(str)) {
+		if (StringUtils.isEmpty(str)) {
 			return true;
 		}
 
@@ -340,7 +341,7 @@ public class ReplaceManager {
 	}
 
 	private static boolean checkDigit(int type, String str) {
-		if (Check.isEmpty(str)) {
+		if (StringUtils.isEmpty(str)) {
 			return true;
 		}
 
@@ -363,7 +364,7 @@ public class ReplaceManager {
 
 	private static boolean checkRequired(int type, String str) {
 		for (int requiredType : REQUIRED_TYPES) {
-			if (type == requiredType && Check.isBlank(str)) {
+			if (type == requiredType && StringUtils.isBlank(str)) {
 				return false;
 			}
 		}

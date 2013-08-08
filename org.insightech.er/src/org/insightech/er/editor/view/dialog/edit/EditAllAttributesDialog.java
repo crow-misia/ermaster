@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -696,7 +697,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 					String text = ((Text) control).getText().trim();
 
 					try {
-						if (Check.isNotEmpty(text)) {
+						if (StringUtils.isNotEmpty(text)) {
 							int len = Integer.parseInt(text);
 							if (len < 0) {
 								this.errorMessage = "error.column.length.zero";
@@ -728,7 +729,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 					String text = ((Text) control).getText().trim();
 
 					try {
-						if (Check.isNotEmpty(text)) {
+						if (StringUtils.isNotEmpty(text)) {
 							int decimal = Integer.parseInt(text);
 							if (decimal < 0) {
 								this.errorMessage = "error.column.decimal.zero";

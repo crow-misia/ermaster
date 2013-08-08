@@ -1,12 +1,12 @@
 package org.insightech.er.editor.model.dbexport.ddl.validator.rule.column.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IMarker;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.dbexport.ddl.validator.ValidateResult;
 import org.insightech.er.editor.model.dbexport.ddl.validator.rule.column.ColumnRule;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
-import org.insightech.er.util.Check;
 
 public class NoColumnNameRule extends ColumnRule {
 
@@ -15,7 +15,7 @@ public class NoColumnNameRule extends ColumnRule {
 	 */
 	@Override
 	public boolean validate(ERTable table, NormalColumn column) {
-		if (Check.isBlank(column.getPhysicalName())) {
+		if (StringUtils.isBlank(column.getPhysicalName())) {
 			ValidateResult validateResult = new ValidateResult();
 			validateResult.setMessage(ResourceString
 					.getResourceString("error.validate.no.column.name")

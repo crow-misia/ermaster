@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.editor.model.ERDiagram;
@@ -20,7 +20,6 @@ import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDe
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
-import org.insightech.er.util.Check;
 import org.insightech.er.util.POIUtils;
 import org.insightech.er.util.POIUtils.CellLocation;
 
@@ -116,28 +115,28 @@ public abstract class AbstractSheetGenerator {
 	public static class ColumnTemplate {
 		public Map<Integer, String> columnTemplateMap = new HashMap<Integer, String>();
 
-		public List<HSSFCellStyle> topRowCellStyleList;
+		public List<CellStyle> topRowCellStyleList;
 
-		public List<HSSFCellStyle> middleRowCellStyleList;
+		public List<CellStyle> middleRowCellStyleList;
 
-		public List<HSSFCellStyle> bottomRowCellStyleList;
+		public List<CellStyle> bottomRowCellStyleList;
 	}
 
 	public static class MatrixCellStyle {
-		public HSSFCellStyle headerTemplateCellStyle;
+		public CellStyle headerTemplateCellStyle;
 
-		public HSSFCellStyle style11;
-		public HSSFCellStyle style12;
-		public HSSFCellStyle style13;
-		public HSSFCellStyle style21;
-		public HSSFCellStyle style22;
-		public HSSFCellStyle style23;
-		public HSSFCellStyle style31;
-		public HSSFCellStyle style32;
-		public HSSFCellStyle style33;
+		public CellStyle style11;
+		public CellStyle style12;
+		public CellStyle style13;
+		public CellStyle style21;
+		public CellStyle style22;
+		public CellStyle style23;
+		public CellStyle style31;
+		public CellStyle style32;
+		public CellStyle style33;
 	}
 
-	protected Map<String, String> buildKeywordsValueMap(HSSFSheet wordsSheet,
+	protected Map<String, String> buildKeywordsValueMap(Sheet wordsSheet,
 			int columnNo, String[] keywords) {
 		Map<String, String> keywordsValueMap = new HashMap<String, String>();
 
@@ -145,9 +144,9 @@ public abstract class AbstractSheetGenerator {
 			CellLocation location = POIUtils.findCell(wordsSheet, keyword,
 					columnNo);
 			if (location != null) {
-				HSSFRow row = wordsSheet.getRow(location.r);
+				Row row = wordsSheet.getRow(location.r);
 
-				HSSFCell cell = row.getCell(location.c + 2);
+				Cell cell = row.getCell(location.c + 2);
 				String value = cell.getRichStringCellValue().getString();
 
 				if (value != null) {
@@ -165,7 +164,7 @@ public abstract class AbstractSheetGenerator {
 			if (Boolean.TRUE.equals(obj)) {
 				String value = keywordsValueMap.get(keyword);
 
-				if (Check.isNotEmpty(value)) {
+				if (StringUtils.isNotEmpty(value)) {
 					return value;
 				}
 			} else {
@@ -181,11 +180,11 @@ public abstract class AbstractSheetGenerator {
 	}
 
 	protected void setColumnData(Map<String, String> keywordsValueMap,
-			ColumnTemplate columnTemplate, HSSFRow row,
+			ColumnTemplate columnTemplate, Row row,
 			NormalColumn normalColumn, TableView tableView, int order) {
 
 		for (int columnNum : columnTemplate.columnTemplateMap.keySet()) {
-			HSSFCell cell = row.createCell(columnNum);
+			Cell cell = row.createCell(columnNum);
 			String template = columnTemplate.columnTemplateMap.get(columnNum);
 
 			String value = null;
@@ -202,8 +201,7 @@ public abstract class AbstractSheetGenerator {
 				cell.setCellValue(num);
 
 			} catch (NumberFormatException e) {
-				HSSFRichTextString text = new HSSFRichTextString(value);
-				cell.setCellValue(text);
+				cell.setCellValue(value);
 			}
 		}
 	}
@@ -370,20 +368,20 @@ public abstract class AbstractSheetGenerator {
 		return getValue(keywordsValueMap, keyword, obj);
 	}
 
-	protected ColumnTemplate loadColumnTemplate(HSSFWorkbook workbook,
-			HSSFSheet templateSheet, CellLocation location) {
+	protected ColumnTemplate loadColumnTemplate(Workbook workbook,
+			Sheet templateSheet, CellLocation location) {
 		if (location == null) {
 			return null;
 		}
 
 		ColumnTemplate columnTemplate = new ColumnTemplate();
 
-		HSSFRow row = templateSheet.getRow(location.r);
-		HSSFRow bottomRow = templateSheet.getRow(location.r + 1);
+		Row row = templateSheet.getRow(location.r);
+		Row bottomRow = templateSheet.getRow(location.r + 1);
 
 		for (int colNum = row.getFirstCellNum(); colNum <= row.getLastCellNum(); colNum++) {
 
-			HSSFCell cell = row.getCell(colNum);
+			Cell cell = row.getCell(colNum);
 
 			if (cell != null) {
 				columnTemplate.columnTemplateMap.put(colNum, cell
@@ -399,15 +397,15 @@ public abstract class AbstractSheetGenerator {
 				workbook, row);
 
 		for (short i = 0; i < columnTemplate.middleRowCellStyleList.size(); i++) {
-			HSSFCellStyle middleRowCellStyle = columnTemplate.middleRowCellStyleList
+			CellStyle middleRowCellStyle = columnTemplate.middleRowCellStyleList
 					.get(i);
 			if (middleRowCellStyle != null) {
-				HSSFCellStyle topRowCellStyle = columnTemplate.topRowCellStyleList
+				CellStyle topRowCellStyle = columnTemplate.topRowCellStyleList
 						.get(i);
-				HSSFCellStyle bottomRowCellStyle = columnTemplate.bottomRowCellStyleList
+				CellStyle bottomRowCellStyle = columnTemplate.bottomRowCellStyleList
 						.get(i);
 
-				HSSFCell bottomCell = bottomRow.getCell(row.getFirstCellNum()
+				Cell bottomCell = bottomRow.getCell(row.getFirstCellNum()
 						+ i);
 
 				topRowCellStyle.setBorderBottom(bottomCell.getCellStyle()
@@ -426,19 +424,19 @@ public abstract class AbstractSheetGenerator {
 		return columnTemplate;
 	}
 
-	protected void setCellStyle(ColumnTemplate columnTemplate, HSSFSheet sheet,
+	protected void setCellStyle(ColumnTemplate columnTemplate, Sheet sheet,
 			int firstRowNum, int rowSize, int firstColNum) {
 
 		sheet.removeRow(sheet.getRow(firstRowNum + rowSize));
 
-		HSSFRow bottomRowTemplate = sheet.getRow(firstRowNum + rowSize + 1);
+		Row bottomRowTemplate = sheet.getRow(firstRowNum + rowSize + 1);
 		sheet.removeRow(bottomRowTemplate);
 
 		for (int r = firstRowNum + 1; r < firstRowNum + rowSize; r++) {
-			HSSFRow row = sheet.getRow(r);
+			Row row = sheet.getRow(r);
 
 			for (int i = 0; i < columnTemplate.middleRowCellStyleList.size(); i++) {
-				HSSFCell cell = row.getCell(firstColNum + i);
+				Cell cell = row.getCell(firstColNum + i);
 				if (cell != null
 						&& columnTemplate.middleRowCellStyleList.get(i) != null) {
 					cell.setCellStyle(columnTemplate.middleRowCellStyleList
@@ -448,46 +446,46 @@ public abstract class AbstractSheetGenerator {
 		}
 
 		if (rowSize > 0) {
-			HSSFRow topRow = sheet.getRow(firstRowNum);
+			Row topRow = sheet.getRow(firstRowNum);
 
-			for (int i = 0; i < columnTemplate.topRowCellStyleList.size(); i++) {
-				HSSFCell cell = topRow.getCell(firstColNum + i);
+			int i = 0;
+			for (final CellStyle style : columnTemplate.topRowCellStyleList) {
+				Cell cell = topRow.getCell(firstColNum + i);
+				i++;
 				if (cell != null) {
-					if (columnTemplate.topRowCellStyleList.get(i) != null) {
-						cell.setCellStyle(columnTemplate.topRowCellStyleList
-								.get(i));
+					if (style != null) {
+						cell.setCellStyle(style);
 					}
 				}
 			}
 
-			HSSFRow bottomRow = sheet.getRow(firstRowNum + rowSize - 1);
+			Row bottomRow = sheet.getRow(firstRowNum + rowSize - 1);
 
-			for (int i = 0; i < columnTemplate.bottomRowCellStyleList.size(); i++) {
-				HSSFCell bottomRowCell = bottomRow.getCell(firstColNum + i);
+			i = 0;
+			for (final CellStyle style : columnTemplate.bottomRowCellStyleList) {
+				Cell bottomRowCell = bottomRow.getCell(firstColNum + i);
+				i++;
 				if (bottomRowCell != null) {
-					if (columnTemplate.bottomRowCellStyleList.get(i) != null) {
-						bottomRowCell
-								.setCellStyle(columnTemplate.bottomRowCellStyleList
-										.get(i));
+					if (style != null) {
+						bottomRowCell.setCellStyle(style);
 					}
 				}
 			}
 
 		} else {
-			HSSFRow bottomRow = sheet.getRow(firstRowNum - 1);
+			Row bottomRow = sheet.getRow(firstRowNum - 1);
 
 			if (bottomRow != null) {
-				for (int i = 0; i < columnTemplate.bottomRowCellStyleList
-						.size(); i++) {
-					HSSFCell bottomRowCell = bottomRow.getCell(firstColNum + i);
+				int i = 0;
+				for (final CellStyle style : columnTemplate.bottomRowCellStyleList) {
+					Cell bottomRowCell = bottomRow.getCell(firstColNum + i);
+					i++;
 
 					if (bottomRowCell != null) {
-						HSSFCellStyle bottomRowCellStyle = bottomRowCell
+						CellStyle bottomRowCellStyle = bottomRowCell
 								.getCellStyle();
-						if (columnTemplate.bottomRowCellStyleList.get(i) != null) {
-							bottomRowCellStyle
-									.setBorderBottom(columnTemplate.bottomRowCellStyleList
-											.get(i).getBorderBottom());
+						if (style != null) {
+							bottomRowCellStyle.setBorderBottom(style.getBorderBottom());
 						}
 					}
 				}
@@ -502,9 +500,9 @@ public abstract class AbstractSheetGenerator {
 		}
 	}
 
-	public static HSSFSheet createNewSheet(HSSFWorkbook workbook, int sheetNo,
+	public static Sheet createNewSheet(Workbook workbook, int sheetNo,
 			String name, Map<String, Integer> sheetNameMap) {
-		HSSFSheet sheet = workbook.cloneSheet(sheetNo);
+		Sheet sheet = workbook.cloneSheet(sheetNo);
 		int newSheetNo = workbook.getSheetIndex(sheet);
 
 		workbook.setSheetName(newSheetNo, decideSheetName(name,
@@ -537,13 +535,13 @@ public abstract class AbstractSheetGenerator {
 		return sheetName;
 	}
 
-	public void init(HSSFSheet wordsSheet) {
+	public void init(Sheet wordsSheet) {
 		this.keywordsValueMap = this.buildKeywordsValueMap(wordsSheet, this
 				.getKeywordsColumnNo(), this.getKeywords());
 	}
 
 	public abstract void generate(IProgressMonitor monitor,
-			HSSFWorkbook workbook, int sheetNo,
+			Workbook workbook, int sheetNo,
 			boolean useLogicalNameAsSheetName,
 			Map<String, Integer> sheetNameMap,
 			Map<String, ObjectModel> sheetObjectMap, ERDiagram diagram,

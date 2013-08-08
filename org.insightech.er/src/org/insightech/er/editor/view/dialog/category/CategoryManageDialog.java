@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,7 +32,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 import org.insightech.er.editor.model.settings.CategorySetting;
 import org.insightech.er.editor.model.settings.Settings;
-import org.insightech.er.util.Check;
 
 public class CategoryManageDialog extends AbstractDialog {
 
@@ -339,7 +339,7 @@ public class CategoryManageDialog extends AbstractDialog {
 			public void widgetSelected(SelectionEvent e) {
 				String name = categoryNameText.getText().trim();
 
-				if (Check.isEmpty(name)) {
+				if (StringUtils.isEmpty(name)) {
 					return;
 				}
 
@@ -370,7 +370,7 @@ public class CategoryManageDialog extends AbstractDialog {
 			public void widgetSelected(SelectionEvent e) {
 				String name = categoryNameText.getText().trim();
 
-				if (Check.isEmpty(name)) {
+				if (StringUtils.isEmpty(name)) {
 					return;
 				}
 
