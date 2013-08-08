@@ -23,7 +23,7 @@ import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.element.relation.RelationDialog;
 import org.insightech.er.util.Format;
 
-public class RelationOutlineEditPart extends AbstractOutlineEditPart {
+public class RelationOutlineEditPart extends AbstractOutlineEditPart<Object> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(ERTable.PROPERTY_CHANGE_PHYSICAL_NAME)) {

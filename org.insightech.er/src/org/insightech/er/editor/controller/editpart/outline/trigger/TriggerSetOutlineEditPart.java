@@ -12,7 +12,7 @@ import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditP
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.TriggerSet;
 
-public class TriggerSetOutlineEditPart extends AbstractOutlineEditPart {
+public class TriggerSetOutlineEditPart extends AbstractOutlineEditPart<Trigger> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName()
@@ -21,11 +21,8 @@ public class TriggerSetOutlineEditPart extends AbstractOutlineEditPart {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<Trigger> getModelChildrenInternal() {
 		TriggerSet triggerSet = (TriggerSet) this.getModel();
 
 		List<Trigger> triggerList = triggerSet.getTriggerList();

@@ -16,7 +16,7 @@ import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditP
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.SequenceSet;
 
-public class SequenceSetOutlineEditPart extends AbstractOutlineEditPart {
+public class SequenceSetOutlineEditPart extends AbstractOutlineEditPart<Sequence> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(
@@ -25,11 +25,8 @@ public class SequenceSetOutlineEditPart extends AbstractOutlineEditPart {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<Sequence> getModelChildrenInternal() {
 		SequenceSet sequenceSet = (SequenceSet) this.getModel();
 
 		List<Sequence> sequenceList = sequenceSet.getSequenceList();

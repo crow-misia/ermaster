@@ -22,7 +22,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.element.view.ViewDialog;
 
-public class ViewOutlineEditPart extends AbstractOutlineEditPart implements
+public class ViewOutlineEditPart extends AbstractOutlineEditPart<Object> implements
 		DeleteableEditPart {
 
 	public void propertyChange(PropertyChangeEvent evt) {

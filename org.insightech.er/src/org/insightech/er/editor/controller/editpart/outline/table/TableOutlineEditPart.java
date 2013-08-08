@@ -28,14 +28,11 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.index.
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.element.table.TableDialog;
 
-public class TableOutlineEditPart extends AbstractOutlineEditPart implements
+public class TableOutlineEditPart extends AbstractOutlineEditPart<AbstractModel> implements
 		DeleteableEditPart {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<AbstractModel> getModelChildrenInternal() {
 		List<AbstractModel> children = new ArrayList<AbstractModel>();
 
 		ERTable table = (ERTable) this.getModel();

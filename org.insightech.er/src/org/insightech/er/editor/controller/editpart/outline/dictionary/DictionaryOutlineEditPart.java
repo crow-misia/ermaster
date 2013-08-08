@@ -13,7 +13,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Di
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.settings.Settings;
 
-public class DictionaryOutlineEditPart extends AbstractOutlineEditPart {
+public class DictionaryOutlineEditPart extends AbstractOutlineEditPart<Word> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(Dictionary.PROPERTY_CHANGE_DICTIONARY)) {
@@ -21,11 +21,8 @@ public class DictionaryOutlineEditPart extends AbstractOutlineEditPart {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<Word> getModelChildrenInternal() {
 		Dictionary dictionary = (Dictionary) this.getModel();
 		List<Word> list = dictionary.getWordList();
 
@@ -40,6 +37,7 @@ public class DictionaryOutlineEditPart extends AbstractOutlineEditPart {
 
 		return list;
 	}
+
 
 	/**
 	 * {@inheritDoc}

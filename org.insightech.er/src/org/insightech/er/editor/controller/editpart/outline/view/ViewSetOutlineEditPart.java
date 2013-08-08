@@ -14,7 +14,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.ViewSet;
 import org.insightech.er.editor.model.settings.Settings;
 
-public class ViewSetOutlineEditPart extends AbstractOutlineEditPart {
+public class ViewSetOutlineEditPart extends AbstractOutlineEditPart<View> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(ViewSet.PROPERTY_CHANGE_VIEW_SET)) {
@@ -22,11 +22,8 @@ public class ViewSetOutlineEditPart extends AbstractOutlineEditPart {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<View> getModelChildrenInternal() {
 		ViewSet viewSet = (ViewSet) this.getModel();
 
 		List<View> list = viewSet.getList();

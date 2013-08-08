@@ -12,7 +12,7 @@ import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditP
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceSet;
 
-public class TablespaceSetOutlineEditPart extends AbstractOutlineEditPart {
+public class TablespaceSetOutlineEditPart extends AbstractOutlineEditPart<Tablespace> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(
@@ -21,11 +21,8 @@ public class TablespaceSetOutlineEditPart extends AbstractOutlineEditPart {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<Tablespace> getModelChildrenInternal() {
 		TablespaceSet tablespaceSet = (TablespaceSet) this.getModel();
 
 		List<Tablespace> tablespaceList = tablespaceSet.getTablespaceList();

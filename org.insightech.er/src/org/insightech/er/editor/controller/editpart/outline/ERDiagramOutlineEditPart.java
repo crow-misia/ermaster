@@ -9,13 +9,13 @@ import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.DiagramContents;
 
-public class ERDiagramOutlineEditPart extends AbstractOutlineEditPart {
+public class ERDiagramOutlineEditPart extends AbstractOutlineEditPart<AbstractModel> {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<AbstractModel> getModelChildrenInternal() {
 		List<AbstractModel> modelChildren = new ArrayList<AbstractModel>();
 		ERDiagram diagram = (ERDiagram) this.getModel();
 		DiagramContents diagramContents = diagram.getDiagramContents();

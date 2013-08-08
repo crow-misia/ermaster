@@ -16,7 +16,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.TableS
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.settings.Settings;
 
-public class TableSetOutlineEditPart extends AbstractOutlineEditPart {
+public class TableSetOutlineEditPart extends AbstractOutlineEditPart<ERTable> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(TableSet.PROPERTY_CHANGE_TABLE_SET)) {
@@ -24,11 +24,8 @@ public class TableSetOutlineEditPart extends AbstractOutlineEditPart {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<ERTable> getModelChildrenInternal() {
 		TableSet tableSet = (TableSet) this.getModel();
 
 		List<ERTable> list = new ArrayList<ERTable>();

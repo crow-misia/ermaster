@@ -16,7 +16,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.IndexSet;
 
-public class IndexSetOutlineEditPart extends AbstractOutlineEditPart {
+public class IndexSetOutlineEditPart extends AbstractOutlineEditPart<Index> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(IndexSet.PROPERTY_CHANGE_INDEXES)) {
@@ -28,7 +28,7 @@ public class IndexSetOutlineEditPart extends AbstractOutlineEditPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<Index> getModelChildrenInternal() {
 		List<Index> children = new ArrayList<Index>();
 
 		ERDiagram diagram = this.getDiagram();

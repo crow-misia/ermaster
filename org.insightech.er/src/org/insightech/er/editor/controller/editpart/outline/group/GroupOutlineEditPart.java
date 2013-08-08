@@ -23,7 +23,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.group.CopyGro
 import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSet;
 import org.insightech.er.editor.view.dialog.group.GroupDialog;
 
-public class GroupOutlineEditPart extends AbstractOutlineEditPart implements
+public class GroupOutlineEditPart extends AbstractOutlineEditPart<Object> implements
 		DeleteableEditPart {
 
 	public void propertyChange(PropertyChangeEvent evt) {

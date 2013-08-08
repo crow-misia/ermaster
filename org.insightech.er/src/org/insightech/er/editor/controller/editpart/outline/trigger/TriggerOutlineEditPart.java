@@ -19,7 +19,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 import org.insightech.er.editor.view.dialog.outline.trigger.TriggerDialog;
 
-public class TriggerOutlineEditPart extends AbstractOutlineEditPart implements
+public class TriggerOutlineEditPart extends AbstractOutlineEditPart<Object> implements
 		DeleteableEditPart {
 
 	public void propertyChange(PropertyChangeEvent evt) {

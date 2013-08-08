@@ -23,7 +23,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.view.dialog.outline.sequence.SequenceDialog;
 
-public class SequenceOutlineEditPart extends AbstractOutlineEditPart implements
+public class SequenceOutlineEditPart extends AbstractOutlineEditPart<Object> implements
 		DeleteableEditPart {
 
 	public void propertyChange(PropertyChangeEvent evt) {

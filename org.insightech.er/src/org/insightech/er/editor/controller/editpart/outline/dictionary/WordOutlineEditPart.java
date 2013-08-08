@@ -27,7 +27,7 @@ import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnG
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.word.word.WordDialog;
 
-public class WordOutlineEditPart extends AbstractOutlineEditPart {
+public class WordOutlineEditPart extends AbstractOutlineEditPart<ColumnHolder> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(Dictionary.PROPERTY_CHANGE_DICTIONARY)) {
@@ -39,7 +39,7 @@ public class WordOutlineEditPart extends AbstractOutlineEditPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<ColumnHolder> getModelChildrenInternal() {
 		List<ColumnHolder> wordHolderList = new ArrayList<ColumnHolder>();
 
 		List<ERTable> wordHolderList1 = new ArrayList<ERTable>();

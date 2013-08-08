@@ -19,7 +19,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.view.dialog.element.table.sub.IndexDialog;
 
-public class IndexOutlineEditPart extends AbstractOutlineEditPart implements
+public class IndexOutlineEditPart extends AbstractOutlineEditPart<Object> implements
 		DeleteableEditPart {
 
 	public void propertyChange(PropertyChangeEvent evt) {

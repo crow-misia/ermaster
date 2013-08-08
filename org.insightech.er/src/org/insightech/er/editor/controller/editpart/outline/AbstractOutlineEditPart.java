@@ -1,6 +1,7 @@
 package org.insightech.er.editor.controller.editpart.outline;
 
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
@@ -9,8 +10,10 @@ import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 
-public abstract class AbstractOutlineEditPart extends AbstractTreeEditPart
+public abstract class AbstractOutlineEditPart<T> extends AbstractTreeEditPart
 		implements PropertyChangeListener {
+	/** Cache Model Children */
+	private List<T> modelChildren;
 
 	/**
 	 * {@inheritDoc}
@@ -47,7 +50,7 @@ public abstract class AbstractOutlineEditPart extends AbstractTreeEditPart
 			this.refreshOutlineVisuals();
 
 			for (Object child : this.getChildren()) {
-				AbstractOutlineEditPart part = (AbstractOutlineEditPart) child;
+				AbstractOutlineEditPart<?> part = (AbstractOutlineEditPart<?>) child;
 				part.refreshVisuals();
 			}
 		}
@@ -61,9 +64,28 @@ public abstract class AbstractOutlineEditPart extends AbstractTreeEditPart
 		return this.getDiagram().getCurrentCategory();
 	}
 
-	abstract protected void refreshOutlineVisuals();
-
 	protected void execute(Command command) {
 		this.getViewer().getEditDomain().getCommandStack().execute(command);
+	}
+
+	@Override
+	protected void refreshChildren() {
+		this.modelChildren = null;
+		super.refreshChildren();
+	}
+
+	@Override
+	protected final List<T> getModelChildren() {
+		if (modelChildren == null) {
+			modelChildren = getModelChildrenInternal();
+		}
+		return modelChildren;
+	}
+
+	protected abstract void refreshOutlineVisuals();
+
+	@SuppressWarnings("unchecked")
+	protected List<T> getModelChildrenInternal() {
+		return super.getModelChildren();
 	}
 }

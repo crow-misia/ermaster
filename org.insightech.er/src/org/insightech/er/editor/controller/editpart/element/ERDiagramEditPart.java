@@ -76,8 +76,8 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List getModelChildren() {
-		List<Object> modelChildren = new ArrayList<Object>();
+	protected List<ViewableModel> getModelChildren() {
+		List<ViewableModel> modelChildren = new ArrayList<ViewableModel>();
 
 		ERDiagram diagram = (ERDiagram) this.getModel();
 

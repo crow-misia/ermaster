@@ -12,7 +12,7 @@ import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditP
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSet;
 
-public class GroupSetOutlineEditPart extends AbstractOutlineEditPart {
+public class GroupSetOutlineEditPart extends AbstractOutlineEditPart<ColumnGroup> {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(GroupSet.PROPERTY_CHANGE_GROUP_SET)) {
@@ -20,11 +20,8 @@ public class GroupSetOutlineEditPart extends AbstractOutlineEditPart {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected List getModelChildren() {
+	protected List<ColumnGroup> getModelChildrenInternal() {
 		GroupSet columnGroupSet = (GroupSet) this.getModel();
 
 		List<ColumnGroup> columnGroupList = columnGroupSet.getGroupList();
