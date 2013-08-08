@@ -17,7 +17,6 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.insightech.er.Activator;
 import org.insightech.er.editor.controller.editpart.element.node.NodeElementEditPart;
-import org.insightech.er.editor.controller.editpart.element.node.NoteEditPart;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Bendpoint;
@@ -229,7 +228,7 @@ public abstract class ERDiagramConnectionEditPart extends
 	private void calculateAnchorLocation() {
 		ConnectionElement connection = (ConnectionElement) this.getModel();
 
-		NoteEditPart sourceEditPart = (NoteEditPart) this.getSource();
+		NodeElementEditPart sourceEditPart = (NodeElementEditPart) this.getSource();
 
 		Point sourcePoint = null;
 		Point targetPoint = null;
