@@ -18,62 +18,49 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.proper
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
 
 public interface DBManager {
+	String getId();
 
-	public static final int SUPPORT_AUTO_INCREMENT = 0;
+	String getURL(String serverName, String dbName, int port);
 
-	public static final int SUPPORT_AUTO_INCREMENT_SETTING = 1;
+	int getDefaultPort();
 
-	public static final int SUPPORT_DESC_INDEX = 2;
+	String getDriverClassName();
 
-	public static final int SUPPORT_FULLTEXT_INDEX = 3;
+	Class<Driver> getDriverClass(String driverClassName);
 
-	public static final int SUPPORT_SCHEMA = 4;
+	SqlTypeManager getSqlTypeManager();
 
-	public static final int SUPPORT_SEQUENCE = 5;
+	TableProperties createTableProperties(TableProperties tableProperties);
 
-	public String getId();
+	TablespaceProperties createTablespaceProperties();
 
-	public String getURL(String serverName, String dbName, int port);
-
-	public int getDefaultPort();
-
-	public String getDriverClassName();
-
-	public Class<Driver> getDriverClass(String driverClassName);
-
-	public SqlTypeManager getSqlTypeManager();
-
-	public TableProperties createTableProperties(TableProperties tableProperties);
-
-	public TablespaceProperties createTablespaceProperties();
-
-	public TablespaceProperties checkTablespaceProperties(
+	TablespaceProperties checkTablespaceProperties(
 			TablespaceProperties tablespaceProperties);
 
-	public DDLCreator getDDLCreator(ERDiagram diagram);
+	DDLCreator getDDLCreator(ERDiagram diagram);
 
-	public boolean isSupported(int support);
+	boolean isSupported(SupportFunction function);
 
-	public boolean doesNeedURLDatabaseName();
+	boolean doesNeedURLDatabaseName();
 
-	public boolean doesNeedURLServerName();
+	boolean doesNeedURLServerName();
 
-	public boolean isReservedWord(String str);
+	boolean isReservedWord(String str);
 
-	public String[] getIndexTypeList(ERTable table);
+	String[] getIndexTypeList(ERTable table);
 
-	public PreImportFromDBManager getPreTableImportManager();
+	PreImportFromDBManager getPreTableImportManager();
 
-	public ImportFromDBManager getTableImportManager();
+	ImportFromDBManager getTableImportManager();
 
-	public PreTableExportManager getPreTableExportManager();
+	PreTableExportManager getPreTableExportManager();
 
-	public String[] getCurrentTimeValue();
+	String[] getCurrentTimeValue();
 
-	public List<String> getImportSchemaList(Connection con) throws SQLException;
+	List<String> getImportSchemaList(Connection con) throws SQLException;
 
-	public Set<String> getSystemSchemaList();
+	Set<String> getSystemSchemaList();
 
-	public BigDecimal getSequenceMaxValue();
+	BigDecimal getSequenceMaxValue();
 
 }

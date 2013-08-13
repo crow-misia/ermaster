@@ -14,8 +14,8 @@ import org.insightech.er.Resources;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
-import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.impl.db2.DB2DBManager;
 import org.insightech.er.db.impl.hsqldb.HSQLDBDBManager;
 import org.insightech.er.editor.model.ERDiagram;
@@ -132,7 +132,7 @@ public class SequenceDialog extends AbstractDialog {
 	@Override
 	protected String getErrorMessage() {
 		if (!DBManagerFactory.getDBManager(this.diagram).isSupported(
-				DBManager.SUPPORT_SEQUENCE)) {
+				SupportFunction.SEQUENCE)) {
 			return "error.sequence.not.supported";
 		}
 

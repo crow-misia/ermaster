@@ -1,14 +1,16 @@
 package org.insightech.er.db.impl.oracle;
 
+import static org.insightech.er.db.SupportFunction.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.impl.oracle.tablespace.OracleTablespaceProperties;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
@@ -69,13 +71,24 @@ public class OracleDBManager extends DBManagerBase {
 	}
 
 	public String[] getIndexTypeList(ERTable table) {
-		return EMPTY_STRING_ARRAY;
+		return ArrayUtils.EMPTY_STRING_ARRAY;
 	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_AUTO_INCREMENT, SUPPORT_SCHEMA,
-				SUPPORT_SEQUENCE };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				DESC_INDEX,
+				BITMAP_INDEX,
+				SCHEMA,
+				SEQUENCE,
+				SEQUENCE_MINVALUE,
+				SEQUENCE_MAXVALUE,
+				SEQUENCE_CACHE,
+				SEQUENCE_CYCLE,
+				SEQUENCE_ORDER,
+				COLUMN_UNIT,
+				MATERIALIZED_VIEW,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -106,27 +119,6 @@ public class OracleDBManager extends DBManagerBase {
 
 	public String[] getCurrentTimeValue() {
 		return new String[] { "SYSDATE" };
-	}
-
-	@Override
-	public Set<String> getSystemSchemaList() {
-		final Set<String> list = new HashSet<String>();
-
-		list.add("anonymous");
-		list.add("ctxsys");
-		list.add("dbsnmp");
-		list.add("dip");
-		list.add("flows_020100");
-		list.add("flows_files");
-		list.add("hr");
-		list.add("mdsys");
-		list.add("outln");
-		list.add("sys");
-		list.add("system");
-		list.add("tsmsys");
-		list.add("xdb");
-
-		return list;
 	}
 
 	public BigDecimal getSequenceMaxValue() {

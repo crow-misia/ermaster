@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
-import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.editor.controller.command.diagram_contents.not_element.sequence.EditSequenceCommand;
 import org.insightech.er.editor.controller.editpart.DeleteableEditPart;
 import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditPart;
@@ -37,7 +37,7 @@ public class SequenceOutlineEditPart extends AbstractOutlineEditPart<Object> imp
 		Sequence sequence = (Sequence) this.getModel();
 
 		if (!DBManagerFactory.getDBManager(this.getDiagram()).isSupported(
-				DBManager.SUPPORT_SEQUENCE)) {
+				SupportFunction.SEQUENCE)) {
 			((TreeItem) getWidget()).setForeground(ColorConstants.lightGray);
 		
 		} else {

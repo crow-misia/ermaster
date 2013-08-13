@@ -1,8 +1,12 @@
 package org.insightech.er.db.impl.sqlite;
 
+import static org.insightech.er.db.SupportFunction.*;
+
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.db.PreTableExportManager;
@@ -59,12 +63,15 @@ public class SQLiteDBManager extends DBManagerBase {
 	}
 
 	public String[] getIndexTypeList(ERTable table) {
-		return EMPTY_STRING_ARRAY;
+		return ArrayUtils.EMPTY_STRING_ARRAY;
 	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_SCHEMA, SUPPORT_AUTO_INCREMENT };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				SCHEMA,
+				AUTO_INCREMENT,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -79,9 +86,6 @@ public class SQLiteDBManager extends DBManagerBase {
 		return new SQLitePreTableExportManager();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean doesNeedURLServerName() {
 		return false;

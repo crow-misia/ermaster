@@ -1,10 +1,11 @@
 package org.insightech.er.db.impl.postgres;
 
+import static org.insightech.er.db.SupportFunction.*;
+
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.impl.postgres.tablespace.PostgresTablespaceProperties;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
@@ -66,9 +67,20 @@ public class PostgresDBManager extends DBManagerBase {
 	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_AUTO_INCREMENT_SETTING, SUPPORT_SCHEMA,
-				SUPPORT_SEQUENCE };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				AUTO_INCREMENT_SETTING,
+				AUTO_INCREMENT_MINVALUE,
+				AUTO_INCREMENT_MAXVALUE,
+				AUTO_INCREMENT_CACHE,
+				AUTO_INCREMENT_CYCLE,
+				SCHEMA,
+				SEQUENCE,
+				SEQUENCE_MINVALUE,
+				SEQUENCE_MAXVALUE,
+				SEQUENCE_CYCLE,
+				ARRAY_TYPE,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -99,17 +111,6 @@ public class PostgresDBManager extends DBManagerBase {
 
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT_TIMESTAMP", "now()" };
-	}
-
-	@Override
-	public Set<String> getSystemSchemaList() {
-		final Set<String> list = new HashSet<String>();
-
-		list.add("information_schema");
-		list.add("pg_catalog");
-		list.add("pg_toast_temp_1");
-
-		return list;
 	}
 
 	public BigDecimal getSequenceMaxValue() {

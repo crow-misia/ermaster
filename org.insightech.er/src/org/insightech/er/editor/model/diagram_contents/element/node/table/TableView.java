@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
@@ -401,7 +402,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 
 		DBManager dbManager = DBManagerFactory.getDBManager(database);
 
-		if (!dbManager.isSupported(DBManager.SUPPORT_SCHEMA)) {
+		if (!dbManager.isSupported(SupportFunction.SCHEMA)) {
 			return Format.null2blank(this.getPhysicalName());
 		}
 

@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.util.Format;
 
 public class DBSetting implements Serializable, Comparable<DBSetting> {
@@ -147,7 +148,7 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 
 		DBManager dbManager = DBManagerFactory.getDBManager(this.dbsystem);
 
-		if (!dbManager.isSupported(DBManager.SUPPORT_SCHEMA)) {
+		if (!dbManager.isSupported(SupportFunction.SCHEMA)) {
 			return Format.null2blank(tableName);
 		}
 

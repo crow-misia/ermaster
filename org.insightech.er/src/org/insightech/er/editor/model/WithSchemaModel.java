@@ -2,6 +2,7 @@ package org.insightech.er.editor.model;
 
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.util.Format;
 
 public abstract class WithSchemaModel extends AbstractModel implements
@@ -36,7 +37,7 @@ public abstract class WithSchemaModel extends AbstractModel implements
 
 		DBManager dbManager = DBManagerFactory.getDBManager(database);
 
-		if (!dbManager.isSupported(DBManager.SUPPORT_SCHEMA)) {
+		if (!dbManager.isSupported(SupportFunction.SCHEMA)) {
 			return Format.null2blank(this.name);
 		}
 

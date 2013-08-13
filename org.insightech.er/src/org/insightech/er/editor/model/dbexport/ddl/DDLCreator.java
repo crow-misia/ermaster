@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -68,7 +69,7 @@ public abstract class DDLCreator {
 		}
 		if (this.ddlTarget.dropSequence
 				&& DBManagerFactory.getDBManager(diagram).isSupported(
-						DBManager.SUPPORT_SEQUENCE)) {
+						SupportFunction.SEQUENCE)) {
 			ddl.append(this.getDropSequences(diagram));
 		}
 		if (this.ddlTarget.dropTablespace) {
@@ -237,7 +238,7 @@ public abstract class DDLCreator {
 		}
 		if (this.ddlTarget.createSequence
 				&& DBManagerFactory.getDBManager(diagram).isSupported(
-						DBManager.SUPPORT_SEQUENCE)) {
+						SupportFunction.SEQUENCE)) {
 			ddl.append(this.getCreateSequences(diagram));
 		}
 		if (this.ddlTarget.createTable) {
@@ -775,7 +776,7 @@ public abstract class DDLCreator {
 
 			ddl.append(filter(column.getPhysicalName()));
 
-			if (this.getDBManager().isSupported(DBManager.SUPPORT_DESC_INDEX)) {
+			if (this.getDBManager().isSupported(SupportFunction.DESC_INDEX)) {
 				if (descs.size() > i) {
 					Boolean desc = descs.get(i);
 					if (Boolean.TRUE.equals(desc)) {

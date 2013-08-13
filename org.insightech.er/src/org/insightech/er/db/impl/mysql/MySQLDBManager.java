@@ -1,5 +1,7 @@
 package org.insightech.er.db.impl.mysql;
 
+import static org.insightech.er.db.SupportFunction.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -8,7 +10,9 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
@@ -73,10 +77,15 @@ public class MySQLDBManager extends DBManagerBase {
 	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_AUTO_INCREMENT,
-				SUPPORT_AUTO_INCREMENT_SETTING, SUPPORT_DESC_INDEX,
-				SUPPORT_FULLTEXT_INDEX, SUPPORT_SCHEMA };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				AUTO_INCREMENT,
+				AUTO_INCREMENT_SETTING,
+				DESC_INDEX,
+				FULLTEXT_INDEX,
+				SCHEMA,
+				COLUMN_CHARSET,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -136,8 +145,7 @@ public class MySQLDBManager extends DBManagerBase {
 					StringTokenizer tokenizer = new StringTokenizer(values, ",");
 
 					while (tokenizer.hasMoreElements()) {
-						String token = tokenizer.nextToken().trim();
-						list.add(token);
+						list.add(StringUtils.trim(tokenizer.nextToken()));
 					}
 				}
 			} catch (MissingResourceException e) {

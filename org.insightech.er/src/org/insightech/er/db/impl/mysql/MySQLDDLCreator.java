@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
-import org.insightech.er.db.DBManager;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
@@ -296,7 +296,7 @@ public class MySQLDDLCreator extends DDLCreator {
 
 			ddl.append(filter(column.getPhysicalName()));
 
-			if (this.getDBManager().isSupported(DBManager.SUPPORT_DESC_INDEX)) {
+			if (this.getDBManager().isSupported(SupportFunction.DESC_INDEX)) {
 				if (descs.size() > i) {
 					Boolean desc = descs.get(i);
 					if (Boolean.TRUE.equals(desc)) {

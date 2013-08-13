@@ -10,15 +10,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.ui.PlatformUI;
 import org.insightech.er.editor.model.settings.JDBCDriverSetting;
@@ -26,30 +27,41 @@ import org.insightech.er.preference.PreferenceInitializer;
 import org.insightech.er.preference.jdbc.JDBCPathDialog;
 
 public abstract class DBManagerBase implements DBManager {
-	protected static final String[] EMPTY_STRING_ARRAY = new String[0];
-
 	private final Set<String> reservedWords;
 
 	private final Map<String, ClassLoader> loaderMap;
+
+	private final boolean[] supportFunctions;
 
 	public DBManagerBase() {
 		this.reservedWords = this.getReservedWords();
 
 		this.loaderMap = new HashMap<String, ClassLoader>();
+
+		this.supportFunctions = createSupportFunctionArray(this.getSupportItems());
+	}
+
+	private static boolean[] createSupportFunctionArray(final SupportFunction[] functions) {
+		final SupportFunction[] funcs = SupportFunction.values();
+		final int n = funcs.length;
+		final boolean[] retval = new boolean[funcs.length];
+
+		for (int i = 0; i < n; i++) {
+			retval[i] = false;
+		}
+		for (final SupportFunction func : functions) {
+			retval[func.ordinal()] = true;
+		}
+		return retval;
 	}
 
 	public String getURL(String serverName, String dbName, int port) {
-		String temp = serverName.replaceAll("\\\\", "\\\\\\\\");
-		String url = this.getURL().replaceAll("<SERVER NAME>", temp);
-		url = url.replaceAll("<PORT>", String.valueOf(port));
-
-		temp = dbName.replaceAll("\\\\", "\\\\\\\\");
-		url = url.replaceAll("<DB NAME>", temp);
-
-		return url;
+		String url = StringUtils.replace(this.getURL(), "<SERVER NAME>", serverName);
+		url = StringUtils.replace(url, "<PORT>", String.valueOf(port));
+		return StringUtils.replace(url, "<DB NAME>", dbName);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class<Driver> getDriverClass(String driverClassName) {
 		String path = null;
 		Class clazz = null;
@@ -114,75 +126,50 @@ public abstract class DBManagerBase implements DBManager {
 
 		URL[] urls = new URL[count];
 
-		for (int i = 0; i < urls.length; i++) {
+		for (int i = 0, n = urls.length; i < n; i++) {
 			urls[i] = new URL("file", "", tokenizer.nextToken());
 		}
 
-		URLClassLoader loader = new URLClassLoader(urls, this.getClass()
-				.getClassLoader());
-
-		return loader;
+		return new URLClassLoader(urls, this.getClass().getClassLoader());
 	}
 
-	abstract protected String getURL();
+	protected abstract  String getURL();
 
-	abstract public String getDriverClassName();
+	public abstract String getDriverClassName();
 
 	protected Set<String> getReservedWords() {
-		Set<String> reservedWords = new HashSet<String>();
-
-		ResourceBundle bundle = ResourceBundle.getBundle(this.getClass()
+		final ResourceBundle bundle = ResourceBundle.getBundle(this.getClass()
 				.getPackage().getName()
 				+ ".reserved_word");
 
-		Enumeration<String> keys = bundle.getKeys();
-
-		while (keys.hasMoreElements()) {
-			reservedWords.add(keys.nextElement().toUpperCase());
-		}
-
-		return reservedWords;
+		return new HashSet<String>(bundle.keySet());
 	}
 
 	public boolean isReservedWord(String str) {
 		return reservedWords.contains(str.toUpperCase());
 	}
 
-	public boolean isSupported(int supportItem) {
-		int[] supportItems = this.getSupportItems();
-
-		for (final int item : supportItems) {
-			if (item == supportItem) {
-				return true;
-			}
-		}
-
-		return false;
+	public boolean isSupported(SupportFunction function) {
+		return this.supportFunctions[function.ordinal()];
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public boolean doesNeedURLDatabaseName() {
 		return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public boolean doesNeedURLServerName() {
 		return true;
 	}
 
-	abstract protected int[] getSupportItems();
-
+	@Override
 	public List<String> getImportSchemaList(Connection con) throws SQLException {
 		List<String> schemaList = new ArrayList<String>();
 
 		DatabaseMetaData metaData = con.getMetaData();
 		try {
 			ResultSet rs = metaData.getSchemas();
-
 			while (rs.next()) {
 				schemaList.add(rs.getString(1));
 			}
@@ -194,8 +181,18 @@ public abstract class DBManagerBase implements DBManager {
 		return schemaList;
 	}
 
+	@Override
 	public Set<String> getSystemSchemaList() {
-		return Collections.emptySet();
+		try {
+			final ResourceBundle bundle = ResourceBundle.getBundle(this.getClass()
+					.getPackage().getName()
+					+ ".system_schema");
+
+			return new HashSet<String>(bundle.keySet());
+		} catch (final MissingResourceException e) {
+			return Collections.emptySet();
+		}
 	}
 
+	protected abstract SupportFunction[] getSupportItems();
 }

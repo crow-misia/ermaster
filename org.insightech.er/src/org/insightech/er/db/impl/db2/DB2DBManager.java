@@ -1,10 +1,12 @@
 package org.insightech.er.db.impl.db2;
 
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import static org.insightech.er.db.SupportFunction.*;
 
+import java.math.BigDecimal;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.impl.db2.tablespace.DB2TablespaceProperties;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
@@ -62,13 +64,22 @@ public class DB2DBManager extends DBManagerBase {
 	}
 
 	public String[] getIndexTypeList(ERTable table) {
-		return EMPTY_STRING_ARRAY;
+		return ArrayUtils.EMPTY_STRING_ARRAY;
 	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_AUTO_INCREMENT, SUPPORT_SCHEMA,
-				SUPPORT_SEQUENCE };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				AUTO_INCREMENT,
+				AUTO_INCREMENT_CACHE,
+				SCHEMA,
+				SEQUENCE,
+				SEQUENCE_MINVALUE,
+				SEQUENCE_MAXVALUE,
+				SEQUENCE_CACHE,
+				SEQUENCE_CYCLE,
+				SEQUENCE_ORDER,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -99,26 +110,6 @@ public class DB2DBManager extends DBManagerBase {
 
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT TIMESTAMP" };
-	}
-
-	@Override
-	public Set<String> getSystemSchemaList() {
-		final Set<String> list = new HashSet<String>();
-
-		list.add("nullid");
-		list.add("sqlj");
-		list.add("syscat");
-		list.add("sysfun");
-		list.add("sysibm");
-		list.add("sysibmadm");
-		list.add("sysibminternal");
-		list.add("sysibmts");
-		list.add("sysproc");
-		list.add("syspublic");
-		list.add("sysstat");
-		list.add("systools");
-
-		return list;
 	}
 
 	public BigDecimal getSequenceMaxValue() {

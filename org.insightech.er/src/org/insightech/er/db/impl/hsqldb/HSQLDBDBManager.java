@@ -1,10 +1,12 @@
 package org.insightech.er.db.impl.hsqldb;
 
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import static org.insightech.er.db.SupportFunction.*;
 
+import java.math.BigDecimal;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.db.PreTableExportManager;
@@ -61,12 +63,17 @@ public class HSQLDBDBManager extends DBManagerBase {
 	}
 
 	public String[] getIndexTypeList(ERTable table) {
-		return EMPTY_STRING_ARRAY;
-	}
+		return ArrayUtils.EMPTY_STRING_ARRAY;	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_SCHEMA, SUPPORT_SEQUENCE };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				SCHEMA,
+				SEQUENCE,
+				SEQUENCE_MINVALUE,
+				SEQUENCE_MAXVALUE,
+				SEQUENCE_CYCLE,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -100,16 +107,6 @@ public class HSQLDBDBManager extends DBManagerBase {
 
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT_TIMESTAMP" };
-	}
-
-	@Override
-	public Set<String> getSystemSchemaList() {
-		final Set<String> list = new HashSet<String>();
-
-		list.add("information_schema");
-		list.add("system_lobs");
-
-		return list;
 	}
 
 	public BigDecimal getSequenceMaxValue() {

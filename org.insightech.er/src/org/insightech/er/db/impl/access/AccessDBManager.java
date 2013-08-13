@@ -1,10 +1,12 @@
 package org.insightech.er.db.impl.access;
 
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Set;
+import static org.insightech.er.db.SupportFunction.*;
 
+import java.math.BigDecimal;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.db.PreTableExportManager;
@@ -61,13 +63,15 @@ public class AccessDBManager extends DBManagerBase {
 	}
 
 	public String[] getIndexTypeList(ERTable table) {
-		return EMPTY_STRING_ARRAY;
+		return ArrayUtils.EMPTY_STRING_ARRAY;
 	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_AUTO_INCREMENT,
-				SUPPORT_AUTO_INCREMENT_SETTING };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				AUTO_INCREMENT,
+				AUTO_INCREMENT_SETTING,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -86,11 +90,6 @@ public class AccessDBManager extends DBManagerBase {
 		return new String[] { "GETDATE()", "CURRENT_TIMESTAMP" };
 	}
 
-	@Override
-	public Set<String> getSystemSchemaList() {
-		return Collections.emptySet();
-	}
-
 	public BigDecimal getSequenceMaxValue() {
 		return null;
 	}
@@ -104,9 +103,6 @@ public class AccessDBManager extends DBManagerBase {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean doesNeedURLServerName() {
 		return false;

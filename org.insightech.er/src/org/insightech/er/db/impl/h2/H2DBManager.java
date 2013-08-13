@@ -1,10 +1,11 @@
 package org.insightech.er.db.impl.h2;
 
+import static org.insightech.er.db.SupportFunction.*;
+
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.insightech.er.db.DBManagerBase;
+import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.sqltype.SqlTypeManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.db.PreTableExportManager;
@@ -23,9 +24,6 @@ public class H2DBManager extends DBManagerBase {
 		return ID;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getDriverClassName() {
 		return "org.h2.Driver";
@@ -65,10 +63,16 @@ public class H2DBManager extends DBManagerBase {
 	}
 
 	@Override
-	protected int[] getSupportItems() {
-		return new int[] { SUPPORT_AUTO_INCREMENT, SUPPORT_AUTO_INCREMENT_SETTING,
-				SUPPORT_SCHEMA, SUPPORT_SEQUENCE,
-				SUPPORT_DESC_INDEX, };
+	protected SupportFunction[] getSupportItems() {
+		return new SupportFunction[] {
+				AUTO_INCREMENT,
+				AUTO_INCREMENT_SETTING,
+				AUTO_INCREMENT_CACHE,
+				SCHEMA,
+				SEQUENCE,
+				SEQUENCE_CACHE,
+				DESC_INDEX,
+		};
 	}
 
 	public ImportFromDBManager getTableImportManager() {
@@ -102,16 +106,6 @@ public class H2DBManager extends DBManagerBase {
 
 	public String[] getCurrentTimeValue() {
 		return new String[] { "CURRENT_TIMESTAMP" };
-	}
-
-	@Override
-	public Set<String> getSystemSchemaList() {
-		final Set<String> list = new HashSet<String>();
-
-		list.add("information_schema");
-		list.add("system_lobs");
-
-		return list;
 	}
 
 	public BigDecimal getSequenceMaxValue() {
