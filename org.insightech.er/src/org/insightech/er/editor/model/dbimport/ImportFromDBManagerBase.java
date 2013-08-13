@@ -1221,19 +1221,19 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		StringTokenizer fromTokenizer = new StringTokenizer(fromPart, ",");
 
 		while (fromTokenizer.hasMoreTokens()) {
-			String tableName = fromTokenizer.nextToken().trim();
+			String tableName = StringUtils.trim(fromTokenizer.nextToken());
 
-			tableName.replaceAll(" AS", "");
-			tableName.replaceAll(" as", "");
-			tableName.replaceAll(" As", "");
-			tableName.replaceAll(" aS", "");
+			tableName = StringUtils.replace(tableName, " AS", "");
+			tableName = StringUtils.replace(tableName, " as", "");
+			tableName = StringUtils.replace(tableName, " As", "");
+			tableName = StringUtils.replace(tableName, " aS", "");
 
 			String tableAlias = null;
 
-			int asIndex = tableName.toUpperCase().indexOf(" ");
+			int asIndex = tableName.indexOf(" ");
 			if (asIndex != -1) {
-				tableAlias = tableName.substring(asIndex + 1).trim();
-				tableName = tableName.substring(0, asIndex).trim();
+				tableAlias = StringUtils.trim(tableName.substring(asIndex + 1));
+				tableName = StringUtils.trim(tableName.substring(0, asIndex));
 
 				// schema.tablename �̏ꍇ�Aschema �𖳎����čl����
 				// TODO schema ��l�����čl������悢

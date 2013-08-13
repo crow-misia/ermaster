@@ -962,7 +962,7 @@ public class XMLLoader {
 		NodeList nodeList = element.getChildNodes();
 		final int n = nodeList.getLength();
 
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < n; i++) {
 			if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}

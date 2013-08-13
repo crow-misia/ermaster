@@ -14,7 +14,6 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -453,7 +452,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 		if (openAfterSaved) {
 			try {
 				File fileToOpen = new File(saveFilePath);
-				URI uri = URIUtil.fromString(fileToOpen.toURL().toString());
+				URI uri = fileToOpen.toURI();
 
 				IWorkbenchPage page = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage();

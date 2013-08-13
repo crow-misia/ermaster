@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Row;
@@ -102,6 +103,6 @@ public class SqlTypeFactory {
 	}
 
 	public static void main(String[] args) {
-		SqlType.main((String[]) null);
+		SqlType.main(ArrayUtils.EMPTY_STRING_ARRAY);
 	}
 }

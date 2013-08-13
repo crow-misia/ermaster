@@ -3,7 +3,6 @@ package org.insightech.er.editor.model.dbexport.testdata;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

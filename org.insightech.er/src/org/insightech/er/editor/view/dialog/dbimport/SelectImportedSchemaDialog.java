@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.dbimport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -156,9 +157,10 @@ public class SelectImportedSchemaDialog extends AbstractDialog {
 		TreeNode[] schemaNodes = treeNodes[0].getChildren();
 
 		if (this.selectedSchemaList.isEmpty()) {
+			final Set<String> systemSchemaList = DBManagerFactory.getDBManager(this.importDB)
+					.getSystemSchemaList();
 			for (TreeNode schemaNode : schemaNodes) {
-				if (!DBManagerFactory.getDBManager(this.importDB)
-						.getSystemSchemaList().contains(
+				if (!systemSchemaList.contains(
 								String.valueOf(schemaNode.getValue())
 										.toLowerCase())) {
 					checkedList.add(schemaNode);
@@ -188,7 +190,8 @@ public class SelectImportedSchemaDialog extends AbstractDialog {
 				.getResourceString("label.schema")));
 		treeNodeList.add(topNode);
 
-		List<TreeNode> schemaNodeList = new ArrayList<TreeNode>();
+		final int size = schemaList.size();
+		List<TreeNode> schemaNodeList = new ArrayList<TreeNode>(size);
 
 		for (String schemaName : schemaList) {
 			TreeNode schemaNode = new TreeNode(schemaName);
@@ -196,8 +199,7 @@ public class SelectImportedSchemaDialog extends AbstractDialog {
 			schemaNodeList.add(schemaNode);
 		}
 
-		topNode.setChildren(schemaNodeList.toArray(new TreeNode[schemaNodeList
-				.size()]));
+		topNode.setChildren(schemaNodeList.toArray(new TreeNode[size]));
 
 		return treeNodeList;
 	}

@@ -13,7 +13,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
@@ -258,7 +257,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 
 			if (openAfterSaved) {
 				File fileToOpen = new File(outputExcelFilePath);
-				URI uri = URIUtil.fromString(fileToOpen.toURL().toString());
+				URI uri = fileToOpen.toURI();
 
 				IWorkbenchPage page = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage();

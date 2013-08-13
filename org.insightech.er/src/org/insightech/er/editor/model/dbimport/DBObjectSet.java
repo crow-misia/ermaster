@@ -1,6 +1,5 @@
 package org.insightech.er.editor.model.dbimport;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,17 +7,15 @@ import java.util.TreeMap;
 
 import org.insightech.er.util.Format;
 
-public class DBObjectSet implements Serializable {
+public class DBObjectSet {
 
-	private static final long serialVersionUID = 5632573903492090359L;
+	private final Map<String, List<DBObject>> schemaDbObjectListMap;
 
-	private Map<String, List<DBObject>> schemaDbObjectListMap;
+	private final List<DBObject> tablespaceList;
 
-	private List<DBObject> tablespaceList;
+	private final List<DBObject> noteList;
 
-	private List<DBObject> noteList;
-
-	private List<DBObject> groupList;
+	private final List<DBObject> groupList;
 
 	public DBObjectSet() {
 		this.schemaDbObjectListMap = new TreeMap<String, List<DBObject>>();

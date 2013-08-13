@@ -125,7 +125,7 @@ public class HSQLDBTableImportManager extends ImportFromDBManagerBase {
 					if (maxValue.longValue() == Long.MAX_VALUE) {
 						maxValue = null;
 					}
-					if (minValue.intValue() == Long.MIN_VALUE) {
+					if (minValue.longValue() == Long.MIN_VALUE) {
 						minValue = null;
 					}
 

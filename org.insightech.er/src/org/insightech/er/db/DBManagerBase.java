@@ -182,7 +182,7 @@ public abstract class DBManagerBase implements DBManager {
 	}
 
 	@Override
-	public Set<String> getSystemSchemaList() {
+	public final Set<String> getSystemSchemaList() {
 		try {
 			final ResourceBundle bundle = ResourceBundle.getBundle(this.getClass()
 					.getPackage().getName()

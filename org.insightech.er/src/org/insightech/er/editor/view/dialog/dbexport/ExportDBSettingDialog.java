@@ -2,7 +2,6 @@ package org.insightech.er.editor.view.dialog.dbexport;
 
 import java.net.UnknownHostException;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
