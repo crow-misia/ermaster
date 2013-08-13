@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -68,6 +69,8 @@ public final class IndexDialog extends AbstractDialog {
 
 	private Button uniqueCheckBox;
 
+	private Button bitmapCheckBox;
+
 	private Button fullTextCheckBox;
 
 	private boolean add;
@@ -87,6 +90,16 @@ public final class IndexDialog extends AbstractDialog {
 		this.table = table;
 		this.allColumns = table.getExpandedColumns();
 		this.selectedColumns = new ArrayList<NormalColumn>();
+	}
+
+	public static Index openDialog(final Shell parentShell,
+			final Index index, final ERTable table) {
+		final IndexDialog dialog = new IndexDialog(parentShell, index, table);
+
+		if (dialog.open() == IDialogConstants.OK_ID) {
+			return dialog.getResultIndex();
+		}
+		return null;
 	}
 
 	/**
@@ -137,7 +150,7 @@ public final class IndexDialog extends AbstractDialog {
 		final String[] indexTypeList = DBManagerFactory.getDBManager(
 				this.table.getDiagram()).getIndexTypeList(this.table);
 
-		if (indexTypeList == null || indexTypeList.length == 0) {
+		if (ArrayUtils.isEmpty(indexTypeList)) {
 			// インデックスタイプのリストが空の場合、サポートしていないと判断する
 			this.typeCombo = null;
 			return;
@@ -155,6 +168,9 @@ public final class IndexDialog extends AbstractDialog {
 	 * 
 	 */
 	private void createCheckComposite(Composite composite) {
+		DBManager dbManager = DBManagerFactory.getDBManager(this.table
+				.getDiagram());
+
 		GridData gridData2 = new GridData();
 		gridData2.horizontalSpan = 2;
 		gridData2.heightHint = 30;
@@ -172,8 +188,11 @@ public final class IndexDialog extends AbstractDialog {
 		this.uniqueCheckBox.setText(ResourceString
 				.getResourceString("label.index.unique"));
 
-		DBManager dbManager = DBManagerFactory.getDBManager(this.table
-				.getDiagram());
+		if (dbManager.isSupported(SupportFunction.BITMAP_INDEX)) {
+			this.bitmapCheckBox = new Button(checkComposite, SWT.CHECK);
+			this.bitmapCheckBox.setText(ResourceString
+					.getResourceString("label.index.bitmap"));
+		}
 
 		if (dbManager.isSupported(SupportFunction.FULLTEXT_INDEX)) {
 			this.fullTextCheckBox = new Button(checkComposite, SWT.CHECK);
@@ -355,6 +374,10 @@ public final class IndexDialog extends AbstractDialog {
 
 			this.uniqueCheckBox.setSelection(!this.targetIndex.isNonUnique());
 
+			if (this.bitmapCheckBox != null) {
+				this.bitmapCheckBox.setSelection(this.targetIndex.isBitmap());
+			}
+
 			DBManager dbManager = DBManagerFactory.getDBManager(table
 					.getDiagram());
 			if (dbManager.isSupported(SupportFunction.FULLTEXT_INDEX)) {
@@ -500,6 +523,26 @@ public final class IndexDialog extends AbstractDialog {
 				validate();
 			}
 		});
+
+		// UNIQUEインデックスと、BITMAPインデックス は排他的存在なので、片方にのみチェック出来るようにする
+		if (this.bitmapCheckBox != null) {
+			this.uniqueCheckBox.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (e.doit) {
+						bitmapCheckBox.setSelection(false);
+					}
+				}
+			});
+			this.bitmapCheckBox.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (e.doit) {
+						uniqueCheckBox.setSelection(false);
+					}
+				}
+			});
+		}
 	}
 
 	public void changeColumn(int index1, int index2) {
@@ -552,6 +595,8 @@ public final class IndexDialog extends AbstractDialog {
 	 */
 	@Override
 	protected void perfomeOK() {
+		final DBManager dbManager = DBManagerFactory.getDBManager(table.getDiagram());
+
 		String text = nameText.getText();
 
 		this.resultIndex = new Index(table, text, !this.uniqueCheckBox
@@ -564,7 +609,10 @@ public final class IndexDialog extends AbstractDialog {
 			this.resultIndex.addColumn(selectedColumn, desc);
 		}
 
-		DBManager dbManager = DBManagerFactory.getDBManager(table.getDiagram());
+		if (dbManager.isSupported(SupportFunction.BITMAP_INDEX)) {
+			this.resultIndex.setBitmap(this.bitmapCheckBox.getSelection());
+		}
+
 		if (dbManager.isSupported(SupportFunction.FULLTEXT_INDEX)) {
 			this.resultIndex.setFullText(this.fullTextCheckBox.getSelection());
 		}

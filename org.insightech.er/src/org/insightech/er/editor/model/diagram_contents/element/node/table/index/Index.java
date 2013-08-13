@@ -17,6 +17,8 @@ public class Index extends AbstractModel implements ObjectModel,
 
 	private boolean nonUnique;
 
+	private boolean bitmap;
+
 	private boolean fullText;
 
 	private String type;
@@ -95,6 +97,14 @@ public class Index extends AbstractModel implements ObjectModel,
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isBitmap() {
+		return bitmap;
+	}
+
+	public void setBitmap(boolean bitmap) {
+		this.bitmap = bitmap;
 	}
 
 	public boolean isFullText() {

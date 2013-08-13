@@ -752,6 +752,9 @@ public abstract class DDLCreator {
 		if (!index.isNonUnique()) {
 			ddl.append("UNIQUE ");
 		}
+		if (!index.isBitmap()) {
+			ddl.append("BITMAP ");
+		}
 		ddl.append("INDEX ");
 		ddl.append(filter(index.getName()));
 		ddl.append(" ON ");
