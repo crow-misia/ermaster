@@ -194,7 +194,7 @@ public class DBSettingListDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		int index = settingTable.getSelectionIndex();
 		if (index == -1) {
 			return "dialog.message.load.db.setting";

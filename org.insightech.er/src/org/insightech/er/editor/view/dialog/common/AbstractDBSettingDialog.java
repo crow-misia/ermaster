@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.common;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -173,7 +175,7 @@ public abstract class AbstractDBSettingDialog extends AbstractDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(List<String> errorArgs) {
 		DBManager manager = null;
 
 		String database = this.getDBSName();

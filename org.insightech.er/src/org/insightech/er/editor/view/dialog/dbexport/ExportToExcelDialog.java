@@ -183,7 +183,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (isBlank(this.templateCombo)) {
 			return "error.template.is.empty";
 		}

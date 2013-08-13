@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -115,7 +116,7 @@ public class ExportToTranslationDictionaryDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (isBlank(this.dictionaryNameText)) {
 			return "error.translation.dictionary.name.empty";
 		}

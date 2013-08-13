@@ -166,7 +166,7 @@ public class ExportToTestDataDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		boolean itemChecked = false;
 
 		for (TableItem item : this.testDataTable.getItems()) {

@@ -70,7 +70,7 @@ public class OptionSettingDialog extends AbstractDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		try {
 			for (ValidatableTabWrapper tabWrapper : this.tabWrapperList) {
 				tabWrapper.validatePage();

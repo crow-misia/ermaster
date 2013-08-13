@@ -224,7 +224,7 @@ public class RelationByExistingColumnsDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		Set<NormalColumn> selectedColumns = new HashSet<NormalColumn>();
 
 		for (TableEditor tableEditor : this.tableEditorList) {

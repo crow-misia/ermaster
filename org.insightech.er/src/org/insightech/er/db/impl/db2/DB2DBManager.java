@@ -116,4 +116,7 @@ public class DB2DBManager extends DBManagerBase {
 		return null;
 	}
 
+	public int getCacheMinValue() {
+		return 2;
+	}
 }

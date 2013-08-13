@@ -125,6 +125,10 @@ public class OracleDBManager extends DBManagerBase {
 		return new BigDecimal("9999999999999999999999999999");
 	}
 
+	public int getCacheMinValue() {
+		return 1;
+	}
+
 	public static List<String> getCharacterSetList() {
 		final List<String> list = new ArrayList<String>();
 

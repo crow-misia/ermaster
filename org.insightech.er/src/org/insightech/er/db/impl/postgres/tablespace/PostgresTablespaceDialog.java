@@ -1,5 +1,7 @@
 package org.insightech.er.db.impl.postgres.tablespace;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -51,8 +53,8 @@ public class PostgresTablespaceDialog extends TablespaceDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
-		String errorMessage = super.getErrorMessage();
+	protected String getErrorMessage(final List<String> errorArgs) {
+		String errorMessage = super.getErrorMessage(errorArgs);
 		if (errorMessage != null) {
 			return errorMessage;
 		}

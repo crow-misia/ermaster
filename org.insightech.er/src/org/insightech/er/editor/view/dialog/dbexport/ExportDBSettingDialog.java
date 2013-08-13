@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.dbexport;
 
 import java.net.UnknownHostException;
 import java.sql.Connection;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -71,7 +72,7 @@ public class ExportDBSettingDialog extends AbstractDBSettingDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (this.settingAddButton != null) {
 			this.settingAddButton.setEnabled(false);
 		}
@@ -84,7 +85,7 @@ public class ExportDBSettingDialog extends AbstractDBSettingDialog {
 			return "error.database.not.correct";
 		}
 
-		return super.getErrorMessage();
+		return super.getErrorMessage(errorArgs);
 	}
 
 	/**

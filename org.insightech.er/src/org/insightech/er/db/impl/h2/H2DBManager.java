@@ -112,4 +112,7 @@ public class H2DBManager extends DBManagerBase {
 		return null;
 	}
 
+	public int getCacheMinValue() {
+		return 1;
+	}
 }

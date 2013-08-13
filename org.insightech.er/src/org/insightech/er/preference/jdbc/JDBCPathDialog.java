@@ -1,5 +1,6 @@
 package org.insightech.er.preference.jdbc;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -111,7 +112,7 @@ public final class JDBCPathDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		String selectedDatabase = this.database;
 		
 		if (this.databaseCombo != null) {

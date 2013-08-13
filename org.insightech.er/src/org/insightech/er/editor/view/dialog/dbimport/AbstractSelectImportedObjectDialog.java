@@ -171,7 +171,7 @@ public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog 
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (this.viewer.getCheckedElements().length == 0) {
 			return "error.import.object.empty";
 		}

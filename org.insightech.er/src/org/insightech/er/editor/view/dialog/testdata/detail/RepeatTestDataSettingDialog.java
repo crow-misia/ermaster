@@ -257,7 +257,7 @@ public class RepeatTestDataSettingDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (this.createContents) {
 			this.dataDef = this.getRepeatTestDataDef();
 

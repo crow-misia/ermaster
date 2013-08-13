@@ -108,4 +108,7 @@ public class SQLiteDBManager extends DBManagerBase {
 		return BigDecimal.ZERO;
 	}
 
+	public int getCacheMinValue() {
+		return 1;
+	}
 }

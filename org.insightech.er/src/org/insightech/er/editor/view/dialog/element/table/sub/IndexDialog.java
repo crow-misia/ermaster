@@ -626,7 +626,7 @@ public final class IndexDialog extends AbstractDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		String text = nameText.getText();
 
 		if (StringUtils.isBlank(text)) {

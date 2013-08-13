@@ -1,5 +1,7 @@
 package org.insightech.er.db.impl.oracle.tablespace;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -215,8 +217,8 @@ public class OracleTablespaceDialog extends TablespaceDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
-		String errorMessage = super.getErrorMessage();
+	protected String getErrorMessage(final List<String> errorArgs) {
+		String errorMessage = super.getErrorMessage(errorArgs);
 		if (errorMessage != null) {
 			return errorMessage;
 		}

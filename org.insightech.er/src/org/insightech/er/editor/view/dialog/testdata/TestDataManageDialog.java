@@ -226,7 +226,7 @@ public class TestDataManageDialog extends AbstractDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		return null;
 	}
 

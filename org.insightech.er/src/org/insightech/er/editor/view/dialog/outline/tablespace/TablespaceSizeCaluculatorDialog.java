@@ -242,7 +242,7 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (this.errorMessage == null) {
 			this.calculate();
 		}

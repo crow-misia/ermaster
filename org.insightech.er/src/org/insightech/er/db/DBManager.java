@@ -63,4 +63,5 @@ public interface DBManager {
 
 	BigDecimal getSequenceMaxValue();
 
+	int getCacheMinValue();
 }

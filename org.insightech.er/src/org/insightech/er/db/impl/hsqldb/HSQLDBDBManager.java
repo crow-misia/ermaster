@@ -113,4 +113,7 @@ public class HSQLDBDBManager extends DBManagerBase {
 		return null;
 	}
 
+	public int getCacheMinValue() {
+		return 1;
+	}
 }

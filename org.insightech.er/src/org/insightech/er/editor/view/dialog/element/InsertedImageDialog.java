@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.element;
 
+import java.util.List;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -56,7 +58,7 @@ public class InsertedImageDialog extends AbstractDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		this.insertedImage.setHue(this.hueSpinner.getSelection());
 		this.insertedImage.setSaturation(this.saturationSpinner.getSelection());
 		this.insertedImage.setBrightness(this.brightnessSpinner.getSelection());

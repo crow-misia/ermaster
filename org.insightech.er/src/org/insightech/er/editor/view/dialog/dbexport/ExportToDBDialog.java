@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.dialog.dbexport;
 import java.lang.reflect.InvocationTargetException;
 import java.net.UnknownHostException;
 import java.sql.Connection;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -52,7 +53,7 @@ public class ExportToDBDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (StringUtils.isBlank(this.textArea.getText())) {
 			return "";
 		}

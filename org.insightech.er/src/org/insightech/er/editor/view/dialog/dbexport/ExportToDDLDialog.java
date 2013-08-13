@@ -342,7 +342,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (isBlank(this.environmentCombo)) {
 			return "error.tablespace.environment.empty";
 		}

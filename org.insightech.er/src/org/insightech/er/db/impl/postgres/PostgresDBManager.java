@@ -116,4 +116,8 @@ public class PostgresDBManager extends DBManagerBase {
 	public BigDecimal getSequenceMaxValue() {
 		return BigDecimal.valueOf(Long.MAX_VALUE);
 	}
+
+	public int getCacheMinValue() {
+		return 1;
+	}
 }

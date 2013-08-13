@@ -1,5 +1,8 @@
 package org.insightech.er.common.dialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -29,6 +32,8 @@ public abstract class AbstractDialog extends Dialog {
 	private boolean enabledOkButton = true;
 
 	protected boolean initialized = false;
+
+	private final List<String> errorArgs = new ArrayList<String>();
 	
 	protected AbstractDialog(Shell parentShell) {
 		this(parentShell, 1);
@@ -134,10 +139,11 @@ public abstract class AbstractDialog extends Dialog {
 			okButton.setEnabled(false);
 		}
 
-		String errorMessage = this.getErrorMessage();
+		errorArgs.clear();
+		String errorMessage = this.getErrorMessage(errorArgs);
 
 		if (errorMessage != null) {
-			this.setMessage(ResourceString.getResourceString(errorMessage));
+			this.setMessage(ResourceString.getResourceString(errorMessage, errorArgs.toArray(new String[errorArgs.size()])));
 			return false;
 		}
 
@@ -227,11 +233,11 @@ public abstract class AbstractDialog extends Dialog {
 		super.buttonPressed(buttonId);
 	}
 
-	abstract protected String getErrorMessage();
+	protected abstract String getErrorMessage(List<String> errorArgs);
 
-	abstract protected void perfomeOK() throws InputException;
+	protected abstract void perfomeOK() throws InputException;
 
-	abstract protected String getTitle();
+	protected abstract String getTitle();
 
 	protected Button createCheckbox(Composite composite, String title) {
 		return CompositeFactory.createCheckbox(this, composite, title, this

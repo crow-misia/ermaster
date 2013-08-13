@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.category;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -46,14 +48,14 @@ public class CategoryNameChangeDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
-		String text = categoryNameText.getText().trim();
+	protected String getErrorMessage(final List<String> errorArgs) {
+		String text = categoryNameText.getText();
 
-		if (StringUtils.isEmpty(text)) {
+		if (StringUtils.isBlank(text)) {
 			return "error.category.name.empty";
 		}
 
-		this.categoryName = text;
+		this.categoryName = StringUtils.trim(text);
 
 		return null;
 	}

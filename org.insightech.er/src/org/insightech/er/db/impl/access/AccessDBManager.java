@@ -94,6 +94,10 @@ public class AccessDBManager extends DBManagerBase {
 		return null;
 	}
 
+	public int getCacheMinValue() {
+		return 1;
+	}
+
 	public TablespaceProperties checkTablespaceProperties(
 			TablespaceProperties tablespaceProperties) {
 		return null;

@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.element;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -297,7 +299,7 @@ public class ModelPropertiesDialog extends AbstractDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		return null;
 	}
 

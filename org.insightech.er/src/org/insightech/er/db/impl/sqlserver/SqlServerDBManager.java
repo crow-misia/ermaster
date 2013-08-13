@@ -109,4 +109,8 @@ public class SqlServerDBManager extends DBManagerBase {
 	public BigDecimal getSequenceMaxValue() {
 		return null;
 	}
+
+	public int getCacheMinValue() {
+		return 1;
+	}
 }

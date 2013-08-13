@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.dbexport;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
@@ -99,7 +100,7 @@ public class ExportToJavaDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (this.outputDirText.isBlank()) {
 			return "error.output.dir.is.empty";
 		}

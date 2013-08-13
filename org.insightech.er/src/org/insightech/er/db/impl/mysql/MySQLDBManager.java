@@ -122,6 +122,10 @@ public class MySQLDBManager extends DBManagerBase {
 		return null;
 	}
 
+	public int getCacheMinValue() {
+		return 1;
+	}
+
 	public static List<String> getCharacterSetList() {
 		List<String> list = new ArrayList<String>();
 

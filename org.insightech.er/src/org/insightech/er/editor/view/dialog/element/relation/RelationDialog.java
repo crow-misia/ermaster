@@ -376,7 +376,7 @@ public class RelationDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		String text = nameText.getText().trim();
 		if (!Check.isAlphabet(text)) {
 			return "error.constraint.name.not.alphabet";

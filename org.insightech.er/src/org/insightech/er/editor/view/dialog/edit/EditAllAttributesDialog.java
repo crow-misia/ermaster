@@ -89,7 +89,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		return errorMessage;
 	}
 

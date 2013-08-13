@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.word.word;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Shell;
 import org.insightech.er.db.sqltype.SqlType;
@@ -32,13 +34,13 @@ public class WordDialog extends AbstractWordDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		String text = logicalNameText.getText();
 		if (StringUtils.isBlank(text)) {
 			return "error.column.logical.name.empty";
 		}
 
-		return super.getErrorMessage();
+		return super.getErrorMessage(errorArgs);
 	}
 
 	@Override

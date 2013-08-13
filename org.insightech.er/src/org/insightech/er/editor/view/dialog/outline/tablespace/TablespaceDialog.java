@@ -63,7 +63,7 @@ public abstract class TablespaceDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		String text = this.nameText.getText();
 		if (StringUtils.isBlank(text)) {
 			return "error.tablespace.name.empty";

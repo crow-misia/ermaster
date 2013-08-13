@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.printer;
 
+import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -266,7 +268,7 @@ public class PageSettingDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		return null;
 	}
 

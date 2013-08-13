@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.word;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -337,7 +339,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		String text = physicalNameText.getText().trim();
 		if (!Check.isAlphabet(text)) {
 			if (this.diagram.getDiagramContents().getSettings()

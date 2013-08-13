@@ -271,7 +271,7 @@ public class GroupManageDialog extends AbstractDialog implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (this.groupNameText.getEnabled()
 				&& StringUtils.isBlank(this.groupNameText.getText())) {
 			return "error.group.name.empty";

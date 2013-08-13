@@ -1,5 +1,7 @@
 package org.insightech.er.editor.view.dialog.word.column.real;
 
+import java.util.List;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -272,7 +274,7 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (this.autoIncrementCheck != null
 				&& this.autoIncrementCheck.getSelection()) {
 			SqlType selectedType = SqlType.valueOf(this.diagram.getDatabase(),
@@ -287,7 +289,7 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 			return "error.unique.key.name.not.alphabet";
 		}
 
-		return super.getErrorMessage();
+		return super.getErrorMessage(errorArgs);
 	}
 
 	@Override

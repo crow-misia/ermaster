@@ -1,5 +1,7 @@
 package org.insightech.er.db.impl.mysql.tablespace;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -80,8 +82,8 @@ public class MySQLTablespaceDialog extends TablespaceDialog {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getErrorMessage() {
-		String errorMessage = super.getErrorMessage();
+	protected String getErrorMessage(final List<String> errorArgs) {
+		String errorMessage = super.getErrorMessage(errorArgs);
 		if (errorMessage != null) {
 			return errorMessage;
 		}

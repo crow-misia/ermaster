@@ -1,6 +1,7 @@
 package org.insightech.er.editor.view.dialog.outline.sequence;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -14,6 +15,7 @@ import org.insightech.er.Resources;
 import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
+import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.SupportFunction;
 import org.insightech.er.db.impl.db2.DB2DBManager;
@@ -130,7 +132,7 @@ public class SequenceDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected String getErrorMessage() {
+	protected String getErrorMessage(final List<String> errorArgs) {
 		if (!DBManagerFactory.getDBManager(this.diagram).isSupported(
 				SupportFunction.SEQUENCE)) {
 			return "error.sequence.not.supported";
@@ -208,14 +210,12 @@ public class SequenceDialog extends AbstractDialog {
 			if (StringUtils.isNotEmpty(text)) {
 				try {
 					int cache = Integer.parseInt(text);
-					if (DB2DBManager.ID.equals(this.diagram.getDatabase())) {
-						if (cache < 2) {
-							return "error.sequence.cache.min2";
-						}
-					} else {
-						if (cache < 1) {
-							return "error.sequence.cache.min1";
-						}
+					
+					DBManager dbManager = DBManagerFactory.getDBManager(this.diagram);
+					final int minValue = dbManager.getCacheMinValue();
+					if (cache < minValue) {
+						errorArgs.add(Integer.toString(minValue));
+						return "error.sequence.cache.min";
 					}
 				} catch (NumberFormatException e) {
 					return "error.sequence.cache.digit";
