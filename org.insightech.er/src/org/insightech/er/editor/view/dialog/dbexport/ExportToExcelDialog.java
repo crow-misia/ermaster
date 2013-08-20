@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -232,10 +232,10 @@ public class ExportToExcelDialog extends AbstractDialog {
 							outputImageFilePath));
 
 					if (imageFormat == SWT.IMAGE_JPEG) {
-						excelPictureType = HSSFWorkbook.PICTURE_TYPE_JPEG;
+						excelPictureType = Workbook.PICTURE_TYPE_JPEG;
 
 					} else if (imageFormat == SWT.IMAGE_PNG) {
-						excelPictureType = HSSFWorkbook.PICTURE_TYPE_PNG;
+						excelPictureType = Workbook.PICTURE_TYPE_PNG;
 
 					} else {
 						Activator
