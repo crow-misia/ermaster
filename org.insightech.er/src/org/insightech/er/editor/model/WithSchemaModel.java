@@ -1,5 +1,6 @@
 package org.insightech.er.editor.model;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.SupportFunction;
@@ -31,17 +32,13 @@ public abstract class WithSchemaModel extends AbstractModel implements
 	}
 
 	public String getNameWithSchema(String database) {
-		if (this.schema == null) {
-			return Format.null2blank(this.name);
+		final DBManager dbManager = DBManagerFactory.getDBManager(database);
+
+		if (dbManager.isSupported(SupportFunction.SCHEMA) &&
+			StringUtils.isNotBlank(schema)) {
+			return this.schema + "." + Format.null2blank(this.name);
 		}
-
-		DBManager dbManager = DBManagerFactory.getDBManager(database);
-
-		if (!dbManager.isSupported(SupportFunction.SCHEMA)) {
-			return Format.null2blank(this.name);
-		}
-
-		return this.schema + "." + Format.null2blank(this.name);
+		return Format.null2blank(this.name);
 	}
 
 	public int compareTo(WithSchemaModel other) {

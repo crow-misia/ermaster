@@ -98,10 +98,10 @@ public abstract class DBManagerBase implements DBManager {
 					Collections.<JDBCDriverSetting>emptySet(), false);
 
 			if (dialog.open() == IDialogConstants.OK_ID) {
-				JDBCDriverSetting newDriverSetting = new JDBCDriverSetting(this
+				final JDBCDriverSetting newDriverSetting = new JDBCDriverSetting(this
 						.getId(), dialog.getDriverClassName(), dialog.getPath());
 
-				Set<JDBCDriverSetting> driverSettingList = PreferenceInitializer
+				final Set<JDBCDriverSetting> driverSettingList = PreferenceInitializer
 						.getJDBCDriverSettingList();
 
 				if (driverSettingList.contains(newDriverSetting)) {
@@ -137,7 +137,7 @@ public abstract class DBManagerBase implements DBManager {
 
 	public abstract String getDriverClassName();
 
-	protected Set<String> getReservedWords() {
+	protected final Set<String> getReservedWords() {
 		final ResourceBundle bundle = ResourceBundle.getBundle(this.getClass()
 				.getPackage().getName()
 				+ ".reserved_word");

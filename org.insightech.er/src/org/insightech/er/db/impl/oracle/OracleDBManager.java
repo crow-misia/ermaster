@@ -77,8 +77,8 @@ public class OracleDBManager extends DBManagerBase {
 	@Override
 	protected SupportFunction[] getSupportItems() {
 		return new SupportFunction[] {
-				DESC_INDEX,
-				BITMAP_INDEX,
+				INDEX_DESC,
+				INDEX_BITMAP,
 				SCHEMA,
 				SEQUENCE,
 				SEQUENCE_MINVALUE,

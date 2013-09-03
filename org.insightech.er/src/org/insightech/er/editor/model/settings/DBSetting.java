@@ -6,6 +6,7 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
@@ -142,17 +143,13 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 	}
 
 	public String getTableNameWithSchema(String tableName, String schema) {
-		if (schema == null) {
-			return Format.null2blank(tableName);
+		final DBManager dbManager = DBManagerFactory.getDBManager(this.dbsystem);
+
+		if (dbManager.isSupported(SupportFunction.SCHEMA) &&
+			StringUtils.isNotBlank(schema)) {
+			return schema + "." + Format.null2blank(tableName);
 		}
-
-		DBManager dbManager = DBManagerFactory.getDBManager(this.dbsystem);
-
-		if (!dbManager.isSupported(SupportFunction.SCHEMA)) {
-			return Format.null2blank(tableName);
-		}
-
-		return schema + "." + Format.null2blank(tableName);
+		return Format.null2blank(tableName);
 	}
 
 	public Connection connect() throws InputException, InstantiationException,

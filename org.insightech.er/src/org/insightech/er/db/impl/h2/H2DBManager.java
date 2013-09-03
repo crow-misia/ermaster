@@ -71,7 +71,7 @@ public class H2DBManager extends DBManagerBase {
 				SCHEMA,
 				SEQUENCE,
 				SEQUENCE_CACHE,
-				DESC_INDEX,
+				INDEX_DESC,
 		};
 	}
 

@@ -779,7 +779,7 @@ public abstract class DDLCreator {
 
 			ddl.append(filter(column.getPhysicalName()));
 
-			if (this.getDBManager().isSupported(SupportFunction.DESC_INDEX)) {
+			if (this.getDBManager().isSupported(SupportFunction.INDEX_DESC)) {
 				if (descs.size() > i) {
 					Boolean desc = descs.get(i);
 					if (Boolean.TRUE.equals(desc)) {

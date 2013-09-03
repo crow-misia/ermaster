@@ -188,13 +188,13 @@ public final class IndexDialog extends AbstractDialog {
 		this.uniqueCheckBox.setText(ResourceString
 				.getResourceString("label.index.unique"));
 
-		if (dbManager.isSupported(SupportFunction.BITMAP_INDEX)) {
+		if (dbManager.isSupported(SupportFunction.INDEX_BITMAP)) {
 			this.bitmapCheckBox = new Button(checkComposite, SWT.CHECK);
 			this.bitmapCheckBox.setText(ResourceString
 					.getResourceString("label.index.bitmap"));
 		}
 
-		if (dbManager.isSupported(SupportFunction.FULLTEXT_INDEX)) {
+		if (dbManager.isSupported(SupportFunction.INDEX_FULLTEXT)) {
 			this.fullTextCheckBox = new Button(checkComposite, SWT.CHECK);
 			this.fullTextCheckBox.setText(ResourceString
 					.getResourceString("label.index.fulltext"));
@@ -318,7 +318,7 @@ public final class IndexDialog extends AbstractDialog {
 				.getResourceString("label.column.name"));
 
 		if (DBManagerFactory.getDBManager(this.table.getDiagram()).isSupported(
-				SupportFunction.DESC_INDEX)) {
+				SupportFunction.INDEX_DESC)) {
 			TableColumn tableColumn1 = new TableColumn(indexColumnList,
 					SWT.CENTER);
 			tableColumn1.setWidth(50);
@@ -380,7 +380,7 @@ public final class IndexDialog extends AbstractDialog {
 
 			DBManager dbManager = DBManagerFactory.getDBManager(table
 					.getDiagram());
-			if (dbManager.isSupported(SupportFunction.FULLTEXT_INDEX)) {
+			if (dbManager.isSupported(SupportFunction.INDEX_FULLTEXT)) {
 				this.fullTextCheckBox.setSelection(this.targetIndex
 						.isFullText());
 			}
@@ -404,7 +404,7 @@ public final class IndexDialog extends AbstractDialog {
 		descCheckButton.pack();
 
 		if (DBManagerFactory.getDBManager(this.table.getDiagram()).isSupported(
-				SupportFunction.DESC_INDEX)) {
+				SupportFunction.INDEX_DESC)) {
 
 			TableEditor editor = new TableEditor(this.indexColumnList);
 
@@ -609,11 +609,11 @@ public final class IndexDialog extends AbstractDialog {
 			this.resultIndex.addColumn(selectedColumn, desc);
 		}
 
-		if (dbManager.isSupported(SupportFunction.BITMAP_INDEX)) {
+		if (dbManager.isSupported(SupportFunction.INDEX_BITMAP)) {
 			this.resultIndex.setBitmap(this.bitmapCheckBox.getSelection());
 		}
 
-		if (dbManager.isSupported(SupportFunction.FULLTEXT_INDEX)) {
+		if (dbManager.isSupported(SupportFunction.INDEX_FULLTEXT)) {
 			this.resultIndex.setFullText(this.fullTextCheckBox.getSelection());
 		}
 	}
@@ -645,7 +645,7 @@ public final class IndexDialog extends AbstractDialog {
 		DBManager dbManager = DBManagerFactory.getDBManager(this.table
 				.getDiagram());
 
-		if (dbManager.isSupported(SupportFunction.FULLTEXT_INDEX)) {
+		if (dbManager.isSupported(SupportFunction.INDEX_FULLTEXT)) {
 			if (fullTextCheckBox.getSelection()) {
 				for (NormalColumn indexColumn : selectedColumns) {
 					if (!indexColumn.isFullTextIndexable()) {

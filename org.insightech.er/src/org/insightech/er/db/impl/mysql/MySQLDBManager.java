@@ -81,8 +81,8 @@ public class MySQLDBManager extends DBManagerBase {
 		return new SupportFunction[] {
 				AUTO_INCREMENT,
 				AUTO_INCREMENT_SETTING,
-				DESC_INDEX,
-				FULLTEXT_INDEX,
+				INDEX_DESC,
+				INDEX_FULLTEXT,
 				SCHEMA,
 				COLUMN_CHARSET,
 		};
