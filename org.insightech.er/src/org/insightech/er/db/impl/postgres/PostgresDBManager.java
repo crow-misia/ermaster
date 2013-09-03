@@ -80,6 +80,7 @@ public class PostgresDBManager extends DBManagerBase {
 				SEQUENCE_MAXVALUE,
 				SEQUENCE_CYCLE,
 				ARRAY_TYPE,
+				MULTIPLE_INSERT,
 		};
 	}
 

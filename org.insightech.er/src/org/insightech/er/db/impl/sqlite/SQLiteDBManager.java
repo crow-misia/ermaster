@@ -71,6 +71,7 @@ public class SQLiteDBManager extends DBManagerBase {
 		return new SupportFunction[] {
 				SCHEMA,
 				AUTO_INCREMENT,
+				MULTIPLE_INSERT,
 		};
 	}
 

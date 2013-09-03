@@ -85,6 +85,7 @@ public class MySQLDBManager extends DBManagerBase {
 				INDEX_FULLTEXT,
 				SCHEMA,
 				COLUMN_CHARSET,
+				MULTIPLE_INSERT,
 		};
 	}
 

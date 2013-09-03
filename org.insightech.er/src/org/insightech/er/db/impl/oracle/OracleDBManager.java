@@ -88,6 +88,7 @@ public class OracleDBManager extends DBManagerBase {
 				SEQUENCE_ORDER,
 				COLUMN_UNIT,
 				MATERIALIZED_VIEW,
+				MULTIPLE_INSERT,
 		};
 	}
 
