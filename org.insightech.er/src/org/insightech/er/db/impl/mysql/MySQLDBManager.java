@@ -116,7 +116,7 @@ public class MySQLDBManager extends DBManagerBase {
 	}
 
 	public String[] getCurrentTimeValue() {
-		return new String[] { "NOW(), SYSDATE()" };
+		return new String[] { "NOW()", "SYSDATE()", };
 	}
 
 	public BigDecimal getSequenceMaxValue() {

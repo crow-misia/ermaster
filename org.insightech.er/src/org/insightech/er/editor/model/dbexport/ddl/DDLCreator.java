@@ -10,6 +10,7 @@ import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.SupportFunction;
+import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -693,15 +694,21 @@ public abstract class DDLCreator {
 	}
 
 	protected boolean doesNeedQuoteDefaultValue(NormalColumn normalColumn) {
-		if (normalColumn.getType().isNumber()) {
+		final SqlType type = normalColumn.getType();
+
+		if (type.isNumber()) {
 			return false;
 		}
 
-		if (normalColumn.getType().isTimestamp()) {
+		if (type.isTimestamp()) {
 			if (!Character
 					.isDigit(normalColumn.getDefaultValue().toCharArray()[0])) {
 				return false;
 			}
+		}
+
+		if (Boolean.class.equals(type.getJavaClass())) {
+			return false;
 		}
 
 		return true;
