@@ -36,7 +36,6 @@ import org.insightech.er.editor.view.dialog.element.table.TableDialog;
 import org.insightech.er.editor.view.dialog.group.GroupManageDialog;
 import org.insightech.er.editor.view.dialog.word.column.real.ColumnDialog;
 import org.insightech.er.util.Check;
-import org.insightech.er.util.Format;
 
 public class AttributeTabWrapper extends ValidatableTabWrapper implements
 		ERTableCompositeHolder {
@@ -95,9 +94,9 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 		this.logicalNameText = CompositeFactory.createText(tableDialog, header,
 				"label.logical.name", 1, 200, true);
 
-		this.physicalNameText.setText(Format.null2blank(copyData
+		this.physicalNameText.setText(StringUtils.defaultString(copyData
 				.getPhysicalName()));
-		this.logicalNameText.setText(Format.null2blank(copyData
+		this.logicalNameText.setText(StringUtils.defaultString(copyData
 				.getLogicalName()));
 		this.oldPhysicalName = this.physicalNameText.getText();
 	}

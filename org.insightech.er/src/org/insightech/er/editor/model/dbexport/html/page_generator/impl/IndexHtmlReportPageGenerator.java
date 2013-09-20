@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.page_generator.AbstractHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
-import org.insightech.er.util.Format;
 
 public class IndexHtmlReportPageGenerator extends
 		AbstractHtmlReportPageGenerator<Index> {
@@ -50,9 +50,9 @@ public class IndexHtmlReportPageGenerator extends
 			throws IOException {
 		ERTable table = index.getTable();
 
-		String description = Format.null2blank(index.getDescription());
+		String description = StringUtils.defaultString(index.getDescription());
 		String tableId = this.getObjectId(table);
-		String tableName = Format.null2blank(table.getName());
+		String tableName = StringUtils.defaultString(table.getName());
 
 		String unique = this.getUniqueString(index);
 
@@ -71,7 +71,7 @@ public class IndexHtmlReportPageGenerator extends
 			return "FULLTEXT";
 		}
 
-		return Format.null2blank(index.getType());
+		return StringUtils.defaultString(index.getType());
 	}
 
 	public String getObjectName(Index index) {

@@ -22,6 +22,9 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabFolder;
@@ -356,5 +359,25 @@ public class ListenerAppender {
 
 			});
 		}
+	}
+
+	public static void addLabelVisibleListener(final Control control, final Label label) {
+		if (label == null) {
+			return;
+		}
+
+		control.addListener(SWT.Show, new Listener() {
+			@Override
+			public void handleEvent(final Event event) {
+				label.setVisible(true);
+			}
+		});
+
+		control.addListener(SWT.Hide, new Listener() {
+			@Override
+			public void handleEvent(final Event event) {
+				label.setVisible(false);
+			}
+		});
 	}
 }

@@ -24,7 +24,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Co
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Dictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
-import org.insightech.er.util.Format;
 
 public abstract class TableView extends NodeElement implements ObjectModel,
 		ColumnHolder, Comparable<TableView> {
@@ -403,7 +402,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 		DBManager dbManager = DBManagerFactory.getDBManager(database);
 
 		if (!dbManager.isSupported(SupportFunction.SCHEMA)) {
-			return Format.null2blank(this.getPhysicalName());
+			return StringUtils.defaultString(this.getPhysicalName());
 		}
 
 		TableViewProperties commonTableViewProperties = this.getDiagram()
@@ -441,10 +440,10 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 				return 1;
 			}
 
-			int compareTo = Format.null2blank(
+			int compareTo = StringUtils.defaultString(
 					o1.getTableViewProperties().getSchema()).toUpperCase()
 					.compareTo(
-							Format.null2blank(
+							StringUtils.defaultString(
 									o2.getTableViewProperties().getSchema())
 									.toUpperCase());
 
@@ -454,14 +453,14 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 
 			int value = 0;
 
-			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.physicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.physicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.physicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}
 
-			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.logicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.logicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.logicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}
@@ -485,10 +484,10 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 				return 1;
 			}
 
-			int compareTo = Format.null2blank(
+			int compareTo = StringUtils.defaultString(
 					o1.getTableViewProperties().getSchema()).toUpperCase()
 					.compareTo(
-							Format.null2blank(
+							StringUtils.defaultString(
 									o2.getTableViewProperties().getSchema())
 									.toUpperCase());
 
@@ -498,14 +497,14 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 
 			int value = 0;
 
-			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.logicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.logicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.logicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}
 
-			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.physicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.physicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.physicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}

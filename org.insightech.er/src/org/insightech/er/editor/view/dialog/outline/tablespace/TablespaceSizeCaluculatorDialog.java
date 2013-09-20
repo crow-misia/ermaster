@@ -291,7 +291,7 @@ public class TablespaceSizeCaluculatorDialog extends AbstractDialog implements
 	private void column2TableItem(ERTable table, Integer num,
 			TableItem tableItem) {
 		if (table != null) {
-			tableItem.setText(0, Format.null2blank(table.getLogicalName()));
+			tableItem.setText(0, StringUtils.defaultString(table.getLogicalName()));
 		}
 		tableItem.setText(1, Format.toString(num));
 	}

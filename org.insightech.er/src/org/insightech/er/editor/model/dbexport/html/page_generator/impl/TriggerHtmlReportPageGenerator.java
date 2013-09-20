@@ -3,10 +3,10 @@ package org.insightech.er.editor.model.dbexport.html.page_generator.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.page_generator.AbstractHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
-import org.insightech.er.util.Format;
 
 public class TriggerHtmlReportPageGenerator extends
 		AbstractHtmlReportPageGenerator<Trigger> {
@@ -33,8 +33,8 @@ public class TriggerHtmlReportPageGenerator extends
 	 */
 	@Override
 	public String[] getContentArgs(ERDiagram diagram, Trigger trigger) {
-		String description = Format.null2blank(trigger.getDescription());
-		String sql = Format.null2blank(trigger.getSql());
+		String description = StringUtils.defaultString(trigger.getDescription());
+		String sql = StringUtils.defaultString(trigger.getSql());
 
 		return new String[] { description, sql };
 	}

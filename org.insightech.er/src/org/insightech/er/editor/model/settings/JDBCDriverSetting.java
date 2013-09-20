@@ -2,7 +2,7 @@ package org.insightech.er.editor.model.settings;
 
 import java.io.Serializable;
 
-import org.insightech.er.util.Format;
+import org.apache.commons.lang3.StringUtils;
 
 public final class JDBCDriverSetting implements Serializable,
 		Comparable<JDBCDriverSetting> {
@@ -68,16 +68,16 @@ public final class JDBCDriverSetting implements Serializable,
 	public int compareTo(JDBCDriverSetting another) {
 		int compareTo = 0;
 
-		String s1 = Format.null2blank(this.db);
-		String s2 = Format.null2blank(another.db);
+		String s1 = StringUtils.defaultString(this.db);
+		String s2 = StringUtils.defaultString(another.db);
 
 		compareTo = s1.compareTo(s2);
 		if (compareTo != 0) {
 			return compareTo;
 		}
 
-		s1 = Format.null2blank(this.className);
-		s2 = Format.null2blank(another.className);
+		s1 = StringUtils.defaultString(this.className);
+		s2 = StringUtils.defaultString(another.className);
 
 		compareTo = s1.compareTo(s2);
 		if (compareTo != 0) {

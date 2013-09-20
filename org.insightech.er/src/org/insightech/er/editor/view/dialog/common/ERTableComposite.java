@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -370,9 +371,9 @@ public class ERTableComposite extends Composite {
 				tableItem.setImage(1, null);
 			}
 
-			tableItem.setText(2, Format.null2blank(normalColumn
+			tableItem.setText(2, StringUtils.defaultString(normalColumn
 					.getPhysicalName()));
-			tableItem.setText(3, Format.null2blank(normalColumn
+			tableItem.setText(3, StringUtils.defaultString(normalColumn
 					.getLogicalName()));
 
 			SqlType sqlType = normalColumn.getType();

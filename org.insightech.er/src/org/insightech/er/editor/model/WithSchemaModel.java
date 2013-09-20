@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.SupportFunction;
-import org.insightech.er.util.Format;
 
 public abstract class WithSchemaModel extends AbstractModel implements
 		Comparable<WithSchemaModel> {
@@ -36,23 +35,23 @@ public abstract class WithSchemaModel extends AbstractModel implements
 
 		if (dbManager.isSupported(SupportFunction.SCHEMA) &&
 			StringUtils.isNotBlank(schema)) {
-			return this.schema + "." + Format.null2blank(this.name);
+			return this.schema + "." + StringUtils.defaultString(this.name);
 		}
-		return Format.null2blank(this.name);
+		return StringUtils.defaultString(this.name);
 	}
 
 	public int compareTo(WithSchemaModel other) {
 		int compareTo = 0;
 
-		compareTo = Format.null2blank(this.schema).toUpperCase().compareTo(
-				Format.null2blank(other.schema).toUpperCase());
+		compareTo = StringUtils.defaultString(this.schema).toUpperCase().compareTo(
+				StringUtils.defaultString(other.schema).toUpperCase());
 
 		if (compareTo != 0) {
 			return compareTo;
 		}
 
-		compareTo = Format.null2blank(this.name).toUpperCase().compareTo(
-				Format.null2blank(other.name).toUpperCase());
+		compareTo = StringUtils.defaultString(this.name).toUpperCase().compareTo(
+				StringUtils.defaultString(other.name).toUpperCase());
 
 		if (compareTo != 0) {
 			return compareTo;

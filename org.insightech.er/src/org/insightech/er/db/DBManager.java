@@ -47,6 +47,10 @@ public interface DBManager {
 
 	boolean isReservedWord(String str);
 
+	List<String> getCharacterSetList();
+
+	List<String> getCollationList(String characterset);
+
 	String[] getIndexTypeList(ERTable table);
 
 	PreImportFromDBManager getPreTableImportManager();

@@ -10,8 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -29,12 +29,16 @@ import org.insightech.er.preference.jdbc.JDBCPathDialog;
 public abstract class DBManagerBase implements DBManager {
 	private final Set<String> reservedWords;
 
+	private final ResourceBundle characterSets;
+
 	private final Map<String, ClassLoader> loaderMap;
 
 	private final boolean[] supportFunctions;
 
 	public DBManagerBase() {
 		this.reservedWords = this.getReservedWords();
+
+		this.characterSets = this.getCharacterSets();
 
 		this.loaderMap = new HashMap<String, ClassLoader>();
 
@@ -138,18 +142,56 @@ public abstract class DBManagerBase implements DBManager {
 	public abstract String getDriverClassName();
 
 	protected final Set<String> getReservedWords() {
-		final ResourceBundle bundle = ResourceBundle.getBundle(this.getClass()
-				.getPackage().getName()
-				+ ".reserved_word");
+		final ResourceBundle bundle = getResources(".reserved_word");
 
-		return new HashSet<String>(bundle.keySet());
+		return bundle.keySet();
 	}
 
-	public boolean isReservedWord(String str) {
+	public boolean isReservedWord(final String str) {
 		return reservedWords.contains(str.toUpperCase());
 	}
 
-	public boolean isSupported(SupportFunction function) {
+	private ResourceBundle getCharacterSets() {
+		ResourceBundle r = this.characterSets;
+		if (r == null) {
+			r = getResources(".characterset");
+		}
+		return r;
+	}
+
+	public List<String> getCharacterSetList() {
+		final List<String> list = new ArrayList<String>();
+		final Enumeration<String> keys = characterSets.getKeys();
+
+		while (keys.hasMoreElements()) {
+			list.add(keys.nextElement());
+		}
+
+		return list;
+	}
+
+	public List<String> getCollationList(String characterset) {
+		final List<String> list = new ArrayList<String>();
+
+		if (characterset != null) {
+			try {
+				String values = characterSets.getString(characterset);
+
+				if (values != null) {
+					StringTokenizer tokenizer = new StringTokenizer(values, ",");
+
+					while (tokenizer.hasMoreElements()) {
+						list.add(StringUtils.trim(tokenizer.nextToken()));
+					}
+				}
+			} catch (MissingResourceException e) {
+			}
+		}
+
+		return list;
+	}
+
+	public boolean isSupported(final SupportFunction function) {
 		return this.supportFunctions[function.ordinal()];
 	}
 
@@ -183,16 +225,29 @@ public abstract class DBManagerBase implements DBManager {
 
 	@Override
 	public final Set<String> getSystemSchemaList() {
-		try {
-			final ResourceBundle bundle = ResourceBundle.getBundle(this.getClass()
-					.getPackage().getName()
-					+ ".system_schema");
+		final ResourceBundle bundle = getResources(".system_schema");
 
-			return new HashSet<String>(bundle.keySet());
-		} catch (final MissingResourceException e) {
-			return Collections.emptySet();
-		}
+		return bundle.keySet();
 	}
 
 	protected abstract SupportFunction[] getSupportItems();
+
+	private ResourceBundle getResources(final String name) {
+		try {
+			return ResourceBundle.getBundle(this.getClass()
+					.getPackage().getName() + name);
+		} catch (final MissingResourceException e) {
+			return new ResourceBundle() {
+				@Override
+				protected Object handleGetObject(String key) {
+					return null;
+				}
+				
+				@Override
+				public Enumeration<String> getKeys() {
+					return Collections.enumeration(Collections.<String>emptyList());
+				}
+			};
+		}
+	}
 }

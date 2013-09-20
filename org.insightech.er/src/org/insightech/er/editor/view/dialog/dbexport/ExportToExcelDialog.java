@@ -47,7 +47,6 @@ import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
 import org.insightech.er.preference.PreferenceInitializer;
 import org.insightech.er.preference.template.TemplatePreferencePage;
 import org.insightech.er.util.Closer;
-import org.insightech.er.util.Format;
 import org.insightech.er.util.io.FileUtils;
 
 public class ExportToExcelDialog extends AbstractDialog {
@@ -352,9 +351,9 @@ public class ExportToExcelDialog extends AbstractDialog {
 	protected void setData() {
 		Settings settings = this.diagram.getDiagramContents().getSettings();
 
-		String outputExcel = Format.null2blank(settings.getExportSetting()
+		String outputExcel = StringUtils.defaultString(settings.getExportSetting()
 				.getExcelOutput());
-		String outputImage = Format.null2blank(settings.getExportSetting()
+		String outputImage = StringUtils.defaultString(settings.getExportSetting()
 				.getImageOutput());
 		String template = settings.getExportSetting().getExcelTemplate();
 

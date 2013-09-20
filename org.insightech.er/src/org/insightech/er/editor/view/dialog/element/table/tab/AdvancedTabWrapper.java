@@ -6,6 +6,7 @@ import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.db.EclipseDBManagerFactory;
+import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.properties.TableProperties;
 
@@ -35,11 +36,13 @@ public class AdvancedTabWrapper extends ValidatableTabWrapper {
 	@Override
 	public void initComposite() {
 		this.setLayout(new GridLayout());
+		final ERDiagram diagram = this.table.getDiagram();
+		final String database = diagram.getDatabase();
 		this.composite = EclipseDBManagerFactory.getEclipseDBManager(
-				this.table.getDiagram()).createAdvancedComposite(this);
-		this.composite.initialize(this.dialog,
+				diagram).createAdvancedComposite(this);
+		this.composite.initialize(this.dialog, database,
 				(TableProperties) this.table.getTableViewProperties(),
-				this.table.getDiagram(), this.table);
+				diagram, this.table);
 	}
 
 	/**

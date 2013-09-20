@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -29,7 +30,6 @@ import org.insightech.er.editor.model.testdata.TableTestData;
 import org.insightech.er.editor.model.testdata.TestData;
 import org.insightech.er.editor.view.dialog.dbexport.ExportToTestDataDialog;
 import org.insightech.er.editor.view.dialog.testdata.detail.TestDataDialog;
-import org.insightech.er.util.Format;
 
 public class TestDataManageDialog extends AbstractDialog {
 
@@ -195,7 +195,7 @@ public class TestDataManageDialog extends AbstractDialog {
 		this.testDataListWidget.removeAll();
 
 		for (TestData testData : this.testDataList) {
-			this.testDataListWidget.add(Format.null2blank(testData.getName()));
+			this.testDataListWidget.add(StringUtils.defaultString(testData.getName()));
 		}
 	}
 

@@ -570,7 +570,7 @@ public abstract class DDLCreator {
 			ddl.append(")");
 		}
 
-		String constraint = Format.null2blank(table.getConstraint()).trim();
+		String constraint = StringUtils.defaultString(table.getConstraint()).trim();
 		if (StringUtils.isNotBlank(constraint)) {
 			constraint = constraint.replaceAll("\r\n", "\r\n\t");
 
@@ -584,7 +584,7 @@ public abstract class DDLCreator {
 
 		ddl.append(this.getPostDDL(table));
 
-		String option = Format.null2blank(table.getOption()).trim();
+		String option = StringUtils.defaultString(table.getOption()).trim();
 		if (StringUtils.isNotBlank(option)) {
 			ddl.append("\r\n");
 			ddl.append(option);
@@ -684,7 +684,7 @@ public abstract class DDLCreator {
 			ddl.append(" UNIQUE");
 		}
 
-		String constraint = Format.null2blank(normalColumn.getConstraint());
+		String constraint = StringUtils.defaultString(normalColumn.getConstraint());
 		if (StringUtils.isNotBlank(constraint)) {
 			ddl.append(" ");
 			ddl.append(constraint);
@@ -1114,27 +1114,27 @@ public abstract class DDLCreator {
 		String comment = null;
 
 		if (this.ddlTarget.commentValueLogicalNameDescription) {
-			comment = Format.null2blank(logicalName);
+			comment = StringUtils.defaultString(logicalName);
 
 			if (StringUtils.isNotBlank(description)) {
-				comment = comment + " : " + Format.null2blank(description);
+				comment = comment + " : " + StringUtils.defaultString(description);
 			}
 
 		} else if (this.ddlTarget.commentValueLogicalName) {
-			comment = Format.null2blank(logicalName);
+			comment = StringUtils.defaultString(logicalName);
 
 		} else {
-			comment = Format.null2blank(description);
+			comment = StringUtils.defaultString(description);
 
 		}
 
 		if (ddlTarget.commentReplaceLineFeed) {
 			comment = comment.replaceAll("\r\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
+					StringUtils.defaultString(ddlTarget.commentReplaceString));
 			comment = comment.replaceAll("\r",
-					Format.null2blank(ddlTarget.commentReplaceString));
+					StringUtils.defaultString(ddlTarget.commentReplaceString));
 			comment = comment.replaceAll("\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
+					StringUtils.defaultString(ddlTarget.commentReplaceString));
 		}
 
 		return comment;

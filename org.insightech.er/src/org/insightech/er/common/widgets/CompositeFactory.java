@@ -85,13 +85,29 @@ public class CompositeFactory {
 
 	public static Combo createReadOnlyCombo(AbstractDialog dialog,
 			Composite composite, String title) {
-		return createReadOnlyCombo(dialog, composite, title, 1, -1);
+		return createCombo(dialog, composite, title, 1, -1, SWT.NONE);
 	}
 
 	public static Combo createReadOnlyCombo(AbstractDialog dialog,
 			Composite composite, String title, int span, int width) {
+		return createCombo(dialog, composite, title, span, width, SWT.READ_ONLY);
+	}
+
+	public static Combo createCombo(AbstractDialog dialog, Composite composite,
+			String title) {
+		return createCombo(dialog, composite, title, 1, -1, SWT.NONE);
+	}
+
+	public static Combo createCombo(AbstractDialog dialog, Composite composite,
+			String title, int span, int width) {
+		return createCombo(dialog, composite, title, span, width, SWT.NONE);
+	}
+
+	public static Combo createCombo(AbstractDialog dialog, Composite composite,
+			String title, int span, int width, int style) {
+		Label label = null;
 		if (title != null) {
-			Label label = new Label(composite, SWT.RIGHT);
+			label = new Label(composite, SWT.RIGHT);
 			label.setText(ResourceString.getResourceString(title));
 		}
 
@@ -100,36 +116,18 @@ public class CompositeFactory {
 
 		if (width > 0) {
 			gridData.widthHint = width;
-
 		} else {
 			gridData.horizontalAlignment = GridData.FILL;
 			gridData.grabExcessHorizontalSpace = true;
 		}
 
-		Combo combo = new Combo(composite, SWT.READ_ONLY);
+		Combo combo = new Combo(composite, style);
 		combo.setLayoutData(gridData);
 
 		ListenerAppender.addComboListener(combo, dialog, false);
 
-		return combo;
-	}
-
-	public static Combo createCombo(AbstractDialog dialog, Composite composite,
-			String title, int span) {
-		if (title != null) {
-			Label label = new Label(composite, SWT.RIGHT);
-			label.setText(ResourceString.getResourceString(title));
-		}
-
-		GridData gridData = new GridData();
-		gridData.horizontalSpan = span;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-
-		Combo combo = new Combo(composite, SWT.NONE);
-		combo.setLayoutData(gridData);
-
-		ListenerAppender.addComboListener(combo, dialog, false);
+		// ラベルと連動
+		ListenerAppender.addLabelVisibleListener(combo, label);
 
 		return combo;
 	}
@@ -191,8 +189,9 @@ public class CompositeFactory {
 
 	public static Text createText(AbstractDialog dialog, Composite composite,
 			String title, int span, int width, int style, boolean imeOn) {
+		Label label = null;
 		if (title != null) {
-			Label label = new Label(composite, SWT.NONE);
+			label = new Label(composite, SWT.NONE);
 			label.setText(ResourceString.getResourceString(title));
 		}
 
@@ -210,6 +209,9 @@ public class CompositeFactory {
 		text.setLayoutData(textGridData);
 
 		ListenerAppender.addTextListener(text, dialog, imeOn);
+
+		// ラベルと連動
+		ListenerAppender.addLabelVisibleListener(text, label);
 
 		return text;
 	}
@@ -321,8 +323,9 @@ public class CompositeFactory {
 	public static Text createTextArea(AbstractDialog dialog,
 			Composite composite, String title, int width, int height, int span,
 			boolean selectAll, boolean imeOn) {
+		Label label = null;
 		if (title != null) {
-			Label label = new Label(composite, SWT.NONE);
+			label = new Label(composite, SWT.NONE);
 			label.setText(ResourceString.getResourceString(title));
 		}
 
@@ -337,6 +340,9 @@ public class CompositeFactory {
 		text.setLayoutData(textAreaGridData);
 
 		ListenerAppender.addTextAreaListener(text, dialog, selectAll, imeOn);
+
+		// ラベルと連動
+		ListenerAppender.addLabelVisibleListener(text, label);
 
 		return text;
 	}

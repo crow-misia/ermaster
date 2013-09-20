@@ -29,7 +29,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Co
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.view.dialog.word.AbstractWordDialog;
-import org.insightech.er.util.Format;
 
 public abstract class AbstractColumnDialog extends AbstractWordDialog {
 
@@ -165,7 +164,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		for (Iterator<Word> iter = this.wordList.iterator(); iter.hasNext();) {
 			Word word = iter.next();
 
-			String name = Format.null2blank(word.getLogicalName());
+			String name = StringUtils.defaultString(word.getLogicalName());
 
 			if (filterString != null && name.indexOf(filterString) == -1) {
 				iter.remove();

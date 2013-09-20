@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.element.view.tab;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Text;
@@ -8,7 +9,6 @@ import org.insightech.er.common.exception.InputException;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
-import org.insightech.er.util.Format;
 
 public class DescriptionTabWrapper extends ValidatableTabWrapper {
 
@@ -34,7 +34,7 @@ public class DescriptionTabWrapper extends ValidatableTabWrapper {
 		this.descriptionText = CompositeFactory.createTextArea(null, this,
 				"label.table.description", -1, 400, 1, true);
 
-		this.descriptionText.setText(Format.null2blank(copyData
+		this.descriptionText.setText(StringUtils.defaultString(copyData
 				.getDescription()));
 	}
 

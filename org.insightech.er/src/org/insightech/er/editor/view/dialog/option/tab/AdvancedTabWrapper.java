@@ -48,9 +48,10 @@ public class AdvancedTabWrapper extends ValidatableTabWrapper {
 			this.composite.dispose();
 		}
 
+		final String database = this.settings.getDatabase();
 		this.composite = EclipseDBManagerFactory.getEclipseDBManager(
-				this.settings.getDatabase()).createAdvancedComposite(this);
-		this.composite.initialize(this.dialog,
+				database).createAdvancedComposite(this);
+		this.composite.initialize(this.dialog, database,
 				(TableProperties) this.settings.getTableViewProperties(),
 				this.diagram, null);
 

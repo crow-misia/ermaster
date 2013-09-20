@@ -84,13 +84,6 @@ public final class Format {
 		return size + unit;
 	}
 
-	public static String null2blank(String str) {
-		if (str == null) {
-			return "";
-		}
-		return str;
-	}
-
 	public static String escapeSQL(final String str) {
 		final String r = StringUtils.replace(str, "'", "''");
 		return StringUtils.replace(r, "\\", "\\\\");

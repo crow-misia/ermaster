@@ -3,10 +3,10 @@ package org.insightech.er.editor.model.dbexport.html.page_generator.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.page_generator.AbstractHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
-import org.insightech.er.util.Format;
 
 public class SequenceHtmlReportPageGenerator extends
 		AbstractHtmlReportPageGenerator<Sequence> {
@@ -33,7 +33,7 @@ public class SequenceHtmlReportPageGenerator extends
 	 */
 	@Override
 	public String[] getContentArgs(ERDiagram diagram, Sequence sequence) {
-		return new String[] { Format.null2blank(sequence.getDescription()),
+		return new String[] { StringUtils.defaultString(sequence.getDescription()),
 				this.getValue(sequence.getIncrement()),
 				this.getValue(sequence.getMinValue()),
 				this.getValue(sequence.getMaxValue()),

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.impl.db2.tablespace.DB2TablespaceProperties;
 import org.insightech.er.db.impl.mysql.MySQLTableProperties;
 import org.insightech.er.db.impl.mysql.tablespace.MySQLTablespaceProperties;
@@ -838,7 +839,7 @@ public class PersistentXmlImpl extends Persistent {
 				.append(ddlTarget.commentReplaceLineFeed)
 				.append("</comment_replace_line_feed>\n");
 		xml.append(tab).append("\t<comment_replace_string>")
-				.append(Format.null2blank(ddlTarget.commentReplaceString))
+				.append(StringUtils.defaultString(ddlTarget.commentReplaceString))
 				.append("</comment_replace_string>\n");
 
 		final String tab2 = tab + "\t";
@@ -1506,7 +1507,7 @@ public class PersistentXmlImpl extends Persistent {
 				.append(context.complexUniqueKeyMap.get(complexUniqueKey))
 				.append("</id>\n");
 		xml.append(tab).append("\t<name>")
-				.append(Format.null2blank(complexUniqueKey.getUniqueKeyName()))
+				.append(StringUtils.defaultString(complexUniqueKey.getUniqueKeyName()))
 				.append("</name>\n");
 		xml.append(tab).append("\t<columns>\n");
 

@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.dbexport.ddl.validator.rule.table.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IMarker;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.dbexport.ddl.validator.ValidateResult;
@@ -11,7 +12,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
-import org.insightech.er.util.Format;
 
 public class DuplicatedColumnNameRule extends TableRule {
 
@@ -27,7 +27,7 @@ public class DuplicatedColumnNameRule extends TableRule {
 				ColumnGroup columnGroup = (ColumnGroup) column;
 
 				for (NormalColumn normalColumn : columnGroup.getColumns()) {
-					String columnName = Format.null2blank(
+					String columnName = StringUtils.defaultString(
 							normalColumn.getPhysicalName()).toLowerCase();
 
 					if (columnNameSet.contains(columnName)) {

@@ -11,7 +11,6 @@ import org.insightech.er.common.exception.InputException;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.SupportFunction;
-import org.insightech.er.util.Format;
 
 public class DBSetting implements Serializable, Comparable<DBSetting> {
 
@@ -147,9 +146,9 @@ public class DBSetting implements Serializable, Comparable<DBSetting> {
 
 		if (dbManager.isSupported(SupportFunction.SCHEMA) &&
 			StringUtils.isNotBlank(schema)) {
-			return schema + "." + Format.null2blank(tableName);
+			return schema + "." + StringUtils.defaultString(tableName);
 		}
-		return Format.null2blank(tableName);
+		return StringUtils.defaultString(tableName);
 	}
 
 	public Connection connect() throws InputException, InstantiationException,

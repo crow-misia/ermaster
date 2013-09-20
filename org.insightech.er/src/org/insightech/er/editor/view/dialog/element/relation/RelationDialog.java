@@ -21,7 +21,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.unique_key.ComplexUniqueKey;
 import org.insightech.er.util.Check;
-import org.insightech.er.util.Format;
 
 public class RelationDialog extends AbstractDialog {
 
@@ -284,7 +283,7 @@ public class RelationDialog extends AbstractDialog {
 	protected void setData() {
 		ERTable sourceTable = (ERTable) this.relation.getSourceTableView();
 
-		this.nameText.setText(Format.null2blank(this.relation.getName()));
+		this.nameText.setText(StringUtils.defaultString(this.relation.getName()));
 
 		if (this.relation.getOnUpdateAction() != null) {
 			this.onUpdateCombo.setText(this.relation.getOnUpdateAction());

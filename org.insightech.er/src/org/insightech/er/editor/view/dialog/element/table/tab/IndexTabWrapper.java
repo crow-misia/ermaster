@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -29,7 +30,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.index.
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.view.dialog.common.ERTableComposite;
 import org.insightech.er.editor.view.dialog.element.table.sub.IndexDialog;
-import org.insightech.er.util.Format;
 
 public class IndexTabWrapper extends ValidatableTabWrapper {
 
@@ -223,7 +223,7 @@ public class IndexTabWrapper extends ValidatableTabWrapper {
 
 		for (NormalColumn normalColumn : this.copyData.getExpandedColumns()) {
 			TableItem tableItem = new TableItem(this.indexTable, SWT.NONE);
-			tableItem.setText(0, Format.null2blank(normalColumn.getName()));
+			tableItem.setText(0, StringUtils.defaultString(normalColumn.getName()));
 
 			for (int i = 0; i < indexes.size(); i++) {
 				Index index = indexes.get(i);

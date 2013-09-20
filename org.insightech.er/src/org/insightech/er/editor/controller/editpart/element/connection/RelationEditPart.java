@@ -1,5 +1,6 @@
 package org.insightech.er.editor.controller.editpart.element.connection;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.ConnectionEndpointLocator;
 import org.eclipse.draw2d.IFigure;
@@ -20,7 +21,6 @@ import org.insightech.er.editor.view.dialog.element.relation.RelationDialog;
 import org.insightech.er.editor.view.figure.connection.ERDiagramConnection;
 import org.insightech.er.editor.view.figure.connection.decoration.DecorationFactory;
 import org.insightech.er.editor.view.figure.connection.decoration.DecorationFactory.Decoration;
-import org.insightech.er.util.Format;
 
 public class RelationEditPart extends ERDiagramConnectionEditPart {
 
@@ -81,7 +81,7 @@ public class RelationEditPart extends ERDiagramConnectionEditPart {
 
 			connection.setSourceDecoration(decoration.getSourceDecoration());
 			connection.setTargetDecoration(decoration.getTargetDecoration());
-			targetLabel.setText(Format.null2blank(decoration.getTargetLabel()));
+			targetLabel.setText(StringUtils.defaultString(decoration.getTargetLabel()));
 		}
 
 		this.refreshBendpoints();

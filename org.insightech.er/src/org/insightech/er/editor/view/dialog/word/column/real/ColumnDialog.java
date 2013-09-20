@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.dialog.word.column.real;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -18,7 +19,6 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.SupportFunction;
-import org.insightech.er.db.impl.mysql.MySQLDBManager;
 import org.insightech.er.db.impl.postgres.PostgresDBManager;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -27,11 +27,11 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.column
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.view.dialog.element.table.sub.AutoIncrementSettingDialog;
 import org.insightech.er.util.Check;
-import org.insightech.er.util.Format;
 
 public class ColumnDialog extends AbstractRealColumnDialog {
 
-	private ERTable erTable;
+	private final ERTable erTable;
+	private final DBManager dbManager;
 
 	private Sequence autoIncrementSetting;
 
@@ -51,6 +51,7 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 		super(parentShell, erTable.getDiagram());
 
 		this.erTable = erTable;
+		this.dbManager = DBManagerFactory.getDBManager(erTable.getDiagram());
 	}
 
 	@Override
@@ -62,11 +63,11 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 
 		DBManager manager = DBManagerFactory.getDBManager(this.diagram);
 
-		if (MySQLDBManager.ID.equals(this.diagram.getDatabase())) {
+		if (dbManager.isSupported(SupportFunction.COLUMN_CHARSET)) {
 			this.characterSetCombo = CompositeFactory.createCombo(this,
-					composite, "label.character.set", 1);
+					composite, "label.character.set");
 			this.collationCombo = CompositeFactory.createCombo(this, composite,
-					"label.collation", 1);
+					"label.collation");
 		}
 
 		if (manager.isSupported(SupportFunction.AUTO_INCREMENT_SETTING)) {
@@ -176,33 +177,36 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 			this.enableAutoIncrement(false);
 		}
 
-		this.defaultText.setText(Format.null2blank(this.targetColumn
+		this.defaultText.setText(StringUtils.defaultString(this.targetColumn
 				.getDefaultValue()));
 
 		this.setEnabledBySqlType();
 
-		this.uniqueKeyNameText.setText(Format.null2blank(this.targetColumn
+		this.uniqueKeyNameText.setText(StringUtils.defaultString(this.targetColumn
 				.getUniqueKeyName()));
 
 		if (this.characterSetCombo != null) {
 			this.characterSetCombo.add("");
-
-			for (String characterSet : MySQLDBManager.getCharacterSetList()) {
+			for (String characterSet : dbManager.getCharacterSetList()) {
 				this.characterSetCombo.add(characterSet);
 			}
 
-			this.characterSetCombo.setText(Format.null2blank(this.targetColumn
-					.getCharacterSet()));
+			final String characterSet = StringUtils.defaultString(this.targetColumn.getCharacterSet());
+			this.characterSetCombo.setText(characterSet);
 
-			this.collationCombo.add("");
+			final List<String> collationList = dbManager.getCollationList(characterSet);
+			if (collationList.isEmpty()) {
+				this.collationCombo.setVisible(false);
+			} else {
+				this.collationCombo.setVisible(true);
+				this.collationCombo.add("");
 
-			for (String collation : MySQLDBManager
-					.getCollationList(this.targetColumn.getCharacterSet())) {
-				this.collationCombo.add(collation);
+				for (String collation : dbManager.getCollationList(this.targetColumn.getCharacterSet())) {
+					this.collationCombo.add(collation);
+				}
+
+				this.collationCombo.setText(StringUtils.defaultString(this.targetColumn.getCollation()));
 			}
-
-			this.collationCombo.setText(Format.null2blank(this.targetColumn
-					.getCollation()));
 		}
 	}
 
@@ -392,8 +396,7 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 					collationCombo.removeAll();
 					collationCombo.add("");
 
-					for (String collation : MySQLDBManager
-							.getCollationList(characterSetCombo.getText())) {
+					for (String collation : dbManager.getCollationList(characterSetCombo.getText())) {
 						collationCombo.add(collation);
 					}
 

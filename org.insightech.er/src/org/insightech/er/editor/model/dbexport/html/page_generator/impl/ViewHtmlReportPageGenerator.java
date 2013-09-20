@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.page_generator.AbstractHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
-import org.insightech.er.util.Format;
 
 public class ViewHtmlReportPageGenerator extends
 		AbstractHtmlReportPageGenerator<View> {
@@ -38,7 +38,7 @@ public class ViewHtmlReportPageGenerator extends
 	 */
 	@Override
 	public String[] getContentArgs(ERDiagram diagram, View view)
-			throws IOException {		String description = Format.null2blank(view.getDescription());
+			throws IOException {		String description = StringUtils.defaultString(view.getDescription());
 
 		List<NormalColumn> normalColumnList = view.getExpandedColumns();
 
@@ -57,9 +57,9 @@ public class ViewHtmlReportPageGenerator extends
 		String attributeDetailTable = this.generateAttributeDetailTable(
 				diagram, normalColumnList);
 
-		return new String[] { Format.null2blank(description),
-				Format.null2blank(view.getPhysicalName()),
-				Format.null2blank(view.getSql()), attributeTable,
+		return new String[] { StringUtils.defaultString(description),
+				StringUtils.defaultString(view.getPhysicalName()),
+				StringUtils.defaultString(view.getSql()), attributeTable,
 				foreignKeyTable, attributeDetailTable };
 	}
 

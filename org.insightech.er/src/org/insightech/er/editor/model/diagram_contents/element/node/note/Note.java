@@ -2,9 +2,9 @@ package org.insightech.er.editor.model.diagram_contents.element.node.note;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.util.Format;
 
 /**
  * ノートのモデル
@@ -62,8 +62,8 @@ public class Note extends NodeElement implements Comparable<Note> {
 	public int compareTo(Note other) {
 		int compareTo = 0;
 
-		compareTo = Format.null2blank(this.text).compareTo(
-				Format.null2blank(other.text));
+		compareTo = StringUtils.defaultString(this.text).compareTo(
+				StringUtils.defaultString(other.text));
 
 		return compareTo;
 	}

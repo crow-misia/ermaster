@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -17,7 +18,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.testdata.RepeatTestData;
 import org.insightech.er.editor.model.testdata.RepeatTestDataDef;
-import org.insightech.er.util.Format;
 import org.insightech.er.util.POIUtils;
 
 public class DBUnitXLSTestDataCreator extends TestDataCreator {
@@ -96,11 +96,8 @@ public class DBUnitXLSTestDataCreator extends TestDataCreator {
 		for (NormalColumn column : table.getExpandedColumns()) {
 			HSSFCell cell = row.createCell(col++);
 
-			String value = Format.null2blank(data.get(column));
-
-			if (value == null || "null".equals(value.toLowerCase())) {
-
-			} else {
+			String value = data.get(column);
+			if (StringUtils.isEmpty(value)) {
 				cell.setCellValue(new HSSFRichTextString(value));
 			}
 		}

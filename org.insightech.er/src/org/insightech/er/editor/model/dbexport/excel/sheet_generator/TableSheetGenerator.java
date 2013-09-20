@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -18,7 +19,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.unique_key.ComplexUniqueKey;
-import org.insightech.er.util.Format;
 import org.insightech.er.util.POIUtils;
 import org.insightech.er.util.POIUtils.CellLocation;
 
@@ -461,7 +461,7 @@ public class TableSheetGenerator extends AbstractSheetGenerator {
 			} else {
 				ComplexUniqueKey complexUniqueKey = table
 						.getComplexUniqueKeyList().get(i - 1);
-				cell.setCellValue(Format.null2blank(complexUniqueKey.getUniqueKeyName()));
+				cell.setCellValue(StringUtils.defaultString(complexUniqueKey.getUniqueKeyName()));
 
 				if (i == num) {
 					cell.setCellStyle(matrixCellStyle.style13);

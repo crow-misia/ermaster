@@ -19,7 +19,6 @@ import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.settings.JDBCDriverSetting;
 import org.insightech.er.preference.MultiFileFieldEditor;
-import org.insightech.er.util.Format;
 
 public final class JDBCPathDialog extends AbstractDialog {
 
@@ -153,15 +152,15 @@ public final class JDBCPathDialog extends AbstractDialog {
 	@Override
 	protected void setData() {
 		this.fileFieldEditor.setStringValue(this.path);
-		this.driverClassNameText.setText(Format
-				.null2blank(this.driverClassName));
+		this.driverClassNameText.setText(StringUtils
+				.defaultString(this.driverClassName));
 
 		if (this.databaseCombo != null) {
 			for (String db : DBManagerFactory.getAllDBList()) {
 				this.databaseCombo.add(db);
 			}
 
-			this.databaseCombo.setText(Format.null2blank(this.database));
+			this.databaseCombo.setText(StringUtils.defaultString(this.database));
 		}
 	}
 

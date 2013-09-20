@@ -1,12 +1,19 @@
 package org.insightech.er.db.impl.oracle;
 
-import static org.insightech.er.db.SupportFunction.*;
+import static org.insightech.er.db.SupportFunction.COLUMN_UNIT;
+import static org.insightech.er.db.SupportFunction.INDEX_BITMAP;
+import static org.insightech.er.db.SupportFunction.INDEX_DESC;
+import static org.insightech.er.db.SupportFunction.MATERIALIZED_VIEW;
+import static org.insightech.er.db.SupportFunction.MULTIPLE_INSERT;
+import static org.insightech.er.db.SupportFunction.SCHEMA;
+import static org.insightech.er.db.SupportFunction.SEQUENCE;
+import static org.insightech.er.db.SupportFunction.SEQUENCE_CACHE;
+import static org.insightech.er.db.SupportFunction.SEQUENCE_CYCLE;
+import static org.insightech.er.db.SupportFunction.SEQUENCE_MAXVALUE;
+import static org.insightech.er.db.SupportFunction.SEQUENCE_MINVALUE;
+import static org.insightech.er.db.SupportFunction.SEQUENCE_ORDER;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.insightech.er.db.DBManagerBase;
@@ -24,9 +31,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Ta
 
 public class OracleDBManager extends DBManagerBase {
 
-	private static final ResourceBundle CHARACTER_SET_RESOURCE = ResourceBundle
-			.getBundle("oracle_characterset");
-	
 	public static final String ID = "Oracle";
 
 	public String getId() {
@@ -128,17 +132,5 @@ public class OracleDBManager extends DBManagerBase {
 
 	public int getCacheMinValue() {
 		return 1;
-	}
-
-	public static List<String> getCharacterSetList() {
-		final List<String> list = new ArrayList<String>();
-
-		final Enumeration<String> keys = CHARACTER_SET_RESOURCE.getKeys();
-
-		while (keys.hasMoreElements()) {
-			list.add(keys.nextElement());
-		}
-
-		return list;
 	}
 }

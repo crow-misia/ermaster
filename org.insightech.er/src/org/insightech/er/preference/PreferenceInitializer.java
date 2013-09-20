@@ -20,7 +20,6 @@ import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.impl.standard_sql.StandardSQLDBManager;
 import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.editor.model.settings.JDBCDriverSetting;
-import org.insightech.er.util.Format;
 
 public final class PreferenceInitializer extends AbstractPreferenceInitializer {
 
@@ -101,12 +100,12 @@ public final class PreferenceInitializer extends AbstractPreferenceInitializer {
 				.getInt(PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_LIST_NUM);
 
 		store.setValue(PreferenceInitializer.JDBC_DRIVER_DB_NAME_PREFIX
-				+ listSize, Format.null2blank(db));
+				+ listSize, StringUtils.defaultString(db));
 		store.setValue(PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_PREFIX
-				+ listSize, Format.null2blank(className));
+				+ listSize, StringUtils.defaultString(className));
 		store.setValue(
 				PreferenceInitializer.JDBC_DRIVER_PATH_PREFIX + listSize,
-				Format.null2blank(path));
+				StringUtils.defaultString(path));
 
 		store.setValue(PreferenceInitializer.JDBC_DRIVER_CLASS_NAME_LIST_NUM,
 				listSize + 1);
@@ -233,25 +232,25 @@ public final class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public static void saveSetting(int no, DBSetting dbSetting) {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-		store.setValue(PreferenceInitializer.DB_SETTING_DBSYSTEM + no, Format
-				.null2blank(dbSetting.getDbsystem()));
-		store.setValue(PreferenceInitializer.DB_SETTING_SERVER + no, Format
-				.null2blank(dbSetting.getServer()));
+		store.setValue(PreferenceInitializer.DB_SETTING_DBSYSTEM + no, StringUtils
+				.defaultString(dbSetting.getDbsystem()));
+		store.setValue(PreferenceInitializer.DB_SETTING_SERVER + no, StringUtils
+				.defaultString(dbSetting.getServer()));
 		store.setValue(PreferenceInitializer.DB_SETTING_PORT + no, dbSetting
 				.getPort());
-		store.setValue(PreferenceInitializer.DB_SETTING_DATABASE + no, Format
-				.null2blank(dbSetting.getDatabase()));
-		store.setValue(PreferenceInitializer.DB_SETTING_USER + no, Format
-				.null2blank(dbSetting.getUser()));
-		store.setValue(PreferenceInitializer.DB_SETTING_PASSWORD + no, Format
-				.null2blank(dbSetting.getPassword()));
+		store.setValue(PreferenceInitializer.DB_SETTING_DATABASE + no, StringUtils
+				.defaultString(dbSetting.getDatabase()));
+		store.setValue(PreferenceInitializer.DB_SETTING_USER + no, StringUtils
+				.defaultString(dbSetting.getUser()));
+		store.setValue(PreferenceInitializer.DB_SETTING_PASSWORD + no, StringUtils
+				.defaultString(dbSetting.getPassword()));
 		store.setValue(
 				PreferenceInitializer.DB_SETTING_USE_DEFAULT_DRIVER + no,
 				dbSetting.isUseDefaultDriver());
-		store.setValue(PreferenceInitializer.DB_SETTING_URL + no, Format
-				.null2blank(dbSetting.getUrl()));
+		store.setValue(PreferenceInitializer.DB_SETTING_URL + no, StringUtils
+				.defaultString(dbSetting.getUrl()));
 		store.setValue(PreferenceInitializer.DB_SETTING_DRIVER_CLASS_NAME + no,
-				Format.null2blank(dbSetting.getDriverClassName()));
+				StringUtils.defaultString(dbSetting.getDriverClassName()));
 	}
 
 	public static void saveSetting(List<DBSetting> dbSettingList) {

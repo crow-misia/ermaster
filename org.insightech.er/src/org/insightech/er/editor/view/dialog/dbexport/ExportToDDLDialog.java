@@ -53,7 +53,6 @@ import org.insightech.er.editor.model.settings.Environment;
 import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.util.Closer;
-import org.insightech.er.util.Format;
 
 public class ExportToDDLDialog extends AbstractDialog {
 
@@ -494,7 +493,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 
 		ExportSetting exportSetting = settings.getExportSetting();
 
-		String outputFile = Format.null2blank(exportSetting.getDdlOutput());
+		String outputFile = StringUtils.defaultString(exportSetting.getDdlOutput());
 
 		if (StringUtils.isEmpty(outputFile)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
@@ -539,8 +538,7 @@ public class ExportToDDLDialog extends AbstractDialog {
 		this.inlineTableComment.setSelection(ddlTarget.inlineTableComment);
 		this.commentReplaceLineFeed
 				.setSelection(ddlTarget.commentReplaceLineFeed);
-		this.commentReplaceString.setText(Format
-				.null2blank(ddlTarget.commentReplaceString));
+		this.commentReplaceString.setText(StringUtils.defaultString(ddlTarget.commentReplaceString));
 		this.commentValueDescription
 				.setSelection(ddlTarget.commentValueDescription);
 		this.commentValueLogicalName

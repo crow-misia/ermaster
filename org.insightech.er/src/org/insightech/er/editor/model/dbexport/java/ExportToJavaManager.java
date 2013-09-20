@@ -18,7 +18,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.TableV
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
 import org.insightech.er.util.Closer;
-import org.insightech.er.util.Format;
 import org.insightech.er.util.io.FileUtils;
 import org.insightech.er.util.io.IOUtils;
 
@@ -607,8 +606,7 @@ public class ExportToJavaManager {
 				.getPackageName());
 		content = content.replaceAll("@PhysicalTableName", this
 				.getCamelCaseName(table));
-		content = content.replaceAll("@suffix", Format
-				.null2blank(this.exportJavaSetting.getClassNameSuffix()));
+		content = content.replaceAll("@suffix", StringUtils.defaultString(this.exportJavaSetting.getClassNameSuffix()));
 		content = content.replaceAll("@realTableName", table.getPhysicalName());
 
 		StringBuilder properties = new StringBuilder();

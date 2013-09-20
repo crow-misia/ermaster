@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -333,7 +334,7 @@ public class RelationByExistingColumnsDialog extends AbstractDialog {
 	private void column2TableItem(NormalColumn referencedColumn) {
 		TableItem tableItem = new TableItem(this.comparisonTable, SWT.NONE);
 
-		tableItem.setText(0, Format.null2blank(referencedColumn
+		tableItem.setText(0, StringUtils.defaultString(referencedColumn
 				.getLogicalName()));
 
 		List<NormalColumn> foreignKeyList = this.referencedMap

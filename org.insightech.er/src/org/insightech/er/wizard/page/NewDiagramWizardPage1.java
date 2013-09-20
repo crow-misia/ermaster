@@ -3,7 +3,7 @@ package org.insightech.er.wizard.page;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.core.resources.IFile;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -46,7 +46,7 @@ public class NewDiagramWizardPage1 extends WizardNewFileCreationPage {
 	protected boolean validatePage() {
 		boolean valid = super.validatePage();
 		if (valid) {
-			String fileExtension = this.getFileExtension();
+			String fileExtension = StringUtils.substringAfter(this.getFileName(), ".");
 			boolean isSupport = false;
 			for (final String ext : Resources.SUPPORT_EXTENSIONS) {
 				if (ext.equalsIgnoreCase(fileExtension)) {
@@ -61,10 +61,7 @@ public class NewDiagramWizardPage1 extends WizardNewFileCreationPage {
 			}
 		}
 		if (valid) {
-			String fileName = this.getFileName();
-			if (fileName.indexOf(".") == -1) {
-				fileName = fileName + Resources.DEFAULT_EXTENSION;
-			}
+			final String fileName = this.getFileName();
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot root = workspace.getRoot();
 
@@ -112,18 +109,4 @@ public class NewDiagramWizardPage1 extends WizardNewFileCreationPage {
 
 		return null;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public IFile createNewFile() {
-		String fileName = this.getFileName();
-		if (fileName.indexOf(".") == -1) {
-			this.setFileName(fileName + Resources.DEFAULT_EXTENSION);
-		}
-
-		return super.createNewFile();
-	}
-
 }

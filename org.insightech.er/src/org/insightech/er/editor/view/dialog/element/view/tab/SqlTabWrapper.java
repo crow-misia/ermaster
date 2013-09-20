@@ -9,7 +9,6 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.view.dialog.element.view.ViewDialog;
-import org.insightech.er.util.Format;
 
 public class SqlTabWrapper extends ValidatableTabWrapper {
 
@@ -38,7 +37,7 @@ public class SqlTabWrapper extends ValidatableTabWrapper {
 		this.sqlText = CompositeFactory.createTextArea(this.viewDialog, this,
 				"label.sql", 400, 400, 1, true);
 
-		this.sqlText.setText(Format.null2blank(copyData.getSql()));
+		this.sqlText.setText(StringUtils.defaultString(copyData.getSql()));
 	}
 
 	/**

@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.ExportToHtmlManager;
@@ -124,8 +125,8 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 
 	public String[] getPackageSummaryRowArgs(T object) {
 		return new String[] { this.getObjectId(object),
-				Format.null2blank(this.getObjectName(object)),
-				Format.null2blank(this.getObjectSummary(object)) };
+				StringUtils.defaultString(this.getObjectName(object)),
+				StringUtils.defaultString(this.getObjectSummary(object)) };
 	}
 
 	public String generateContent(ERDiagram diagram, T object,
@@ -190,8 +191,8 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 			Object[] args = { this.getObjectId(normalColumn),
 					this.getPKString(normalColumn),
 					this.getForeignKeyString(normalColumn),
-					Format.null2blank(normalColumn.getLogicalName()),
-					Format.null2blank(normalColumn.getPhysicalName()), type,
+					StringUtils.defaultString(normalColumn.getLogicalName()),
+					StringUtils.defaultString(normalColumn.getPhysicalName()), type,
 					this.getUniqueString(normalColumn),
 					this.getNotNullString(normalColumn) };
 
@@ -224,16 +225,16 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 					this.getObjectId(normalColumn),
 					this.getPKString(normalColumn),
 					this.getForeignKeyString(normalColumn),
-					Format.null2blank(normalColumn.getLogicalName()),
-					Format.null2blank(normalColumn.getPhysicalName()),
-					Format.null2blank(normalColumn.getDescription()),
+					StringUtils.defaultString(normalColumn.getLogicalName()),
+					StringUtils.defaultString(normalColumn.getPhysicalName()),
+					StringUtils.defaultString(normalColumn.getDescription()),
 					String.valueOf(normalColumn.isUniqueKey()).toUpperCase(),
 					String.valueOf(normalColumn.isNotNull()).toUpperCase(),
 					type,
 					String.valueOf(normalColumn.isAutoIncrement())
 							.toUpperCase(),
-					Format.null2blank(normalColumn.getDefaultValue()),
-					Format.null2blank(normalColumn.getConstraint()) };
+					StringUtils.defaultString(normalColumn.getDefaultValue()),
+					StringUtils.defaultString(normalColumn.getConstraint()) };
 			String row = MessageFormat.format(template, args);
 
 			sb.append(row);
@@ -251,8 +252,8 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 
 		for (TableView table : tableList) {
 			Object[] args = { this.getObjectId(table), table.getObjectType(),
-					Format.null2blank(table.getPhysicalName()),
-					Format.null2blank(table.getLogicalName()) };
+					StringUtils.defaultString(table.getPhysicalName()),
+					StringUtils.defaultString(table.getLogicalName()) };
 			String row = MessageFormat.format(template, args);
 
 			sb.append(row);
@@ -274,9 +275,9 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 		for (NormalColumn normalColumn : normalColumnList) {
 			String tableId = this.getObjectId(table);
 			String columnId = this.getObjectId(normalColumn);
-			String columnPhysicalName = Format.null2blank(normalColumn
+			String columnPhysicalName = StringUtils.defaultString(normalColumn
 					.getPhysicalName());
-			String columnLogicalName = Format.null2blank(normalColumn
+			String columnLogicalName = StringUtils.defaultString(normalColumn
 					.getLogicalName());
 			Boolean desc = descs.get(i);
 			String descStr = null;
@@ -315,17 +316,17 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 
 				Object[] args = {
 						this.getObjectId(normalColumn),
-						Format.null2blank(normalColumn.getName()),
+						StringUtils.defaultString(normalColumn.getName()),
 						this.getObjectId(sourceTable),
-						Format.null2blank(sourceTable.getName()),
+						StringUtils.defaultString(sourceTable.getName()),
 						this.getObjectId(normalColumn
 								.getReferencedColumn(relation)),
-						Format.null2blank(normalColumn.getReferencedColumn(
+								StringUtils.defaultString(normalColumn.getReferencedColumn(
 								relation).getName()),
 						relation.getOnUpdateAction(),
 						relation.getOnDeleteAction(),
-						Format.null2blank(relation.getParentCardinality()),
-						Format.null2blank(relation.getChildCardinality()) };
+						StringUtils.defaultString(relation.getParentCardinality()),
+						StringUtils.defaultString(relation.getChildCardinality()) };
 
 				String row = MessageFormat.format(template, args);
 
@@ -350,16 +351,16 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 				Object[] args = {
 						this.getObjectId(normalColumn
 								.getReferencedColumn(relation)),
-						Format.null2blank(normalColumn.getReferencedColumn(
+								StringUtils.defaultString(normalColumn.getReferencedColumn(
 								relation).getName()),
 						this.getObjectId(targetTable),
-						Format.null2blank(targetTable.getName()),
+						StringUtils.defaultString(targetTable.getName()),
 						this.getObjectId(normalColumn),
-						Format.null2blank(normalColumn.getName()),
+						StringUtils.defaultString(normalColumn.getName()),
 						relation.getOnUpdateAction(),
 						relation.getOnDeleteAction(),
-						Format.null2blank(relation.getParentCardinality()),
-						Format.null2blank(relation.getChildCardinality()) };
+						StringUtils.defaultString(relation.getParentCardinality()),
+						StringUtils.defaultString(relation.getChildCardinality()) };
 
 				String row = MessageFormat.format(template, args);
 
@@ -379,8 +380,8 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 
 		for (Index index : indexList) {
 			String id = this.getObjectId(index);
-			String name = Format.null2blank(index.getName());
-			String type = Format.null2blank(index.getType());
+			String name = StringUtils.defaultString(index.getName());
+			String type = StringUtils.defaultString(index.getType());
 			String unique = null;
 			if (index.isNonUnique()) {
 				unique = "";
@@ -476,8 +477,7 @@ public abstract class AbstractHtmlReportPageGenerator<T> implements
 		StringBuilder header = new StringBuilder();
 
 		for (ComplexUniqueKey complexUniqueKey : complexUniqueKeyList) {
-			String name = Format
-					.null2blank(complexUniqueKey.getUniqueKeyName());
+			String name = StringUtils.defaultString(complexUniqueKey.getUniqueKeyName());
 
 			Object[] args = { name };
 			String column = MessageFormat.format(headerTemplate, args);

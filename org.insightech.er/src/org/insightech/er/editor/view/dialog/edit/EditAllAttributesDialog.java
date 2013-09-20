@@ -293,7 +293,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		Collections.sort(this.wordList);
 
 		for (Word word : this.wordList) {
-			combo.add(Format.null2blank(word.getLogicalName()));
+			combo.add(StringUtils.defaultString(word.getLogicalName()));
 		}
 	}
 
@@ -335,8 +335,8 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		// this.disposeCheckBox(column);
 
 		if (table != null) {
-			tableItem.setText(2, Format.null2blank(table.getLogicalName()));
-			tableItem.setText(3, Format.null2blank(table.getPhysicalName()));
+			tableItem.setText(2, StringUtils.defaultString(table.getLogicalName()));
+			tableItem.setText(3, StringUtils.defaultString(table.getPhysicalName()));
 		}
 
 		if (column instanceof NormalColumn) {
@@ -370,12 +370,12 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 			int colCount = 0;
 
 			tableItem.setForeground(colCount, keyColor);
-			tableItem.setText(colCount, Format.null2blank(normalColumn
+			tableItem.setText(colCount, StringUtils.defaultString(normalColumn
 					.getLogicalName()));
 
 			colCount++;
 			tableItem.setForeground(colCount, keyColor);
-			tableItem.setText(colCount, Format.null2blank(normalColumn
+			tableItem.setText(colCount, StringUtils.defaultString(normalColumn
 					.getPhysicalName()));
 
 			colCount++;
@@ -386,7 +386,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 			colCount++;
 			if (normalColumn.getWord() != null) {
-				tableItem.setText(colCount, Format.null2blank(normalColumn
+				tableItem.setText(colCount, StringUtils.defaultString(normalColumn
 						.getWord().getLogicalName()));
 			}
 

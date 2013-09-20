@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.impl.db2.DB2DBManager;
@@ -80,7 +81,6 @@ import org.insightech.er.editor.model.testdata.TableTestData;
 import org.insightech.er.editor.model.testdata.TestData;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
 import org.insightech.er.editor.model.tracking.ChangeTrackingList;
-import org.insightech.er.util.Format;
 import org.insightech.er.util.NameValue;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -943,10 +943,10 @@ public class XMLLoader {
 						"array_dimension"), this.getBooleanValue(element,
 						"unsigned"), this.getStringValue(element, "args"));
 
-		Word word = new Word(Format.null2blank(this.getStringValue(element,
-				"physical_name")), Format.null2blank(this.getStringValue(
+		Word word = new Word(StringUtils.defaultString(this.getStringValue(element,
+				"physical_name")), StringUtils.defaultString(this.getStringValue(
 				element, "logical_name")), SqlType.valueOfId(type), typeData,
-				Format.null2blank(this.getStringValue(element, "description")),
+				StringUtils.defaultString(this.getStringValue(element, "description")),
 				this.database);
 
 		context.wordMap.put(id, word);
@@ -1081,7 +1081,7 @@ public class XMLLoader {
 		if (element != null) {
 			settings.setDatabase(this.loadDatabase(element));
 			settings.setCapital(this.getBooleanValue(element, "capital"));
-			settings.setTableStyle(Format.null2blank(this.getStringValue(
+			settings.setTableStyle(StringUtils.defaultString(this.getStringValue(
 					element, "table_style")));
 
 			settings.setNotation(this.getStringValue(element, "notation"));
@@ -1206,9 +1206,9 @@ public class XMLLoader {
 		if (element != null) {
 			exportJavaSetting.setJavaOutput(this.getStringValue(element,
 					"java_output"));
-			exportJavaSetting.setPackageName(Format.null2blank(this
+			exportJavaSetting.setPackageName(StringUtils.defaultString(this
 					.getStringValue(element, "package_name")));
-			exportJavaSetting.setClassNameSuffix(Format.null2blank(this
+			exportJavaSetting.setClassNameSuffix(StringUtils.defaultString(this
 					.getStringValue(element, "class_name_suffix")));
 			exportJavaSetting.setSrcFileEncoding(this.getStringValue(element,
 					"src_file_encoding"));

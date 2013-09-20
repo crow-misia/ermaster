@@ -2,6 +2,7 @@ package org.insightech.er.editor.controller.editpart.outline.table;
 
 import java.beans.PropertyChangeEvent;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -21,7 +22,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.element.relation.RelationDialog;
-import org.insightech.er.util.Format;
 
 public class RelationOutlineEditPart extends AbstractOutlineEditPart<Object> {
 
@@ -58,17 +58,17 @@ public class RelationOutlineEditPart extends AbstractOutlineEditPart<Object> {
 
 			if (viewMode == Settings.VIEW_MODE_PHYSICAL) {
 				sb
-						.append(Format.null2blank(foreignKeyColumn
+						.append(StringUtils.defaultString(foreignKeyColumn
 								.getPhysicalName()));
 
 			} else if (viewMode == Settings.VIEW_MODE_LOGICAL) {
-				sb.append(Format.null2blank(foreignKeyColumn.getLogicalName()));
+				sb.append(StringUtils.defaultString(foreignKeyColumn.getLogicalName()));
 
 			} else {
-				sb.append(Format.null2blank(foreignKeyColumn.getLogicalName()));
+				sb.append(StringUtils.defaultString(foreignKeyColumn.getLogicalName()));
 				sb.append("/");
 				sb
-						.append(Format.null2blank(foreignKeyColumn
+						.append(StringUtils.defaultString(foreignKeyColumn
 								.getPhysicalName()));
 			}
 		}

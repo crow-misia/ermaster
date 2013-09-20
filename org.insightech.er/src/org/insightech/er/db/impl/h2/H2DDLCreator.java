@@ -178,7 +178,7 @@ public class H2DDLCreator extends DDLCreator {
 			ddl.append(" UNIQUE");
 		}
 
-		String constraint = Format.null2blank(normalColumn.getConstraint());
+		String constraint = StringUtils.defaultString(normalColumn.getConstraint());
 		if (StringUtils.isNotBlank(constraint)) {
 			ddl.append(" CHECK ");
 			ddl.append(constraint);

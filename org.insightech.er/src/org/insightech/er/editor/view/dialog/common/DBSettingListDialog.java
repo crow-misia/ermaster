@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.dialog.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -21,7 +22,6 @@ import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.exception.InputException;
 import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.preference.PreferenceInitializer;
-import org.insightech.er.util.Format;
 
 public class DBSettingListDialog extends AbstractDialog {
 
@@ -150,7 +150,7 @@ public class DBSettingListDialog extends AbstractDialog {
 			}
 			item.setText(3, dbSetting.getDatabase());
 			item.setText(4, dbSetting.getUser());
-			item.setText(5, Format.null2blank(dbSetting.getUrl()));
+			item.setText(5, StringUtils.defaultString(dbSetting.getUrl()));
 		}
 
 		this.setButtonEnabled(false);

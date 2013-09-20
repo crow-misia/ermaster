@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.ExportToHtmlManager;
@@ -15,7 +16,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.TableV
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceProperties;
 import org.insightech.er.editor.model.settings.Environment;
-import org.insightech.er.util.Format;
 
 public class TablespaceHtmlReportPageGenerator extends
 		AbstractHtmlReportPageGenerator<Tablespace> {
@@ -98,7 +98,7 @@ public class TablespaceHtmlReportPageGenerator extends
 				continue;
 			}
 
-			Object[] args = { Format.null2blank(environment.getName()),
+			Object[] args = { StringUtils.defaultString(environment.getName()),
 					this.generateValueTable(properties) };
 			String row = MessageFormat.format(template, args);
 
@@ -118,7 +118,7 @@ public class TablespaceHtmlReportPageGenerator extends
 		for (Map.Entry<String, String> entry : properties.getPropertiesMap()
 				.entrySet()) {
 			Object[] args = { ResourceString.getResourceString(entry.getKey()),
-					Format.null2blank(entry.getValue()) };
+					StringUtils.defaultString(entry.getValue()) };
 			String row = MessageFormat.format(template, args);
 
 			sb.append(row);

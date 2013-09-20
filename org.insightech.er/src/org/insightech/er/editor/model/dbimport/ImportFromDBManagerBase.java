@@ -47,7 +47,6 @@ import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Ta
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.util.Closer;
-import org.insightech.er.util.Format;
 
 public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		IRunnableWithProgress {
@@ -712,7 +711,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				notNull = true;
 			}
 
-			String defaultValue = Format.null2blank(columnData.defaultValue);
+			String defaultValue = StringUtils.defaultString(columnData.defaultValue);
 			if (sqlType != null) {
 				if (SqlType.SQL_TYPE_ID_SERIAL.equals(sqlType.getId())
 						|| SqlType.SQL_TYPE_ID_BIG_SERIAL.equals(sqlType
@@ -721,8 +720,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				}
 			}
 
-			String description = Format.null2blank(columnData.description);
-			String constraint = Format.null2blank(columnData.constraint);
+			String description = StringUtils.defaultString(columnData.description);
+			String constraint = StringUtils.defaultString(columnData.constraint);
 
 			boolean primaryKey = false;
 

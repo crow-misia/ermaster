@@ -31,7 +31,6 @@ import org.insightech.er.editor.model.settings.ExportSetting;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.model.settings.export.ExportJavaSetting;
 import org.insightech.er.util.Closer;
-import org.insightech.er.util.Format;
 
 public class ExportToJavaDialog extends AbstractDialog {
 
@@ -168,7 +167,7 @@ public class ExportToJavaDialog extends AbstractDialog {
 		ExportJavaSetting exportSetting = settings.getExportSetting()
 				.getExportJavaSetting();
 
-		String outputDir = Format.null2blank(exportSetting.getJavaOutput());
+		String outputDir = StringUtils.defaultString(exportSetting.getJavaOutput());
 
 		if (StringUtils.isEmpty(outputDir)) {
 			IFile file = ((IFileEditorInput) editorPart.getEditorInput())
@@ -178,12 +177,12 @@ public class ExportToJavaDialog extends AbstractDialog {
 
 		this.outputDirText.setText(outputDir);
 
-		this.packageText.setText(Format.null2blank(exportSetting
+		this.packageText.setText(StringUtils.defaultString(exportSetting
 				.getPackageName()));
-		this.classNameSuffixText.setText(Format.null2blank(exportSetting
+		this.classNameSuffixText.setText(StringUtils.defaultString(exportSetting
 				.getClassNameSuffix()));
 
-		String srcFileEncoding = Format.null2blank(exportSetting
+		String srcFileEncoding = StringUtils.defaultString(exportSetting
 				.getSrcFileEncoding());
 		if (StringUtils.isNotEmpty(srcFileEncoding)) {
 			this.fileEncodingCombo.setText(srcFileEncoding);

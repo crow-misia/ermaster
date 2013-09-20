@@ -236,10 +236,10 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		}
 
 		if (this.argsText != null) {
-			this.argsText.setText(Format.null2blank(typeData.getArgs()));
+			this.argsText.setText(StringUtils.defaultString(typeData.getArgs()));
 		}
 
-		this.descriptionText.setText(Format.toString(description));
+		this.descriptionText.setText(StringUtils.defaultString(description));
 	}
 
 	protected void setEnabledBySqlType() {

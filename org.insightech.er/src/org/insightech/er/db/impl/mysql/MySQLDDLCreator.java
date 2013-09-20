@@ -141,7 +141,7 @@ public class MySQLDDLCreator extends DDLCreator {
 			ddl.append(" UNIQUE");
 		}
 
-		String constraint = Format.null2blank(normalColumn.getConstraint());
+		String constraint = StringUtils.defaultString(normalColumn.getConstraint());
 		if (StringUtils.isNotBlank(constraint)) {
 			ddl.append(" ");
 			ddl.append(constraint);
@@ -222,27 +222,27 @@ public class MySQLDDLCreator extends DDLCreator {
 		String comment = null;
 
 		if (this.ddlTarget.commentValueLogicalNameDescription) {
-			comment = Format.null2blank(logicalName);
+			comment = StringUtils.defaultString(logicalName);
 
 			if (StringUtils.isNotBlank(description)) {
-				comment = comment + " : " + Format.null2blank(description);
+				comment = comment + " : " + StringUtils.defaultString(description);
 			}
 
 		} else if (this.ddlTarget.commentValueLogicalName) {
-			comment = Format.null2blank(logicalName);
+			comment = StringUtils.defaultString(logicalName);
 
 		} else {
-			comment = Format.null2blank(description);
+			comment = StringUtils.defaultString(description);
 
 		}
 
 		if (ddlTarget.commentReplaceLineFeed) {
 			comment = StringUtils.replace(comment, "\r\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
+					StringUtils.defaultString(ddlTarget.commentReplaceString));
 			comment = StringUtils.replace(comment, "\r",
-					Format.null2blank(ddlTarget.commentReplaceString));
+					StringUtils.defaultString(ddlTarget.commentReplaceString));
 			comment = StringUtils.replace(comment, "\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
+					StringUtils.defaultString(ddlTarget.commentReplaceString));
 		}
 
 		int maxLength = 60;

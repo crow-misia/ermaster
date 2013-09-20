@@ -333,12 +333,12 @@ public final class IndexDialog extends AbstractDialog {
 	@Override
 	protected void setData() {
 		if (this.targetIndex != null && !add) {
-			this.tableText.setText(Format.null2blank(this.targetIndex
+			this.tableText.setText(StringUtils.defaultString(this.targetIndex
 					.getTable().getPhysicalName()));
 
 			this.nameText.setText(this.targetIndex.getName());
 
-			this.descriptionText.setText(Format.null2blank(this.targetIndex
+			this.descriptionText.setText(StringUtils.defaultString(this.targetIndex
 					.getDescription()));
 
 			if (this.typeCombo != null && StringUtils.isNotEmpty(this.targetIndex.getType())) {

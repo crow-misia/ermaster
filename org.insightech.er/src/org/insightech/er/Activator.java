@@ -35,7 +35,6 @@ import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPartFac
 import org.insightech.er.editor.controller.editpart.element.PagableFreeformRootEditPart;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.view.action.dbexport.ExportToImageAction;
-import org.insightech.er.util.Format;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -260,8 +259,7 @@ public class Activator extends AbstractUIPlugin {
 				| SWT.OK);
 		messageBox.setText(ResourceString
 				.getResourceString("dialog.title.information"));
-		messageBox.setMessage(ResourceString.getResourceString(Format
-				.null2blank(message)));
+		messageBox.setMessage(ResourceString.getResourceString(message));
 		messageBox.open();
 	}
 

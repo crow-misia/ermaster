@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -52,7 +53,6 @@ import org.insightech.er.editor.persistent.Persistent;
 import org.insightech.er.editor.view.dialog.category.CategoryNameChangeDialog;
 import org.insightech.er.editor.view.outline.ERDiagramOutlinePage;
 import org.insightech.er.util.Closer;
-import org.insightech.er.util.Format;
 
 /**
  * <pre>
@@ -190,7 +190,7 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 		try {
 			for (int i = 1; i < this.getPageCount(); i++) {
 				Category category = selectedCategories.get(i - 1);
-				this.setPageText(i, Format.null2blank(category.getName()));
+				this.setPageText(i, StringUtils.defaultString(category.getName()));
 			}
 
 			for (int i = this.getPageCount(); i < selectedCategories.size() + 1; i++) {
@@ -201,7 +201,7 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 						this.zoomComboContributionItem, this.outlinePage);
 
 				this.addPage(diagramEditor, this.getEditorInput());
-				this.setPageText(i, Format.null2blank(category.getName()));
+				this.setPageText(i, StringUtils.defaultString(category.getName()));
 			}
 
 		} catch (PartInitException e) {
@@ -485,7 +485,7 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 
 	public void setCurrentCategoryPageName() {
 		Category category = this.getCurrentPageCategory();
-		this.setPageText(this.getActivePage(), Format.null2blank(category
+		this.setPageText(this.getActivePage(), StringUtils.defaultString(category
 				.getName()));
 	}
 

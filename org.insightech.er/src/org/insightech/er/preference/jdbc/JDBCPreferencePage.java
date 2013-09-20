@@ -3,6 +3,7 @@ package org.insightech.er.preference.jdbc;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -28,7 +29,6 @@ import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.settings.JDBCDriverSetting;
 import org.insightech.er.preference.PreferenceInitializer;
-import org.insightech.er.util.Format;
 
 public final class JDBCPreferencePage extends
 		org.eclipse.jface.preference.PreferencePage implements
@@ -120,9 +120,9 @@ public final class JDBCPreferencePage extends
 				.getJDBCDriverSettingList()) {
 			TableItem tableItem = new TableItem(this.table, SWT.NONE);
 			tableItem.setBackground(ColorConstants.white);
-			tableItem.setText(0, Format.null2blank(setting.getDb()));
-			tableItem.setText(1, Format.null2blank(setting.getClassName()));
-			tableItem.setText(2, Format.null2blank(setting.getPath()));
+			tableItem.setText(0, StringUtils.defaultString(setting.getDb()));
+			tableItem.setText(1, StringUtils.defaultString(setting.getClassName()));
+			tableItem.setText(2, StringUtils.defaultString(setting.getPath()));
 		}
 	}
 
@@ -205,8 +205,8 @@ public final class JDBCPreferencePage extends
 
 				if (dialog.open() == IDialogConstants.OK_ID) {
 					PreferenceInitializer.addJDBCDriver(dialog.getDatabase(),
-							Format.null2blank(dialog.getDriverClassName()),
-							Format.null2blank(dialog.getPath()));
+							StringUtils.defaultString(dialog.getDriverClassName()),
+							StringUtils.defaultString(dialog.getPath()));
 
 					setData();
 				}

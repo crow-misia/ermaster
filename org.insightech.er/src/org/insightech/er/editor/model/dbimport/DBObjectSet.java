@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.insightech.er.util.Format;
+import org.apache.commons.lang3.StringUtils;
 
 public class DBObjectSet {
 
@@ -57,7 +57,7 @@ public class DBObjectSet {
 			this.groupList.add(dbObject);
 
 		} else {
-			String schema = Format.null2blank(dbObject.getSchema());
+			String schema = StringUtils.defaultString(dbObject.getSchema());
 			List<DBObject> dbObjectList = this.schemaDbObjectListMap
 					.get(schema);
 			if (dbObjectList == null) {

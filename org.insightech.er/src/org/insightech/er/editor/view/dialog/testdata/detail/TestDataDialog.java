@@ -300,10 +300,10 @@ public class TestDataDialog extends AbstractDialog {
 
 	@Override
 	protected void setData() {
-		this.nameText.setText(Format.null2blank(this.testData.getName()));
+		this.nameText.setText(StringUtils.defaultString(this.testData.getName()));
 
 		for (ERTable table : this.allTableList) {
-			this.allTableListWidget.add(Format.null2blank(table.getName()));
+			this.allTableListWidget.add(StringUtils.defaultString(table.getName()));
 		}
 
 		initSelectedTableTable();

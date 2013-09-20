@@ -80,7 +80,7 @@ public abstract class AbstractRealColumnDialog extends AbstractColumnDialog {
 		super.initializeComposite(composite);
 
 		this.defaultText = CompositeFactory.createCombo(this, composite,
-				"label.column.default.value", numColumns - 1);
+				"label.column.default.value", numColumns - 1, -1);
 	}
 
 	protected int getCheckBoxCompositeNumColumns() {

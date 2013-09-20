@@ -3,11 +3,11 @@ package org.insightech.er.editor.model.diagram_contents.element.node.table.uniqu
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
-import org.insightech.er.util.Format;
 
 public class ComplexUniqueKey extends AbstractModel {
 
@@ -55,7 +55,7 @@ public class ComplexUniqueKey extends AbstractModel {
 	public String getLabel() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(Format.null2blank(this.uniqueKeyName));
+		sb.append(StringUtils.defaultString(this.uniqueKeyName));
 		sb.append(" (");
 		boolean first = true;
 		for (NormalColumn normalColumn : this.getColumnList()) {

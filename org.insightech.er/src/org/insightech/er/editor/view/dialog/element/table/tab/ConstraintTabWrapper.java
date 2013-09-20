@@ -1,5 +1,6 @@
 package org.insightech.er.editor.view.dialog.element.table.tab;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Text;
@@ -9,7 +10,6 @@ import org.insightech.er.common.widgets.ValidatableTabWrapper;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.view.dialog.element.table.TableDialog;
 import org.insightech.er.util.Check;
-import org.insightech.er.util.Format;
 
 public class ConstraintTabWrapper extends ValidatableTabWrapper {
 
@@ -63,13 +63,13 @@ public class ConstraintTabWrapper extends ValidatableTabWrapper {
 				this, null, -1, 100, 1, false);
 
 		this.constraintText
-				.setText(Format.null2blank(copyData.getConstraint()));
+				.setText(StringUtils.defaultString(copyData.getConstraint()));
 
 		CompositeFactory.filler(this, 1);
 
 		this.primaryKeyNameText = CompositeFactory.createText(tableDialog,
 				this, "label.primary.key.name", 1, false);
-		this.primaryKeyNameText.setText(Format.null2blank(copyData
+		this.primaryKeyNameText.setText(StringUtils.defaultString(copyData
 				.getPrimaryKeyName()));
 
 		CompositeFactory.filler(this, 1);
@@ -79,7 +79,7 @@ public class ConstraintTabWrapper extends ValidatableTabWrapper {
 		this.optionText = CompositeFactory.createTextArea(tableDialog, this,
 				null, -1, 100, 1, false);
 
-		this.optionText.setText(Format.null2blank(copyData.getOption()));
+		this.optionText.setText(StringUtils.defaultString(copyData.getOption()));
 	}
 
 	@Override

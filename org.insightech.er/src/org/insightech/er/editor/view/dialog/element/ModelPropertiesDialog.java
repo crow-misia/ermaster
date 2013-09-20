@@ -332,8 +332,8 @@ public class ModelPropertiesDialog extends AbstractDialog {
 	protected void setData() {
 		for (NameValue property : this.modelProperties.getProperties()) {
 			TableItem item = new TableItem(table, SWT.NULL);
-			item.setText(0, Format.null2blank(property.getName()));
-			item.setText(1, Format.null2blank(property.getValue()));
+			item.setText(0, StringUtils.defaultString(property.getName()));
+			item.setText(1, StringUtils.defaultString(property.getValue()));
 		}
 	}
 }

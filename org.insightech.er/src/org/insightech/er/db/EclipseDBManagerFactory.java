@@ -1,7 +1,6 @@
 package org.insightech.er.db;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.impl.access.AccessEclipseDBManager;
@@ -19,7 +18,7 @@ import org.insightech.er.editor.model.ERDiagram;
 
 public class EclipseDBManagerFactory {
 
-	private static final List<EclipseDBManager> DB_LIST = new ArrayList<EclipseDBManager>();
+	private static final LinkedHashMap<String, EclipseDBManager> DB_LIST = new LinkedHashMap<String, EclipseDBManager>();
 
 	static {
 		addDB(new StandardSQLEclipseDBManager());
@@ -36,14 +35,13 @@ public class EclipseDBManagerFactory {
 	}
 
 	private static void addDB(EclipseDBManager manager) {
-		DB_LIST.add(manager);
+		DB_LIST.put(manager.getId(), manager);
 	}
 
 	public static EclipseDBManager getEclipseDBManager(String database) {
-		for (EclipseDBManager manager : DB_LIST) {
-			if (manager.getId().equals(database)) {
-				return manager;
-			}
+		final EclipseDBManager manager = DB_LIST.get(database);
+		if (manager != null) {
+			return manager;
 		}
 
 		throw new IllegalArgumentException(

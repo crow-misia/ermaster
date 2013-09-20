@@ -30,7 +30,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.unique
 import org.insightech.er.editor.model.diagram_contents.element.node.table.unique_key.CopyComplexUniqueKey;
 import org.insightech.er.editor.view.dialog.common.ERTableComposite;
 import org.insightech.er.util.Check;
-import org.insightech.er.util.Format;
 
 public class ComplexUniqueKeyTabWrapper extends ValidatableTabWrapper {
 
@@ -118,7 +117,7 @@ public class ComplexUniqueKeyTabWrapper extends ValidatableTabWrapper {
 
 		for (NormalColumn normalColumn : this.copyData.getNormalColumns()) {
 			TableItem tableItem = new TableItem(this.columnTable, SWT.NONE);
-			tableItem.setText(0, Format.null2blank(normalColumn.getName()));
+			tableItem.setText(0, StringUtils.defaultString(normalColumn.getName()));
 
 			TableEditor tableEditor = CompositeFactory
 					.createCheckBoxTableEditor(tableItem, false, 1);
@@ -293,7 +292,7 @@ public class ComplexUniqueKeyTabWrapper extends ValidatableTabWrapper {
 			setButtonStatus(false);
 		}
 
-		nameText.setText(Format.null2blank(name));
+		nameText.setText(StringUtils.defaultString(name));
 
 		for (TableEditor tableEditor : tableEditorList) {
 			Button checkbox = (Button) tableEditor.getEditor();

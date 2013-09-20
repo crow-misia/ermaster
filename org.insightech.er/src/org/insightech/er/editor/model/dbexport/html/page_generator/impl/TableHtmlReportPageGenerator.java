@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.page_generator.AbstractHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
-import org.insightech.er.util.Format;
 
 public class TableHtmlReportPageGenerator extends
 		AbstractHtmlReportPageGenerator<ERTable> {
@@ -76,9 +76,9 @@ public class TableHtmlReportPageGenerator extends
 		String attributeDetailTable = this.generateAttributeDetailTable(
 				diagram, normalColumnList);
 
-		return new String[] { Format.null2blank(description),
-				Format.null2blank(table.getPhysicalName()),
-				Format.null2blank(table.getConstraint()), attributeTable,
+		return new String[] { StringUtils.defaultString(description),
+				StringUtils.defaultString(table.getPhysicalName()),
+				StringUtils.defaultString(table.getConstraint()), attributeTable,
 				foreignKeyTable, referencedKeyTable, complexUniqueKeyMatrix,
 				indexSummaryTable, indexMatrix, attributeDetailTable };
 	}

@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.diagram_contents.element.node.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.editor.controller.editpart.element.node.IResizable;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.Location;
@@ -11,7 +12,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.settings.CategorySetting;
-import org.insightech.er.util.Format;
 
 public class Category extends NodeElement implements IResizable,
 		Comparable<Category> {
@@ -153,8 +153,8 @@ public class Category extends NodeElement implements IResizable,
 	public int compareTo(Category other) {
 		int compareTo = 0;
 
-		compareTo = Format.null2blank(this.name).compareTo(
-				Format.null2blank(other.name));
+		compareTo = StringUtils.defaultString(this.name).compareTo(
+				StringUtils.defaultString(other.name));
 
 		return compareTo;
 	}

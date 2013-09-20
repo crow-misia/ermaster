@@ -28,7 +28,6 @@ import org.insightech.er.db.impl.standard_sql.StandardSQLDBManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.settings.DBSetting;
 import org.insightech.er.preference.PreferenceInitializer;
-import org.insightech.er.util.Format;
 
 public abstract class AbstractDBSettingDialog extends AbstractDialog {
 
@@ -254,16 +253,16 @@ public abstract class AbstractDBSettingDialog extends AbstractDialog {
 			this.enableUseDefaultDriver();
 			this.enableField();
 
-			this.serverName.setText(Format.null2blank(this.dbSetting
+			this.serverName.setText(StringUtils.defaultString(this.dbSetting
 					.getServer()));
 			this.port.setText(String.valueOf(this.dbSetting.getPort()));
 			this.dbName
-					.setText(Format.null2blank(this.dbSetting.getDatabase()));
-			this.userName.setText(Format.null2blank(this.dbSetting.getUser()));
-			this.password.setText(Format.null2blank(this.dbSetting
+					.setText(StringUtils.defaultString(this.dbSetting.getDatabase()));
+			this.userName.setText(StringUtils.defaultString(this.dbSetting.getUser()));
+			this.password.setText(StringUtils.defaultString(this.dbSetting
 					.getPassword()));
-			this.url.setText(Format.null2blank(this.dbSetting.getUrl()));
-			this.driverClassName.setText(Format.null2blank(this.dbSetting
+			this.url.setText(StringUtils.defaultString(this.dbSetting.getUrl()));
+			this.driverClassName.setText(StringUtils.defaultString(this.dbSetting
 					.getDriverClassName()));
 
 			if (StringUtils.isNotEmpty(database)

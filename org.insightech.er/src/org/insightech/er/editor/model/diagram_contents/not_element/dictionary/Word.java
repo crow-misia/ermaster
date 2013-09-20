@@ -2,10 +2,10 @@ package org.insightech.er.editor.model.diagram_contents.not_element.dictionary;
 
 import java.util.Comparator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ObjectModel;
-import org.insightech.er.util.Format;
 
 public class Word extends AbstractModel implements ObjectModel,
 		Comparable<Word> {
@@ -159,8 +159,8 @@ public class Word extends AbstractModel implements ObjectModel,
 				}
 			}
 
-			int value = Format.null2blank(o1.description).compareTo(
-					Format.null2blank(o2.description));
+			int value = StringUtils.defaultString(o1.description).compareTo(
+					StringUtils.defaultString(o2.description));
 			if (value != 0) {
 				return value;
 			}
@@ -185,14 +185,14 @@ public class Word extends AbstractModel implements ObjectModel,
 
 			int value = 0;
 
-			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.physicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.physicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.physicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}
 
-			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.logicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.logicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.logicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}
@@ -217,14 +217,14 @@ public class Word extends AbstractModel implements ObjectModel,
 
 			int value = 0;
 
-			value = Format.null2blank(o1.logicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.logicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.logicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.logicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}
 
-			value = Format.null2blank(o1.physicalName).toUpperCase().compareTo(
-					Format.null2blank(o2.physicalName).toUpperCase());
+			value = StringUtils.defaultString(o1.physicalName).toUpperCase().compareTo(
+					StringUtils.defaultString(o2.physicalName).toUpperCase());
 			if (value != 0) {
 				return value;
 			}
