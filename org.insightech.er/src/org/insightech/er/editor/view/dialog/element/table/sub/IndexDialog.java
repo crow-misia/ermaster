@@ -552,13 +552,10 @@ public class IndexDialog extends AbstractDialog {
 				.getSelection(), this.typeCombo.getText(), null);
 		this.resultIndex.setDescription(this.descriptionText.getText().trim());
 
-		int i = 0;
-
 		for (NormalColumn selectedColumn : selectedColumns) {
 			Boolean desc = Boolean.valueOf(this.descCheckBoxMap.get(
 					selectedColumn).getSelection());
 			this.resultIndex.addColumn(selectedColumn, desc);
-			i++;
 		}
 
 		DBManager dbManager = DBManagerFactory.getDBManager(table.getDiagram());

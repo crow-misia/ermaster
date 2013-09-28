@@ -17,7 +17,7 @@ public class ChangeTracking implements Serializable {
 	private String comment;
 
 	public ChangeTracking(DiagramContents diagramContents) {
-		CopyManager copyManager = new CopyManager();
+		CopyManager copyManager = new CopyManager(null);
 
 		this.diagramContents = copyManager.copy(diagramContents);
 		this.updatedDate = new Date();

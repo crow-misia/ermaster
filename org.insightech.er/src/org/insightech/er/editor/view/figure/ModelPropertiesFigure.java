@@ -22,8 +22,6 @@ public class ModelPropertiesFigure extends RectangleFigure {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"yyyy/MM/dd HH:mm:ss");
 
-	private static final long serialVersionUID = 7613144432550730126L;
-
 	private Color foregroundColor;
 
 	public ModelPropertiesFigure() {

@@ -40,7 +40,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.TableV
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
-import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.UniqueWord;
+import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.UniqueWordDictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSet;
@@ -82,7 +82,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 		try {
 			IFile file = ResourcesPlugin.getWorkspace().getRoot()
 					.getFileForLocation(path);
-			
+
 			if (file == null || !file.exists()) {
 				File realFile = path.toFile();
 				if (realFile == null || !realFile.exists()) {
@@ -168,16 +168,16 @@ public class ImportFromFileAction extends AbstractImportAction {
 
 		for (Sequence sequence : loadedDiagram.getDiagramContents()
 				.getSequenceSet()) {
-			DBObject dbObject = new DBObject(sequence.getSchema(), sequence
-					.getName(), DBObject.TYPE_SEQUENCE);
+			DBObject dbObject = new DBObject(sequence.getSchema(),
+					sequence.getName(), DBObject.TYPE_SEQUENCE);
 			dbObject.setModel(sequence);
 			dbObjects.add(dbObject);
 		}
 
 		for (Trigger trigger : loadedDiagram.getDiagramContents()
 				.getTriggerSet()) {
-			DBObject dbObject = new DBObject(trigger.getSchema(), trigger
-					.getName(), DBObject.TYPE_TRIGGER);
+			DBObject dbObject = new DBObject(trigger.getSchema(),
+					trigger.getName(), DBObject.TYPE_TRIGGER);
 			dbObject.setModel(trigger);
 			dbObjects.add(dbObject);
 		}
@@ -276,13 +276,10 @@ public class ImportFromFileAction extends AbstractImportAction {
 
 		NodeSet selectedNodeSet = new NodeSet();
 
-		Map<UniqueWord, Word> dictionary = new HashMap<UniqueWord, Word>();
+		UniqueWordDictionary dictionary = new UniqueWordDictionary();
 
 		if (mergeWord) {
-			for (Word word : this.getDiagram().getDiagramContents()
-					.getDictionary().getWordList()) {
-				dictionary.put(new UniqueWord(word), word);
-			}
+			dictionary.init(this.getDiagram());
 		}
 
 		for (NodeElement nodeElement : nodeElementList) {
@@ -294,8 +291,8 @@ public class ImportFromFileAction extends AbstractImportAction {
 							.getNormalColumns()) {
 						Word word = normalColumn.getWord();
 						if (word != null) {
-							UniqueWord uniqueWord = new UniqueWord(word);
-							Word replaceWord = dictionary.get(uniqueWord);
+							Word replaceWord = dictionary.getUniqueWord(word,
+									false);
 
 							if (replaceWord != null) {
 								normalColumn.setWord(replaceWord);
@@ -354,7 +351,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 			}
 		}
 
-		CopyManager copyManager = new CopyManager();
+		CopyManager copyManager = new CopyManager(null);
 		NodeSet copyList = copyManager.copyNodeElementList(selectedNodeSet);
 
 		this.importedNodeElements = copyList.getNodeElementList();
@@ -374,9 +371,9 @@ public class ImportFromFileAction extends AbstractImportAction {
 			int result = importDialog.open();
 
 			if (result == IDialogConstants.OK_ID) {
-				this.loadData(importDialog.getSelectedDbObjects(), importDialog
-						.isUseCommentAsLogicalName(), importDialog
-						.isMergeWord(), importDialog.isMergeGroup());
+				this.loadData(importDialog.getSelectedDbObjects(),
+						importDialog.isUseCommentAsLogicalName(),
+						importDialog.isMergeWord(), importDialog.isMergeGroup());
 				this.showData();
 
 			} else if (result == IDialogConstants.BACK_ID) {

@@ -187,10 +187,10 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 				.getResourceString("action.title.export"), sharedImages
 				.getImageDescriptor("IMG_ETOOL_EXPORT_WIZ"), "Export");
 
-		exportMenu.add(this.getAction(ExportToImageAction.ID));
+		exportMenu.add(this.getAction(ExportToDDLAction.ID));
 		exportMenu.add(this.getAction(ExportToExcelAction.ID));
 		exportMenu.add(this.getAction(ExportToHtmlAction.ID));
-		exportMenu.add(this.getAction(ExportToDDLAction.ID));
+		exportMenu.add(this.getAction(ExportToImageAction.ID));
 		exportMenu.add(this.getAction(ExportToDictionaryAction.ID));
 		exportMenu.add(this.getAction(ExportToTranslationDictionaryAction.ID));
 		exportMenu.add(this.getAction(ExportToTestDataAction.ID));

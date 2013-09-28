@@ -39,7 +39,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.proper
 import org.insightech.er.editor.model.diagram_contents.element.node.table.unique_key.ComplexUniqueKey;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
-import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.UniqueWord;
+import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.UniqueWordDictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.Tablespace;
@@ -77,7 +77,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 	private Map<String, List<ForeignKeyData>> tableForeignKeyDataMap;
 
-	private Map<UniqueWord, Word> dictionary;
+	private UniqueWordDictionary dictionary;
 
 	private List<ERTable> importedTables;
 
@@ -156,7 +156,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		this.tableCommentMap = new HashMap<String, String>();
 		this.columnDataCash = new HashMap<String, Map<String, ColumnData>>();
 		this.tableForeignKeyDataMap = new HashMap<String, List<ForeignKeyData>>();
-		this.dictionary = new HashMap<UniqueWord, Word>();
+		this.dictionary = new UniqueWordDictionary();
 	}
 
 	public void init(Connection con, DBSetting dbSetting, ERDiagram diagram,
@@ -174,10 +174,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				.getDiagramContents().getSettings().getTranslationSetting());
 
 		if (this.mergeWord) {
-			for (Word word : this.diagram.getDiagramContents().getDictionary()
-					.getWordList()) {
-				this.dictionary.put(new UniqueWord(word), word);
-			}
+			this.dictionary.init(this.diagram);
 		}
 	}
 
@@ -757,13 +754,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 			Word word = new Word(columnName, logicalName, sqlType, typeData,
 					description, this.diagram.getDatabase());
-			UniqueWord uniqueWord = new UniqueWord(word);
-
-			if (this.dictionary.get(uniqueWord) != null) {
-				word = this.dictionary.get(uniqueWord);
-			} else {
-				this.dictionary.put(uniqueWord, word);
-			}
+			word = this.dictionary.getUniqueWord(word);
 
 			// TODO UNIQUE KEY �̐��񖼂��擾�ł��Ă��Ȃ�
 
@@ -1383,13 +1374,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 		}
 
-		UniqueWord uniqueWord = new UniqueWord(word);
-
-		if (this.dictionary.get(uniqueWord) != null) {
-			word = this.dictionary.get(uniqueWord);
-		} else {
-			this.dictionary.put(uniqueWord, word);
-		}
+		this.dictionary.getUniqueWord(word);
 
 		NormalColumn column = new NormalColumn(word, false, false, false,
 				false, null, null, null, null, null);

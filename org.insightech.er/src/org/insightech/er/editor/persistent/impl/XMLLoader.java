@@ -51,7 +51,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.properties.ViewProperties;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Dictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
-import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.UniqueWord;
+import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.UniqueWordDictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSet;
@@ -121,7 +121,7 @@ public class XMLLoader {
 
 		private Map<String, Environment> environmentMap;
 
-		private Map<UniqueWord, Word> uniqueWordMap;
+		private UniqueWordDictionary uniqueWordDictionary;
 
 		private Dictionary dictionary;
 
@@ -140,7 +140,7 @@ public class XMLLoader {
 			this.wordMap = new HashMap<String, Word>();
 			this.tablespaceMap = new HashMap<String, Tablespace>();
 			this.environmentMap = new HashMap<String, Environment>();
-			this.uniqueWordMap = new HashMap<UniqueWord, Word>();
+			this.uniqueWordDictionary = new UniqueWordDictionary();
 
 			this.dictionary = dictionary;
 			this.dictionary.clear();
@@ -191,8 +191,7 @@ public class XMLLoader {
 
 		private void reduce(Set<NormalColumn> foreignKeyColumnSet,
 				NormalColumn foreignKeyColumn) {
-			
-			
+
 			String[] referencedColumnIds = this.columnReferencedColumnMap
 					.get(foreignKeyColumn);
 
@@ -209,7 +208,8 @@ public class XMLLoader {
 								.get(referencedColumnId);
 						referencedColumnList.add(referencedColumn);
 
-						if (foreignKeyColumnSet.contains(referencedColumn) && foreignKeyColumn != referencedColumn) {
+						if (foreignKeyColumnSet.contains(referencedColumn)
+								&& foreignKeyColumn != referencedColumn) {
 							reduce(foreignKeyColumnSet, referencedColumn);
 						}
 
@@ -238,7 +238,7 @@ public class XMLLoader {
 					}
 				}
 			}
-			
+
 			foreignKeyColumnSet.remove(foreignKeyColumn);
 		}
 	}
@@ -878,7 +878,8 @@ public class XMLLoader {
 			dataDef.setTemplate(this.getStringValue(dataDefElement, "template"));
 			dataDef.setFrom(this.getStringValue(dataDefElement, "from"));
 			dataDef.setTo(this.getStringValue(dataDefElement, "to"));
-			dataDef.setIncrement(this.getStringValue(dataDefElement, "increment"));
+			dataDef.setIncrement(this.getStringValue(dataDefElement,
+					"increment"));
 			dataDef.setSelects(this.getTagValues(dataDefElement, "select"));
 
 			Element modifiedValuesElement = this.getElement(dataDefElement,
@@ -997,13 +998,7 @@ public class XMLLoader {
 							null, false, null), this.getStringValue(element,
 							"description"), database);
 
-			UniqueWord uniqueWord = new UniqueWord(word);
-
-			if (context.uniqueWordMap.containsKey(uniqueWord)) {
-				word = context.uniqueWordMap.get(uniqueWord);
-			} else {
-				context.uniqueWordMap.put(uniqueWord, word);
-			}
+			word = context.uniqueWordDictionary.getUniqueWord(word);
 		}
 
 		normalColumn = new NormalColumn(word, this.getBooleanValue(element,

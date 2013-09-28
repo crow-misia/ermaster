@@ -77,7 +77,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 		super(parentShell, 2);
 		this.diagram = diagram;
 
-		CopyManager copyManager = new CopyManager();
+		CopyManager copyManager = new CopyManager(null);
 
 		this.diagramContents = copyManager.copy(this.diagram
 				.getDiagramContents());
@@ -793,7 +793,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 	}
 
 	/**
-	 * diagramContents ‚ðŽæ“¾‚µ‚Ü‚·.
+	 * diagramContents ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return diagramContents
 	 */

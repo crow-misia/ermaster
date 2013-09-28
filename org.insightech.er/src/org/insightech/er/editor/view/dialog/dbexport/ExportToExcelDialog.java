@@ -12,7 +12,6 @@ import java.util.StringTokenizer;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
@@ -256,7 +255,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 
 			if (openAfterSaved) {
 				File fileToOpen = new File(outputExcelFilePath);
-				URI uri = URIUtil.fromString(fileToOpen.toURL().toString());
+				URI uri = fileToOpen.toURI();
 
 				IWorkbenchPage page = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage();
@@ -318,11 +317,11 @@ public class ExportToExcelDialog extends AbstractDialog {
 		}
 
 		Category currentCategory = this.diagram.getDiagramContents()
-				.getSettings().getCategorySetting().getAllCategories().get(
-						this.categoryCombo.getSelectionIndex() - 1);
+				.getSettings().getCategorySetting().getAllCategories()
+				.get(this.categoryCombo.getSelectionIndex() - 1);
 
-		this.diagram.setCurrentCategory(currentCategory, this.categoryCombo
-				.getSelectionIndex());
+		this.diagram.setCurrentCategory(currentCategory,
+				this.categoryCombo.getSelectionIndex());
 	}
 
 	private InputStream getTemplate() {
@@ -337,8 +336,8 @@ public class ExportToExcelDialog extends AbstractDialog {
 		} else {
 			String templateName = this.templateCombo.getText();
 
-			File file = new File(PreferenceInitializer
-					.getTemplatePath(templateName));
+			File file = new File(
+					PreferenceInitializer.getTemplatePath(templateName));
 			try {
 				return new FileInputStream(file);
 
@@ -379,14 +378,14 @@ public class ExportToExcelDialog extends AbstractDialog {
 			}
 		}
 
-		String str = Activator.getDefault().getPreferenceStore().getString(
-				PreferenceInitializer.TEMPLATE_FILE_LIST);
+		String str = Activator.getDefault().getPreferenceStore()
+				.getString(PreferenceInitializer.TEMPLATE_FILE_LIST);
 		List<String> fileNames = this.parseString(str);
 
 		int index = 1;
 		for (String fileName : fileNames) {
-			File file = new File(PreferenceInitializer
-					.getTemplatePath(fileName));
+			File file = new File(
+					PreferenceInitializer.getTemplatePath(fileName));
 			if (file.exists()) {
 				this.templateCombo.add(fileName);
 
@@ -415,8 +414,7 @@ public class ExportToExcelDialog extends AbstractDialog {
 					.getFile();
 			outputImage = file.getLocation().toOSString();
 			outputImage = outputImage
-					.substring(0, outputImage.lastIndexOf("."))
-					+ ".png";
+					.substring(0, outputImage.lastIndexOf(".")) + ".png";
 		}
 
 		this.outputExcelFileText.setText(outputExcel);

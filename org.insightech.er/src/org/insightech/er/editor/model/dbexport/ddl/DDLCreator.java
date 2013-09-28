@@ -987,7 +987,9 @@ public abstract class DDLCreator {
 		ddl.append("DROP TABLE ");
 		ddl.append(this.getIfExistsOption());
 		ddl.append(filter(table.getNameWithSchema(diagram.getDatabase())));
-
+		
+		ddl.append(this.getPostDropDDL(table));
+		
 		if (this.semicolon) {
 			ddl.append(";");
 		}
@@ -995,6 +997,10 @@ public abstract class DDLCreator {
 		ddl.append("\r\n");
 
 		return ddl.toString();
+	}
+	
+	public String getPostDropDDL(TableView table) {
+		return "";
 	}
 
 	public String getDropDDL(View view) {

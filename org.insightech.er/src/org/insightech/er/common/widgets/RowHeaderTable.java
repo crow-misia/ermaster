@@ -67,7 +67,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 	private static final long serialVersionUID = 1L;
 
-	private DefaultListModel listModel;
+	private DefaultListModel<String> listModel;
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private MultiLineHeaderRenderer headerRenderer;
@@ -300,7 +300,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 		this.table.setModel(this.tableModel);
 
 		if (rowHeaderWidth > 0) {
-			final JList rowHeader = new JList() {
+			final JList<String> rowHeader = new JList<String>() {
 
 				private static final long serialVersionUID = 1L;
 
@@ -370,7 +370,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 			rowHeader
 					.setBackground(this.table.getTableHeader().getBackground());
 
-			this.listModel = new DefaultListModel();
+			this.listModel = new DefaultListModel<String>();
 			rowHeader.setModel(this.listModel);
 			this.setRowHeaderView(rowHeader);
 		}
@@ -663,11 +663,14 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 			return count;
 		}
 		String data;
+		
+		Scanner scanner = null;
+		
 		try {
 			data = (String) transferable
 					.getTransferData(DataFlavor.stringFlavor);
 
-			Scanner scanner = new Scanner(data);
+			scanner = new Scanner(data);
 			Scanner lineScanner = null;
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
@@ -706,6 +709,11 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 
 		} catch (Exception e) {
 			Activator.showExceptionDialog(e);
+
+		} finally {
+			if (scanner != null) {
+				scanner.close();
+			}
 		}
 
 		return count;
@@ -874,7 +882,7 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 	}
 
 	private static class RowHeaderRenderer extends JLabel implements
-			ListCellRenderer {
+			ListCellRenderer<String> {
 
 		private static final long serialVersionUID = 1L;
 
@@ -888,14 +896,14 @@ public class RowHeaderTable extends JScrollPane implements ClipboardOwner {
 			setFont(header.getFont());
 		}
 
-		public Component getListCellRendererComponent(JList list, Object value,
+		public Component getListCellRendererComponent(JList<? extends String> list, String value,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setText((value == null) ? "" : value.toString());
 			return this;
 		}
 	}
 
-	private static class MultiLineHeaderRenderer extends JList implements
+	private static class MultiLineHeaderRenderer extends JList<String> implements
 			TableCellRenderer {
 
 		private static final long serialVersionUID = 1L;

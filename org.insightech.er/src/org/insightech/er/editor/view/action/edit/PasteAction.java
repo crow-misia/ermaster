@@ -17,7 +17,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.edit.CopyManager;
 
 /**
- * “\‚è•t‚¯ƒAƒNƒVƒ‡ƒ“
+ * ï¿½\ï¿½ï¿½tï¿½ï¿½ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½
  * 
  * @author nakajima
  * 
@@ -27,7 +27,7 @@ public class PasteAction extends SelectionAction {
 	private ERDiagramEditor editor;
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
 	 * 
 	 * @param part
 	 */
@@ -70,24 +70,27 @@ public class PasteAction extends SelectionAction {
 	}
 
 	/**
-	 * “\‚è•t‚¯ƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B<br>
-	 * ƒRƒs[—Ìˆæ‚É•¡»‚³‚ê‚Ä‚¢‚éƒm[ƒh‚ğ‚³‚ç‚É•¡»‚µ‚Ä“\‚è•t‚¯‚Ü‚·<br>
+	 * ï¿½\ï¿½ï¿½tï¿½ï¿½ï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B<br>
+	 * ï¿½Rï¿½sï¿½[ï¿½Ìˆï¿½É•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½mï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä“\ï¿½ï¿½tï¿½ï¿½ï¿½Ü‚ï¿½<br>
 	 * 
-	 * @return “\‚è•t‚¯ƒRƒ}ƒ“ƒh
+	 * @return ï¿½\ï¿½ï¿½tï¿½ï¿½ï¿½Rï¿½}ï¿½ï¿½ï¿½h
 	 */
 	private Command createCommand() {
 
-		// “\‚è•t‚¯•s‰Â‚Ìê‡
+		// ï¿½\ï¿½ï¿½tï¿½ï¿½ï¿½sï¿½Â‚Ìê‡
 		if (!calculateEnabled()) {
 			return null;
 		}
 
-		// “\‚è•t‚¯‘ÎÛ‚Ìƒm[ƒhˆê——
-		NodeSet pasteList = CopyManager.paste();
+		EditPart editPart = this.editor.getGraphicalViewer().getContents();
+		ERDiagram diagram = (ERDiagram) editPart.getModel();
+
+		// ï¿½\ï¿½ï¿½tï¿½ï¿½ï¿½ÎÛ‚Ìƒmï¿½[ï¿½hï¿½ê——
+		NodeSet pasteList = CopyManager.paste(diagram);
 
 		int numberOfCopy = CopyManager.getNumberOfCopy();
 
-		// “\‚è•t‚¯ƒRƒ}ƒ“ƒh‚ğì¬‚µ‚Ü‚·B
+		// ï¿½\ï¿½ï¿½tï¿½ï¿½ï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
 		boolean first = true;
 		int x = 0;
 		int y = 0;
@@ -103,8 +106,6 @@ public class PasteAction extends SelectionAction {
 			first = false;
 		}
 
-		EditPart editPart = this.editor.getGraphicalViewer().getContents();
-		ERDiagram diagram = (ERDiagram) editPart.getModel();
 
 		Command command = new PasteCommand(editor, pasteList,
 				diagram.mousePoint.x - x + (numberOfCopy - 1) * 20,

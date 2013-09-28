@@ -8,6 +8,7 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.ddl.DDLCreator;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
@@ -21,6 +22,11 @@ public class OracleDDLCreator extends DDLCreator {
 		super(diagram, semicolon);
 	}
 
+	@Override
+	public String getPostDropDDL(TableView table) {
+		return " CASCADE CONSTRAINTS";
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -28,8 +34,8 @@ public class OracleDDLCreator extends DDLCreator {
 	public List<String> getCommentDDL(ERTable table) {
 		List<String> ddlList = new ArrayList<String>();
 
-		String tableComment = this.filterComment(table.getLogicalName(), table
-				.getDescription(), false);
+		String tableComment = this.filterComment(table.getLogicalName(),
+				table.getDescription(), false);
 
 		if (!Check.isEmpty(tableComment)) {
 			StringBuilder ddl = new StringBuilder();
@@ -51,8 +57,9 @@ public class OracleDDLCreator extends DDLCreator {
 			if (column instanceof NormalColumn) {
 				NormalColumn normalColumn = (NormalColumn) column;
 
-				String comment = this.filterComment(normalColumn
-						.getLogicalName(), normalColumn.getDescription(), true);
+				String comment = this.filterComment(
+						normalColumn.getLogicalName(),
+						normalColumn.getDescription(), true);
 
 				if (!Check.isEmpty(comment)) {
 					StringBuilder ddl = new StringBuilder();
@@ -76,9 +83,9 @@ public class OracleDDLCreator extends DDLCreator {
 				ColumnGroup columnGroup = (ColumnGroup) column;
 
 				for (NormalColumn normalColumn : columnGroup.getColumns()) {
-					String comment = this.filterComment(normalColumn
-							.getLogicalName(), normalColumn.getDescription(),
-							true);
+					String comment = this.filterComment(
+							normalColumn.getLogicalName(),
+							normalColumn.getDescription(), true);
 
 					if (!Check.isEmpty(comment)) {
 						StringBuilder ddl = new StringBuilder();
@@ -292,8 +299,8 @@ public class OracleDDLCreator extends DDLCreator {
 
 		ddl.append("CREATE ");
 		ddl.append("SEQUENCE ");
-		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
-				.getName())));
+		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(),
+				sequence.getName())));
 		if (sequence.getIncrement() != null) {
 			ddl.append(" INCREMENT BY ");
 			ddl.append(sequence.getIncrement());

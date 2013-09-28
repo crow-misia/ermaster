@@ -172,6 +172,8 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		if (!this.add) {
 			this.setWordData();
 		}
+		
+		this.setEnabledBySqlType();
 	}
 
 	protected void setData(String physicalName, String logicalName,
