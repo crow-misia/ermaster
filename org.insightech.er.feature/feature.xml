@@ -2,7 +2,7 @@
 <feature
       id="org.insightech.er.feature"
       label="ERMaster"
-      version="1.0.0.v20121127-2328"
+      version="1.0.0.v20130929-0052"
       provider-name="Insightech.org"
       plugin="org.insightech.er">
 
