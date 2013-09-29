@@ -5,6 +5,8 @@ import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.insightech.er.db.DBManager;
+import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDefinition;
@@ -31,37 +33,56 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 	private static final String KEYWORD_CYCLE = "$CYC";
 
 	/**
-	 * ÉVÅ[ÉPÉìÉXÉVÅ[ÉgÇ…ÉfÅ[É^Çê›íËÇµÇ‹Ç∑.
+	 * ÔøΩVÔøΩ[ÔøΩPÔøΩÔøΩÔøΩXÔøΩVÔøΩ[ÔøΩgÔøΩ…ÉfÔøΩ[ÔøΩ^ÔøΩÔøΩ›íËÇµÔøΩ‹ÇÔøΩ.
 	 * 
 	 * @param workbook
 	 * @param sheet
 	 * @param sequence
 	 */
 	public void setSequenceData(HSSFWorkbook workbook, HSSFSheet sheet,
-			Sequence sequence) {
+			Sequence sequence, ERDiagram diagram) {
+		String cache = Format.toString(sequence.getCache());
+
+		if (DBManagerFactory.getDBManager(diagram).isSupported(
+				DBManager.SUPPORT_SEQUENCE_NOCACHE)) {
+			if (sequence.isNocache()) {
+				cache = "NO CACHE";
+			}
+		}
+
 		POIUtils.replace(sheet, KEYWORD_SEQUENCE_NAME, this.getValue(
-				this.keywordsValueMap, KEYWORD_SEQUENCE_NAME, sequence
-						.getName()));
+				this.keywordsValueMap, KEYWORD_SEQUENCE_NAME,
+				sequence.getName()));
 		POIUtils.replace(sheet, KEYWORD_SEQUENCE_DESCRIPTION, this.getValue(
-				this.keywordsValueMap, KEYWORD_SEQUENCE_DESCRIPTION, sequence
-						.getDescription()));
-		POIUtils.replace(sheet, KEYWORD_INCREMENT, this.getValue(
-				this.keywordsValueMap, KEYWORD_INCREMENT, Format
-						.toString(sequence.getIncrement())));
-		POIUtils.replace(sheet, KEYWORD_MIN, this.getValue(
-				this.keywordsValueMap, KEYWORD_MIN, Format.toString(sequence
-						.getMinValue())));
-		POIUtils.replace(sheet, KEYWORD_MAX, this.getValue(
-				this.keywordsValueMap, KEYWORD_MAX, Format.toString(sequence
-						.getMaxValue())));
-		POIUtils.replace(sheet, KEYWORD_START, this.getValue(
-				this.keywordsValueMap, KEYWORD_START, Format.toString(sequence
-						.getStart())));
-		POIUtils.replace(sheet, KEYWORD_CACHE, this.getValue(
-				this.keywordsValueMap, KEYWORD_CACHE, Format.toString(sequence
-						.getCache())));
-		POIUtils.replace(sheet, KEYWORD_CYCLE, this.getValue(
-				this.keywordsValueMap, KEYWORD_CYCLE, sequence.isCycle()));
+				this.keywordsValueMap, KEYWORD_SEQUENCE_DESCRIPTION,
+				sequence.getDescription()));
+		POIUtils.replace(
+				sheet,
+				KEYWORD_INCREMENT,
+				this.getValue(this.keywordsValueMap, KEYWORD_INCREMENT,
+						Format.toString(sequence.getIncrement())));
+		POIUtils.replace(
+				sheet,
+				KEYWORD_MIN,
+				this.getValue(this.keywordsValueMap, KEYWORD_MIN,
+						Format.toString(sequence.getMinValue())));
+		POIUtils.replace(
+				sheet,
+				KEYWORD_MAX,
+				this.getValue(this.keywordsValueMap, KEYWORD_MAX,
+						Format.toString(sequence.getMaxValue())));
+		POIUtils.replace(
+				sheet,
+				KEYWORD_START,
+				this.getValue(this.keywordsValueMap, KEYWORD_START,
+						Format.toString(sequence.getStart())));
+		POIUtils.replace(sheet, KEYWORD_CACHE,
+				this.getValue(this.keywordsValueMap, KEYWORD_CACHE, cache));
+		POIUtils.replace(
+				sheet,
+				KEYWORD_CYCLE,
+				this.getValue(this.keywordsValueMap, KEYWORD_CYCLE,
+						sequence.isCycle()));
 	}
 
 	@Override
@@ -77,10 +98,11 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
-			sheetObjectMap.put(workbook.getSheetName(workbook
-					.getSheetIndex(newSheet)), sequence);
+			sheetObjectMap.put(
+					workbook.getSheetName(workbook.getSheetIndex(newSheet)),
+					sequence);
 
-			this.setSequenceData(workbook, newSheet, sequence);
+			this.setSequenceData(workbook, newSheet, sequence, diagram);
 			monitor.worked(1);
 		}
 	}

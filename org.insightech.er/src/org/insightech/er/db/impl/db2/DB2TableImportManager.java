@@ -111,7 +111,14 @@ public class DB2TableImportManager extends ImportFromDBManagerBase {
 
 				sequence.setMaxValue(maxValue);
 				sequence.setStart(rs.getLong("START"));
-				sequence.setCache(rs.getInt("CACHE"));
+				
+				int cache = rs.getInt("CACHE");
+				
+				if (cache <= 1) {
+					sequence.setNocache(true);
+				} else {
+					sequence.setCache(cache);					
+				}
 
 				boolean cycle = false;
 				if ("Y".equals(rs.getString("CYCLE"))) {

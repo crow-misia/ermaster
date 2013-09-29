@@ -39,6 +39,8 @@ public class SequenceDialog extends AbstractDialog {
 
 	private Text cacheText;
 
+	private Button nocacheCheckBox;
+
 	private Button cycleCheckBox;
 
 	private Button orderCheckBox;
@@ -111,7 +113,14 @@ public class SequenceDialog extends AbstractDialog {
 		if (!HSQLDBDBManager.ID.equals(diagram.getDatabase())) {
 			this.cacheText = CompositeFactory.createNumText(this, composite,
 					"Cache", TEXT_SIZE);
-			CompositeFactory.filler(composite, 3);
+			
+			if (DB2DBManager.ID.equals(diagram.getDatabase())) {
+				this.nocacheCheckBox = CompositeFactory.createCheckbox(this, composite,
+						"nocache", 2);
+			} else {
+				CompositeFactory.filler(composite, 3);
+				
+			}
 		}
 
 		this.cycleCheckBox = CompositeFactory.createCheckbox(this, composite,
@@ -297,6 +306,10 @@ public class SequenceDialog extends AbstractDialog {
 		this.result.setStart(start);
 		this.result.setCache(cache);
 
+		if (this.nocacheCheckBox != null) {
+			this.result.setNocache(this.nocacheCheckBox.getSelection());
+		}
+
 		if (this.cycleCheckBox != null) {
 			this.result.setCycle(this.cycleCheckBox.getSelection());
 		}
@@ -338,6 +351,9 @@ public class SequenceDialog extends AbstractDialog {
 			if (this.cacheText != null) {
 				this.cacheText.setText(Format
 						.toString(this.sequence.getCache()));
+			}
+			if (this.nocacheCheckBox != null) {
+				this.nocacheCheckBox.setSelection(this.sequence.isNocache());
 			}
 			if (this.cycleCheckBox != null) {
 				this.cycleCheckBox.setSelection(this.sequence.isCycle());
@@ -385,6 +401,23 @@ public class SequenceDialog extends AbstractDialog {
 					}
 				}
 
+			});
+		}
+		
+		if (this.nocacheCheckBox != null) {
+			this.nocacheCheckBox.addSelectionListener(new SelectionAdapter() {
+				
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (nocacheCheckBox.getSelection()) {
+						cacheText.setEnabled(false);
+
+					} else {
+						cacheText.setEnabled(true);
+					}
+
+				}
+				
 			});
 		}
 	}

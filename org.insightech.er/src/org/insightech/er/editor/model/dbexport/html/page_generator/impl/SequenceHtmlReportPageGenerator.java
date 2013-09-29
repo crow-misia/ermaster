@@ -3,6 +3,8 @@ package org.insightech.er.editor.model.dbexport.html.page_generator.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.insightech.er.db.DBManager;
+import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.page_generator.AbstractHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
@@ -38,12 +40,20 @@ public class SequenceHtmlReportPageGenerator extends
 	public String[] getContentArgs(ERDiagram diagram, Object object) {
 		Sequence sequence = (Sequence) object;
 
+		String cache = Format.toString(sequence.getCache());
+		
+		if (DBManagerFactory.getDBManager(diagram).isSupported(DBManager.SUPPORT_SEQUENCE_NOCACHE)) {
+			if (sequence.isNocache()) {
+				cache = "NO CACHE";
+			}
+		}
+		
 		return new String[] { Format.null2blank(sequence.getDescription()),
 				this.getValue(sequence.getIncrement()),
 				this.getValue(sequence.getMinValue()),
 				this.getValue(sequence.getMaxValue()),
 				this.getValue(sequence.getStart()),
-				this.getValue(sequence.getCache()),
+				cache,
 				String.valueOf(sequence.isCycle()).toUpperCase() };
 	}
 

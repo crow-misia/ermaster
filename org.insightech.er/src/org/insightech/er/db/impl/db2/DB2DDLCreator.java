@@ -118,13 +118,13 @@ public class DB2DDLCreator extends DDLCreator {
 
 		ddl.append("CREATE ");
 		ddl.append("SEQUENCE ");
-		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(), sequence
-				.getName())));
+		ddl.append(filter(this.getNameWithSchema(sequence.getSchema(),
+				sequence.getName())));
 		if (!Check.isEmpty(sequence.getDataType())) {
 			ddl.append(" AS ");
 			String dataType = sequence.getDataType();
-			dataType = dataType.replaceAll("\\(p\\)", "("
-					+ Format.toString(sequence.getDecimalSize() + ")"));
+			dataType = dataType.replaceAll("\\(p\\)",
+					"(" + Format.toString(sequence.getDecimalSize() + ")"));
 			ddl.append(dataType);
 		}
 		if (sequence.getIncrement() != null) {
@@ -143,12 +143,15 @@ public class DB2DDLCreator extends DDLCreator {
 			ddl.append(" START WITH ");
 			ddl.append(sequence.getStart());
 		}
-		if (sequence.getCache() != null) {
+		if (!sequence.isNocache() && sequence.getCache() != null) {
 			ddl.append(" CACHE ");
 			ddl.append(sequence.getCache());
 		}
 		if (sequence.isCycle()) {
 			ddl.append(" CYCLE");
+		}
+		if (sequence.isNocache()) {
+			ddl.append(" NOCACHE");
 		}
 		if (sequence.isOrder()) {
 			ddl.append(" ORDER");

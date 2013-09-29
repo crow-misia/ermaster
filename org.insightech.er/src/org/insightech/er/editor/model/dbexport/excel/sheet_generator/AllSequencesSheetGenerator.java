@@ -48,7 +48,7 @@ public class AllSequencesSheetGenerator extends SequenceSheetGenerator {
 										+ loopDefinition.spaceLine + 1);
 			}
 
-			this.setSequenceData(workbook, newSheet, sequence);
+			this.setSequenceData(workbook, newSheet, sequence, diagram);
 
 			newSheet.setRowBreak(newSheet.getLastRowNum()
 					+ loopDefinition.spaceLine);

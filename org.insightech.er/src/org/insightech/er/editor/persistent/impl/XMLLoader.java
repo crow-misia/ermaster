@@ -546,6 +546,7 @@ public class XMLLoader {
 		sequence.setMaxValue(this.getBigDecimalValue(element, "max_value"));
 		sequence.setStart(this.getLongValue(element, "start"));
 		sequence.setCache(this.getIntegerValue(element, "cache"));
+		sequence.setNocache(this.getBooleanValue(element, "nocache"));
 		sequence.setCycle(this.getBooleanValue(element, "cycle"));
 		sequence.setOrder(this.getBooleanValue(element, "order"));
 		sequence.setDescription(this.getStringValue(element, "description"));

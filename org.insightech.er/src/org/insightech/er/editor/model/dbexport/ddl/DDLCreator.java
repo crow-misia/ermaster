@@ -949,6 +949,7 @@ public abstract class DDLCreator {
 		if (sequence.isCycle()) {
 			ddl.append(" CYCLE");
 		}
+
 		if (this.semicolon) {
 			ddl.append(";");
 		}

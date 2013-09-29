@@ -422,6 +422,7 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</start>\n");
 		xml.append("\t<cache>").append(Format.toString(sequence.getCache()))
 				.append("</cache>\n");
+		xml.append("\t<nocache>").append(sequence.isNocache()).append("</nocache>\n");
 		xml.append("\t<cycle>").append(sequence.isCycle()).append("</cycle>\n");
 		xml.append("\t<order>").append(sequence.isOrder()).append("</order>\n");
 		xml.append("\t<description>").append(escape(sequence.getDescription()))

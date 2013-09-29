@@ -317,13 +317,20 @@ public class OracleDDLCreator extends DDLCreator {
 			ddl.append(" START WITH ");
 			ddl.append(sequence.getStart());
 		}
-		if (sequence.getCache() != null) {
+		if (!sequence.isNocache() && sequence.getCache() != null) {
 			ddl.append(" CACHE ");
 			ddl.append(sequence.getCache());
 		}
 		if (sequence.isCycle()) {
 			ddl.append(" CYCLE");
 		}
+		if (sequence.isNocache()) {
+			ddl.append(" NOCACHE");
+		}
+		if (sequence.isOrder()) {
+			ddl.append(" ORDER");
+		}
+
 		if (this.semicolon) {
 			ddl.append(";");
 		}

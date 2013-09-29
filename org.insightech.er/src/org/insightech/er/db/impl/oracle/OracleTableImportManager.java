@@ -159,8 +159,14 @@ public class OracleTableImportManager extends ImportFromDBManagerBase {
 				sequence.setMaxValue(maxValue);
 				BigDecimal lastNumber = rs.getBigDecimal("LAST_NUMBER");
 				sequence.setStart(lastNumber.longValue());
-				sequence.setCache(rs.getInt("CACHE_SIZE"));
-
+				
+				int cache = rs.getInt("CACHE_SIZE");
+				if (cache <= 1) {
+					sequence.setNocache(true);
+				} else {
+					sequence.setCache(cache);					
+				}
+				
 				String cycle = rs.getString("CYCLE_FLAG").toLowerCase();
 				if ("y".equals(cycle)) {
 					sequence.setCycle(true);

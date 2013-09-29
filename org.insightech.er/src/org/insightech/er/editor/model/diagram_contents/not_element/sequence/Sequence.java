@@ -21,6 +21,8 @@ public class Sequence extends WithSchemaModel implements ObjectModel {
 
 	private Integer cache;
 
+	private boolean nocache;
+	
 	private boolean cycle;
 
 	private boolean order;
@@ -82,7 +84,7 @@ public class Sequence extends WithSchemaModel implements ObjectModel {
 	}
 
 	/**
-	 * description ‚ğæ“¾‚µ‚Ü‚·.
+	 * description ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return description
 	 */
@@ -91,7 +93,7 @@ public class Sequence extends WithSchemaModel implements ObjectModel {
 	}
 
 	/**
-	 * description ‚ğİ’è‚µ‚Ü‚·.
+	 * description ï¿½ï¿½İ’è‚µï¿½Ü‚ï¿½.
 	 * 
 	 * @param description
 	 *            description
@@ -122,6 +124,14 @@ public class Sequence extends WithSchemaModel implements ObjectModel {
 
 	public void setOrder(boolean order) {
 		this.order = order;
+	}
+
+	public boolean isNocache() {
+		return nocache;
+	}
+
+	public void setNocache(boolean nocache) {
+		this.nocache = nocache;
 	}
 
 }
