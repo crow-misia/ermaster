@@ -1691,7 +1691,7 @@ public class XMLLoader {
 	private void loadRelation(Element element, LoadContext context) {
 		boolean referenceForPK = this.getBooleanValue(element,
 				"reference_for_pk");
-		Relation connection = new Relation(referenceForPK, null, null);
+		Relation connection = new Relation(referenceForPK, null, null, true);
 
 		this.load(connection, element, context);
 

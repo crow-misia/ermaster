@@ -27,6 +27,7 @@ import org.insightech.er.common.dialog.AbstractDialog;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.ERDiagram;
+import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.CopyColumn;
@@ -370,15 +371,15 @@ public class ERTableComposite extends Composite {
 				tableItem.setImage(1, null);
 			}
 
-			tableItem.setText(2, Format.null2blank(normalColumn
-					.getPhysicalName()));
-			tableItem.setText(3, Format.null2blank(normalColumn
-					.getLogicalName()));
+			tableItem.setText(2,
+					Format.null2blank(normalColumn.getPhysicalName()));
+			tableItem.setText(3,
+					Format.null2blank(normalColumn.getLogicalName()));
 
 			SqlType sqlType = normalColumn.getType();
 
-			tableItem.setText(4, Format.formatType(sqlType, normalColumn
-					.getTypeData(), this.diagram.getDatabase()));
+			tableItem.setText(4, Format.formatType(sqlType,
+					normalColumn.getTypeData(), this.diagram.getDatabase()));
 
 			this.setTableEditor(normalColumn, tableItem);
 
@@ -446,7 +447,10 @@ public class ERTableComposite extends Composite {
 				 */
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					normalColumn.setNotNull(notNullCheckButton.getSelection());
+					boolean notnull = notNullCheckButton.getSelection();
+
+					setNotNull(normalColumn, notnull);
+
 					super.widgetSelected(e);
 				}
 			});
@@ -466,6 +470,25 @@ public class ERTableComposite extends Composite {
 		} else {
 			notNullCheckButton.setEnabled(false);
 			uniqueCheckButton.setEnabled(false);
+		}
+	}
+
+	private void setNotNull(NormalColumn normalColumn, boolean notnull) {
+		for (NormalColumn anotherColumn : ertable.getNormalColumns()) {
+			if (anotherColumn.isForeignKey()) {
+				Relation anotherColumnsRelation = anotherColumn
+						.getRelationList().get(0);
+
+				for (Relation relation : normalColumn.getRelationList()) {
+					if (anotherColumnsRelation == relation) {
+						((Button) columnNotNullCheckMap.get(anotherColumn)[0]
+								.getEditor()).setSelection(notnull);
+						anotherColumn.setNotNull(notnull);
+
+						break;
+					}
+				}
+			}
 		}
 	}
 
@@ -498,6 +521,8 @@ public class ERTableComposite extends Composite {
 
 			copyColumn = (CopyColumn) this.columnList.get(index);
 			CopyColumn.copyData(column, copyColumn);
+
+			setNotNull(copyColumn, copyColumn.isNotNull());
 		}
 
 		this.column2TableItem(copyColumn, tableItem);
@@ -525,15 +550,13 @@ public class ERTableComposite extends Composite {
 				NormalColumn normalColumn = (NormalColumn) column;
 
 				if (normalColumn.isForeignKey()) {
-					this
-							.setMessage(ResourceString
-									.getResourceString("error.foreign.key.not.deleteable"));
+					this.setMessage(ResourceString
+							.getResourceString("error.foreign.key.not.deleteable"));
 
 				} else {
 					if (this.ertable != null && normalColumn.isRefered()) {
-						this
-								.setMessage(ResourceString
-										.getResourceString("error.reference.key.not.deleteable"));
+						this.setMessage(ResourceString
+								.getResourceString("error.reference.key.not.deleteable"));
 
 					} else {
 						removeColumn(index);

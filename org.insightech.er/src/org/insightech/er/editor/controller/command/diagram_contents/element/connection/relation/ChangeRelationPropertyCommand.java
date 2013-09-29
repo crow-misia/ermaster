@@ -1,8 +1,13 @@
 package org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.insightech.er.editor.controller.command.AbstractCommand;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 
 public class ChangeRelationPropertyCommand extends AbstractCommand {
 
@@ -14,6 +19,10 @@ public class ChangeRelationPropertyCommand extends AbstractCommand {
 
 	private TableView oldTargetTable;
 
+	private boolean isChildNotNull;
+
+	private Map<NormalColumn, Boolean> foreignKeyNotNullMap;
+
 	public ChangeRelationPropertyCommand(Relation relation,
 			Relation newCopyRelation) {
 		this.relation = relation;
@@ -21,6 +30,13 @@ public class ChangeRelationPropertyCommand extends AbstractCommand {
 		this.newCopyRelation = newCopyRelation;
 
 		this.oldTargetTable = relation.getTargetTableView().copyData();
+
+		this.foreignKeyNotNullMap = new HashMap<NormalColumn, Boolean>();
+
+		if (Relation.PARENT_CARDINALITY_1.equals(newCopyRelation
+				.getParentCardinality())) {
+			this.isChildNotNull = true;
+		}
 	}
 
 	/**
@@ -41,6 +57,16 @@ public class ChangeRelationPropertyCommand extends AbstractCommand {
 			this.relation.setForeignKeyColumn(this.newCopyRelation
 					.getReferencedColumn());
 		}
+
+		for (NormalColumn foreignKeyColumn : this.relation
+				.getForeignKeyColumns()) {
+			this.foreignKeyNotNullMap.put(foreignKeyColumn,
+					foreignKeyColumn.isNotNull());
+
+			foreignKeyColumn.setNotNull(this.isChildNotNull);
+		}
+		
+		this.relation.getTargetTableView().setDirty();
 	}
 
 	/**
@@ -58,6 +84,12 @@ public class ChangeRelationPropertyCommand extends AbstractCommand {
 				.getReferencedColumn());
 
 		this.oldTargetTable.restructureData(this.relation.getTargetTableView());
-	}
 
+		for (Entry<NormalColumn, Boolean> foreignKeyEntry : this.foreignKeyNotNullMap
+				.entrySet()) {
+			foreignKeyEntry.getKey().setNotNull(foreignKeyEntry.getValue());
+		}
+		
+		this.relation.getTargetTableView().setDirty();
+	}
 }

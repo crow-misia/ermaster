@@ -248,8 +248,11 @@ public class RelationDialog extends AbstractDialog {
 
 		parentCardinalityCombo.setVisibleItemCount(5);
 
-		parentCardinalityCombo.add("1");
-		parentCardinalityCombo.add("0..1");
+		parentCardinalityCombo.add(Relation.PARENT_CARDINALITY_1);
+
+		if (!this.relation.getForeignKeyColumns().get(0).isPrimaryKey()) {
+			parentCardinalityCombo.add(Relation.PARENT_CARDINALITY_0_OR_1);
+		}
 	}
 
 	private void createChildMandatoryGroup(Group parent) {
@@ -342,11 +345,6 @@ public class RelationDialog extends AbstractDialog {
 	@Override
 	protected void perfomeOK() {
 		this.relation.setName(this.nameText.getText());
-		this.relation.setOnDeleteAction(this.onDeleteCombo.getText());
-		this.relation.setOnUpdateAction(this.onUpdateCombo.getText());
-		this.relation.setChildCardinality(this.childCardinalityCombo.getText());
-		this.relation.setParentCardinality(this.parentCardinalityCombo
-				.getText());
 
 		int index = this.columnCombo.getSelectionIndex();
 
@@ -372,6 +370,12 @@ public class RelationDialog extends AbstractDialog {
 			this.relation.setReferencedComplexUniqueKey(null);
 			this.relation.setReferencedColumn(sourceColumn);
 		}
+
+		this.relation.setOnDeleteAction(this.onDeleteCombo.getText());
+		this.relation.setOnUpdateAction(this.onUpdateCombo.getText());
+		this.relation.setChildCardinality(this.childCardinalityCombo.getText());
+		this.relation.setParentCardinality(this.parentCardinalityCombo
+				.getText());
 	}
 
 	@Override

@@ -138,10 +138,17 @@ public class CreateRelationByExistingColumnsCommand extends
 				sourceTable, candidateForeignKeyColumns, referencedMap,
 				foreignKeySetMap);
 
+		NormalColumn firstForeignKeyColumn = dialog.getForeignKeyColumnList().get(0);
+		boolean notnull = firstForeignKeyColumn.isNotNull();
+		
+		for (NormalColumn foreignKeyColumn : dialog.getForeignKeyColumnList()) {
+			foreignKeyColumn.setNotNull(notnull);
+		}
+		
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			this.relation = new Relation(dialog.isReferenceForPK(), dialog
 					.getReferencedComplexUniqueKey(), dialog
-					.getReferencedColumn());
+					.getReferencedColumn(), notnull);
 			this.referencedColumnList = dialog.getReferencedColumnList();
 			this.foreignKeyColumnList = dialog.getForeignKeyColumnList();
 

@@ -114,7 +114,7 @@ public class NodeElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy 
 			relation.setReferencedComplexUniqueKey(temp
 					.getReferencedComplexUniqueKey());
 			relation.setReferencedColumn(temp.getReferencedColumn());
-
+System.out.println("###");
 			request.setStartCommand(command);
 
 			return command;

@@ -1050,8 +1050,10 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 		}
 
+		NormalColumn representedForeignKeyColumn = referenceMap.entrySet().iterator().next().getValue();
+		
 		Relation relation = new Relation(referenceForPK,
-				referencedComplexUniqueKey, referencedColumn);
+				referencedComplexUniqueKey, referencedColumn, representedForeignKeyColumn.isNotNull());
 		relation.setName(representativeData.name);
 		relation.setSource(source);
 		relation.setTargetWithoutForeignKey(target);

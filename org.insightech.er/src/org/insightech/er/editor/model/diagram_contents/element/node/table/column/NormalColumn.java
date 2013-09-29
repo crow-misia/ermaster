@@ -43,7 +43,7 @@ public class NormalColumn extends Column {
 
 	private String collation;
 
-	/** e‚ª2‚Â‚ ‚éŠO•”ƒL[‚ÍA’Êí‚È‚¢‚ªAe‚Ì‘åŒ³‚ª“¯‚¶QÆƒL[‚Ìê‡‚Í‚ ‚è‚¦‚é. */
+	/** è¦ªãŒ2ã¤ã‚ã‚‹å¤–éƒ¨ã‚­ãƒ¼ã¯ã€é€šå¸¸ãªã„ãŒã€è¦ªã®å¤§å…ƒãŒåŒã˜å‚ç…§ã‚­ãƒ¼ã®å ´åˆã¯ã‚ã‚Šãˆã‚‹. */
 	private List<NormalColumn> referencedColumnList = new ArrayList<NormalColumn>();
 
 	private List<Relation> relationList = new ArrayList<Relation>();
@@ -78,28 +78,35 @@ public class NormalColumn extends Column {
 				.clone();
 	}
 
+	private NormalColumn() {
+	}
+	
 	/**
-	 * ŠO•”ƒL[‚ğì¬‚µ‚Ü‚·
+	 * å¤–éƒ¨ã‚­ãƒ¼ã‚’ä½œæˆã—ã¾ã™
 	 * 
 	 * @param from
 	 * @param referencedColumn
 	 * @param relation
 	 * @param primaryKey
-	 *            åƒL[‚©‚Ç‚¤‚©
+	 *            ä¸»ã‚­ãƒ¼ã‹ã©ã†ã‹
 	 */
-	public NormalColumn(NormalColumn from, NormalColumn referencedColumn,
+	public NormalColumn createForeignKey(
 			Relation relation, boolean primaryKey) {
-		this.word = null;
+		NormalColumn newColumn = new NormalColumn();
+		
+		newColumn.word = null;
 
-		this.referencedColumnList.add(referencedColumn);
-		this.relationList.add(relation);
+		newColumn.referencedColumnList.add(this);
+		newColumn.relationList.add(relation);
 
-		copyData(from, this);
+		copyData(this, newColumn);
 
-		this.primaryKey = primaryKey;
-		this.autoIncrement = false;
+		newColumn.primaryKey = primaryKey;
+		newColumn.autoIncrement = false;
 
-		this.autoIncrementSetting = new Sequence();
+		newColumn.autoIncrementSetting = new Sequence();
+		
+		return newColumn;
 	}
 
 	protected void init(boolean notNull, boolean primaryKey, boolean uniqueKey,
@@ -631,7 +638,7 @@ public class NormalColumn extends Column {
 		to.setForeignKeyDescription(this.getForeignKeyDescription());
 		to.setForeignKeyLogicalName(this.getForeignKeyLogicalName());
 		to.setForeignKeyPhysicalName(this.getForeignKeyPhysicalName());
-		to.setNotNull(this.isNotNull());
+		to.setNotNull(true);
 		to.setUniqueKey(this.isUniqueKey());
 		to.setPrimaryKey(this.isPrimaryKey());
 		to.setAutoIncrement(this.isAutoIncrement());
