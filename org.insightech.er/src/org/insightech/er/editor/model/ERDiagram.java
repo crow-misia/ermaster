@@ -63,6 +63,13 @@ public class ERDiagram extends ViewableModel {
 		this.setDefaultColor(128, 128, 192);
 		this.setColor(255, 255, 255);
 	}
+	
+	public void clear() {
+		this.diagramContents.clear();
+		this.changeTrackingList.clear();
+		
+		this.diagramContents.setColumnGroups(GlobalGroupSet.load());
+	}
 
 	public void init() {
 		this.diagramContents.setColumnGroups(GlobalGroupSet.load());
@@ -265,7 +272,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * dbSetting ‚ğæ“¾‚µ‚Ü‚·.
+	 * dbSetting ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return dbSetting
 	 */
@@ -274,7 +281,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * dbSetting ‚ğİ’è‚µ‚Ü‚·.
+	 * dbSetting ï¿½ï¿½İ’è‚µï¿½Ü‚ï¿½.
 	 * 
 	 * @param dbSetting
 	 *            dbSetting
@@ -284,7 +291,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * pageSetting ‚ğæ“¾‚µ‚Ü‚·.
+	 * pageSetting ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return pageSetting
 	 */
@@ -293,7 +300,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * pageSetting ‚ğİ’è‚µ‚Ü‚·.
+	 * pageSetting ï¿½ï¿½İ’è‚µï¿½Ü‚ï¿½.
 	 * 
 	 * @param pageSetting
 	 *            pageSetting
@@ -303,7 +310,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * editor ‚ğæ“¾‚µ‚Ü‚·.
+	 * editor ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return editor
 	 */
@@ -326,7 +333,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * disableSelectColumn ‚ğæ“¾‚µ‚Ü‚·.
+	 * disableSelectColumn ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return disableSelectColumn
 	 */
@@ -335,7 +342,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * disableSelectColumn ‚ğİ’è‚µ‚Ü‚·.
+	 * disableSelectColumn ï¿½ï¿½İ’è‚µï¿½Ü‚ï¿½.
 	 * 
 	 * @param disableSelectColumn
 	 *            disableSelectColumn

@@ -22,6 +22,9 @@ public class TriggerSet extends AbstractModel implements ObjectListModel,
 		this.triggerList = new ArrayList<Trigger>();
 	}
 
+	public void clear() {
+		this.triggerList.clear();
+	}
 	public void addTrigger(Trigger trigger) {
 		this.triggerList.add(trigger);
 		Collections.sort(this.triggerList);

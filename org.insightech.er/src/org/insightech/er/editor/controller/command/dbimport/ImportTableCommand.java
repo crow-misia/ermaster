@@ -50,7 +50,7 @@ public class ImportTableCommand extends AbstractCommand {
 	private List<Tablespace> tablespaces;
 
 	private List<ColumnGroup> columnGroups;
-
+	
 	private DirectedGraph graph = new DirectedGraph();
 
 	private static final int AUTO_GRAPH_LIMIT = 100;
@@ -243,8 +243,8 @@ public class ImportTableCommand extends AbstractCommand {
 			if (nodeElement instanceof TableView) {
 				for (NormalColumn normalColumn : ((TableView) nodeElement)
 						.getNormalColumns()) {
-					this.diagram.getDiagramContents().getDictionary().remove(
-							normalColumn);
+					this.diagram.getDiagramContents().getDictionary()
+							.remove(normalColumn);
 				}
 			}
 		}

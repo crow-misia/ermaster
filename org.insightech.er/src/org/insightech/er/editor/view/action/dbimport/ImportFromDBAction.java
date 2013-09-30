@@ -36,9 +36,7 @@ public class ImportFromDBAction extends AbstractImportAction {
 	public ImportFromDBAction(ERDiagramEditor editor) {
 		super(ID, ResourceString.getResourceString("action.title.import.db"),
 				editor);
-		this
-				.setImageDescriptor(Activator
-						.getImageDescriptor(ImageKey.DATABASE));
+		this.setImageDescriptor(Activator.getImageDescriptor(ImageKey.DATABASE));
 	}
 
 	protected AbstractSelectImportedObjectDialog createSelectImportedObjectDialog(
@@ -46,7 +44,7 @@ public class ImportFromDBAction extends AbstractImportAction {
 		ERDiagram diagram = this.getDiagram();
 
 		return new SelectImportedObjectFromDBDialog(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getShell(), diagram, dbObjectSet);
+				.getActiveWorkbenchWindow().getShell(), diagram, dbObjectSet, this.getEditorPart());
 	}
 
 	/**

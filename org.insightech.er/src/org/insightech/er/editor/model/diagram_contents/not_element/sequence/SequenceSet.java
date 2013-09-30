@@ -21,6 +21,10 @@ public class SequenceSet extends AbstractModel implements ObjectListModel,
 	public SequenceSet() {
 		this.sequenceList = new ArrayList<Sequence>();
 	}
+	
+	public void clear() {
+		this.sequenceList.clear();
+	}
 
 	public void addSequence(Sequence sequence) {
 		this.sequenceList.add(sequence);

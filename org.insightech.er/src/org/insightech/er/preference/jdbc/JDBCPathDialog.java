@@ -54,8 +54,8 @@ public class JDBCPathDialog extends AbstractDialog {
 	@Override
 	protected Object createLayoutData() {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.widthHint = 600;
-		gridData.heightHint = 180;
+		gridData.widthHint = 750;
+		gridData.heightHint = 200;
 		gridData.horizontalIndent = 10;
 		gridData.horizontalSpan = 10;
 

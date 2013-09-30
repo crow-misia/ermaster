@@ -89,7 +89,7 @@ public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog 
 		groupLayout.marginHeight = 15;
 
 		Group group = new Group(composite, SWT.NONE);
-		group.setText(ResourceString.getResourceString("label.option"));
+		group.setText(ResourceString.getResourceString("label.options"));
 		group.setLayoutData(groupGridData);
 		group.setLayout(groupLayout);
 
@@ -197,8 +197,8 @@ public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog 
 	protected List<TreeNode> createTreeNodeList() {
 		List<TreeNode> treeNodeList = new ArrayList<TreeNode>();
 
-		TreeNode topNode = new TreeNode(new StringObjectModel(ResourceString
-				.getResourceString("label.schema")));
+		TreeNode topNode = new TreeNode(new StringObjectModel(
+				ResourceString.getResourceString("label.schema")));
 		treeNodeList.add(topNode);
 
 		List<TreeNode> schemaNodeList = new ArrayList<TreeNode>();
@@ -244,8 +244,8 @@ public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog 
 		topNode.setChildren(schemaNodeList.toArray(new TreeNode[schemaNodeList
 				.size()]));
 
-		topNode = createTopNode(DBObject.TYPE_TABLESPACE, this.dbObjectSet
-				.getTablespaceList());
+		topNode = createTopNode(DBObject.TYPE_TABLESPACE,
+				this.dbObjectSet.getTablespaceList());
 		treeNodeList.add(topNode);
 
 		return treeNodeList;
@@ -253,8 +253,9 @@ public abstract class AbstractSelectImportedObjectDialog extends AbstractDialog 
 
 	protected TreeNode createTopNode(String objectType,
 			List<DBObject> dbObjectList) {
-		TreeNode treeNode = new TreeNode(new StringObjectModel(ResourceString
-				.getResourceString("label.object.type." + objectType)));
+		TreeNode treeNode = new TreeNode(new StringObjectModel(
+				ResourceString.getResourceString("label.object.type."
+						+ objectType)));
 		List<TreeNode> objectNodeList = new ArrayList<TreeNode>();
 
 		for (DBObject dbObject : dbObjectList) {

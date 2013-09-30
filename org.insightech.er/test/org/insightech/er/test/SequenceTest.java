@@ -41,8 +41,8 @@ public class SequenceTest {
 		dbObjects.add(new DBObject("schema", "b", DBObject.TYPE_VIEW));
 		dbObjects.add(new DBObject("schema", "c", DBObject.TYPE_VIEW));
 
-		SelectImportedObjectFromDBDialog dialog = new SelectImportedObjectFromDBDialog(shell, null,
-				dbObjects);
+		SelectImportedObjectFromDBDialog dialog = new SelectImportedObjectFromDBDialog(
+				shell, null, dbObjects, null);
 
 		dialog.open();
 	}

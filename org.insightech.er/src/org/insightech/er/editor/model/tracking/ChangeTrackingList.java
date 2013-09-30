@@ -36,6 +36,13 @@ public class ChangeTrackingList implements Serializable {
 		this.removedNodeElements = new ArrayList<RemovedNodeElement>();
 	}
 
+	public void clear() {
+		this.changeTrackingList.clear();
+		this.addedNodeElements.clear();
+		this.updatedNodeElements.clear();
+		this.removedNodeElements.clear();
+	}
+	
 	public void addChangeTracking(ChangeTracking changeTracking) {
 		this.changeTrackingList.add(changeTracking);
 	}

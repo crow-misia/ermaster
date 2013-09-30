@@ -45,6 +45,16 @@ public class DiagramContents {
 
 		this.testDataList = new ArrayList<TestData>();
 	}
+	
+	public void clear() {
+		this.contents.clear();
+		this.groups.clear();
+		this.dictionary.clear();
+		this.sequenceSet.clear();
+		this.triggerSet.clear();
+		this.tablespaceSet.clear();
+		this.testDataList.clear();
+	}
 
 	public NodeSet getContents() {
 		return this.contents;

@@ -20,6 +20,10 @@ public class TablespaceSet extends AbstractModel implements
 		this.tablespaceList = new ArrayList<Tablespace>();
 	}
 
+	public void clear() {
+		this.tablespaceList.clear();
+	}
+	
 	public void addTablespace(Tablespace tablespace) {
 		this.tablespaceList.add(tablespace);
 		Collections.sort(this.tablespaceList);

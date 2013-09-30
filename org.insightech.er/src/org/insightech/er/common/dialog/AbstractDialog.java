@@ -29,7 +29,7 @@ public abstract class AbstractDialog extends Dialog {
 	private boolean enabledOkButton = true;
 
 	protected boolean initialized = false;
-	
+
 	protected AbstractDialog(Shell parentShell) {
 		this(parentShell, 1);
 	}
@@ -76,7 +76,7 @@ public abstract class AbstractDialog extends Dialog {
 	@Override
 	protected Control createContents(Composite parent) {
 		Control control = super.createContents(parent);
-		
+
 		this.addListener();
 		this.validate();
 
@@ -128,7 +128,7 @@ public abstract class AbstractDialog extends Dialog {
 		if (!this.initialized) {
 			return true;
 		}
-		
+
 		Button okButton = this.getButton(IDialogConstants.OK_ID);
 		if (okButton != null) {
 			okButton.setEnabled(false);
@@ -223,8 +223,10 @@ public abstract class AbstractDialog extends Dialog {
 				close();
 
 			} catch (InputException e) {
-				this.setMessage(ResourceString
-						.getResourceString(e.getMessage(), e.getArgs()));
+				if (e.getMessage() != null) {
+					this.setMessage(ResourceString.getResourceString(
+							e.getMessage(), e.getArgs()));
+				}
 				return;
 
 			} catch (Exception e) {
@@ -242,8 +244,8 @@ public abstract class AbstractDialog extends Dialog {
 	abstract protected String getTitle();
 
 	protected Button createCheckbox(Composite composite, String title) {
-		return CompositeFactory.createCheckbox(this, composite, title, this
-				.getNumColumns());
+		return CompositeFactory.createCheckbox(this, composite, title,
+				this.getNumColumns());
 	}
 
 }

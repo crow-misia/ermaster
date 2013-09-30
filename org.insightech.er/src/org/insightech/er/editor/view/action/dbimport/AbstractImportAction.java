@@ -23,7 +23,7 @@ public abstract class AbstractImportAction extends AbstractBaseAction {
 	protected List<Tablespace> importedTablespaces;
 
 	protected List<ColumnGroup> importedColumnGroups;
-
+	
 	public AbstractImportAction(String id, String text, ERDiagramEditor editor) {
 		super(id, text, editor);
 	}
