@@ -15,17 +15,20 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 	private Integer arrayDimension;
 
 	private boolean unsigned;
+	
+	private boolean binary;
 
 	private String args;
 
 	public TypeData(Integer length, Integer decimal, boolean array,
-			Integer arrayDimension, boolean unsigned, String args) {
+			Integer arrayDimension, boolean unsigned, boolean binary, String args) {
 		super();
 		this.length = length;
 		this.decimal = decimal;
 		this.array = array;
 		this.arrayDimension = arrayDimension;
 		this.unsigned = unsigned;
+		this.binary = binary;
 		this.args = args;
 	}
 
@@ -67,6 +70,15 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 
 	public void setUnsigned(boolean unsigned) {
 		this.unsigned = unsigned;
+	}
+
+	
+	public boolean isBinary() {
+		return binary;
+	}
+
+	public void setBinary(boolean binary) {
+		this.binary = binary;
 	}
 
 	public String getArgs() {
@@ -140,6 +152,14 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 			}
 		}
 
+		if (this.binary != o.binary) {
+			if (this.binary) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+		
 		if (this.args == null) {
 			if (o.args != null) {
 				return 1;
@@ -179,6 +199,7 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 		result = prime * result + ((decimal == null) ? 0 : decimal.hashCode());
 		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime * result + (unsigned ? 1231 : 1237);
+		result = prime * result + (binary ? 1231 : 1237);
 		return result;
 	}
 
@@ -214,6 +235,8 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 		} else if (!length.equals(other.length))
 			return false;
 		if (unsigned != other.unsigned)
+			return false;
+		if (binary != other.binary)
 			return false;
 		return true;
 	}

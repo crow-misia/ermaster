@@ -43,6 +43,8 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 	protected Button unsignedCheck;
 
+	protected Button binaryCheck;
+
 	protected boolean add;
 
 	protected Text descriptionText;
@@ -145,13 +147,18 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		}
 
 		if (MySQLDBManager.ID.equals(this.diagram.getDatabase())) {
-			CompositeFactory.filler(composite, 1, 10);
 
 			this.unsignedCheck = CompositeFactory.createCheckbox(this,
 					composite, "label.column.unsigned");
 			this.unsignedCheck.setEnabled(false);
 
+
+			this.binaryCheck = CompositeFactory.createCheckbox(this,
+					composite, "label.column.binary");
+			this.binaryCheck.setEnabled(false);
+
 			CompositeFactory.filler(composite, 1);
+			
 			this.argsText = CompositeFactory.createText(this, composite,
 					"label.column.type.enum.set", getCompositeNumColumns() - 2,
 					false);
@@ -201,6 +208,10 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 				this.unsignedCheck.setEnabled(false);
 			}
 
+			if (this.binaryCheck != null && !sqlType.isFullTextIndexable()) {
+				this.binaryCheck.setEnabled(false);
+			}
+
 			if (this.argsText != null) {
 				if (sqlType.doesNeedArgs()) {
 					argsText.setEnabled(true);
@@ -214,6 +225,9 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			this.decimalText.setEnabled(false);
 			if (this.unsignedCheck != null) {
 				this.unsignedCheck.setEnabled(false);
+			}
+			if (this.binaryCheck != null) {
+				this.binaryCheck.setEnabled(false);
 			}
 			if (this.argsText != null) {
 				this.argsText.setEnabled(false);
@@ -232,6 +246,10 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 		if (this.unsignedCheck != null) {
 			this.unsignedCheck.setSelection(typeData.isUnsigned());
+		}
+
+		if (this.binaryCheck != null) {
+			this.binaryCheck.setSelection(typeData.isBinary());
 		}
 
 		if (this.argsText != null) {
@@ -265,6 +283,14 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 					unsignedCheck.setEnabled(false);
 				} else {
 					unsignedCheck.setEnabled(true);
+				}
+			}
+
+			if (this.binaryCheck != null) {
+				if (!selectedType.isFullTextIndexable()) {
+					binaryCheck.setEnabled(false);
+				} else {
+					binaryCheck.setEnabled(true);
 				}
 			}
 

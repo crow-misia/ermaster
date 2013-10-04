@@ -932,7 +932,8 @@ public class XMLLoader {
 						element, "decimal"), this.getBooleanValue(element,
 						"array"), this.getIntegerValue(element,
 						"array_dimension"), this.getBooleanValue(element,
-						"unsigned"), this.getStringValue(element, "args"));
+						"unsigned"), this.getBooleanValue(element, "binary"),
+				this.getStringValue(element, "args"));
 
 		Word word = new Word(Format.null2blank(this.getStringValue(element,
 				"physical_name")), Format.null2blank(this.getStringValue(
@@ -996,8 +997,8 @@ public class XMLLoader {
 			word = new Word(this.getStringValue(element, "physical_name"),
 					this.getStringValue(element, "logical_name"),
 					SqlType.valueOfId(type), new TypeData(null, null, false,
-							null, false, null), this.getStringValue(element,
-							"description"), database);
+							null, false, false, null), this.getStringValue(
+							element, "description"), database);
 
 			word = context.uniqueWordDictionary.getUniqueWord(word);
 		}

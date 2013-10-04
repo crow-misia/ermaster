@@ -101,6 +101,10 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
 				normalColumn.getTypeData(), this.getDiagram().getDatabase())));
 
+		if (normalColumn.getTypeData().isBinary()) {
+			ddl.append(" BINARY");			
+		}
+		
 		if (!Check.isEmpty(normalColumn.getCharacterSet())) {
 			ddl.append(" CHARACTER SET ");
 			ddl.append(normalColumn.getCharacterSet());

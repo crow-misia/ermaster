@@ -369,13 +369,13 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 			int colCount = 0;
 
 			tableItem.setForeground(colCount, keyColor);
-			tableItem.setText(colCount, Format.null2blank(normalColumn
-					.getLogicalName()));
+			tableItem.setText(colCount,
+					Format.null2blank(normalColumn.getLogicalName()));
 
 			colCount++;
 			tableItem.setForeground(colCount, keyColor);
-			tableItem.setText(colCount, Format.null2blank(normalColumn
-					.getPhysicalName()));
+			tableItem.setText(colCount,
+					Format.null2blank(normalColumn.getPhysicalName()));
 
 			colCount++;
 			tableItem.setForeground(colCount, ColorConstants.gray);
@@ -423,16 +423,16 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 			colCount++;
 			if (normalColumn.isPrimaryKey()) {
-				tableItem.setImage(colCount, Activator
-						.getImage(ImageKey.PRIMARY_KEY));
+				tableItem.setImage(colCount,
+						Activator.getImage(ImageKey.PRIMARY_KEY));
 			} else {
 				tableItem.setImage(colCount, null);
 			}
 
 			colCount++;
 			if (normalColumn.isForeignKey()) {
-				tableItem.setImage(colCount, Activator
-						.getImage(ImageKey.FOREIGN_KEY));
+				tableItem.setImage(colCount,
+						Activator.getImage(ImageKey.FOREIGN_KEY));
 
 				// CLabel imageLabel = new CLabel(this.attributeTable,
 				// SWT.NONE);
@@ -450,11 +450,11 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 			colCount++;
 			if (normalColumn.isNotNull()) {
 				if (normalColumn.isPrimaryKey()) {
-					tableItem.setImage(colCount, Activator
-							.getImage(ImageKey.CHECK_GREY));
+					tableItem.setImage(colCount,
+							Activator.getImage(ImageKey.CHECK_GREY));
 				} else {
-					tableItem.setImage(colCount, Activator
-							.getImage(ImageKey.CHECK));
+					tableItem.setImage(colCount,
+							Activator.getImage(ImageKey.CHECK));
 				}
 
 			} else {
@@ -465,11 +465,11 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 			if (normalColumn.isUniqueKey()) {
 
 				if (table != null && normalColumn.isRefered()) {
-					tableItem.setImage(colCount, Activator
-							.getImage(ImageKey.CHECK_GREY));
+					tableItem.setImage(colCount,
+							Activator.getImage(ImageKey.CHECK_GREY));
 				} else {
-					tableItem.setImage(colCount, Activator
-							.getImage(ImageKey.CHECK));
+					tableItem.setImage(colCount,
+							Activator.getImage(ImageKey.CHECK));
 				}
 
 			} else {
@@ -704,13 +704,13 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 							}
 
 							TypeData oldTypeData = word.getTypeData();
-							TypeData newTypeData = new TypeData(Integer
-									.parseInt(((Text) control).getText()),
+							TypeData newTypeData = new TypeData(
+									Integer.parseInt(((Text) control).getText()),
 									oldTypeData.getDecimal(), oldTypeData
 											.isArray(), oldTypeData
 											.getArrayDimension(), oldTypeData
 											.isUnsigned(), oldTypeData
-											.getArgs());
+											.isBinary(), oldTypeData.getArgs());
 
 							word.setType(word.getType(), newTypeData, database);
 						}
@@ -736,12 +736,13 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 							}
 
 							TypeData oldTypeData = word.getTypeData();
-							TypeData newTypeData = new TypeData(oldTypeData
-									.getLength(), decimal, oldTypeData
-									.isArray(),
+							TypeData newTypeData = new TypeData(
+									oldTypeData.getLength(), decimal,
+									oldTypeData.isArray(),
 									oldTypeData.getArrayDimension(),
-									oldTypeData.isUnsigned(), oldTypeData
-											.getArgs());
+									oldTypeData.isUnsigned(),
+									oldTypeData.isBinary(),
+									oldTypeData.getArgs());
 
 							word.setType(word.getType(), newTypeData, database);
 						}

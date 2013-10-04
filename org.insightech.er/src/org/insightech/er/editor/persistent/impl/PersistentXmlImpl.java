@@ -422,7 +422,8 @@ public class PersistentXmlImpl extends Persistent {
 				.append("</start>\n");
 		xml.append("\t<cache>").append(Format.toString(sequence.getCache()))
 				.append("</cache>\n");
-		xml.append("\t<nocache>").append(sequence.isNocache()).append("</nocache>\n");
+		xml.append("\t<nocache>").append(sequence.isNocache())
+				.append("</nocache>\n");
 		xml.append("\t<cycle>").append(sequence.isCycle()).append("</cycle>\n");
 		xml.append("\t<order>").append(sequence.isOrder()).append("</order>\n");
 		xml.append("\t<description>").append(escape(sequence.getDescription()))
@@ -1772,6 +1773,8 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("\t<unsigned>").append(word.getTypeData().isUnsigned())
 				.append("</unsigned>\n");
+		xml.append("\t<binary>").append(word.getTypeData().isBinary())
+				.append("</binary>\n");
 		xml.append("\t<args>").append(escape(word.getTypeData().getArgs()))
 				.append("</args>\n");
 

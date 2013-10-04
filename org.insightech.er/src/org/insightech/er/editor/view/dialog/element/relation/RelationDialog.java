@@ -275,7 +275,7 @@ public class RelationDialog extends AbstractDialog {
 
 		childCardinalityCombo.add("1..n");
 		childCardinalityCombo.add("0..n");
-		childCardinalityCombo.add("1");
+		childCardinalityCombo.add(Relation.CHILD_CARDINALITY_1);
 		childCardinalityCombo.add("0..1");
 	}
 

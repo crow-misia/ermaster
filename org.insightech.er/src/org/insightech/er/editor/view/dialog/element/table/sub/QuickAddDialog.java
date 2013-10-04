@@ -114,7 +114,7 @@ public class QuickAddDialog extends AbstractDialog {
 					length);
 
 			TypeData typeData = new TypeData(length, decimal, false, null,
-					false, null);
+					false, false, null);
 
 			Word word = new CopyWord(new Word(physicalName, logicalName,
 					sqlType, typeData, null, this.diagram.getDatabase()));

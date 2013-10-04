@@ -19,6 +19,8 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	public static final String PARENT_CARDINALITY_1 = "1";
 
+	public static final String CHILD_CARDINALITY_1 = "1";
+
 	private String name;
 
 	private String onUpdateAction;

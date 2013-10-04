@@ -116,6 +116,12 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 		public String enumData;
 
+		public String characterSet;
+
+		public String collation;
+
+		public boolean isBinary;
+		
 		@Override
 		public String toString() {
 			return "ColumnData [columnName=" + columnName + ", type=" + type
@@ -432,8 +438,6 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			autoIncrementColumnName = this.getAutoIncrementColumnName(con,
 					this.getTableNameWithSchema(schema, tableName));
 		} catch (SQLException e) {
-			// �e�[�u����񂪎擾�ł��Ȃ��ꍇ�i���̃��[�U�̏��L���Ȃǂ̏ꍇ�j�A
-			// ���̃e�[�u���͎g�p���Ȃ��B
 			return null;
 		}
 
@@ -468,7 +472,13 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			this.setIndexColumn(table, index);
 		}
 
+		this.setTableViewProperties(tableName, tableProperties);
+
 		return table;
+	}
+
+	protected void setTableViewProperties(String tableName,
+			TableViewProperties tableViewProperties) {
 	}
 
 	protected String getTableNameWithSchema(String schema, String tableName) {
@@ -750,7 +760,7 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			String args = columnData.enumData;
 
 			TypeData typeData = new TypeData(length, decimal, array,
-					arrayDimension, unsigned, args);
+					arrayDimension, unsigned, columnData.isBinary, args);
 
 			Word word = new Word(columnName, logicalName, sqlType, typeData,
 					description, this.diagram.getDatabase());
@@ -760,14 +770,14 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 			NormalColumn column = new NormalColumn(word, notNull, primaryKey,
 					uniqueKey, autoIncrement, defaultValue, constraint, null,
-					null, null);
+					columnData.characterSet, columnData.collation);
 
 			columns.add(column);
 		}
 
 		return columns;
 	}
-
+	
 	private boolean isUniqueKey(String columnName, List<Index> indexes,
 			List<PrimaryKeyData> primaryKeys) {
 		String primaryKey = null;
@@ -1050,10 +1060,12 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			}
 		}
 
-		NormalColumn representedForeignKeyColumn = referenceMap.entrySet().iterator().next().getValue();
-		
+		NormalColumn representedForeignKeyColumn = referenceMap.entrySet()
+				.iterator().next().getValue();
+
 		Relation relation = new Relation(referenceForPK,
-				referencedComplexUniqueKey, referencedColumn, representedForeignKeyColumn.isNotNull());
+				referencedComplexUniqueKey, referencedColumn,
+				representedForeignKeyColumn.isNotNull());
 		relation.setName(representativeData.name);
 		relation.setSource(source);
 		relation.setTargetWithoutForeignKey(target);
@@ -1371,8 +1383,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		} else {
 			word = new Word(columnAlias,
 					this.translationResources.translate(columnAlias), null,
-					new TypeData(null, null, false, null, false, null), null,
-					null);
+					new TypeData(null, null, false, null, false, false, null),
+					null, null);
 
 		}
 
