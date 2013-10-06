@@ -23,7 +23,7 @@ import org.insightech.er.util.io.IOUtils;
 
 public class ExportToJavaManager {
 
-	private static final String TEMPLATE_DIR = "java" + File.separator;
+	private static final String TEMPLATE_DIR = "javasource/";
 
 	private static final String[] KEYWORDS = { "java.template.constructor",
 			"java.template.getter.description",
@@ -76,15 +76,11 @@ public class ExportToJavaManager {
 			EQUALS_LOGIC = loadResource("@equals logic");
 			EXTENDS = loadResource("@extends");
 
-			HIBERNATE_TEMPLATE = loadResource("hibernate" + File.separator
-					+ "hbm");
-			HIBERNATE_PROPERTY = loadResource("hibernate" + File.separator
-					+ "@property");
-			HIBERNATE_ID = loadResource("hibernate" + File.separator + "@id");
-			HIBERNATE_COMPOSITE_ID = loadResource("hibernate" + File.separator
-					+ "@composite_id");
-			HIBERNATE_COMPOSITE_ID_KEY = loadResource("hibernate"
-					+ File.separator + "@composite_id_key");
+			HIBERNATE_TEMPLATE = loadResource("hibernate/hbm");
+			HIBERNATE_PROPERTY = loadResource("hibernate/@property");
+			HIBERNATE_ID = loadResource("hibernate/@id");
+			HIBERNATE_COMPOSITE_ID = loadResource("hibernate/@composite_id");
+			HIBERNATE_COMPOSITE_ID_KEY = loadResource("hibernate/@composite_id_key");
 
 		} catch (IOException e) {
 			e.printStackTrace();
