@@ -795,7 +795,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 	}
 
 	/**
-	 * diagramContents ���擾���܂�.
+	 * diagramContents を取得します.
 	 * 
 	 * @return diagramContents
 	 */

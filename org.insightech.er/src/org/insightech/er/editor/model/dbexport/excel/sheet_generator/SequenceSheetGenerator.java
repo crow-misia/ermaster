@@ -34,7 +34,7 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 	private static final String KEYWORD_CYCLE = "$CYC";
 
 	/**
-	 * �V�[�P���X�V�[�g�Ƀf�[�^��ݒ肵�܂�.
+	 * シーケンスシートにデータを設定します.
 	 * 
 	 * @param workbook
 	 * @param sheet

@@ -20,7 +20,7 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 	private static final String KEYWORD_TRIGGER_SQL = "$SQL";
 
 	/**
-	 * �g���K�[�V�[�g�Ƀf�[�^��ݒ肵�܂�.
+	 * トリガーシートにデータを設定します.
 	 * 
 	 * @param workbook
 	 * @param sheet

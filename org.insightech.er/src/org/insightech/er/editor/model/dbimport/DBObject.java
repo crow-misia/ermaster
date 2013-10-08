@@ -42,7 +42,7 @@ public class DBObject {
 	}
 
 	/**
-	 * schema ‚ğæ“¾‚µ‚Ü‚·.
+	 * schema ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return schema
 	 */
@@ -51,7 +51,7 @@ public class DBObject {
 	}
 
 	/**
-	 * schema ‚ğİ’è‚µ‚Ü‚·.
+	 * schema ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param schema
 	 *            schema
@@ -61,7 +61,7 @@ public class DBObject {
 	}
 
 	/**
-	 * name ‚ğæ“¾‚µ‚Ü‚·.
+	 * name ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return name
 	 */
@@ -70,7 +70,7 @@ public class DBObject {
 	}
 
 	/**
-	 * name ‚ğİ’è‚µ‚Ü‚·.
+	 * name ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param name
 	 *            name
@@ -80,7 +80,7 @@ public class DBObject {
 	}
 
 	/**
-	 * type ‚ğæ“¾‚µ‚Ü‚·.
+	 * type ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return type
 	 */
@@ -89,7 +89,7 @@ public class DBObject {
 	}
 
 	/**
-	 * type ‚ğİ’è‚µ‚Ü‚·.
+	 * type ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param type
 	 *            type

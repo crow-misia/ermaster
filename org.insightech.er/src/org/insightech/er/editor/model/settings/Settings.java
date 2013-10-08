@@ -244,7 +244,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	}
 
 	/**
-	 * translationSettings ���擾���܂�.
+	 * translationSettings を取得します.
 	 * 
 	 * @return translationSettings
 	 */
@@ -253,7 +253,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	}
 
 	/**
-	 * environmentSetting ���擾���܂�.
+	 * environmentSetting を取得します.
 	 * 
 	 * @return environmentSetting
 	 */

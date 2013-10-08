@@ -72,15 +72,15 @@ public class View extends TableView implements ObjectModel, ColumnHolder {
 	}
 
 	/**
-	 * �r���[�𕡐����܂��B<br>
-	 * ����������́A���O��SQL�ƃv���p�e�B�̂݁B<br>
-	 * ��͕����ΏۊO�Ƃ��A�ォ�畡������B<br>
+	 * ビューを複製します。<br>
+	 * 複製する情報は、名前とSQLとプロパティのみ。<br>
+	 * 列は複製対象外とし、後から複製する。<br>
 	 */
 	@Override
 	public View clone() {
 		View clone = (View) super.clone();
 
-		// �v���p�e�B�𕡐����܂��B
+		// プロパティを複製します。
 		TableViewProperties cloneViewProperties = this.tableViewProperties
 				.clone();
 		clone.tableViewProperties = cloneViewProperties;

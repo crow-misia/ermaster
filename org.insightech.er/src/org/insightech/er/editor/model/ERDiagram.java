@@ -230,7 +230,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * dbSetting ���擾���܂�.
+	 * dbSetting を取得します.
 	 * 
 	 * @return dbSetting
 	 */
@@ -239,7 +239,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * dbSetting ��ݒ肵�܂�.
+	 * dbSetting を設定します.
 	 * 
 	 * @param dbSetting
 	 *            dbSetting
@@ -249,7 +249,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * pageSetting ���擾���܂�.
+	 * pageSetting を取得します.
 	 * 
 	 * @return pageSetting
 	 */
@@ -258,7 +258,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * pageSetting ��ݒ肵�܂�.
+	 * pageSetting を設定します.
 	 * 
 	 * @param pageSetting
 	 *            pageSetting
@@ -268,7 +268,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * editor ���擾���܂�.
+	 * editor を取得します.
 	 * 
 	 * @return editor
 	 */
@@ -291,7 +291,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * disableSelectColumn ���擾���܂�.
+	 * disableSelectColumn を取得します.
 	 * 
 	 * @return disableSelectColumn
 	 */
@@ -300,7 +300,7 @@ public class ERDiagram extends ViewableModel {
 	}
 
 	/**
-	 * disableSelectColumn ��ݒ肵�܂�.
+	 * disableSelectColumn を設定します.
 	 * 
 	 * @param disableSelectColumn
 	 *            disableSelectColumn

@@ -180,7 +180,7 @@ public class Index extends AbstractModel implements ObjectModel,
 	}
 
 	/**
-	 * description ���擾���܂�.
+	 * description を取得します.
 	 * 
 	 * @return description
 	 */
@@ -189,7 +189,7 @@ public class Index extends AbstractModel implements ObjectModel,
 	}
 
 	/**
-	 * description ��ݒ肵�܂�.
+	 * description を設定します.
 	 * 
 	 * @param description
 	 *            description

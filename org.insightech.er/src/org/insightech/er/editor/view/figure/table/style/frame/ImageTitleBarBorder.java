@@ -21,7 +21,7 @@ public class ImageTitleBarBorder extends TitleBarBorder {
 		tempRect.setBounds(getPaintRectangle(figure, insets));
 		Rectangle rec = tempRect;
 
-		// •‚ğæ“¾
+		// å¹…ã‚’å–å¾—
 		this.width = getTextExtents(figure).width + getPadding().getWidth();
 
 		rec.height = Math.min(rec.height, getTextExtents(figure).height
@@ -29,7 +29,7 @@ public class ImageTitleBarBorder extends TitleBarBorder {
 		g.clipRect(rec);
 		g.fillRectangle(rec);
 
-		// ”wŒiƒCƒ[ƒW‚ğ•`‰æ
+		// èƒŒæ™¯ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æç”»
 		Image image = Activator.getImage(ImageKey.TITLEBAR_BACKGROUND);
 		g.drawImage(image, 0, 0, image.getImageData().width, image
 				.getImageData().height, rec.x, rec.y, rec.width, rec.height);

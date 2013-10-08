@@ -313,8 +313,8 @@ public class ColumnDialog extends AbstractRealColumnDialog {
 					});
 		}
 
-		// Primary Key �́AAUTO_INCREMENT �̃`�F�b�N�{�b�N�X�̐��䃊�X�i�[�̌ďo�����
-		// validate �̃��X�i�[���Ăт����̂ł����Ń��X�i�[�̒ǉ���
+		// Primary Key は、AUTO_INCREMENT のチェックボックスの制御リスナーの呼出し後に
+		// validate のリスナーを呼びたいのでここでリスナーの追加を
 		// ListenerAppender.addCheckBoxListener(this.primaryKeyCheck, this);
 
 		final NormalColumn autoIncrementColumn = this.erTable

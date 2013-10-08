@@ -161,7 +161,7 @@ public class RepeatTestDataTabWrapper extends ValidatableTabWrapper {
 		this.testDataNumText.setText(Format.toString(this.repeatTestData
 				.getTestDataNum()));
 
-		// �e�[�u���ύX
+		// テーブル変更
 		this.initTable();
 	}
 

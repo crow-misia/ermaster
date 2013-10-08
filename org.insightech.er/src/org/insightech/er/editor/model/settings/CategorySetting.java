@@ -19,7 +19,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	private boolean showReferredTables;
 
 	/**
-	 * freeLayout ���擾���܂�.
+	 * freeLayout を取得します.
 	 * 
 	 * @return freeLayout
 	 */
@@ -28,7 +28,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * freeLayout ��ݒ肵�܂�.
+	 * freeLayout を設定します.
 	 * 
 	 * @param freeLayout
 	 *            freeLayout
@@ -38,7 +38,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * showReferredTables ���擾���܂�.
+	 * showReferredTables を取得します.
 	 * 
 	 * @return showReferredTables
 	 */
@@ -47,7 +47,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * showReferredTables ��ݒ肵�܂�.
+	 * showReferredTables を設定します.
 	 * 
 	 * @param showReferredTables
 	 *            showReferredTables

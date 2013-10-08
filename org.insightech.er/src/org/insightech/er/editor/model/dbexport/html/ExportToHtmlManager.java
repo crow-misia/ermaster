@@ -87,23 +87,23 @@ public class ExportToHtmlManager {
 	}
 
 	public void doProcess() throws IOException, InterruptedException {
-		// �Œ�t�@�C���̃R�s�[
+		// 固定ファイルのコピー
 		for (int i = 0; i < FIX_FILES.length; i++) {
 			this.copyOut(FIX_FILES[i], FIX_FILES[i]);
 		}
 
-		// �e���v���[�g���琶��
+		// テンプレートから生成
 		String template = null;
 
-		// �C���[�W
+		// イメージ
 		String imageSrc = "image/er.png";
 
-		// �A�C�R��
+		// アイコン
 		for (String iconFile : ICON_FILES) {
 			this.copyOutResource("image/" + iconFile, iconFile);
 		}
 
-		// �g�b�v�K�w
+		// トップ階層
 		String allclasses = overviewPageGenerator.generateAllClasses(diagram,
 				htmlReportPageGeneratorList);
 		this.writeOut("allclasses.html", allclasses);
@@ -116,7 +116,7 @@ public class ExportToHtmlManager {
 				imageSrc, tableLocationMap, htmlReportPageGeneratorList);
 		this.writeOut("overview-summary.html", overviewSummary);
 
-		// �I�u�W�F�N�g�^�C�v���̊K�w
+		// オブジェクトタイプ毎の階層
 		for (int i = 0; i < htmlReportPageGeneratorList.size(); i++) {
 
 			HtmlReportPageGenerator pageGenerator = (HtmlReportPageGenerator) htmlReportPageGeneratorList

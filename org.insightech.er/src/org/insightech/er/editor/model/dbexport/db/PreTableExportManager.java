@@ -245,8 +245,8 @@ public abstract class PreTableExportManager {
 					try {
 						this.checkTableExist(con, tableName);
 					} catch (SQLException e) {
-						// ƒe[ƒuƒ‹î•ñ‚ªæ“¾‚Å‚«‚È‚¢ê‡i‘¼‚Ìƒ†[ƒU‚ÌŠ—L•¨‚È‚Ç‚Ìê‡jA
-						// ‚±‚Ìƒe[ƒuƒ‹‚Íg—p‚µ‚È‚¢B
+						// ãƒ†ãƒ¼ãƒ–ãƒ«æƒ…å ±ãŒå–å¾—ã§ããªã„å ´åˆï¼ˆä»–ã®ãƒ¦ãƒ¼ã‚¶ã®æ‰€æœ‰ç‰©ãªã©ã®å ´åˆï¼‰ã€
+						// ã“ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã¯ä½¿ç”¨ã—ãªã„ã€‚
 						continue;
 					}
 
@@ -287,7 +287,7 @@ public abstract class PreTableExportManager {
 	}
 
 	/**
-	 * errorSql ‚ğæ“¾‚µ‚Ü‚·.
+	 * errorSql ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return errorSql
 	 */
@@ -296,7 +296,7 @@ public abstract class PreTableExportManager {
 	}
 
 	/**
-	 * ddl ‚ğæ“¾‚µ‚Ü‚·.
+	 * ddl ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return ddl
 	 */

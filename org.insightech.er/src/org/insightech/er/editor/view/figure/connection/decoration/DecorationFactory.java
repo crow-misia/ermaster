@@ -36,7 +36,7 @@ public class DecorationFactory {
 
 		if ("0..n".equals(childCardinality)) {
 			if (Settings.NOTATION_IDEF1X.equals(notation)) {
-				// ìYéö Ç»Çµ
+				// Ê∑ªÂ≠ó „Å™„Åó
 				decoration.targetDecoration = new IDEF1XTargetDecoration();
 
 			} else {
@@ -53,7 +53,7 @@ public class DecorationFactory {
 
 		} else if ("0..1".equals(childCardinality)) {
 			if (Settings.NOTATION_IDEF1X.equals(notation)) {
-				// ìYéö Z
+				// Ê∑ªÂ≠ó Z
 				decoration.targetDecoration = new IDEF1XTargetDecoration();
 				decoration.targetLabel = "Z";
 
@@ -63,7 +63,7 @@ public class DecorationFactory {
 
 		} else {
 			if (Settings.NOTATION_IDEF1X.equals(notation)) {
-				// ìYéö P
+				// Ê∑ªÂ≠ó P
 				decoration.targetDecoration = new IDEF1XTargetDecoration();
 				decoration.targetLabel = "P";
 

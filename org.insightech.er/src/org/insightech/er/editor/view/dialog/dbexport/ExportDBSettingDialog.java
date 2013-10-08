@@ -191,7 +191,7 @@ public class ExportDBSettingDialog extends AbstractDBSettingDialog {
 	}
 
 	/**
-	 * ddl ‚ğæ“¾‚µ‚Ü‚·.
+	 * ddl ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return ddl
 	 */

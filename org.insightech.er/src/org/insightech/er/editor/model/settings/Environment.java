@@ -13,7 +13,7 @@ public class Environment implements Serializable, Cloneable {
 	}
 
 	/**
-	 * name ‚ğæ“¾‚µ‚Ü‚·.
+	 * name ã‚’å–å¾—ã—ã¾ã™.
 	 * 
 	 * @return name
 	 */
@@ -22,7 +22,7 @@ public class Environment implements Serializable, Cloneable {
 	}
 
 	/**
-	 * name ‚ğİ’è‚µ‚Ü‚·.
+	 * name ã‚’è¨­å®šã—ã¾ã™.
 	 * 
 	 * @param name
 	 *            name

@@ -16,9 +16,9 @@ public class ImageFrameBorder extends FrameBorder {
 	}
 
 	/**
-	 * ƒ^ƒCƒgƒ‹—Ìˆæ‚Ì•‚ğ•Ô‚µ‚Ü‚·
+	 * ã‚¿ã‚¤ãƒˆãƒ«é ˜åŸŸã®å¹…ã‚’è¿”ã—ã¾ã™
 	 * 
-	 * @return ƒ^ƒCƒgƒ‹—Ìˆæ‚Ì•
+	 * @return ã‚¿ã‚¤ãƒˆãƒ«é ˜åŸŸã®å¹…
 	 */
 	public int getTitleBarWidth(IFigure figure) {
 		return ((ImageTitleBarBorder) this.inner).getWidth(figure);

@@ -35,36 +35,36 @@ public class TestDataManageDialog extends AbstractDialog {
 
 	private static final int GROUP_LIST_HEIGHT = 230;
 
-	// ERƒf[ƒ^
+	// ERãƒ‡ãƒ¼ã‚¿
 	private ERDiagram diagram;
 
-	// ƒeƒXƒgƒf[ƒ^ˆê——
+	// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ä¸€è¦§
 	private org.eclipse.swt.widgets.List testDataListWidget;
 
-	// ’Ç‰Á
+	// è¿½åŠ 
 	private Button addButton;
 
-	// •ÒW
+	// ç·¨é›†
 	private Button editButton;
 
-	// íœ
+	// å‰Šé™¤
 	private Button deleteButton;
 
-	// ƒRƒs[
+	// ã‚³ãƒ”ãƒ¼
 	private Button copyButton;
 
 	private Button exportButton;
 
-	// ƒe[ƒuƒ‹ˆê——
+	// ãƒ†ãƒ¼ãƒ–ãƒ«ä¸€è¦§
 	private Table testDataTable;
 
-	// •ÒW’†ƒeƒXƒgƒf[ƒ^ƒŠƒXƒg
+	// ç·¨é›†ä¸­ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆ
 	private List<TestData> testDataList;
 
 	private IEditorPart editorPart;
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 */
 	public TestDataManageDialog(Shell parentShell, IEditorPart editorPart,
 			ERDiagram diagram, List<TestData> testDataList) {
@@ -76,19 +76,19 @@ public class TestDataManageDialog extends AbstractDialog {
 	}
 
 	/**
-	 * ‰Šú‰»ˆ—‚ğÀ{‚µ‚Ü‚·B
+	 * åˆæœŸåŒ–å‡¦ç†ã‚’å®Ÿæ–½ã—ã¾ã™ã€‚
 	 */
 	@Override
 	protected void initialize(Composite composite) {
-		// ƒeƒXƒgƒf[ƒ^ˆê——ƒpƒlƒ‹
+		// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ä¸€è¦§ãƒ‘ãƒãƒ«
 		this.createLeftComposite(composite);
 
-		// ƒeƒXƒgƒf[ƒ^Ú×iƒe[ƒuƒ‹ˆê——jƒpƒlƒ‹
+		// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿è©³ç´°ï¼ˆãƒ†ãƒ¼ãƒ–ãƒ«ä¸€è¦§ï¼‰ãƒ‘ãƒãƒ«
 		this.createRightComposite(composite);
 	}
 
 	/**
-	 * ƒeƒXƒgƒf[ƒ^ˆê——ƒpƒlƒ‹‚ğ¶¬‚µ‚Ü‚·B
+	 * ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ä¸€è¦§ãƒ‘ãƒãƒ«ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	 */
 	private void createLeftComposite(Composite parent) {
 		GridData gridData = new GridData();
@@ -101,26 +101,26 @@ public class TestDataManageDialog extends AbstractDialog {
 		composite.setLayoutData(gridData);
 		composite.setLayout(gridLayout);
 
-		// ƒeƒXƒgƒf[ƒ^ˆê——
+		// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ä¸€è¦§
 		GridData listCompGridData = new GridData();
 		listCompGridData.horizontalSpan = 4;
 		this.createTestDataList(composite, listCompGridData);
 
-		// ’Ç‰Á
+		// è¿½åŠ 
 		this.addButton = CompositeFactory.createButton(composite,
 				"label.button.add");
 
-		// •ÒW
+		// ç·¨é›†
 		this.editButton = CompositeFactory.createButton(composite,
 				"label.button.edit");
 		this.editButton.setEnabled(false);
 
-		// íœ
+		// å‰Šé™¤
 		this.deleteButton = CompositeFactory.createButton(composite,
 				"label.button.delete");
 		this.deleteButton.setEnabled(false);
 
-		// ƒRƒs[
+		// ã‚³ãƒ”ãƒ¼
 		this.copyButton = CompositeFactory.createButton(composite,
 				"label.button.copy");
 	}
@@ -145,7 +145,7 @@ public class TestDataManageDialog extends AbstractDialog {
 	}
 
 	/**
-	 * ƒeƒXƒgƒf[ƒ^Ú×‚ğ¶¬‚µ‚Ü‚·B
+	 * ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿è©³ç´°ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param gridData
 	 * 
@@ -161,7 +161,7 @@ public class TestDataManageDialog extends AbstractDialog {
 		gridLayout.verticalSpacing = 8;
 		composite.setLayout(gridLayout);
 
-		// ƒeƒXƒgƒf[ƒ^ƒe[ƒuƒ‹
+		// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«
 		GridData tableGridData = new GridData();
 		tableGridData.heightHint = GROUP_LIST_HEIGHT;
 		tableGridData.verticalIndent = 15;
@@ -200,7 +200,7 @@ public class TestDataManageDialog extends AbstractDialog {
 	}
 
 	private void initTableData() {
-		// ƒe[ƒuƒ‹ˆê——
+		// ãƒ†ãƒ¼ãƒ–ãƒ«ä¸€è¦§
 		this.testDataTable.removeAll();
 
 		int targetIndex = this.testDataListWidget.getSelectionIndex();

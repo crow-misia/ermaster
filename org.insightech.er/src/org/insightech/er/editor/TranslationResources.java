@@ -109,11 +109,11 @@ public class TranslationResources {
 	}
 
 	/**
-	 * ERDiagram.properties ‚Ìw’è‚³‚ê‚½ƒL[‚É‘Î‰‚·‚é’l‚ğ•Ô‚µ‚Ü‚·
+	 * ERDiagram.properties ã®æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹å€¤ã‚’è¿”ã—ã¾ã™
 	 * 
 	 * @param key
-	 *            ERDiagram.properties ‚Å’è‹`‚³‚ê‚½ƒL[
-	 * @return ERDiagram.properties ‚Ìw’è‚³‚ê‚½ƒL[‚É‘Î‰‚·‚é’l
+	 *            ERDiagram.properties ã§å®šç¾©ã•ã‚ŒãŸã‚­ãƒ¼
+	 * @return ERDiagram.properties ã®æŒ‡å®šã•ã‚ŒãŸã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹å€¤
 	 */
 	public String translate(String str) {
 		for (Entry<String, String> entry : translationMap.entrySet()) {
@@ -134,7 +134,7 @@ public class TranslationResources {
 	}
 
 	/**
-	 * ’·‚¢‡‚É•À‚×‚éB“¯‚¶’·‚³‚È‚ç«‘‡B‚½‚¾‚µ [A-Z] ‚æ‚è [_] ‚ğ—Dæ‚·‚éB
+	 * é•·ã„é †ã«ä¸¦ã¹ã‚‹ã€‚åŒã˜é•·ã•ãªã‚‰è¾æ›¸é †ã€‚ãŸã ã— [A-Z] ã‚ˆã‚Š [_] ã‚’å„ªå…ˆã™ã‚‹ã€‚
 	 */
 	private class TranslationResourcesComparator implements Comparator<String> {
 

@@ -15,13 +15,13 @@ public class InsertedImage extends NodeElement {
 
 	private String base64EncodedData;
 
-	/** 0�@�`�@360 */
+	/** 0　～　360 */
 	private int hue;
 
-	/** -100�@�`�@+100 */
+	/** -100　～　+100 */
 	private int saturation;
 
-	/** -100�@�`�@+100 */
+	/** -100　～　+100 */
 	private int brightness;
 
 	private int alpha;

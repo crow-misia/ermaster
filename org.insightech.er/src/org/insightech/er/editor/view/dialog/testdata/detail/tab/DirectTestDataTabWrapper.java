@@ -96,7 +96,7 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 		this.directTestData = dialog.getTestData().getTableTestDataMap().get(
 				this.table).getDirectTestData();
 
-		// �e�[�u���ύX
+		// テーブル変更
 		this.initTable();
 	}
 
@@ -148,7 +148,7 @@ public class DirectTestDataTabWrapper extends ValidatableTabWrapper {
 			this.addTableItem(data);
 		}
 
-		// ��s
+		// 空行
 		this.addNewRowToTable();
 
 		this.editColumnTable.setVisible(true);
