@@ -32,6 +32,7 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.DirectEditAction;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
+import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
@@ -207,7 +208,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		this.getCommandStack().markSaveLocation();
 		this.isDirty = false;
 	}
-	
+
 	public void resetCommandStack() {
 		this.getCommandStack().flush();
 	}
@@ -238,20 +239,20 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		viewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, true);
 		viewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, true);
 
-		MenuManager menuMgr = new ERDiagramPopupMenuManager(this
-				.getActionRegistry(), this.diagram);
+		MenuManager menuMgr = new ERDiagramPopupMenuManager(
+				this.getActionRegistry(), this.diagram);
 
-		this.extensionLoader.addERDiagramPopupMenu(menuMgr, this
-				.getActionRegistry());
+		this.extensionLoader.addERDiagramPopupMenu(menuMgr,
+				this.getActionRegistry());
 
 		viewer.setContextMenu(menuMgr);
 
 		viewer.setContents(diagram);
 
 		this.outlineMenuMgr = new ERDiagramOutlinePopupMenuManager(
-				this.diagram, this.getActionRegistry(), this.outlinePage
-						.getOutlineActionRegistory(), this.outlinePage
-						.getViewer());
+				this.diagram, this.getActionRegistry(),
+				this.outlinePage.getOutlineActionRegistory(),
+				this.outlinePage.getViewer());
 
 		this.gotoMaker = new ERDiagramGotoMarker(this);
 	}
@@ -295,9 +296,9 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 	 * </pre>
 	 */
 	public void changeCategory() {
-		this.outlinePage.setCategory(this.getEditDomain(), this
-				.getGraphicalViewer(), this.outlineMenuMgr, this
-				.getActionRegistry());
+		this.outlinePage.setCategory(this.getEditDomain(),
+				this.getGraphicalViewer(), this.outlineMenuMgr,
+				this.getActionRegistry());
 
 		this.getSelectionSynchronizer().addViewer(this.outlinePage.getViewer());
 	}
@@ -318,8 +319,8 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		ActionRegistry registry = this.getActionRegistry();
 		List<String> selectionActionList = this.getSelectionActions();
 
-		List<IAction> actionList = new ArrayList<IAction>(Arrays
-				.asList(new IAction[] {
+		List<IAction> actionList = new ArrayList<IAction>(
+				Arrays.asList(new IAction[] {
 						new ChangeViewToLogicalAction(this),
 						new ChangeViewToPhysicalAction(this),
 						new ChangeViewToBothAction(this),
@@ -437,6 +438,9 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		IAction action = new ToggleGridAction(viewer);
 		this.getActionRegistry().registerAction(action);
 
+		action = new ToggleSnapToGeometryAction(viewer);
+		this.getActionRegistry().registerAction(action);
+
 		action = new ChangeBackgroundColorAction(this, this.diagram);
 		this.getActionRegistry().registerAction(action);
 		this.getSelectionActions().add(action.getId());
@@ -455,7 +459,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 
 		// action = new ToggleRulerVisibilityAction(viewer);
 		// this.getActionRegistry().registerAction(action);
-		//		
+		//
 		// action = new ToggleSnapToGeometryAction(viewer);
 		// this.getActionRegistry().registerAction(action);
 	}

@@ -16,6 +16,7 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -91,6 +92,7 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 	protected void createEditPolicies() {
 		this.installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
 				new NodeElementGraphicalNodeEditPolicy());
+		this.installEditPolicy("Snap Feedback", new SnapFeedbackPolicy());
 	}
 
 	protected void setVisible() {
@@ -98,8 +100,8 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 		Category category = this.getCurrentCategory();
 
 		if (category != null) {
-			this.figure.setVisible(category.isVisible(element, this
-					.getDiagram()));
+			this.figure.setVisible(category.isVisible(element,
+					this.getDiagram()));
 
 		} else {
 			this.figure.setVisible(true);
@@ -199,8 +201,8 @@ public abstract class NodeElementEditPart extends AbstractModelEditPart
 
 		Point point = new Point(element.getX(), element.getY());
 
-		Dimension dimension = new Dimension(element.getWidth(), element
-				.getHeight());
+		Dimension dimension = new Dimension(element.getWidth(),
+				element.getHeight());
 
 		Dimension minimumSize = this.figure.getMinimumSize();
 

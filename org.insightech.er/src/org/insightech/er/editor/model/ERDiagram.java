@@ -39,6 +39,8 @@ public class ERDiagram extends ViewableModel {
 
 	private boolean disableSelectColumn;
 
+	private boolean snapToGrid;
+
 	private Category currentCategory;
 
 	private int currentCategoryIndex;
@@ -349,6 +351,14 @@ public class ERDiagram extends ViewableModel {
 	 */
 	public void setDisableSelectColumn(boolean disableSelectColumn) {
 		this.disableSelectColumn = disableSelectColumn;
+	}
+
+	public boolean isSnapToGrid() {
+		return snapToGrid;
+	}
+
+	public void setSnapToGrid(boolean snapToGrid) {
+		this.snapToGrid = snapToGrid;
 	}
 
 }

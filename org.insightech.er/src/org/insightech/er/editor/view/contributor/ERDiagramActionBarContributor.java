@@ -39,7 +39,6 @@ import org.insightech.er.editor.view.action.line.HorizontalLineAction;
 import org.insightech.er.editor.view.action.line.HorizontalLineAction.HorizontalLineRetargetAction;
 import org.insightech.er.editor.view.action.line.VerticalLineAction;
 import org.insightech.er.editor.view.action.line.VerticalLineAction.VerticalLineRetargetAction;
-import org.insightech.er.editor.view.action.option.notation.GridSnapAction.GridSnapRetargetAction;
 import org.insightech.er.editor.view.action.option.notation.LockEditAction;
 import org.insightech.er.editor.view.action.option.notation.TooltipAction;
 import org.insightech.er.editor.view.action.zoom.ZoomAdjustAction;
@@ -90,7 +89,16 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 		gridAction.setImageDescriptor(Activator
 				.getImageDescriptor(ImageKey.GRID));
 
-		this.addRetargetAction(new GridSnapRetargetAction());
+		this.addRetargetAction(gridAction);
+
+		RetargetAction gridSnapAction = new RetargetAction(
+				GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
+				ResourceString.getResourceString("action.title.grid.snap"),
+				IAction.AS_CHECK_BOX);
+		gridSnapAction.setImageDescriptor(Activator
+				.getImageDescriptor(ImageKey.GRID_SNAP));
+
+		this.addRetargetAction(gridSnapAction);
 
 		RetargetAction tooltipAction = new RetargetAction(TooltipAction.ID,
 				ResourceString.getResourceString("action.title.tooltip"),
@@ -182,8 +190,10 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 
 		toolBarManager.add(new Separator());
 
-//		toolBarManager.add(this
-//				.getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
+		toolBarManager.add(this
+				.getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
+		toolBarManager.add(this
+				.getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 		toolBarManager.add(this.getAction(TooltipAction.ID));
 		toolBarManager.add(this.getAction(LockEditAction.ID));
 

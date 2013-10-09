@@ -9,9 +9,14 @@ import java.util.Map;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.SelectionManager;
+import org.eclipse.gef.SnapToGeometry;
+import org.eclipse.gef.SnapToGrid;
+import org.eclipse.gef.SnapToHelper;
+import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.MessageBox;
@@ -70,6 +75,7 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 	protected void createEditPolicies() {
 		this.installEditPolicy(EditPolicy.LAYOUT_ROLE,
 				new ERDiagramLayoutEditPolicy());
+		this.installEditPolicy("Snap Feedback", new SnapFeedbackPolicy());
 	}
 
 	/**
@@ -221,4 +227,35 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 
 		return modelToEditPart;
 	}
+
+	@Override
+	public Object getAdapter(Class key) {
+
+		if (key == SnapToHelper.class) {
+			List<SnapToHelper> helpers = new ArrayList<SnapToHelper>();
+
+			helpers.add(new SnapToGeometry(this));
+
+			if (Boolean.TRUE.equals(getViewer().getProperty(
+					SnapToGeometry.PROPERTY_SNAP_ENABLED))) {
+				helpers.add(new SnapToGrid(this));
+			}
+
+//			if (Boolean.TRUE.equals(getViewer().getProperty(
+//					SnapToGrid.PROPERTY_GRID_ENABLED))) {
+//				helpers.add(new SnapToGrid(this));
+//			}
+
+			if (helpers.size() == 0) {
+				return null;
+
+			} else {
+				return new CompoundSnapToHelper(
+						helpers.toArray(new SnapToHelper[0]));
+			}
+		}
+
+		return super.getAdapter(key);
+	}
+
 }
