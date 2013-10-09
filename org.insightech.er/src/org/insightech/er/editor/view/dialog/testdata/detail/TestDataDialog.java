@@ -35,50 +35,36 @@ import org.insightech.er.util.Format;
 
 public class TestDataDialog extends AbstractDialog {
 
-	public static final int WIDTH = 750;
+	public static final int WIDTH = 770;
 
 	public static final int TABLE_HEIGHT = 300;
 
-	/*---------- ���C���p�l�� -----------*/
-
-	/** �� */
 	private Button addButton;
 
-	/** �� */
 	private Button removeButton;
 
-	/** �S�e�[�u�����X�g */
 	private org.eclipse.swt.widgets.List allTableListWidget;
 
-	/** �e�X�g�f�[�^�쐬�e�[�u�� */
 	private Table selectedTableTable;
 
 	private Button repeatToDirectRadio;
 
 	private Button directToRepeatRadio;
 
-	/*---------- �^�u�p�l�� -----------*/
-
-	/** �^�u�t�H���_�[ */
 	private TabFolder tabFolder;
 
-	/** �^�u���X�g */
 	private List<ValidatableTabWrapper> tabWrapperList;
 
 	private DirectTestDataTabWrapper directTestDataTabWrapper;
 
 	private RepeatTestDataTabWrapper repeatTestDataTabWrapper;
 
-	/*---------- �f�[�^���f�� -----------*/
-
 	private ERDiagram diagram;
 
-	/** ���ݕҏW���̃f�[�^ */
 	private TestData testData;
 
 	private List<ERTable> allTableList;
 
-	/** �e�X�g�f�[�^�� */
 	private Text nameText;
 
 	private int selectedTableIndex = -1;
@@ -98,7 +84,6 @@ public class TestDataDialog extends AbstractDialog {
 		this.allTableList = diagram.getDiagramContents().getContents()
 				.getTableSet().getList();
 
-		// �^�u�p�l�����X�g
 		this.tabWrapperList = new ArrayList<ValidatableTabWrapper>();
 	}
 
@@ -110,7 +95,6 @@ public class TestDataDialog extends AbstractDialog {
 	}
 
 	private void createNameComposite(Composite parent) {
-		// �p�l��
 		Composite nameComposite = new Composite(parent, SWT.NONE);
 
 		GridLayout mainLayout = new GridLayout();
@@ -122,7 +106,6 @@ public class TestDataDialog extends AbstractDialog {
 	}
 
 	private void createTopComposite(Composite parent) {
-		// �p�l��
 		Composite topComposite = new Composite(parent, SWT.NONE);
 
 		GridLayout mainLayout = new GridLayout();
@@ -132,20 +115,16 @@ public class TestDataDialog extends AbstractDialog {
 		GridData topGridData = new GridData();
 		topGridData.grabExcessHorizontalSpace = true;
 		topGridData.horizontalAlignment = GridData.FILL;
-		topGridData.heightHint = 100;
+		topGridData.heightHint = 200;
 		topComposite.setLayoutData(topGridData);
 
-		// �e�[�u���ꗗ
 		this.createAllTableList(topComposite);
 
-		// ��
 		this.addButton = CompositeFactory.createAddButton(topComposite);
 		this.addButton.setEnabled(false);
 
-		// �e�X�g�f�[�^�쐬�e�[�u���ꗗ
 		this.createSelectedTableTable(topComposite);
 
-		// ��
 		this.removeButton = CompositeFactory.createRemoveButton(topComposite);
 		this.removeButton.setEnabled(false);
 	}
@@ -164,7 +143,6 @@ public class TestDataDialog extends AbstractDialog {
 		group.setLayout(groupLayout);
 		group.setText(ResourceString.getResourceString("label.all.table"));
 
-		// �S�Ẵe�[�u��
 		GridData comboGridData = new GridData();
 		comboGridData.widthHint = 300;
 		comboGridData.grabExcessVerticalSpace = true;

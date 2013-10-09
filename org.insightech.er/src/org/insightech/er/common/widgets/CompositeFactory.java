@@ -399,7 +399,7 @@ public class CompositeFactory {
 		GridData gridData = new GridData();
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = GridData.END;
-		gridData.widthHint = Resources.BUTTON_WIDTH;
+		gridData.widthHint = Resources.BUTTON_ADD_REMOVE_WIDTH;
 
 		Button button = new Button(composite, SWT.NONE);
 		button.setText(ResourceString.getResourceString("label.right.arrow"));
@@ -412,7 +412,7 @@ public class CompositeFactory {
 		GridData gridData = new GridData();
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = GridData.BEGINNING;
-		gridData.widthHint = Resources.BUTTON_WIDTH;
+		gridData.widthHint = Resources.BUTTON_ADD_REMOVE_WIDTH;
 
 		Button button = new Button(composite, SWT.NONE);
 		button.setText(ResourceString.getResourceString("label.left.arrow"));
