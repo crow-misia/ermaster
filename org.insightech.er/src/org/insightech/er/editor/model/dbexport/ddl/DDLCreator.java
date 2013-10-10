@@ -870,7 +870,7 @@ public abstract class DDLCreator {
 			ddl.append("\r\n");
 		}
 
-		ddl.append("CREATE VIEW ");
+		ddl.append(this.getCreateOrReplacePrefix() + " VIEW ");
 		ddl.append(filter(this.getNameWithSchema(view.getTableViewProperties()
 				.getSchema(), view.getPhysicalName())));
 		ddl.append(" AS ");
@@ -898,7 +898,7 @@ public abstract class DDLCreator {
 			ddl.append("\r\n");
 		}
 
-		ddl.append("CREATE TRIGGER ");
+		ddl.append(this.getCreateOrReplacePrefix() + " TRIGGER ");
 		ddl.append(filter(this.getNameWithSchema(trigger.getSchema(),
 				trigger.getName())));
 		ddl.append(" ");
@@ -1134,4 +1134,9 @@ public abstract class DDLCreator {
 
 		return comment;
 	}
+	
+	public String getCreateOrReplacePrefix() {
+		return "CREATE";
+	}
+	
 }
