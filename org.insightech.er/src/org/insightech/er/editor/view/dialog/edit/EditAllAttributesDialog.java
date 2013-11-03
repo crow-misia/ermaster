@@ -62,7 +62,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 	private ERDiagram diagram;
 
-	private DiagramContents diagramContents;
+	private DiagramContents copyContents;
 
 	private List<Column> columnList;
 
@@ -79,7 +79,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 		CopyManager copyManager = new CopyManager(null);
 
-		this.diagramContents = copyManager.copy(this.diagram
+		this.copyContents = copyManager.copy(this.diagram
 				.getDiagramContents());
 		this.columnList = new ArrayList<Column>();
 	}
@@ -288,7 +288,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 		combo.add("");
 
-		this.wordList = this.diagramContents.getDictionary().getWordList();
+		this.wordList = this.copyContents.getDictionary().getWordList();
 		Collections.sort(this.wordList);
 
 		for (Word word : this.wordList) {
@@ -315,7 +315,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 	@Override
 	protected void setData() {
-		for (NodeElement nodeElement : this.diagramContents.getContents()) {
+		for (NodeElement nodeElement : this.copyContents.getContents()) {
 			if (nodeElement instanceof ERTable) {
 				ERTable table = (ERTable) nodeElement;
 
@@ -630,7 +630,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 				int index = ((Combo) control).getSelectionIndex();
 
-				Dictionary dictionary = this.diagramContents.getDictionary();
+				Dictionary dictionary = this.copyContents.getDictionary();
 				dictionary.remove(targetColumn);
 
 				if (index == 0) {
@@ -799,7 +799,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 	 * @return diagramContents
 	 */
 	public DiagramContents getDiagramContents() {
-		return diagramContents;
+		return this.copyContents;
 	}
 
 	public void onDoubleClicked(Point xy) {

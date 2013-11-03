@@ -18,8 +18,8 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.insightech.er.Activator;
-import org.insightech.er.editor.controller.command.common.NothingToDoCommand;
-import org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation.bendpoint.MoveBendpointCommand;
+import org.insightech.er.editor.controller.command.NothingToDoCommand;
+import org.insightech.er.editor.controller.command.diagram_contents.element.connection.bendpoint.MoveBendpointCommand;
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.CreateElementCommand;
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.MoveElementCommand;
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.category.MoveCategoryCommand;
@@ -168,6 +168,7 @@ public class ERDiagramLayoutEditPolicy extends XYLayoutEditPolicy {
 	@Override
 	protected Command createChangeConstraintCommand(EditPart child,
 			Object constraint) {
+		
 		Rectangle rectangle = (Rectangle) constraint;
 
 		NodeElementEditPart editPart = (NodeElementEditPart) child;

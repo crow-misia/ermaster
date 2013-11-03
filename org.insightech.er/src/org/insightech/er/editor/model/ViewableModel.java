@@ -1,14 +1,8 @@
 package org.insightech.er.editor.model;
 
-
-
 public abstract class ViewableModel extends AbstractModel {
 
 	private static final long serialVersionUID = 5866202173090969615L;
-
-	public static final String PROPERTY_CHANGE_COLOR = "color";
-
-	public static final String PROPERTY_CHANGE_FONT = "font";
 
 	public static final int DEFAULT_FONT_SIZE = 9;
 
@@ -29,7 +23,6 @@ public abstract class ViewableModel extends AbstractModel {
 
 	public void setFontSize(int fontSize) {
 		this.fontSize = fontSize;
-		this.firePropertyChange(PROPERTY_CHANGE_FONT, null, null);
 	}
 
 	public String getFontName() {
@@ -37,8 +30,7 @@ public abstract class ViewableModel extends AbstractModel {
 	}
 
 	public void setFontName(String fontName) {
-		this.fontName = fontName;		
-		this.firePropertyChange(PROPERTY_CHANGE_FONT, null, null);
+		this.fontName = fontName;
 	}
 
 	public void setColor(int red, int green, int blue) {
@@ -46,8 +38,6 @@ public abstract class ViewableModel extends AbstractModel {
 		this.color[0] = red;
 		this.color[1] = green;
 		this.color[2] = blue;
-
-		this.firePropertyChange(PROPERTY_CHANGE_COLOR, null, null);
 	}
 
 	public int[] getColor() {
@@ -67,4 +57,11 @@ public abstract class ViewableModel extends AbstractModel {
 
 		return clone;
 	}
+
+	public void refreshFont() {
+		if (isUpdateable()) {
+			this.firePropertyChange("refreshFont", null, null);
+		}
+	}
+
 }

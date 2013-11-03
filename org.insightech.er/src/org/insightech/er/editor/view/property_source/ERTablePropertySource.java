@@ -1,16 +1,19 @@
 package org.insightech.er.editor.view.property_source;
 
+import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.insightech.er.ResourceString;
+import org.insightech.er.editor.ERDiagramMultiPageEditor;
+import org.insightech.er.editor.controller.command.diagram_contents.element.node.table_view.ChangeTableViewPropertyCommand;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 
-public class ERTablePropertySource implements IPropertySource {
+public class ERTablePropertySource extends AbstractPropertySource {
 
 	private ERTable table;
 
-	public ERTablePropertySource(ERTable table) {
+	public ERTablePropertySource(ERDiagramMultiPageEditor editor, ERTable table) {
+		super(editor);
 		this.table = table;
 	}
 
@@ -20,10 +23,10 @@ public class ERTablePropertySource implements IPropertySource {
 
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return new IPropertyDescriptor[] {
-				new TextPropertyDescriptor("physicalName", ResourceString
-						.getResourceString("label.physical.name")),
-				new TextPropertyDescriptor("logicalName", ResourceString
-						.getResourceString("label.logical.name")) };
+				new TextPropertyDescriptor("physicalName",
+						ResourceString.getResourceString("label.physical.name")),
+				new TextPropertyDescriptor("logicalName",
+						ResourceString.getResourceString("label.logical.name")) };
 	}
 
 	public Object getPropertyValue(Object id) {
@@ -48,16 +51,21 @@ public class ERTablePropertySource implements IPropertySource {
 		return false;
 	}
 
-	public void resetPropertyValue(Object id) {
-	}
+	@Override
+	protected Command createSetPropertyCommand(Object id, Object value) {
+		ERTable copyTable = table.copyData();
 
-	public void setPropertyValue(Object id, Object value) {
 		if (id.equals("physicalName")) {
-			this.table.setPhysicalName(String.valueOf(value));
+			copyTable.setPhysicalName(String.valueOf(value));
 
 		} else if (id.equals("logicalName")) {
-			this.table.setLogicalName(String.valueOf(value));
+			copyTable.setLogicalName(String.valueOf(value));
 		}
+
+		ChangeTableViewPropertyCommand command = new ChangeTableViewPropertyCommand(
+				this.table, copyTable);
+
+		return command;
 	}
 
 }

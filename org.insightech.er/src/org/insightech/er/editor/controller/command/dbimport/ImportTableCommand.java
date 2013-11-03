@@ -10,7 +10,6 @@ import org.eclipse.draw2d.graph.DirectedGraphLayout;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.insightech.er.editor.controller.command.AbstractCommand;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.DiagramContents;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Bendpoint;
@@ -50,8 +49,6 @@ public class ImportTableCommand extends AbstractCommand {
 	private List<Tablespace> tablespaces;
 
 	private List<ColumnGroup> columnGroups;
-	
-	private DirectedGraph graph = new DirectedGraph();
 
 	private static final int AUTO_GRAPH_LIMIT = 100;
 
@@ -60,8 +57,6 @@ public class ImportTableCommand extends AbstractCommand {
 
 	private static final int DISTANCE_X = 300;
 	private static final int DISTANCE_Y = 300;
-
-	private static final int SIZE_X = 6;
 
 	public ImportTableCommand(ERDiagram diagram,
 			List<NodeElement> nodeElementList, List<Sequence> sequences,
@@ -86,9 +81,10 @@ public class ImportTableCommand extends AbstractCommand {
 
 	@SuppressWarnings("unchecked")
 	private void decideLocation() {
-		this.graph = new DirectedGraph();
 
 		if (this.nodeElementList.size() < AUTO_GRAPH_LIMIT) {
+			DirectedGraph graph = new DirectedGraph();
+
 			Map<NodeElement, Node> nodeElementNodeMap = new HashMap<NodeElement, Node>();
 
 			int fontSize = this.diagram.getFontSize();
@@ -100,7 +96,7 @@ public class ImportTableCommand extends AbstractCommand {
 				Node node = new Node();
 
 				node.setPadding(insets);
-				this.graph.nodes.add(node);
+				graph.nodes.add(node);
 				nodeElementNodeMap.put(nodeElement, node);
 			}
 
@@ -112,14 +108,14 @@ public class ImportTableCommand extends AbstractCommand {
 							.getTarget());
 					if (sourceNode != targetNode) {
 						Edge edge = new Edge(sourceNode, targetNode);
-						this.graph.edges.add(edge);
+						graph.edges.add(edge);
 					}
 				}
 			}
 
 			DirectedGraphLayout layout = new DirectedGraphLayout();
 
-			layout.visit(this.graph);
+			layout.visit(graph);
 
 			for (NodeElement nodeElement : nodeElementNodeMap.keySet()) {
 				Node node = nodeElementNodeMap.get(nodeElement);
@@ -131,6 +127,8 @@ public class ImportTableCommand extends AbstractCommand {
 			}
 
 		} else {
+			int numX = (int) Math.sqrt(this.nodeElementList.size());
+
 			int x = ORIGINAL_X;
 			int y = ORIGINAL_Y;
 
@@ -139,7 +137,7 @@ public class ImportTableCommand extends AbstractCommand {
 					nodeElement.setLocation(new Location(x, y, -1, -1));
 
 					x += DISTANCE_X;
-					if (x > DISTANCE_X * SIZE_X) {
+					if (x > DISTANCE_X * numX) {
 						x = ORIGINAL_X;
 						y += DISTANCE_Y;
 					}
@@ -159,8 +157,6 @@ public class ImportTableCommand extends AbstractCommand {
 			}
 		}
 
-		ERDiagramEditPart.setUpdateable(false);
-
 		for (NodeElement nodeElement : this.nodeElementList) {
 			this.diagram.addNewContent(nodeElement);
 
@@ -179,20 +175,19 @@ public class ImportTableCommand extends AbstractCommand {
 		}
 
 		for (Sequence sequence : sequences) {
-			this.sequenceSet.addSequence(sequence);
+			this.sequenceSet.addObject(sequence);
 		}
 
 		for (Trigger trigger : triggers) {
-			this.triggerSet.addTrigger(trigger);
+			this.triggerSet.addObject(trigger);
 		}
 
 		for (Tablespace tablespace : tablespaces) {
-			this.tablespaceSet.addTablespace(tablespace);
+			this.tablespaceSet.addObject(tablespace);
 		}
 
-		ERDiagramEditPart.setUpdateable(true);
-
-		this.diagram.changeAll(this.nodeElementList);
+		this.diagram.refreshChildren();
+		this.diagram.refreshOutline();
 	}
 
 	private void setSelfRelation(Relation relation) {
@@ -235,8 +230,6 @@ public class ImportTableCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		ERDiagramEditPart.setUpdateable(false);
-
 		for (NodeElement nodeElement : this.nodeElementList) {
 			this.diagram.removeContent(nodeElement);
 
@@ -267,8 +260,7 @@ public class ImportTableCommand extends AbstractCommand {
 			}
 		}
 
-		ERDiagramEditPart.setUpdateable(true);
-
-		this.diagram.changeAll();
+		this.diagram.refreshChildren();
+		this.diagram.refreshOutline();
 	}
 }

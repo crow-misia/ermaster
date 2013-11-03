@@ -1,7 +1,5 @@
 package org.insightech.er.editor.controller.editpart.outline.tablespace;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -21,9 +19,6 @@ import org.insightech.er.editor.view.dialog.outline.tablespace.TablespaceDialog;
 
 public class TablespaceOutlineEditPart extends AbstractOutlineEditPart
 		implements DeleteableEditPart {
-
-	public void propertyChange(PropertyChangeEvent evt) {
-	}
 
 	/**
 	 * {@inheritDoc}

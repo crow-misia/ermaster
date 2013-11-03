@@ -21,7 +21,8 @@ public class CreateTablespaceCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		this.tablespaceSet.addTablespace(this.tablespace);
+		this.tablespaceSet.addObject(this.tablespace);
+		this.tablespaceSet.refresh();
 	}
 
 	/**
@@ -30,5 +31,6 @@ public class CreateTablespaceCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.tablespaceSet.remove(this.tablespace);
+		this.tablespaceSet.refresh();
 	}
 }

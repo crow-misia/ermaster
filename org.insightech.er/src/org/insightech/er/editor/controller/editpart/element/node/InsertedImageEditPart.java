@@ -1,6 +1,5 @@
 package org.insightech.er.editor.controller.editpart.element.node;
 
-import java.beans.PropertyChangeEvent;
 import java.io.ByteArrayInputStream;
 
 import org.apache.commons.codec.binary.Base64;
@@ -14,7 +13,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.image.ChangeInsertedImagePropertyCommand;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
 import org.insightech.er.editor.controller.editpolicy.element.node.NodeElementComponentEditPolicy;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.image.InsertedImage;
@@ -42,8 +40,8 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 		this.imageData = new ImageData(in);
 		this.changeImage();
 
-		InsertedImageFigure figure = new InsertedImageFigure(this.image, model
-				.isFixAspectRatio(), model.getAlpha());
+		InsertedImageFigure figure = new InsertedImageFigure(this.image,
+				model.isFixAspectRatio(), model.getAlpha());
 		figure.setMinimumSize(new Dimension(1, 1));
 
 		return figure;
@@ -72,24 +70,13 @@ public class InsertedImageEditPart extends NodeElementEditPart implements
 	}
 
 	@Override
-	public void doPropertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(InsertedImage.PROPERTY_CHANGE_IMAGE)) {
-			changeImage();
+	protected void doRefreshVisuals() {
+		changeImage();
 
-			InsertedImageFigure figure = (InsertedImageFigure) this.getFigure();
-			InsertedImage model = (InsertedImage) this.getModel();
+		InsertedImageFigure figure = (InsertedImageFigure) this.getFigure();
+		InsertedImage model = (InsertedImage) this.getModel();
 
-			figure.setImg(this.image, model.isFixAspectRatio(), model
-					.getAlpha());
-
-			this.refreshVisuals();
-
-			if (ERDiagramEditPart.isUpdateable()) {
-				this.getFigure().repaint();
-			}
-		}
-
-		super.doPropertyChange(event);
+		figure.setImg(this.image, model.isFixAspectRatio(), model.getAlpha());
 	}
 
 	private void changeImage() {

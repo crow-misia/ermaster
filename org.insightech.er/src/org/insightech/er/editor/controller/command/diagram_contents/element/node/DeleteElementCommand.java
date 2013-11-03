@@ -6,12 +6,12 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 
 public class DeleteElementCommand extends AbstractCommand {
 
-	private ERDiagram container;
+	private ERDiagram diagram;
 
 	private NodeElement element;
 
-	public DeleteElementCommand(ERDiagram container, NodeElement element) {
-		this.container = container;
+	public DeleteElementCommand(ERDiagram diagram, NodeElement element) {
+		this.diagram = diagram;
 		this.element = element;
 	}
 
@@ -20,7 +20,8 @@ public class DeleteElementCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		this.container.removeContent(this.element);
+		this.diagram.removeContent(this.element);
+		this.diagram.refreshChildren();
 	}
 
 	/**
@@ -28,6 +29,7 @@ public class DeleteElementCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		this.container.addContent(this.element);
+		this.diagram.addContent(this.element);
+		this.diagram.refreshChildren();
 	}
 }

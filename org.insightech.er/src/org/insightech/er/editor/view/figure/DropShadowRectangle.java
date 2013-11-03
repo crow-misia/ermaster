@@ -2,6 +2,7 @@ package org.insightech.er.editor.view.figure;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.RoundedRectangle;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
@@ -20,8 +21,8 @@ public class DropShadowRectangle extends RoundedRectangle {
 		Insets shadowInset = new Insets(0, 0, SHADOW_INSET, SHADOW_INSET);
 		f = shrink(f, shadowInset);
 		this.drawShadow(f, graphics);
-		graphics.fillRoundRectangle(f, corner.width,
-				corner.height);
+		Dimension cornerDimensions = getCornerDimensions();
+		graphics.fillRoundRectangle(f, cornerDimensions.width, cornerDimensions.height);
 	}
 
 	private Rectangle shrink(Rectangle bounds, Insets insets) {
@@ -34,6 +35,7 @@ public class DropShadowRectangle extends RoundedRectangle {
 
 		return shrinked;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -48,10 +50,11 @@ public class DropShadowRectangle extends RoundedRectangle {
 	@Override
 	protected void outlineShape(Graphics graphics) {
 		Rectangle f = Rectangle.SINGLETON.setBounds(getBounds());
-		Insets shadowInset = new Insets(getLineWidth() / 2, getLineWidth() / 2, getLineWidth()
-				+ SHADOW_INSET, getLineWidth() + SHADOW_INSET);
+		Insets shadowInset = new Insets(getLineWidth() / 2, getLineWidth() / 2,
+				getLineWidth() + SHADOW_INSET, getLineWidth() + SHADOW_INSET);
 		shrink(f, shadowInset);
-		graphics.drawRoundRectangle(f, corner.width, corner.height);
+		Dimension cornerDimensions = getCornerDimensions();
+		graphics.drawRoundRectangle(f, cornerDimensions.width, cornerDimensions.height);
 	}
 
 	private void drawShadow(Rectangle rectangle, Graphics graphics) {
@@ -76,8 +79,10 @@ public class DropShadowRectangle extends RoundedRectangle {
 		Rectangle shadowLayer = new Rectangle(rectangle);
 		shadowLayer.x += offset;
 		shadowLayer.y += offset;
-		graphics.fillRoundRectangle(shadowLayer, corner.width,
-				corner.height);
+
+		Dimension cornerDimensions = getCornerDimensions();
+		graphics.fillRoundRectangle(shadowLayer, cornerDimensions.width,
+				cornerDimensions.height);
 		// Restore the start of the graphics object
 		graphics.popState();
 	}

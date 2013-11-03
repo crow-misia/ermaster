@@ -1,7 +1,11 @@
 package org.insightech.er.editor.controller.command.category;
 
+import java.util.List;
+
 import org.insightech.er.editor.controller.command.AbstractCommand;
 import org.insightech.er.editor.model.ERDiagram;
+import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
+import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.settings.CategorySetting;
 
 public class ChangeShowReferredTablesCommand extends AbstractCommand {
@@ -30,7 +34,7 @@ public class ChangeShowReferredTablesCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.categorySettings.setShowReferredTables(this.newShowReferredTables);
-		this.diagram.changeAll();
+		this.refreshReferredNodeElementList();
 	}
 
 	/**
@@ -39,6 +43,24 @@ public class ChangeShowReferredTablesCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.categorySettings.setShowReferredTables(this.oldShowReferredTables);
-		this.diagram.changeAll();
+		this.refreshReferredNodeElementList();
+	}
+
+	private void refreshReferredNodeElementList() {
+		List<NodeElement> nodeElementList = this.diagram.getCurrentCategory()
+				.getContents();
+
+		for (NodeElement nodeElement : nodeElementList) {
+			for (ConnectionElement connection : nodeElement.getIncomings()) {
+				NodeElement referredNodeElement = connection.getSource();
+
+				if (nodeElementList.contains(referredNodeElement)) {
+					continue;
+				}
+
+				referredNodeElement.refreshVisuals();
+				connection.refreshVisuals();
+			}
+		}
 	}
 }

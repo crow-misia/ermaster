@@ -19,21 +19,24 @@ public class DeleteRelationCommand extends DeleteConnectionCommand {
 
 	private TableView oldTargetTable;
 
+	private TableView oldSourceTable;
+
 	private Relation relation;
 
 	private Boolean removeForeignKey;
 
-	private Map<NormalColumn, NormalColumn> referencedColumnMap;
+	private Map<NormalColumn, NormalColumn> foreignKeyReferencedColumnMap;
 
 	public DeleteRelationCommand(Relation relation, Boolean removeForeignKey) {
 		super(relation);
 
 		this.relation = relation;
 		this.oldTargetTable = relation.getTargetTableView();
+		this.oldSourceTable = relation.getSourceTableView();
 
 		this.removeForeignKey = removeForeignKey;
 
-		this.referencedColumnMap = new HashMap<NormalColumn, NormalColumn>();
+		this.foreignKeyReferencedColumnMap = new HashMap<NormalColumn, NormalColumn>();
 	}
 
 	/**
@@ -46,7 +49,7 @@ public class DeleteRelationCommand extends DeleteConnectionCommand {
 				NormalColumn referencedColumn = foreignKey
 						.getReferencedColumn(relation);
 
-				this.referencedColumnMap.put(foreignKey, referencedColumn);
+				this.foreignKeyReferencedColumnMap.put(foreignKey, referencedColumn);
 			}
 
 			this.oldTargetCopyTable = this.oldTargetTable.copyData();
@@ -56,6 +59,9 @@ public class DeleteRelationCommand extends DeleteConnectionCommand {
 				.getDiagramContents().getDictionary();
 
 		this.relation.delete(this.removeForeignKey, dictionary);
+		
+		this.oldTargetTable.refresh();
+		this.oldSourceTable.refreshSourceConnections();
 	}
 
 	/**
@@ -65,18 +71,27 @@ public class DeleteRelationCommand extends DeleteConnectionCommand {
 	protected void doUndo() {
 		super.doUndo();
 
-		for (NormalColumn foreignKey : this.referencedColumnMap.keySet()) {
+		for (NormalColumn foreignKey : this.foreignKeyReferencedColumnMap.keySet()) {
 			if (!this.removeForeignKey) {
 				Dictionary dictionary = this.oldTargetTable.getDiagram()
 						.getDiagramContents().getDictionary();
 				dictionary.remove(foreignKey);
 			}
 
-			foreignKey.addReference(this.referencedColumnMap.get(foreignKey),
+			foreignKey.addReference(this.foreignKeyReferencedColumnMap.get(foreignKey),
 					this.relation);
 		}
 
 		this.oldTargetCopyTable.restructureData(this.oldTargetTable);
+		
+		if (this.oldTargetTable == this.oldSourceTable) {
+			//this.oldTargetTable.update();
+			this.oldTargetTable.refresh();
+			
+		} else {
+			this.oldTargetTable.refresh();
+			this.oldSourceTable.refreshSourceConnections();
+		}
 	}
 
 	@Override
@@ -91,13 +106,13 @@ public class DeleteRelationCommand extends DeleteConnectionCommand {
 
 				this.removeForeignKey = false;
 
-				this.referencedColumnMap = new HashMap<NormalColumn, NormalColumn>();
+				this.foreignKeyReferencedColumnMap = new HashMap<NormalColumn, NormalColumn>();
 
 				for (NormalColumn foreignKey : relation.getForeignKeyColumns()) {
 					NormalColumn referencedColumn = foreignKey
 							.getReferencedColumn(relation);
 
-					this.referencedColumnMap.put(foreignKey, referencedColumn);
+					this.foreignKeyReferencedColumnMap.put(foreignKey, referencedColumn);
 				}
 
 				return true;
@@ -111,13 +126,13 @@ public class DeleteRelationCommand extends DeleteConnectionCommand {
 			} else {
 				this.removeForeignKey = false;
 
-				this.referencedColumnMap = new HashMap<NormalColumn, NormalColumn>();
+				this.foreignKeyReferencedColumnMap = new HashMap<NormalColumn, NormalColumn>();
 
 				for (NormalColumn foreignKey : relation.getForeignKeyColumns()) {
 					NormalColumn referencedColumn = foreignKey
 							.getReferencedColumn(relation);
 
-					this.referencedColumnMap.put(foreignKey, referencedColumn);
+					this.foreignKeyReferencedColumnMap.put(foreignKey, referencedColumn);
 				}
 			}
 		}

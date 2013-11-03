@@ -3,7 +3,7 @@ package org.insightech.er.editor.view.contributor;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.ui.IWorkbenchPage;
-import org.insightech.er.editor.controller.command.common.ChangeFontCommand;
+import org.insightech.er.editor.controller.command.display.ChangeFontCommand;
 import org.insightech.er.editor.model.ViewableModel;
 
 public class FontSizeContributionItem extends ComboContributionItem {

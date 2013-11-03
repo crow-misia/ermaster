@@ -34,7 +34,7 @@ public class UpdateChangeTrackingCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		this.changeTracking.setComment(newComment);
+		this.changeTracking.setComment(this.newComment);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class UpdateChangeTrackingCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		this.changeTracking.setComment(oldComment);
+		this.changeTracking.setComment(this.oldComment);
 	}
 
 }

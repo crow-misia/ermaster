@@ -3,12 +3,9 @@ package org.insightech.er.editor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EventObject;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.FigureCanvas;
@@ -33,7 +30,6 @@ import org.eclipse.gef.ui.actions.DirectEditAction;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
-import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
@@ -46,16 +42,12 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.IHandlerService;
-import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.insightech.er.Activator;
 import org.insightech.er.Resources;
 import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPartFactory;
 import org.insightech.er.editor.controller.editpart.element.PagableFreeformRootEditPart;
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.view.ERDiagramGotoMarker;
 import org.insightech.er.editor.view.ERDiagramPopupMenuManager;
 import org.insightech.er.editor.view.action.category.CategoryManageAction;
 import org.insightech.er.editor.view.action.category.ChangeFreeLayoutAction;
@@ -78,12 +70,12 @@ import org.insightech.er.editor.view.action.edit.EditAllAttributesAction;
 import org.insightech.er.editor.view.action.edit.PasteAction;
 import org.insightech.er.editor.view.action.edit.SelectAllContentsAction;
 import org.insightech.er.editor.view.action.group.GroupManageAction;
+import org.insightech.er.editor.view.action.line.AutoResizeModelAction;
 import org.insightech.er.editor.view.action.line.DefaultLineAction;
 import org.insightech.er.editor.view.action.line.ERDiagramAlignmentAction;
 import org.insightech.er.editor.view.action.line.ERDiagramMatchHeightAction;
 import org.insightech.er.editor.view.action.line.ERDiagramMatchWidthAction;
 import org.insightech.er.editor.view.action.line.HorizontalLineAction;
-import org.insightech.er.editor.view.action.line.ResizeModelAction;
 import org.insightech.er.editor.view.action.line.RightAngleLineAction;
 import org.insightech.er.editor.view.action.line.VerticalLineAction;
 import org.insightech.er.editor.view.action.option.OptionSettingAction;
@@ -118,7 +110,6 @@ import org.insightech.er.editor.view.drag_drop.ERDiagramTransferDragSourceListen
 import org.insightech.er.editor.view.drag_drop.ERDiagramTransferDropTargetListener;
 import org.insightech.er.editor.view.outline.ERDiagramOutlinePage;
 import org.insightech.er.editor.view.outline.ERDiagramOutlinePopupMenuManager;
-import org.insightech.er.editor.view.property_source.ERDiagramPropertySourceProvider;
 import org.insightech.er.editor.view.tool.ERDiagramPaletteRoot;
 import org.insightech.er.extention.ExtensionLoader;
 
@@ -135,17 +126,9 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 
 	private ERDiagramOutlinePage outlinePage;
 
-	private IGotoMarker gotoMaker;
-
-	private ERDiagramActionBarContributor actionBarContributor;
-
-	private ZoomComboContributionItem zoomComboContributionItem;
-
 	private MenuManager outlineMenuMgr;
 
-	private Map<IMarker, Object> markedObjectMap = new HashMap<IMarker, Object>();
-
-	private PropertySheetPage propertySheetPage;
+	private ERDiagramActionBarContributor actionBarContributor;
 
 	private ExtensionLoader extensionLoader;
 
@@ -165,19 +148,13 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 	 */
 	public ERDiagramEditor(ERDiagram diagram,
 			ERDiagramEditPartFactory editPartFactory,
-			ZoomComboContributionItem zoomComboContributionItem,
 			ERDiagramOutlinePage outlinePage) {
 		DefaultEditDomain domain = new DefaultEditDomain(this);
 		this.setEditDomain(domain);
 
 		this.diagram = diagram;
 		this.editPartFactory = editPartFactory;
-		this.zoomComboContributionItem = zoomComboContributionItem;
 		this.outlinePage = outlinePage;
-
-		this.propertySheetPage = new PropertySheetPage();
-		this.propertySheetPage
-				.setPropertySourceProvider(new ERDiagramPropertySourceProvider());
 
 		try {
 			this.extensionLoader = new ExtensionLoader(this);
@@ -253,8 +230,6 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 				this.diagram, this.getActionRegistry(),
 				this.outlinePage.getOutlineActionRegistory(),
 				this.outlinePage.getViewer());
-
-		this.gotoMaker = new ERDiagramGotoMarker(this);
 	}
 
 	/**
@@ -273,18 +248,9 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		if (type == ZoomManager.class) {
 			return ((ScalableFreeformRootEditPart) getGraphicalViewer()
 					.getRootEditPart()).getZoomManager();
-		}
 
-		if (type == IContentOutlinePage.class) {
+		} else if (type == IContentOutlinePage.class) {
 			return this.outlinePage;
-		}
-
-		if (type == IGotoMarker.class) {
-			return this.gotoMaker;
-		}
-
-		if (type == IPropertySheetPage.class) {
-			return this.propertySheetPage;
 		}
 
 		return super.getAdapter(type);
@@ -304,6 +270,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 	}
 
 	public void removeSelection() {
+		this.getGraphicalViewer().deselectAll();
 		this.getSelectionSynchronizer().removeViewer(
 				this.outlinePage.getViewer());
 	}
@@ -378,7 +345,7 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 						new RightAngleLineAction(this),
 						new DefaultLineAction(this), new CopyAction(this),
 						new PasteAction(this), new SearchAction(this),
-						new ResizeModelAction(this),
+						new AutoResizeModelAction(this),
 						new PrintImageAction(this),
 						new DeleteWithoutUpdateAction(this),
 						new SelectAllContentsAction(this) }));
@@ -454,13 +421,10 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		action = new ExportToDBAction(this);
 		this.getActionRegistry().registerAction(action);
 
-		this.actionBarContributor = new ERDiagramActionBarContributor(
-				this.zoomComboContributionItem);
-
+		this.actionBarContributor = new ERDiagramActionBarContributor();
+		this.actionBarContributor.init(this.getEditorSite().getActionBars(),
+				this.getSite().getPage());
 		// action = new ToggleRulerVisibilityAction(viewer);
-		// this.getActionRegistry().registerAction(action);
-		//
-		// action = new ToggleSnapToGeometryAction(viewer);
 		// this.getActionRegistry().registerAction(action);
 	}
 
@@ -525,18 +489,6 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 		canvas.scrollTo(x, y);
 	}
 
-	public Object getMarkedObject(IMarker marker) {
-		return markedObjectMap.get(marker);
-	}
-
-	public void setMarkedObject(IMarker marker, Object markedObject) {
-		this.markedObjectMap.put(marker, markedObject);
-	}
-
-	public void clearMarkedObject() {
-		this.markedObjectMap.clear();
-	}
-
 	public void setDirty(boolean isDirty) {
 		this.isDirty = isDirty;
 	}
@@ -557,4 +509,5 @@ public class ERDiagramEditor extends GraphicalEditorWithPalette {
 
 		return filePath;
 	}
+
 }

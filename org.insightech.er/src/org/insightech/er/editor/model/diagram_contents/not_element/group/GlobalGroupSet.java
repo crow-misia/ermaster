@@ -11,6 +11,7 @@ import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
+import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.UniqueWordDictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 
 public class GlobalGroupSet {
@@ -33,6 +34,8 @@ public class GlobalGroupSet {
 
 			if (columnGroupListFile.exists()) {
 				settings.load(path);
+
+				UniqueWordDictionary dictionary = new UniqueWordDictionary();
 
 				for (IDialogSettings columnGroupSection : settings
 						.getSections()) {
@@ -74,6 +77,7 @@ public class GlobalGroupSet {
 
 						Word word = new Word(physicalName, logicalName,
 								sqlType, typeData, description, database);
+						word = dictionary.getUniqueWord(word, true);
 
 						NormalColumn column = new NormalColumn(word, notNull,
 								false, unique, false, defaultValue, constraint,
@@ -115,10 +119,10 @@ public class GlobalGroupSet {
 							"column_" + columnIndex);
 					columnIndex++;
 
-					columnSection.put("physical_name", null2Blank(normalColumn
-							.getPhysicalName()));
-					columnSection.put("logical_name", null2Blank(normalColumn
-							.getLogicalName()));
+					columnSection.put("physical_name",
+							null2Blank(normalColumn.getPhysicalName()));
+					columnSection.put("logical_name",
+							null2Blank(normalColumn.getLogicalName()));
 					columnSection.put("type",
 							null2Blank(normalColumn.getType()));
 					columnSection.put("length", null2Blank(normalColumn
@@ -137,12 +141,12 @@ public class GlobalGroupSet {
 
 					columnSection.put("not_null", normalColumn.isNotNull());
 					columnSection.put("unique", normalColumn.isUniqueKey());
-					columnSection.put("default_value", null2Blank(normalColumn
-							.getDefaultValue()));
-					columnSection.put("constraint", null2Blank(normalColumn
-							.getConstraint()));
-					columnSection.put("description", null2Blank(normalColumn
-							.getDescription()));
+					columnSection.put("default_value",
+							null2Blank(normalColumn.getDefaultValue()));
+					columnSection.put("constraint",
+							null2Blank(normalColumn.getConstraint()));
+					columnSection.put("description",
+							null2Blank(normalColumn.getDescription()));
 
 					columnGroupSection.addSection(columnSection);
 				}

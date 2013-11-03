@@ -61,7 +61,7 @@ public class AdvancedComposite extends Composite {
 
 		if (tablespace != null) {
 			int index = this.diagram.getDiagramContents().getTablespaceSet()
-					.getTablespaceList().indexOf(tablespace);
+					.getObjectList().indexOf(tablespace);
 			this.tableSpaceCombo.select(index + 1);
 		}
 
@@ -75,8 +75,8 @@ public class AdvancedComposite extends Composite {
 			int tablespaceIndex = this.tableSpaceCombo.getSelectionIndex();
 			if (tablespaceIndex > 0) {
 				Tablespace tablespace = this.diagram.getDiagramContents()
-						.getTablespaceSet().getTablespaceList().get(
-								tablespaceIndex - 1);
+						.getTablespaceSet().getObjectList()
+						.get(tablespaceIndex - 1);
 				this.viewProperties.setTableSpace(tablespace);
 
 			} else {

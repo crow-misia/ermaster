@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.insightech.er.ResourceString;
-import org.insightech.er.editor.controller.command.common.ReplaceCommand;
+import org.insightech.er.editor.controller.command.edit.ReplaceCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.search.ReplaceManager;
 import org.insightech.er.editor.model.search.SearchManager;
@@ -41,9 +41,10 @@ public class SearchDialog extends Dialog {
 
 	public static final int SEARCH_NEXT_ID = 102;
 
+	private Button replaceButton;
+
 	private Button allCheckBox;
 
-	// 単語
 	private Button wordCheckBox;
 
 	private Button physicalWordNameCheckBox;
@@ -58,7 +59,6 @@ public class SearchDialog extends Dialog {
 
 	private Button wordDescriptionCheckBox;
 
-	// テーブル
 	private Button tableCheckBox;
 
 	private Button physicalTableNameCheckBox;
@@ -81,7 +81,6 @@ public class SearchDialog extends Dialog {
 
 	private Button columnGroupNameCheckBox;
 
-	// グループ
 	private Button groupCheckBox;
 
 	private Button groupNameCheckBox;
@@ -100,7 +99,6 @@ public class SearchDialog extends Dialog {
 
 	private Button groupColumnDescriptionCheckBox;
 
-	// その他
 	private Button modelPropertiesCheckBox;
 
 	private Button indexCheckBox;
@@ -109,12 +107,10 @@ public class SearchDialog extends Dialog {
 
 	private Button noteCheckBox;
 
-	// 検索・置換語
 	private Combo keywordCombo;
 
 	private Combo replaceCombo;
 
-	// 検索結果
 	private Table resultTable;
 
 	private GraphicalViewer viewer;
@@ -206,7 +202,7 @@ public class SearchDialog extends Dialog {
 		allCheckBox.setLayoutData(allCheckBoxGridData);
 
 		this.allCheckBox.addSelectionListener(new SelectionAdapter() {
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -220,7 +216,7 @@ public class SearchDialog extends Dialog {
 		wordCheckBox.setText(ResourceString
 				.getResourceString("label.search.range.word"));
 		this.wordCheckBox.addSelectionListener(new SelectionAdapter() {
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -236,7 +232,7 @@ public class SearchDialog extends Dialog {
 		tableCheckBox.setText(ResourceString
 				.getResourceString("label.search.range.table"));
 		this.tableCheckBox.addSelectionListener(new SelectionAdapter() {
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -252,7 +248,7 @@ public class SearchDialog extends Dialog {
 		groupCheckBox.setText(ResourceString
 				.getResourceString("label.search.range.group"));
 		this.groupCheckBox.addSelectionListener(new SelectionAdapter() {
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -523,7 +519,8 @@ public class SearchDialog extends Dialog {
 
 	private void createReplaceCombo(Composite parent) {
 		Label label = new Label(parent, SWT.NONE);
-		label.setText(ResourceString.getResourceString("label.search.replace.word"));
+		label.setText(ResourceString
+				.getResourceString("label.search.replace.word"));
 
 		GridData fillerGridData = new GridData();
 		fillerGridData.widthHint = 10;
@@ -581,7 +578,7 @@ public class SearchDialog extends Dialog {
 		resultTable.setLinesVisible(true);
 
 		this.resultTable.addSelectionListener(new SelectionAdapter() {
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -589,13 +586,22 @@ public class SearchDialog extends Dialog {
 			public void widgetSelected(SelectionEvent e) {
 				int index = resultTable.getSelectionIndex();
 
-				SearchResultRow searchResultRow = searchResult.getRows().get(
-						index);
+				if (index == -1) {
+					replaceButton.setEnabled(false);
+					replaceCombo.setEnabled(false);
+					
+				} else {
+					replaceButton.setEnabled(true);
+					replaceCombo.setEnabled(true);
 
-				Object object = searchResultRow.getTargetNode();
+					SearchResultRow searchResultRow = searchResult.getRows()
+							.get(index);
 
-				if (object != null) {
-					focus(object);
+					Object object = searchResultRow.getTargetNode();
+
+					if (object != null) {
+						focus(object);
+					}
 				}
 			}
 		});
@@ -636,17 +642,24 @@ public class SearchDialog extends Dialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, REPLACE_ID, ResourceString
-				.getResourceString("label.search.replace.button"), false);
+		this.replaceButton = createButton(
+				parent,
+				REPLACE_ID,
+				ResourceString.getResourceString("label.search.replace.button"),
+				false);
 
-		createButton(parent, SEARCH_ALL_ID, ResourceString
-				.getResourceString("label.search.all.button"), false);
+		createButton(parent, SEARCH_ALL_ID,
+				ResourceString.getResourceString("label.search.all.button"),
+				false);
 
-		createButton(parent, SEARCH_NEXT_ID, ResourceString
-				.getResourceString("label.search.next.button"), true);
+		// createButton(parent, SEARCH_NEXT_ID, ResourceString
+		// .getResourceString("label.search.next.button"), true);
 
 		createButton(parent, IDialogConstants.CLOSE_ID,
 				IDialogConstants.CLOSE_LABEL, false);
+
+		this.replaceButton.setEnabled(false);
+		this.replaceCombo.setEnabled(false);
 	}
 
 	/**
@@ -685,11 +698,11 @@ public class SearchDialog extends Dialog {
 					this.columnDefaultValueCheckBox.getSelection(),
 					this.columnDescriptionCheckBox.getSelection(),
 					this.columnGroupNameCheckBox.getSelection(),
-					this.indexCheckBox.getSelection(), this.noteCheckBox
-							.getSelection(), this.modelPropertiesCheckBox
-							.getSelection(), this.relationCheckBox
-							.getSelection(), this.groupNameCheckBox
-							.getSelection(),
+					this.indexCheckBox.getSelection(),
+					this.noteCheckBox.getSelection(),
+					this.modelPropertiesCheckBox.getSelection(),
+					this.relationCheckBox.getSelection(),
+					this.groupNameCheckBox.getSelection(),
 					this.physicalGroupColumnNameCheckBox.getSelection(),
 					this.logicalGroupColumnNameCheckBox.getSelection(),
 					this.groupColumnTypeCheckBox.getSelection(),
@@ -706,7 +719,7 @@ public class SearchDialog extends Dialog {
 			return;
 
 		} else if (buttonId == REPLACE_ID) {
-			this.tabFolder.setSelection(1);
+			//this.tabFolder.setSelection(1);
 
 			List<SearchResultRow> replaceRows = getReplaceRows();
 
@@ -726,8 +739,8 @@ public class SearchDialog extends Dialog {
 				command.add(replaceCommand);
 			}
 
-			this.viewer.getEditDomain().getCommandStack().execute(
-					command.unwrap());
+			this.viewer.getEditDomain().getCommandStack()
+					.execute(command.unwrap());
 
 			this.searchResult = this.searchManager.research();
 
@@ -738,6 +751,9 @@ public class SearchDialog extends Dialog {
 			this.initReplaceWordCombo();
 			this.replaceCombo.setText(replaceWord);
 
+			this.replaceCombo.setEnabled(false);
+			this.replaceButton.setEnabled(false);
+			
 			return;
 		}
 
@@ -771,10 +787,12 @@ public class SearchDialog extends Dialog {
 		this.resultTable.removeAll();
 
 		for (SearchResultRow row : rows) {
-			String type = ResourceString.getResourceString("search.result.row.type."
-					+ row.getType());
-			String name = ResourceString.getResourceString("search.result.row.name."
-					+ row.getType());
+			String type = ResourceString
+					.getResourceString("search.result.row.type."
+							+ row.getType());
+			String name = ResourceString
+					.getResourceString("search.result.row.name."
+							+ row.getType());
 
 			TableItem tableItem = new TableItem(this.resultTable, SWT.NONE);
 

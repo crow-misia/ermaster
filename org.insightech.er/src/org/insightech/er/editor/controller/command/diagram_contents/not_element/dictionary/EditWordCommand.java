@@ -34,7 +34,7 @@ public class EditWordCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.dictionary.copyTo(newWord, word);
-		this.diagram.changeAll();
+		this.diagram.refreshVisuals();
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class EditWordCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.dictionary.copyTo(oldWord, word);
-		this.diagram.changeAll();
+		this.diagram.refreshVisuals();
 	}
 
 }

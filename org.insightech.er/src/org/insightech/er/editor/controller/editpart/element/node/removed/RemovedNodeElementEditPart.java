@@ -48,19 +48,9 @@ public abstract class RemovedNodeElementEditPart extends AbstractModelEditPart
 
 	@Override
 	public void doPropertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(
-				NodeElement.PROPERTY_CHANGE_RECTANGLE)) {
-			refreshVisuals();
-
-		} else if (event.getPropertyName().equals(
-				ViewableModel.PROPERTY_CHANGE_COLOR)) {
-			refreshVisuals();
-
-		} else if (event.getPropertyName().equals(
-				ViewableModel.PROPERTY_CHANGE_FONT)) {
+		if (event.getPropertyName().equals("refreshFont")) {
 			this.changeFont(this.figure);
-			refreshVisuals();
-
+			this.refreshVisuals();
 		}
 	}
 

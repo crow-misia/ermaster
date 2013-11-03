@@ -34,8 +34,8 @@ public class HorizontalLineAction extends AbstractBaseSelectionAction {
 
 		this.setImageDescriptor(Activator
 				.getImageDescriptor(ImageKey.HORIZONTAL_LINE));
-//		this.setDisabledImageDescriptor(Activator
-//				.getImageDescriptor(ImageKey.HORIZONTAL_LINE_DISABLED));
+		// this.setDisabledImageDescriptor(Activator
+		// .getImageDescriptor(ImageKey.HORIZONTAL_LINE_DISABLED));
 		this.setToolTipText(ResourceString
 				.getResourceString("action.title.horizontal.line"));
 	}
@@ -109,8 +109,8 @@ public class HorizontalLineAction extends AbstractBaseSelectionAction {
 
 			MoveElementCommand moveCommand = new MoveElementCommand(diagram,
 					editPart.getFigure().getBounds(), start,
-					nodeElement.getY(), nodeElement.getWidth(), nodeElement
-							.getHeight(), nodeElement);
+					nodeElement.getY(), nodeElement.getWidth(),
+					nodeElement.getHeight(), nodeElement);
 
 			command.add(moveCommand);
 
@@ -208,11 +208,12 @@ public class HorizontalLineAction extends AbstractBaseSelectionAction {
 
 			this.setImageDescriptor(Activator
 					.getImageDescriptor(ImageKey.HORIZONTAL_LINE));
-//			this.setDisabledImageDescriptor(Activator
-//					.getImageDescriptor(ImageKey.HORIZONTAL_LINE_DISABLED));
+			// this.setDisabledImageDescriptor(Activator
+			// .getImageDescriptor(ImageKey.HORIZONTAL_LINE_DISABLED));
 			this.setToolTipText(ResourceString
 					.getResourceString("action.title.horizontal.line"));
 		}
+
 	}
 
 	@Override

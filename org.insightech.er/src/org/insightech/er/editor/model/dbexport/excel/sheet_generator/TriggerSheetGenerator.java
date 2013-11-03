@@ -20,7 +20,7 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 	private static final String KEYWORD_TRIGGER_SQL = "$SQL";
 
 	/**
-	 * ÉgÉäÉKÅ[ÉVÅ[ÉgÇ…ÉfÅ[É^Çê›íËÇµÇ‹Ç∑.
+	 * ÔøΩgÔøΩÔøΩÔøΩKÔøΩ[ÔøΩVÔøΩ[ÔøΩgÔøΩ…ÉfÔøΩ[ÔøΩ^ÔøΩÔøΩ›íËÇµÔøΩ‹ÇÔøΩ.
 	 * 
 	 * @param workbook
 	 * @param sheet
@@ -28,14 +28,12 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 	 */
 	public void setTriggerData(HSSFWorkbook workbook, HSSFSheet sheet,
 			Trigger trigger) {
-		POIUtils
-				.replace(sheet, KEYWORD_TRIGGER_NAME, this.getValue(
-						this.keywordsValueMap, KEYWORD_TRIGGER_NAME, trigger
-								.getName()));
+		POIUtils.replace(sheet, KEYWORD_TRIGGER_NAME, this.getValue(
+				this.keywordsValueMap, KEYWORD_TRIGGER_NAME, trigger.getName()));
 
 		POIUtils.replace(sheet, KEYWORD_TRIGGER_DESCRIPTION, this.getValue(
-				this.keywordsValueMap, KEYWORD_TRIGGER_DESCRIPTION, trigger
-						.getDescription()));
+				this.keywordsValueMap, KEYWORD_TRIGGER_DESCRIPTION,
+				trigger.getDescription()));
 
 		POIUtils.replace(sheet, KEYWORD_TRIGGER_SQL, this.getValue(
 				this.keywordsValueMap, KEYWORD_TRIGGER_SQL, trigger.getSql()));
@@ -52,8 +50,9 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 			HSSFSheet newSheet = createNewSheet(workbook, sheetNo, name,
 					sheetNameMap);
 
-			sheetObjectMap.put(workbook.getSheetName(workbook
-					.getSheetIndex(newSheet)), trigger);
+			sheetObjectMap.put(
+					workbook.getSheetName(workbook.getSheetIndex(newSheet)),
+					trigger);
 
 			this.setTriggerData(workbook, newSheet, trigger);
 			monitor.worked(1);
@@ -78,7 +77,7 @@ public class TriggerSheetGenerator extends AbstractSheetGenerator {
 
 	@Override
 	public int count(ERDiagram diagram) {
-		return diagram.getDiagramContents().getTriggerSet().getTriggerList()
+		return diagram.getDiagramContents().getTriggerSet().getObjectList()
 				.size();
 	}
 

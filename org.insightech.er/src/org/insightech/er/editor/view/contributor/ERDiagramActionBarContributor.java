@@ -46,11 +46,7 @@ import org.insightech.er.editor.view.action.zoom.ZoomAdjustRetargetAction;
 
 public class ERDiagramActionBarContributor extends ActionBarContributor {
 
-	private ZoomComboContributionItem zoomComboContributionItem;
-
-	public ERDiagramActionBarContributor(
-			ZoomComboContributionItem zoomComboContributionItem) {
-		this.zoomComboContributionItem = zoomComboContributionItem;
+	public ERDiagramActionBarContributor() {
 	}
 
 	/**
@@ -170,11 +166,8 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 		this.addRetargetAction(new ChangeBackgroundColorRetargetAction());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void contributeToToolBar(IToolBarManager toolBarManager) {
+	public void contributeToToolBar(IToolBarManager toolBarManager,
+			ZoomComboContributionItem zoomComboContributionItem) {
 		toolBarManager.add(this.getAction(ActionFactory.DELETE.getId()));
 		toolBarManager.add(this.getAction(ActionFactory.UNDO.getId()));
 		toolBarManager.add(this.getAction(ActionFactory.REDO.getId()));
@@ -250,6 +243,7 @@ public class ERDiagramActionBarContributor extends ActionBarContributor {
 
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
+
 				if (selection instanceof IStructuredSelection) {
 					List selectedEditParts = ((IStructuredSelection) selection)
 							.toList();

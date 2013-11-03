@@ -1,7 +1,5 @@
 package org.insightech.er.editor.controller.editpart.outline.trigger;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -21,9 +19,6 @@ import org.insightech.er.editor.view.dialog.outline.trigger.TriggerDialog;
 
 public class TriggerOutlineEditPart extends AbstractOutlineEditPart implements
 		DeleteableEditPart {
-
-	public void propertyChange(PropertyChangeEvent evt) {
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -51,8 +46,8 @@ public class TriggerOutlineEditPart extends AbstractOutlineEditPart implements
 			if (dialog.open() == IDialogConstants.OK_ID) {
 				EditTriggerCommand command = new EditTriggerCommand(diagram,
 						trigger, dialog.getResult());
-				this.getViewer().getEditDomain().getCommandStack().execute(
-						command);
+				this.getViewer().getEditDomain().getCommandStack()
+						.execute(command);
 			}
 		}
 

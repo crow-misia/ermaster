@@ -104,11 +104,9 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		int numColumns = this.getCompositeNumColumns();
 
 		this.wordCombo = CompositeFactory.createReadOnlyCombo(null, composite,
-				"label.word", numColumns - 1 - 4, -1);
+				"label.word", numColumns - 1 - 4, WIDTH);
 		this.createWordFilter(composite);
 		this.wordCombo.setVisibleItemCount(20);
-
-		this.initializeWordCombo(null);
 
 		this.wordCombo.addSelectionListener(new SelectionAdapter() {
 
@@ -132,7 +130,11 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		super.initializeComposite(composite);
 	}
 
-	protected void createWordCombo(Composite composite, GridData gridData) {
+	@Override
+	protected void initData() {
+		super.initData();
+		
+		this.initializeWordCombo(null);
 	}
 
 	private void setWordData(Word word) {
@@ -173,7 +175,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 				this.wordCombo.add(name);
 
 			}
-		}
+		}		
 	}
 
 	private void setWordValue() {

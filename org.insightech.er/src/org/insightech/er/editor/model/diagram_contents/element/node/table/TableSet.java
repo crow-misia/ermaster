@@ -1,7 +1,6 @@
 package org.insightech.er.editor.model.diagram_contents.element.node.table;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,8 +15,6 @@ public class TableSet extends AbstractModel implements ObjectListModel,
 
 	private static final long serialVersionUID = 5264397678674390103L;
 
-	public static final String PROPERTY_CHANGE_TABLE_SET = "TableSet";
-
 	private List<ERTable> tableList;
 
 	public TableSet() {
@@ -26,30 +23,23 @@ public class TableSet extends AbstractModel implements ObjectListModel,
 
 	public void add(ERTable table) {
 		this.tableList.add(table);
-		this.firePropertyChange(PROPERTY_CHANGE_TABLE_SET, null, null);
 	}
 
 	public int remove(ERTable table) {
 		int index = this.tableList.indexOf(table);
 		this.tableList.remove(index);
-		this.firePropertyChange(PROPERTY_CHANGE_TABLE_SET, null, null);
 
 		return index;
 	}
 
 	public void setDirty() {
-		this.firePropertyChange(PROPERTY_CHANGE_TABLE_SET, null, null);
 	}
 
 	public List<ERTable> getList() {
-		Collections.sort(this.tableList);
-
 		return this.tableList;
 	}
 
 	public Iterator<ERTable> iterator() {
-		Collections.sort(this.tableList);
-
 		return this.tableList.iterator();
 	}
 
@@ -80,8 +70,10 @@ public class TableSet extends AbstractModel implements ObjectListModel,
 			for (NormalColumn column : table.getNormalColumns()) {
 				SqlType sqlType = column.getType();
 
-				if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_SERIAL).equals(sqlType)
-						|| SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_SERIAL).equals(sqlType)) {
+				if (SqlType.valueOfId(SqlType.SQL_TYPE_ID_SERIAL).equals(
+						sqlType)
+						|| SqlType.valueOfId(SqlType.SQL_TYPE_ID_BIG_SERIAL)
+								.equals(sqlType)) {
 					autoSequenceNames
 							.add((prefix + column.getPhysicalName() + "_seq")
 									.toUpperCase());

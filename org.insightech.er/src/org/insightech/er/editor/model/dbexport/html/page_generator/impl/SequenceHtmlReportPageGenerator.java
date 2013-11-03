@@ -28,7 +28,7 @@ public class SequenceHtmlReportPageGenerator extends
 	@Override
 	public List<Object> getObjectList(ERDiagram diagram) {
 		List list = diagram.getDiagramContents().getSequenceSet()
-				.getSequenceList();
+				.getObjectList();
 
 		return list;
 	}
@@ -41,19 +41,19 @@ public class SequenceHtmlReportPageGenerator extends
 		Sequence sequence = (Sequence) object;
 
 		String cache = Format.toString(sequence.getCache());
-		
-		if (DBManagerFactory.getDBManager(diagram).isSupported(DBManager.SUPPORT_SEQUENCE_NOCACHE)) {
+
+		if (DBManagerFactory.getDBManager(diagram).isSupported(
+				DBManager.SUPPORT_SEQUENCE_NOCACHE)) {
 			if (sequence.isNocache()) {
 				cache = "NO CACHE";
 			}
 		}
-		
+
 		return new String[] { Format.null2blank(sequence.getDescription()),
 				this.getValue(sequence.getIncrement()),
 				this.getValue(sequence.getMinValue()),
 				this.getValue(sequence.getMaxValue()),
-				this.getValue(sequence.getStart()),
-				cache,
+				this.getValue(sequence.getStart()), cache,
 				String.valueOf(sequence.isCycle()).toUpperCase() };
 	}
 

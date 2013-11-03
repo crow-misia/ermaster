@@ -62,8 +62,7 @@ public abstract class AbstractDialog extends Dialog {
 
 			this.initialize(composite);
 
-			this.setData();
-
+		
 			this.initialized = true;
 
 		} catch (Exception e) {
@@ -74,11 +73,18 @@ public abstract class AbstractDialog extends Dialog {
 	}
 
 	@Override
+	protected void constrainShellSize() {
+		super.constrainShellSize();
+		this.setData();
+		
+		this.validate();
+	}
+
+	@Override
 	protected Control createContents(Composite parent) {
 		Control control = super.createContents(parent);
 
 		this.addListener();
-		this.validate();
 
 		return control;
 	}

@@ -235,7 +235,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 			}
 		}
 
-		this.importedSequences = sequenceSet.getSequenceList();
+		this.importedSequences = sequenceSet.getObjectList();
 
 		TriggerSet triggerSet = contents.getTriggerSet();
 
@@ -247,7 +247,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 			}
 		}
 
-		this.importedTriggers = triggerSet.getTriggerList();
+		this.importedTriggers = triggerSet.getObjectList();
 
 		TablespaceSet tablespaceSet = contents.getTablespaceSet();
 
@@ -260,7 +260,7 @@ public class ImportFromFileAction extends AbstractImportAction {
 			}
 		}
 
-		this.importedTablespaces = tablespaceSet.getTablespaceList();
+		this.importedTablespaces = tablespaceSet.getObjectList();
 
 		NodeSet nodeSet = contents.getContents();
 		List<NodeElement> nodeElementList = nodeSet.getNodeElementList();

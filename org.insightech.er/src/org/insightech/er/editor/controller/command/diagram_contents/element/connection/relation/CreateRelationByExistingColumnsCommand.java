@@ -26,11 +26,16 @@ public class CreateRelationByExistingColumnsCommand extends
 
 	private List<NormalColumn> foreignKeyColumnList;
 
+	private List<Boolean> notNullList;
+	
+	private boolean notNull;
+
 	private List<Word> wordList;
 
 	public CreateRelationByExistingColumnsCommand() {
 		super();
 		this.wordList = new ArrayList<Word>();
+		this.notNullList = new ArrayList<Boolean>();
 	}
 
 	/**
@@ -44,8 +49,10 @@ public class CreateRelationByExistingColumnsCommand extends
 		this.relation.setSource(sourceTable);
 		this.relation.setTargetWithoutForeignKey(targetTable);
 
+		
 		for (int i = 0; i < foreignKeyColumnList.size(); i++) {
 			NormalColumn foreignKeyColumn = foreignKeyColumnList.get(i);
+			
 			this.wordList.add(foreignKeyColumn.getWord());
 
 			sourceTable.getDiagram().getDiagramContents().getDictionary()
@@ -54,9 +61,14 @@ public class CreateRelationByExistingColumnsCommand extends
 			foreignKeyColumn.addReference(referencedColumnList.get(i),
 					this.relation);
 			foreignKeyColumn.setWord(null);
+			
+			foreignKeyColumn.setNotNull(this.notNull);
 		}
 
-		targetTable.setDirty();
+		this.relation.getSource().refreshSourceConnections();
+		this.relation.getTarget().refresh();
+
+		//targetTable.setDirty();
 	}
 
 	/**
@@ -65,13 +77,14 @@ public class CreateRelationByExistingColumnsCommand extends
 	@Override
 	protected void doUndo() {
 		ERTable sourceTable = (ERTable) source.getModel();
-		ERTable targetTable = (ERTable) target.getModel();
 
 		this.relation.setSource(null);
 		this.relation.setTargetWithoutForeignKey(null);
 
 		for (int i = 0; i < foreignKeyColumnList.size(); i++) {
 			NormalColumn foreignKeyColumn = foreignKeyColumnList.get(i);
+			
+			foreignKeyColumn.setNotNull(this.notNullList.get(i));
 			foreignKeyColumn.removeReference(this.relation);
 			foreignKeyColumn.setWord(wordList.get(i));
 
@@ -79,7 +92,10 @@ public class CreateRelationByExistingColumnsCommand extends
 					foreignKeyColumn);
 		}
 
-		targetTable.setDirty();
+//		targetTable.setDirty();
+		
+		this.getSourceModel().refreshSourceConnections();
+		this.getTargetModel().refresh();
 	}
 
 	public boolean selectColumns() {
@@ -138,17 +154,21 @@ public class CreateRelationByExistingColumnsCommand extends
 				sourceTable, candidateForeignKeyColumns, referencedMap,
 				foreignKeySetMap);
 
-		NormalColumn firstForeignKeyColumn = dialog.getForeignKeyColumnList().get(0);
-		boolean notnull = firstForeignKeyColumn.isNotNull();
-		
-		for (NormalColumn foreignKeyColumn : dialog.getForeignKeyColumnList()) {
-			foreignKeyColumn.setNotNull(notnull);
-		}
-		
 		if (dialog.open() == IDialogConstants.OK_ID) {
+			this.notNull = false;
+			this.notNullList.clear();
+			
+			for (NormalColumn foreignKeyColumn : dialog.getForeignKeyColumnList()) {
+				this.notNullList.add(foreignKeyColumn.isNotNull());
+
+				if (foreignKeyColumn.isNotNull()) {
+					this.notNull = true;
+				}
+			}
+						
 			this.relation = new Relation(dialog.isReferenceForPK(), dialog
 					.getReferencedComplexUniqueKey(), dialog
-					.getReferencedColumn(), notnull);
+					.getReferencedColumn(), this.notNull);
 			this.referencedColumnList = dialog.getReferencedColumnList();
 			this.foreignKeyColumnList = dialog.getForeignKeyColumnList();
 

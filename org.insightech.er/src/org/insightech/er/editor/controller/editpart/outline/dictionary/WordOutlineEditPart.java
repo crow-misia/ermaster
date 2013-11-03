@@ -1,6 +1,5 @@
 package org.insightech.er.editor.controller.editpart.outline.dictionary;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,19 +20,12 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTabl
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.ColumnHolder;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.view.View;
-import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Dictionary;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Word;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.word.word.WordDialog;
 
 public class WordOutlineEditPart extends AbstractOutlineEditPart {
-
-	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(Dictionary.PROPERTY_CHANGE_DICTIONARY)) {
-			refreshVisuals();
-		}
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -164,8 +156,8 @@ public class WordOutlineEditPart extends AbstractOutlineEditPart {
 					diagram);
 
 			if (dialog.open() == IDialogConstants.OK_ID) {
-				EditWordCommand command = new EditWordCommand(word, dialog
-						.getWord(), diagram);
+				EditWordCommand command = new EditWordCommand(word,
+						dialog.getWord(), diagram);
 				this.execute(command);
 			}
 		}

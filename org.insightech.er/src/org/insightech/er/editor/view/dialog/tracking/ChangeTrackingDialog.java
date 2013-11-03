@@ -26,8 +26,8 @@ import org.insightech.er.ResourceString;
 import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.editor.controller.command.tracking.AddChangeTrackingCommand;
 import org.insightech.er.editor.controller.command.tracking.CalculateChangeTrackingCommand;
-import org.insightech.er.editor.controller.command.tracking.ChangeTrackingCommand;
 import org.insightech.er.editor.controller.command.tracking.DeleteChangeTrackingCommand;
+import org.insightech.er.editor.controller.command.tracking.DisplaySelectedChangeTrackingCommand;
 import org.insightech.er.editor.controller.command.tracking.ResetChangeTrackingCommand;
 import org.insightech.er.editor.controller.command.tracking.UpdateChangeTrackingCommand;
 import org.insightech.er.editor.model.ERDiagram;
@@ -228,11 +228,13 @@ public class ChangeTrackingDialog extends Dialog {
 
 				setData();
 
-				if (index >= changeTrackingTable.getItemCount()) {
-					index = changeTrackingTable.getItemCount() - 1;
-				}
+				if (changeTrackingTable.getItemCount() > 0) {
+					if (index >= changeTrackingTable.getItemCount()) {
+						index = changeTrackingTable.getItemCount() - 1;
+					}
 
-				selectChangeTracking(index);
+					selectChangeTracking(index);
+				}
 			}
 		});
 
@@ -274,8 +276,8 @@ public class ChangeTrackingDialog extends Dialog {
 				ChangeTracking copy = new ChangeTracking(changeTracking
 						.getDiagramContents());
 
-				Command command = new ChangeTrackingCommand(diagram, copy
-						.getDiagramContents());
+				Command command = new DisplaySelectedChangeTrackingCommand(
+						diagram, copy.getDiagramContents());
 
 				viewer.getEditDomain().getCommandStack().execute(command);
 			}
@@ -303,8 +305,8 @@ public class ChangeTrackingDialog extends Dialog {
 						Command command = new CalculateChangeTrackingCommand(
 								diagram, nodeElementList);
 
-						viewer.getEditDomain().getCommandStack().execute(
-								command);
+						viewer.getEditDomain().getCommandStack()
+								.execute(command);
 
 						comparisonResetButton.setEnabled(true);
 					}

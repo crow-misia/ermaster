@@ -62,7 +62,7 @@ public class GroupManageDialog extends AbstractDialog implements
 
 	private ERTableComposite tableComposite;
 
-	private static final int HEIGHT = 360;
+	private static final int HEIGHT = 365;
 
 	private static final int GROUP_LIST_HEIGHT = 230;
 

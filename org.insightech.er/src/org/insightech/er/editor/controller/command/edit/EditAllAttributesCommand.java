@@ -1,7 +1,6 @@
 package org.insightech.er.editor.controller.command.edit;
 
 import org.insightech.er.editor.controller.command.AbstractCommand;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.DiagramContents;
 
@@ -36,15 +35,8 @@ public class EditAllAttributesCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		// 描画更新をとめます。
-		ERDiagramEditPart.setUpdateable(false);
-
-		this.diagram.replaceContents(newDiagramContents);
-
-		// 描画更新を再開します。
-		ERDiagramEditPart.setUpdateable(true);
-
-		this.diagram.changeAll();
+		this.diagram.replaceContents(this.newDiagramContents);
+		this.diagram.refresh();
 	}
 
 	/**
@@ -52,15 +44,8 @@ public class EditAllAttributesCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		// 描画更新をとめます。
-		ERDiagramEditPart.setUpdateable(false);
-
-		this.diagram.replaceContents(oldDiagramContents);
-
-		// 描画更新を再開します。
-		ERDiagramEditPart.setUpdateable(true);
-
-		this.diagram.changeAll();
+		this.diagram.replaceContents(this.oldDiagramContents);
+		this.diagram.refresh();
 	}
 
 }

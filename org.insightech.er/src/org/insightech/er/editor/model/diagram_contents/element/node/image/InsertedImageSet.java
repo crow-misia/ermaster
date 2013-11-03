@@ -12,8 +12,6 @@ public class InsertedImageSet extends AbstractModel implements ObjectListModel,
 
 	private static final long serialVersionUID = 6136074447375448999L;
 
-	public static final String PROPERTY_CHANGE_INSERTED_IMAGE_SET = "InsertedImageSet";
-
 	private List<InsertedImage> insertedImageList;
 
 	public InsertedImageSet() {
@@ -22,13 +20,11 @@ public class InsertedImageSet extends AbstractModel implements ObjectListModel,
 
 	public void add(InsertedImage insertedImage) {
 		this.insertedImageList.add(insertedImage);
-		this.firePropertyChange(PROPERTY_CHANGE_INSERTED_IMAGE_SET, null, null);
 	}
 
 	public int remove(InsertedImage insertedImage) {
 		int index = this.insertedImageList.indexOf(insertedImage);
 		this.insertedImageList.remove(index);
-		this.firePropertyChange(PROPERTY_CHANGE_INSERTED_IMAGE_SET, null, null);
 
 		return index;
 	}

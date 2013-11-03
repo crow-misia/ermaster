@@ -8,7 +8,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
-import org.insightech.er.editor.controller.command.common.ChangeFontCommand;
+import org.insightech.er.editor.controller.command.display.ChangeFontCommand;
 import org.insightech.er.editor.model.ViewableModel;
 
 public class FontNameContributionItem extends ComboContributionItem {

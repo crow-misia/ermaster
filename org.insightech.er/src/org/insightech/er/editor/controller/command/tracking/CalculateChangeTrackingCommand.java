@@ -54,7 +54,7 @@ public class CalculateChangeTrackingCommand extends AbstractCommand {
 	protected void doExecute() {
 		this.changeTrackingList.calculateUpdatedNodeElementSet(this.comparison,
 				this.diagram.getDiagramContents().getContents());
-		this.diagram.changeAll();
+		this.diagram.refresh();
 	}
 
 	/**
@@ -64,6 +64,6 @@ public class CalculateChangeTrackingCommand extends AbstractCommand {
 	protected void doUndo() {
 		this.changeTrackingList.restore(this.oldAddedNodeElements,
 				this.oldUpdatedNodeElements, this.oldRemovedNodeElements);
-		this.diagram.changeAll();
+		this.diagram.refresh();
 	}
 }

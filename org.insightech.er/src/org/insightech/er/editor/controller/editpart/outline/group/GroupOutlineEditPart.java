@@ -1,6 +1,5 @@
 package org.insightech.er.editor.controller.editpart.outline.group;
 
-import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 import org.eclipse.gef.DragTracker;
@@ -25,9 +24,6 @@ import org.insightech.er.editor.view.dialog.group.GroupDialog;
 
 public class GroupOutlineEditPart extends AbstractOutlineEditPart implements
 		DeleteableEditPart {
-
-	public void propertyChange(PropertyChangeEvent evt) {
-	}
 
 	/**
 	 * {@inheritDoc}

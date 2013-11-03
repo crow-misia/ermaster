@@ -1,10 +1,10 @@
 package org.insightech.er.editor.controller.editpart.outline;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
@@ -30,12 +30,22 @@ public abstract class AbstractOutlineEditPart extends AbstractTreeEditPart
 		super.deactivate();
 	}
 
+	public void propertyChange(PropertyChangeEvent event) {
+		this.refreshOutline();
+	}
+
+	public void refreshOutline() {
+		refreshChildren();
+		refreshVisuals();
+
+		for (Object child : this.getChildren()) {
+			AbstractOutlineEditPart part = (AbstractOutlineEditPart) child;
+			part.refreshOutline();
+		}
+	}
+
 	@Override
 	public void refresh() {
-		if (ERDiagramEditPart.isUpdateable()) {
-			refreshChildren();
-			refreshVisuals();
-		}
 	}
 
 	/**
@@ -43,14 +53,7 @@ public abstract class AbstractOutlineEditPart extends AbstractTreeEditPart
 	 */
 	@Override
 	final public void refreshVisuals() {
-		if (ERDiagramEditPart.isUpdateable()) {
-			this.refreshOutlineVisuals();
-
-			for (Object child : this.getChildren()) {
-				AbstractOutlineEditPart part = (AbstractOutlineEditPart) child;
-				part.refreshVisuals();
-			}
-		}
+		this.refreshOutlineVisuals();
 	}
 
 	protected ERDiagram getDiagram() {

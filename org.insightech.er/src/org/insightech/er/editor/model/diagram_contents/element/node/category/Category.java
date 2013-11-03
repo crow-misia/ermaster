@@ -18,6 +18,8 @@ public class Category extends NodeElement implements IResizable,
 
 	private static final long serialVersionUID = -7691417386790834828L;
 
+	private static int MARGIN = 30;
+
 	private List<NodeElement> nodeElementList;
 
 	private String name;
@@ -49,21 +51,21 @@ public class Category extends NodeElement implements IResizable,
 					int width = nodeElement.getWidth();
 					int height = nodeElement.getHeight();
 
-					if (categoryX > x) {
-						width += categoryX - x;
-						categoryX = x;
+					if (categoryX > x - MARGIN) {
+						width += categoryX - x + MARGIN;
+						categoryX = x - MARGIN;
 					}
-					if (categoryY > y) {
-						height += categoryY - y;
-						categoryY = y;
-					}
-
-					if (x - categoryX + width > categoryWidth) {
-						categoryWidth = x - categoryX + width;
+					if (categoryY > y - MARGIN) {
+						height += categoryY - y + MARGIN;
+						categoryY = y - MARGIN;
 					}
 
-					if (y - categoryY + height > categoryHeight) {
-						categoryHeight = y - categoryY + height;
+					if (x - categoryX + width + MARGIN > categoryWidth) {
+						categoryWidth = x - categoryX + width + MARGIN;
+					}
+
+					if (y - categoryY + height + MARGIN > categoryHeight) {
+						categoryHeight = y - categoryY + height + MARGIN;
 					}
 
 				}

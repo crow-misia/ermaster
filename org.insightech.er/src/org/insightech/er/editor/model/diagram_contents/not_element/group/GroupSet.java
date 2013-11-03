@@ -1,7 +1,6 @@
 package org.insightech.er.editor.model.diagram_contents.not_element.group;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,8 +9,6 @@ import org.insightech.er.editor.model.AbstractModel;
 public class GroupSet extends AbstractModel implements Iterable<ColumnGroup> {
 
 	private static final long serialVersionUID = 6192280105150073360L;
-
-	public static final String PROPERTY_CHANGE_GROUP_SET = "group_set";
 
 	private String database;
 
@@ -23,15 +20,10 @@ public class GroupSet extends AbstractModel implements Iterable<ColumnGroup> {
 
 	public void add(ColumnGroup group) {
 		this.groups.add(group);
-		Collections.sort(this.groups);
-
-		this.firePropertyChange(PROPERTY_CHANGE_GROUP_SET, null, null);
 	}
 
 	public void remove(ColumnGroup group) {
 		this.groups.remove(group);
-
-		this.firePropertyChange(PROPERTY_CHANGE_GROUP_SET, null, null);
 	}
 
 	public Iterator<ColumnGroup> iterator() {
@@ -58,21 +50,10 @@ public class GroupSet extends AbstractModel implements Iterable<ColumnGroup> {
 		return this.groups.indexOf(group);
 	}
 
-	/**
-	 * database ÇéÊìæÇµÇ‹Ç∑.
-	 * 
-	 * @return database
-	 */
 	public String getDatabase() {
 		return database;
 	}
 
-	/**
-	 * database Çê›íËÇµÇ‹Ç∑.
-	 * 
-	 * @param database
-	 *            database
-	 */
 	public void setDatabase(String database) {
 		this.database = database;
 	}

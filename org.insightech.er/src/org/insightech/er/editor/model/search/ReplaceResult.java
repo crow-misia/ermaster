@@ -2,13 +2,13 @@ package org.insightech.er.editor.model.search;
 
 public class ReplaceResult {
 
-	private String original;
+	private Object original;
 
-	public ReplaceResult(String original) {
+	public ReplaceResult(Object original) {
 		this.original = original;
 	}
 
-	public String getOriginal() {
+	public Object getOriginal() {
 		return original;
 	}
 

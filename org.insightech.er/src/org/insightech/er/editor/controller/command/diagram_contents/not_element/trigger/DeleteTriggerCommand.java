@@ -22,6 +22,7 @@ public class DeleteTriggerCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.triggerSet.remove(this.trigger);
+		this.triggerSet.refresh();
 	}
 
 	/**
@@ -29,6 +30,8 @@ public class DeleteTriggerCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		this.triggerSet.addTrigger(this.trigger);
+		this.triggerSet.addObject(this.trigger);
+		this.triggerSet.refresh();
 	}
+	
 }

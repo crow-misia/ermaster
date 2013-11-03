@@ -19,8 +19,6 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 
 	private static final long serialVersionUID = -120487815554383179L;
 
-	public static final String PROPERTY_CHANGE_CONTENTS = "contents";
-
 	private NoteSet noteSet;
 
 	private TableSet tableSet;
@@ -56,8 +54,6 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 		}
 
 		this.nodeElementList.add(nodeElement);
-
-		this.firePropertyChange(PROPERTY_CHANGE_CONTENTS, null, null);
 	}
 
 	public void remove(NodeElement nodeElement) {
@@ -76,8 +72,6 @@ public class NodeSet extends AbstractModel implements Iterable<NodeElement> {
 		}
 
 		this.nodeElementList.remove(nodeElement);
-
-		this.firePropertyChange(PROPERTY_CHANGE_CONTENTS, null, null);
 	}
 
 	public boolean contains(NodeElement nodeElement) {

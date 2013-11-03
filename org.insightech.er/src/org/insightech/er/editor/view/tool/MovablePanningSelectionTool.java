@@ -55,34 +55,38 @@ public class MovablePanningSelectionTool extends PanningSelectionTool {
 			dy = -1;
 		}
 
-		ERDiagram diagram = (ERDiagram) this.getCurrentViewer().getContents()
-				.getModel();
+		if (dx != 0 || dy != 0) {
+			ERDiagram diagram = (ERDiagram) this.getCurrentViewer()
+					.getContents().getModel();
 
-		List selectedObject = this.getCurrentViewer().getSelectedEditParts();
-		if (!selectedObject.isEmpty()) {
+			List selectedObject = this.getCurrentViewer()
+					.getSelectedEditParts();
+			if (!selectedObject.isEmpty()) {
 
-			CompoundCommand command = new CompoundCommand();
+				CompoundCommand command = new CompoundCommand();
 
-			for (Object object : selectedObject) {
+				for (Object object : selectedObject) {
 
-				if (object instanceof ERTableEditPart
-						|| object instanceof NoteEditPart) {
-					NodeElementEditPart editPart = (NodeElementEditPart) object;
+					if (object instanceof ERTableEditPart
+							|| object instanceof NoteEditPart) {
+						NodeElementEditPart editPart = (NodeElementEditPart) object;
 
-					NodeElement nodeElement = (NodeElement) editPart.getModel();
+						NodeElement nodeElement = (NodeElement) editPart
+								.getModel();
 
-					MoveElementCommand moveElementCommand = new MoveElementCommand(
-							diagram, editPart.getFigure().getBounds(),
-							nodeElement.getX() + dx, nodeElement.getY() + dy,
-							nodeElement.getWidth(), nodeElement.getHeight(),
-							nodeElement);
+						MoveElementCommand moveElementCommand = new MoveElementCommand(
+								diagram, editPart.getFigure().getBounds(),
+								nodeElement.getX() + dx, nodeElement.getY()
+										+ dy, nodeElement.getWidth(),
+								nodeElement.getHeight(), nodeElement);
 
-					command.add(moveElementCommand);
+						command.add(moveElementCommand);
+					}
 				}
-			}
 
-			this.getCurrentViewer().getEditDomain().getCommandStack().execute(
-					command.unwrap());
+				this.getCurrentViewer().getEditDomain().getCommandStack()
+						.execute(command.unwrap());
+			}
 		}
 
 		return super.handleKeyDown(event);
@@ -99,7 +103,7 @@ public class MovablePanningSelectionTool extends PanningSelectionTool {
 
 			editPart.getFigure().translateToRelative(diagram.mousePoint);
 		}
-		
+
 		super.mouseDown(e, viewer);
 	}
 

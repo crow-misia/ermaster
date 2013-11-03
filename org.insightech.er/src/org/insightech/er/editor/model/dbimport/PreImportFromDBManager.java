@@ -1,5 +1,6 @@
 package org.insightech.er.editor.model.dbimport;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -10,10 +11,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.insightech.er.ResourceString;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.settings.DBSetting;
 
-public abstract class PreImportFromDBManager {
+public abstract class PreImportFromDBManager implements IRunnableWithProgress {
 
 	private static Logger logger = Logger
 			.getLogger(PreImportFromDBManager.class.getName());
@@ -30,6 +34,12 @@ public abstract class PreImportFromDBManager {
 
 	private Exception exception;
 
+	private int taskTotalCount = 1;
+
+	private int taskCount = 0;
+
+	IProgressMonitor monitor;
+
 	public void init(Connection con, DBSetting dbSetting, ERDiagram diagram,
 			List<String> schemaList) throws SQLException {
 		this.con = con;
@@ -41,12 +51,28 @@ public abstract class PreImportFromDBManager {
 		this.schemaList = schemaList;
 	}
 
-	public void run() {
+	public void run(IProgressMonitor monitor) throws InvocationTargetException,
+			InterruptedException {
+
 		try {
+			if (!this.schemaList.isEmpty()) {
+				this.taskTotalCount = this.schemaList.size();
+			}
+			this.taskTotalCount *= 4;
+			this.monitor = monitor;
+
+			monitor.beginTask(
+					ResourceString
+							.getResourceString("dialog.message.import.schema.information"),
+					this.taskTotalCount);
+
 			this.importObjects.addAll(this.importTables());
 			this.importObjects.addAll(this.importSequences());
 			this.importObjects.addAll(this.importViews());
 			this.importObjects.addAll(this.importTriggers());
+
+		} catch (InterruptedException e) {
+			throw e;
 
 		} catch (Exception e) {
 			logger.log(Level.WARNING, e.getMessage(), e);
@@ -54,28 +80,32 @@ public abstract class PreImportFromDBManager {
 		}
 	}
 
-	protected List<DBObject> importTables() throws SQLException {
+	protected List<DBObject> importTables() throws SQLException,
+			InterruptedException {
 		return this.importObjects(new String[] { "TABLE", "SYSTEM TABLE",
 				"SYSTEM TOAST TABLE", "TEMPORARY TABLE" }, DBObject.TYPE_TABLE);
 	}
 
-	protected List<DBObject> importSequences() throws SQLException {
+	protected List<DBObject> importSequences() throws SQLException,
+			InterruptedException {
 		return this.importObjects(new String[] { "SEQUENCE" },
 				DBObject.TYPE_SEQUENCE);
 	}
 
-	protected List<DBObject> importViews() throws SQLException {
+	protected List<DBObject> importViews() throws SQLException,
+			InterruptedException {
 		return this.importObjects(new String[] { "VIEW", "SYSTEM VIEW" },
 				DBObject.TYPE_VIEW);
 	}
 
-	protected List<DBObject> importTriggers() throws SQLException {
+	protected List<DBObject> importTriggers() throws SQLException,
+			InterruptedException {
 		return this.importObjects(new String[] { "TRIGGER" },
 				DBObject.TYPE_TRIGGER);
 	}
 
 	private List<DBObject> importObjects(String[] types, String dbObjectType)
-			throws SQLException {
+			throws SQLException, InterruptedException {
 		List<DBObject> list = new ArrayList<DBObject>();
 
 		ResultSet resultSet = null;
@@ -86,6 +116,14 @@ public abstract class PreImportFromDBManager {
 
 		for (String schemaPattern : this.schemaList) {
 			try {
+				this.taskCount++;
+
+				monitor.subTask("(" + this.taskCount + "/"
+						+ this.taskTotalCount + ")  [TYPE : "
+						+ dbObjectType.toUpperCase() + ",  SCHEMA : "
+						+ schemaPattern + "]");
+				monitor.worked(1);
+
 				resultSet = metaData
 						.getTables(null, schemaPattern, null, types);
 
@@ -98,15 +136,19 @@ public abstract class PreImportFromDBManager {
 							this.getAutoIncrementColumnName(con, schema, name);
 
 						} catch (SQLException e) {
-							e.printStackTrace();
-							// �e�[�u����񂪎擾�ł��Ȃ��ꍇ�i���̃��[�U�̏��L���Ȃǂ̏ꍇ�j�A
-							// ���̃e�[�u���͎g�p���Ȃ��B
+							logger.log(Level.WARNING, e.getMessage());
+							// テーブル情報が取得できない場合（他のユーザの所有物などの場合）、
+							// このテーブルは使用しない。
 							continue;
 						}
 					}
 
 					DBObject dbObject = new DBObject(schema, name, dbObjectType);
 					list.add(dbObject);
+				}
+
+				if (monitor.isCanceled()) {
+					throw new InterruptedException("Cancel has been requested.");
 				}
 
 			} finally {

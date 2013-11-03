@@ -26,9 +26,13 @@ import org.insightech.er.editor.controller.command.diagram_contents.element.node
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.table_view.AddWordCommand;
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.table_view.ChangeColumnOrderCommand;
 import org.insightech.er.editor.controller.command.diagram_contents.element.node.table_view.ChangeTableViewPropertyCommand;
+import org.insightech.er.editor.controller.editpart.element.node.NodeElementEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.column.ColumnEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.column.NormalColumnEditPart;
+import org.insightech.er.editor.model.ERDiagram;
+import org.insightech.er.editor.model.ViewableModel;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
+import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
@@ -46,13 +50,25 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 	 */
 	@Override
 	protected List createSelectionHandles() {
-		List list = new ArrayList();
+		List selectedEditParts = this.getHost().getViewer()
+				.getSelectedEditParts();
+		if (selectedEditParts.size() == 1) {
+			ViewableModel currentElement = (ViewableModel) getHost()
+					.getParent().getModel();
 
-		getHost().getRoot().getContents().refresh();
+			ERDiagram diagram = (ERDiagram) getHost().getRoot().getContents()
+					.getModel();
 
-		// NonResizableHandleKit.addHandles((GraphicalEditPart) getHost(), list,
-		// new SelectEditPartTracker(getHost()), SharedCursors.ARROW);
-		return list;
+			List<NodeElement> nodeElementList = diagram.getDiagramContents()
+					.getContents().getNodeElementList();
+			nodeElementList.remove(currentElement);
+			nodeElementList.add((NodeElement) currentElement);
+
+			NodeElementEditPart editPart = (NodeElementEditPart) getHost().getParent();
+			editPart.reorder();
+		}
+
+		return new ArrayList();
 	}
 
 	private Rectangle getColumnRectangle() {
@@ -213,8 +229,8 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 						.getModel();
 				Word word = (Word) editRequest.getDirectEditFeature();
 
-				return new AddWordCommand(table, word, this
-						.getColumnIndex(editRequest));
+				return new AddWordCommand(table, word,
+						this.getColumnIndex(editRequest));
 
 			} else if (ERDiagramTransferDragSourceListener.REQUEST_TYPE_MOVE_COLUMN
 					.equals(request.getType())) {
@@ -224,8 +240,8 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 						.getModel();
 
 				return createMoveColumnCommand(editRequest, this.getHost()
-						.getViewer(), newTableView, this
-						.getColumnIndex(editRequest));
+						.getViewer(), newTableView,
+						this.getColumnIndex(editRequest));
 
 			} else if (ERDiagramTransferDragSourceListener.REQUEST_TYPE_MOVE_COLUMN_GROUP
 					.equals(request.getType())) {
@@ -279,9 +295,10 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 			command.add(deleteOldRelationCommand);
 
 			Relation newRelation = new Relation(oldRelation.isReferenceForPK(),
-					oldRelation.getReferencedComplexUniqueKey(), oldRelation
-							.getReferencedColumn(), true);
-			newRelation.setParentCardinality(oldRelation.getParentCardinality());
+					oldRelation.getReferencedComplexUniqueKey(),
+					oldRelation.getReferencedColumn(), true);
+			newRelation
+					.setParentCardinality(oldRelation.getParentCardinality());
 			newRelation.setChildCardinality(oldRelation.getChildCardinality());
 
 			List<NormalColumn> oldForeignKeyColumnList = new ArrayList<NormalColumn>();
@@ -324,14 +341,16 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 			}
 
 			for (NormalColumn oldForeignKey : oldForeignKeyColumnList) {
-				List<Relation> oldRelationList = oldForeignKey.getOutgoingRelationList();
+				List<Relation> oldRelationList = oldForeignKey
+						.getOutgoingRelationList();
 
 				if (!oldRelationList.isEmpty()) {
-					Activator.showErrorDialog("error.reference.key.not.moveable");
+					Activator
+							.showErrorDialog("error.reference.key.not.moveable");
 					return null;
 				}
 			}
-			
+
 			CreateRelationCommand createNewRelationCommand = new CreateRelationCommand(
 					newRelation, oldForeignKeyColumnList);
 

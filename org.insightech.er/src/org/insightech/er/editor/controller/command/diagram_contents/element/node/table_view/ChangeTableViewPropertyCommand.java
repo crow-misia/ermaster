@@ -24,7 +24,11 @@ public class ChangeTableViewPropertyCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.newCopyTableView.restructureData(tableView);
-		this.tableView.getDiagram().changeAll();
+		
+		this.tableView.getDiagram().refreshVisuals();
+		this.tableView.getDiagram().getDiagramContents().getIndexSet().refresh();
+		
+		this.tableView.getDiagram().getEditor().refreshPropertySheet();
 	}
 
 	/**
@@ -33,7 +37,11 @@ public class ChangeTableViewPropertyCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.oldCopyTableView.restructureData(tableView);
-		this.tableView.getDiagram().changeAll();
+		
+		this.tableView.getDiagram().refreshVisuals();
+		this.tableView.getDiagram().getDiagramContents().getIndexSet().refresh();
+		
+		this.tableView.getDiagram().getEditor().refreshPropertySheet();
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.insightech.er.editor.controller.command.diagram_contents.element.connection;
 
 import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 
 public class CreateConnectionCommand extends AbstractCreateConnectionCommand {
 
@@ -17,8 +16,11 @@ public class CreateConnectionCommand extends AbstractCreateConnectionCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		connection.setSource((NodeElement) source.getModel());
-		connection.setTarget((NodeElement) target.getModel());
+		this.connection.setSource(this.getSourceModel());
+		this.connection.setTarget(this.getTargetModel());
+
+		this.getTargetModel().refreshTargetConnections();
+		this.getSourceModel().refreshSourceConnections();
 	}
 
 	/**
@@ -26,8 +28,11 @@ public class CreateConnectionCommand extends AbstractCreateConnectionCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		connection.setSource(null);
-		connection.setTarget(null);
+		this.connection.setSource(null);
+		this.connection.setTarget(null);
+
+		this.getTargetModel().refreshTargetConnections();
+		this.getSourceModel().refreshSourceConnections();
 	}
 
 	/**

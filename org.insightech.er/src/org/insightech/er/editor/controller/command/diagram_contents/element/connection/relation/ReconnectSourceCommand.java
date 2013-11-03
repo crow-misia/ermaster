@@ -1,11 +1,11 @@
 package org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation;
 
 import org.insightech.er.editor.controller.command.AbstractCommand;
-import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
+import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 
 public class ReconnectSourceCommand extends AbstractCommand {
 
-	private Relation relation;
+	private ConnectionElement connection;
 
 	int xp;
 
@@ -15,8 +15,8 @@ public class ReconnectSourceCommand extends AbstractCommand {
 
 	int oldYp;
 
-	public ReconnectSourceCommand(Relation relation, int xp, int yp) {
-		this.relation = relation;
+	public ReconnectSourceCommand(ConnectionElement connection, int xp, int yp) {
+		this.connection = connection;
 
 		this.xp = xp;
 		this.yp = yp;
@@ -27,11 +27,11 @@ public class ReconnectSourceCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		this.oldXp = relation.getSourceXp();
-		this.oldYp = relation.getSourceYp();
+		this.oldXp = this.connection.getSourceXp();
+		this.oldYp = this.connection.getSourceYp();
 
-		relation.setSourceLocationp(this.xp, this.yp);
-		relation.setParentMove();
+		this.connection.setSourceLocationp(this.xp, this.yp);
+		this.connection.refreshVisuals();
 	}
 
 	/**
@@ -39,8 +39,8 @@ public class ReconnectSourceCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		relation.setSourceLocationp(this.oldXp, this.oldYp);
-		relation.setParentMove();
+		this.connection.setSourceLocationp(this.oldXp, this.oldYp);
+		this.connection.refreshVisuals();
 	}
 
 }

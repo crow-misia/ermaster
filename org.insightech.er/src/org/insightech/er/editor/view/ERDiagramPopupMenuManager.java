@@ -29,7 +29,7 @@ import org.insightech.er.editor.view.action.dbimport.ImportFromDBAction;
 import org.insightech.er.editor.view.action.dbimport.ImportFromFileAction;
 import org.insightech.er.editor.view.action.edit.EditAllAttributesAction;
 import org.insightech.er.editor.view.action.line.DefaultLineAction;
-import org.insightech.er.editor.view.action.line.ResizeModelAction;
+import org.insightech.er.editor.view.action.line.AutoResizeModelAction;
 import org.insightech.er.editor.view.action.line.RightAngleLineAction;
 import org.insightech.er.editor.view.action.option.OptionSettingAction;
 import org.insightech.er.editor.view.action.option.notation.ChangeCapitalAction;
@@ -115,7 +115,7 @@ public class ERDiagramPopupMenuManager extends MenuManager {
 
 		this.add(new Separator());
 
-		this.add(this.getAction(ResizeModelAction.ID));
+		this.add(this.getAction(AutoResizeModelAction.ID));
 		this.add(this.getAction(RightAngleLineAction.ID));
 		this.add(this.getAction(DefaultLineAction.ID));
 

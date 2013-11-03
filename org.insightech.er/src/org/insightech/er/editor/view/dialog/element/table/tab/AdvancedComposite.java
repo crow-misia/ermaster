@@ -37,7 +37,7 @@ public abstract class AdvancedComposite extends Composite {
 		this.tableProperties = tableProperties;
 		this.diagram = diagram;
 		this.table = table;
-		
+
 		this.initComposite();
 		this.addListener();
 		this.setData();
@@ -74,7 +74,7 @@ public abstract class AdvancedComposite extends Composite {
 
 		if (tablespace != null) {
 			int index = this.diagram.getDiagramContents().getTablespaceSet()
-					.getTablespaceList().indexOf(tablespace);
+					.getObjectList().indexOf(tablespace);
 			this.tableSpaceCombo.select(index + 1);
 		}
 
@@ -88,7 +88,7 @@ public abstract class AdvancedComposite extends Composite {
 			int tablespaceIndex = this.tableSpaceCombo.getSelectionIndex();
 			if (tablespaceIndex > 0) {
 				Tablespace tablespace = this.diagram.getDiagramContents()
-						.getTablespaceSet().getTablespaceList()
+						.getTablespaceSet().getObjectList()
 						.get(tablespaceIndex - 1);
 				this.tableProperties.setTableSpace(tablespace);
 

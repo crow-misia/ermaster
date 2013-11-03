@@ -13,8 +13,6 @@ public class NoteSet extends AbstractModel implements ObjectListModel,
 
 	private static final long serialVersionUID = -7000722010136664297L;
 
-	public static final String PROPERTY_CHANGE_NOTE_SET = "NoteSet";
-
 	private List<Note> noteList;
 
 	public NoteSet() {
@@ -23,13 +21,11 @@ public class NoteSet extends AbstractModel implements ObjectListModel,
 
 	public void add(Note note) {
 		this.noteList.add(note);
-		this.firePropertyChange(PROPERTY_CHANGE_NOTE_SET, null, null);
 	}
 
 	public int remove(Note note) {
 		int index = this.noteList.indexOf(note);
 		this.noteList.remove(index);
-		this.firePropertyChange(PROPERTY_CHANGE_NOTE_SET, null, null);
 
 		return index;
 	}

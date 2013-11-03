@@ -35,7 +35,7 @@ public class TablespaceHtmlReportPageGenerator extends
 	@Override
 	public List<Object> getObjectList(ERDiagram diagram) {
 		List list = diagram.getDiagramContents().getTablespaceSet()
-				.getTablespaceList();
+				.getObjectList();
 
 		return list;
 	}

@@ -17,6 +17,9 @@ public class DeleteConnectionCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.connection.delete();
+
+		this.connection.getTarget().refreshTargetConnections();
+		this.connection.getSource().refreshSourceConnections();
 	}
 
 	/**
@@ -25,5 +28,8 @@ public class DeleteConnectionCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.connection.connect();
+		
+		this.connection.getTarget().refreshTargetConnections();
+		this.connection.getSource().refreshSourceConnections();
 	}
 }

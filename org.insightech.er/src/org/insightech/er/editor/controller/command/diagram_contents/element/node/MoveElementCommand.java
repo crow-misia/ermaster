@@ -40,12 +40,13 @@ public class MoveElementCommand extends AbstractCommand {
 
 	private List<Category> addCategories;
 
-	private ERDiagram diagram;
+	protected ERDiagram diagram;
 
 	private Rectangle bounds;
 
 	public MoveElementCommand(ERDiagram diagram, Rectangle bounds, int x,
 			int y, int width, int height, NodeElement element) {
+		
 		this.element = element;
 		this.setNewRectangle(x, y, width, height);
 
@@ -177,6 +178,11 @@ public class MoveElementCommand extends AbstractCommand {
 		}
 
 		this.element.setLocation(new Location(x, y, width, height));
+		
+		this.element.refreshVisuals();
+		for (Category category : this.newCategoryRectangleMap.keySet()) {
+			category.refreshVisuals();
+		}
 	}
 
 	/**
@@ -198,6 +204,11 @@ public class MoveElementCommand extends AbstractCommand {
 
 		for (Category category : addCategories) {
 			category.getContents().remove(this.element);
+		}
+		
+		this.element.refreshVisuals();
+		for (Category category : this.oldCategoryRectangleMap.keySet()) {
+			category.refreshVisuals();
 		}
 	}
 }

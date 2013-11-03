@@ -86,6 +86,8 @@ public class ChangeGroupCommand extends AbstractCommand {
 
 			tableView.setColumns(columns);
 		}
+		
+		this.diagram.refreshVisuals();
 	}
 
 	/**
@@ -113,5 +115,7 @@ public class ChangeGroupCommand extends AbstractCommand {
 			List<Column> oldColumns = this.oldColumnListMap.get(tableView);
 			tableView.setColumns(oldColumns);
 		}
+		
+		this.diagram.refreshVisuals();
 	}
 }

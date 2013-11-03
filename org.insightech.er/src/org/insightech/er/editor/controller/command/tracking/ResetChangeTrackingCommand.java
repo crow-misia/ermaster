@@ -26,7 +26,7 @@ public class ResetChangeTrackingCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.changeTrackingList.setCalculated(false);
-		this.diagram.changeAll();
+		this.diagram.refresh();
 	}
 
 	/**
@@ -35,6 +35,6 @@ public class ResetChangeTrackingCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.changeTrackingList.setCalculated(oldCalculated);
-		this.diagram.changeAll();
+		this.diagram.refresh();
 	}
 }

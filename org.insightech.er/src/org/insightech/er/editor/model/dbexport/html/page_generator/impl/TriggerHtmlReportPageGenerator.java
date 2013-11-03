@@ -26,7 +26,7 @@ public class TriggerHtmlReportPageGenerator extends
 	@Override
 	public List<Object> getObjectList(ERDiagram diagram) {
 		List list = diagram.getDiagramContents().getTriggerSet()
-				.getTriggerList();
+				.getObjectList();
 
 		return list;
 	}

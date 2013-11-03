@@ -35,4 +35,10 @@ public class Location implements Serializable, Cloneable {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return "Location (x:" + this.x + ", y:" + this.y + ", width:"
+				+ this.width + ", height:" + this.height + ")";
+	}
+
 }

@@ -1,11 +1,10 @@
 package org.insightech.er.editor.controller.editpart.outline.table;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -24,7 +23,6 @@ import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
-import org.insightech.er.editor.model.diagram_contents.element.node.table.index.IndexSet;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.element.table.TableDialog;
 
@@ -40,40 +38,29 @@ public class TableOutlineEditPart extends AbstractOutlineEditPart implements
 
 		ERTable table = (ERTable) this.getModel();
 
+		List<Relation> relationList = new ArrayList<Relation>();
+
 		Category category = this.getCurrentCategory();
 
 		for (Relation relation : table.getIncomingRelations()) {
-			if (category == null
-					|| category.contains(relation.getSource())) {
-				children.add(relation);
+			if (category == null || category.contains(relation.getSource())) {
+				relationList.add(relation);
 			}
 		}
 
+		Collections.sort(relationList);
+
+		children.addAll(relationList);
 		children.addAll(table.getIndexes());
 
 		return children;
 	}
 
-	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(ERTable.PROPERTY_CHANGE_PHYSICAL_NAME)) {
-			refreshName();
-
-		} else if (evt.getPropertyName().equals(
-				ERTable.PROPERTY_CHANGE_LOGICAL_NAME)) {
-			refreshName();
-
-		} else if (evt.getPropertyName()
-				.equals(ERTable.PROPERTY_CHANGE_COLUMNS)) {
-			refresh();
-
-		} else if (evt.getPropertyName().equals(
-				IndexSet.PROPERTY_CHANGE_INDEXES)) {
-			refresh();
-
-		}
-	}
-
-	protected void refreshName() {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void refreshOutlineVisuals() {
 		ERTable model = (ERTable) this.getModel();
 
 		ERDiagram diagram = (ERDiagram) this.getRoot().getContents().getModel();
@@ -117,19 +104,6 @@ public class TableOutlineEditPart extends AbstractOutlineEditPart implements
 
 		this.setWidgetText(diagram.filter(name));
 		this.setWidgetImage(Activator.getImage(ImageKey.TABLE));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void refreshOutlineVisuals() {
-		this.refreshName();
-
-		for (Object child : this.getChildren()) {
-			EditPart part = (EditPart) child;
-			part.refresh();
-		}
 	}
 
 	/**

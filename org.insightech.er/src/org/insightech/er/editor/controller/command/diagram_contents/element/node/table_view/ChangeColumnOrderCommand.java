@@ -33,7 +33,8 @@ public class ChangeColumnOrderCommand extends AbstractCommand {
 	protected void doExecute() {
 		this.tableView.removeColumn(column);
 		this.tableView.addColumn(newIndex, column);
-		this.tableView.getDiagram().changeAll();
+		
+		this.tableView.refresh();
 	}
 
 	/**
@@ -43,7 +44,8 @@ public class ChangeColumnOrderCommand extends AbstractCommand {
 	protected void doUndo() {
 		this.tableView.removeColumn(column);
 		this.tableView.addColumn(oldIndex, column);
-		this.tableView.getDiagram().changeAll();
+		
+		this.tableView.refresh();
 	}
 
 }

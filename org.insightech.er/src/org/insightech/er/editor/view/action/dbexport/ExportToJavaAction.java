@@ -6,7 +6,7 @@ import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.ChangeSettingsCommand;
+import org.insightech.er.editor.controller.command.settings.ChangeSettingsCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.action.AbstractBaseAction;
@@ -42,7 +42,7 @@ public class ExportToJavaAction extends AbstractBaseAction {
 			newSettings.setExportSetting(dialog.getExportSetting());
 
 			ChangeSettingsCommand command = new ChangeSettingsCommand(diagram,
-					newSettings);
+					newSettings, false);
 			this.execute(command);
 		}
 	}

@@ -22,6 +22,10 @@ public class CategoryFigure extends RectangleFigure {
 		this.add(this.label);
 	}
 
+	public void setName(String name) {
+		this.label.setText(name);
+	}
+
 	@Override
 	protected void fillShape(Graphics graphics) {
 		graphics.setAlpha(100);

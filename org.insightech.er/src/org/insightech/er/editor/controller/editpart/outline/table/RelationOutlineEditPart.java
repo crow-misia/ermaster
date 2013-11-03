@@ -1,7 +1,5 @@
 package org.insightech.er.editor.controller.editpart.outline.table;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -15,27 +13,13 @@ import org.insightech.er.editor.controller.command.diagram_contents.element.conn
 import org.insightech.er.editor.controller.editpart.outline.AbstractOutlineEditPart;
 import org.insightech.er.editor.controller.editpolicy.element.connection.RelationEditPolicy;
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
-import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.dialog.element.relation.RelationDialog;
 import org.insightech.er.util.Format;
 
 public class RelationOutlineEditPart extends AbstractOutlineEditPart {
-
-	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(ERTable.PROPERTY_CHANGE_PHYSICAL_NAME)) {
-			refreshVisuals();
-
-		} else if (evt.getPropertyName().equals(
-				ConnectionElement.PROPERTY_CHANGE_CONNECTION_ATTRIBUTE)) {
-			refreshVisuals();
-
-		}
-
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -60,9 +44,7 @@ public class RelationOutlineEditPart extends AbstractOutlineEditPart {
 			}
 
 			if (viewMode == Settings.VIEW_MODE_PHYSICAL) {
-				sb
-						.append(Format.null2blank(foreignKeyColumn
-								.getPhysicalName()));
+				sb.append(Format.null2blank(foreignKeyColumn.getPhysicalName()));
 
 			} else if (viewMode == Settings.VIEW_MODE_LOGICAL) {
 				sb.append(Format.null2blank(foreignKeyColumn.getLogicalName()));
@@ -70,9 +52,7 @@ public class RelationOutlineEditPart extends AbstractOutlineEditPart {
 			} else {
 				sb.append(Format.null2blank(foreignKeyColumn.getLogicalName()));
 				sb.append("/");
-				sb
-						.append(Format.null2blank(foreignKeyColumn
-								.getPhysicalName()));
+				sb.append(Format.null2blank(foreignKeyColumn.getPhysicalName()));
 			}
 		}
 

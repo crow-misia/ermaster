@@ -81,4 +81,13 @@ public class CategoryEditPart extends NodeElementEditPart implements IResizable 
 	@Override
 	protected void performRequestOpen() {
 	}
+
+	@Override
+	public void doRefreshVisuals() {
+		CategoryFigure figure = (CategoryFigure) this.getFigure();
+		Category category = (Category) this.getModel();
+
+		figure.setName(category.getName());
+	}
+
 }

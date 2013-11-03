@@ -1,6 +1,7 @@
 package org.insightech.er.db.impl.mysql;
 
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManager;
@@ -102,9 +103,9 @@ public class MySQLDDLCreator extends DDLCreator {
 				normalColumn.getTypeData(), this.getDiagram().getDatabase())));
 
 		if (normalColumn.getTypeData().isBinary()) {
-			ddl.append(" BINARY");			
+			ddl.append(" BINARY");
 		}
-		
+
 		if (!Check.isEmpty(normalColumn.getCharacterSet())) {
 			ddl.append(" CHARACTER SET ");
 			ddl.append(normalColumn.getCharacterSet());
@@ -241,12 +242,13 @@ public class MySQLDDLCreator extends DDLCreator {
 		}
 
 		if (ddlTarget.commentReplaceLineFeed) {
-			comment = comment.replaceAll("\r\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\r",
-					Format.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\r\n", Matcher
+					.quoteReplacement(Format
+							.null2blank(ddlTarget.commentReplaceString)));
+			comment = comment.replaceAll("\r", Format.null2blank(Matcher
+					.quoteReplacement(ddlTarget.commentReplaceString)));
+			comment = comment.replaceAll("\n", Format.null2blank(Matcher
+					.quoteReplacement(ddlTarget.commentReplaceString)));
 		}
 
 		int maxLength = 60;

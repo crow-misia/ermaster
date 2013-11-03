@@ -10,18 +10,26 @@ public abstract class ConnectionElement extends AbstractModel {
 
 	private static final long serialVersionUID = -5418951773059063716L;
 
-	public static final String PROPERTY_CHANGE_CONNECTION = "connection";
-
-	public static final String PROPERTY_CHANGE_BEND_POINT = "bendPoint";
-
-	public static final String PROPERTY_CHANGE_CONNECTION_ATTRIBUTE = "connection_attribute";
-
 	protected NodeElement source;
 
 	protected NodeElement target;
 
-	// ベンド・ポイントの位置情報のリスト
+	private int sourceXp;
+
+	private int sourceYp;
+
+	private int targetXp;
+
+	private int targetYp;
+
 	private List<Bendpoint> bendPoints = new ArrayList<Bendpoint>();
+
+	public ConnectionElement() {
+		this.sourceXp = -1;
+		this.sourceYp = -1;
+		this.targetXp = -1;
+		this.targetYp = -1;
+	}
 
 	public NodeElement getSource() {
 		return source;
@@ -37,8 +45,6 @@ public abstract class ConnectionElement extends AbstractModel {
 		if (this.source != null) {
 			this.source.addOutgoing(this);
 		}
-
-		this.firePropertyChange(PROPERTY_CHANGE_CONNECTION, null, source);
 	}
 
 	public void setSourceAndTarget(NodeElement source, NodeElement target) {
@@ -56,8 +62,6 @@ public abstract class ConnectionElement extends AbstractModel {
 		if (this.target != null) {
 			this.target.addIncoming(this);
 		}
-
-		this.firePropertyChange(PROPERTY_CHANGE_CONNECTION, null, source);
 	}
 
 	public NodeElement getTarget() {
@@ -80,12 +84,10 @@ public abstract class ConnectionElement extends AbstractModel {
 
 	public void addBendpoint(int index, Bendpoint point) {
 		bendPoints.add(index, point);
-		firePropertyChange(PROPERTY_CHANGE_BEND_POINT, null, null);
 	}
 
 	public void setBendpoints(List<Bendpoint> points) {
 		bendPoints = points;
-		firePropertyChange(PROPERTY_CHANGE_BEND_POINT, null, null);
 	}
 
 	public List<Bendpoint> getBendpoints() {
@@ -94,21 +96,60 @@ public abstract class ConnectionElement extends AbstractModel {
 
 	public void removeBendpoint(int index) {
 		bendPoints.remove(index);
-		firePropertyChange(PROPERTY_CHANGE_BEND_POINT, null, null);
 	}
 
 	public void replaceBendpoint(int index, Bendpoint point) {
 		bendPoints.set(index, point);
-		firePropertyChange(PROPERTY_CHANGE_BEND_POINT, null, null);
 	}
 
-	public void setParentMove() {
-		firePropertyChange(PROPERTY_CHANGE_CONNECTION_ATTRIBUTE, null, null);
+	public int getSourceXp() {
+		return sourceXp;
 	}
 
-	/**
-	 * 接続を複製します。 接続元と接続先のノードはともに、複製元と同じです。
-	 */
+	public void setSourceLocationp(int sourceXp, int sourceYp) {
+		this.sourceXp = sourceXp;
+		this.sourceYp = sourceYp;
+	}
+
+	public int getSourceYp() {
+		return sourceYp;
+	}
+
+	public int getTargetXp() {
+		return targetXp;
+	}
+
+	public void setTargetLocationp(int targetXp, int targetYp) {
+		this.targetXp = targetXp;
+		this.targetYp = targetYp;
+	}
+
+	public int getTargetYp() {
+		return targetYp;
+	}
+
+	public boolean isSourceAnchorMoved() {
+		if (this.sourceXp != -1) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isTargetAnchorMoved() {
+		if (this.targetXp != -1) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void refreshBendpoint() {
+		if (isUpdateable()) {
+			this.firePropertyChange("refreshBendpoint", null, null);
+		}
+	}
+
 	@Override
 	public ConnectionElement clone() {
 		ConnectionElement clone = (ConnectionElement) super.clone();

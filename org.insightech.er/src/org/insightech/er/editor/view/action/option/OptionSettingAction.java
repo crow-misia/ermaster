@@ -7,7 +7,7 @@ import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.ChangeSettingsCommand;
+import org.insightech.er.editor.controller.command.settings.ChangeSettingsCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.action.AbstractBaseAction;
@@ -39,7 +39,7 @@ public class OptionSettingAction extends AbstractBaseAction {
 
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			ChangeSettingsCommand command = new ChangeSettingsCommand(diagram,
-					settings);
+					settings, true);
 
 			this.execute(command);
 		}

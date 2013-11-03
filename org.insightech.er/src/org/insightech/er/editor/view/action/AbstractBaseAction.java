@@ -13,9 +13,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IFileEditorInput;
 import org.insightech.er.Activator;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.ChangeSettingsCommand;
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.settings.Settings;
 
 public abstract class AbstractBaseAction extends Action {
 
@@ -67,18 +65,6 @@ public abstract class AbstractBaseAction extends Action {
 
 		} catch (Exception e) {
 			Activator.showExceptionDialog(e);
-
-		} finally {
-			Settings newSettings = this.getChangedSettings();
-
-			if (newSettings != null
-					&& !this.getDiagram().getDiagramContents().getSettings()
-							.equals(newSettings)) {
-				ChangeSettingsCommand command = new ChangeSettingsCommand(this
-						.getDiagram(), newSettings);
-
-				this.execute(command);
-			}
 		}
 	}
 
@@ -87,10 +73,6 @@ public abstract class AbstractBaseAction extends Action {
 	protected void execute(Command command) {
 		this.editor.getGraphicalViewer().getEditDomain().getCommandStack()
 				.execute(command);
-	}
-
-	protected Settings getChangedSettings() {
-		return null;
 	}
 
 	protected ERDiagramEditor getEditorPart() {

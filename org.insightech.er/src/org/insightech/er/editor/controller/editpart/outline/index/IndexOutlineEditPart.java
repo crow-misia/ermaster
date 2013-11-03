@@ -1,7 +1,5 @@
 package org.insightech.er.editor.controller.editpart.outline.index;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -21,9 +19,6 @@ import org.insightech.er.editor.view.dialog.element.table.sub.IndexDialog;
 
 public class IndexOutlineEditPart extends AbstractOutlineEditPart implements
 		DeleteableEditPart {
-
-	public void propertyChange(PropertyChangeEvent evt) {
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -67,8 +62,8 @@ public class IndexOutlineEditPart extends AbstractOutlineEditPart implements
 
 		if (request.getType().equals(RequestConstants.REQ_OPEN)) {
 			IndexDialog dialog = new IndexDialog(PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getShell(), index, index
-					.getTable());
+					.getActiveWorkbenchWindow().getShell(), index,
+					index.getTable());
 
 			if (dialog.open() == IDialogConstants.OK_ID) {
 				ChangeIndexCommand command = new ChangeIndexCommand(diagram,

@@ -2,7 +2,6 @@ package org.insightech.er.editor.model.settings;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
@@ -20,7 +19,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	private boolean showReferredTables;
 
 	/**
-	 * freeLayout ‚ğæ“¾‚µ‚Ü‚·.
+	 * freeLayout ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return freeLayout
 	 */
@@ -29,7 +28,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * freeLayout ‚ğİ’è‚µ‚Ü‚·.
+	 * freeLayout ï¿½ï¿½İ’è‚µï¿½Ü‚ï¿½.
 	 * 
 	 * @param freeLayout
 	 *            freeLayout
@@ -39,7 +38,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * showReferredTables ‚ğæ“¾‚µ‚Ü‚·.
+	 * showReferredTables ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return showReferredTables
 	 */
@@ -48,7 +47,7 @@ public class CategorySetting implements Serializable, Cloneable {
 	}
 
 	/**
-	 * showReferredTables ‚ğİ’è‚µ‚Ü‚·.
+	 * showReferredTables ï¿½ï¿½İ’è‚µï¿½Ü‚ï¿½.
 	 * 
 	 * @param showReferredTables
 	 *            showReferredTables
@@ -82,7 +81,6 @@ public class CategorySetting implements Serializable, Cloneable {
 
 	public void addCategory(Category category) {
 		this.allCategories.add(category);
-		Collections.sort(this.allCategories);
 	}
 
 	public void addCategoryAsSelected(Category category) {
@@ -139,7 +137,6 @@ public class CategorySetting implements Serializable, Cloneable {
 
 	public void setAllCategories(List<Category> allCategories) {
 		this.allCategories = allCategories;
-		Collections.sort(this.allCategories);
 	}
 
 }

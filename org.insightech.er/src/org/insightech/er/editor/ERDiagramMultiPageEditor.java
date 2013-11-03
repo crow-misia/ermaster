@@ -3,7 +3,9 @@ package org.insightech.er.editor;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IFile;
@@ -15,9 +17,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.MouseAdapter;
@@ -31,7 +33,10 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManagerFactory;
@@ -49,15 +54,17 @@ import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequ
 import org.insightech.er.editor.model.diagram_contents.not_element.trigger.Trigger;
 import org.insightech.er.editor.model.settings.CategorySetting;
 import org.insightech.er.editor.persistent.Persistent;
+import org.insightech.er.editor.view.ERDiagramGotoMarker;
 import org.insightech.er.editor.view.dialog.category.CategoryNameChangeDialog;
 import org.insightech.er.editor.view.outline.ERDiagramOutlinePage;
+import org.insightech.er.editor.view.property_source.ERDiagramPropertySourceProvider;
 import org.insightech.er.util.Format;
 
 /**
  * <pre>
- * ÉGÉfÉBÉ^Å[ÉNÉâÉX
- * ÉJÉeÉSÉäÅ[ñàÇ…É^ÉuÅiÉyÅ[ÉWÅjÇçÏê¨Ç∑ÇÈ
- * äeÉ^ÉuÅiÉyÅ[ÉWÅjÇ…ÇÕÅA{@link ERDiagramEditor} ÇäÑÇËìñÇƒÇÈ
+ * „Ç®„Éá„Ç£„Çø„Éº„ÇØ„É©„Çπ
+ * „Ç´„ÉÜ„Ç¥„É™„ÉºÊØé„Å´„Çø„ÉñÔºà„Éö„Éº„Ç∏Ôºâ„Çí‰ΩúÊàê„Åô„Çã
+ * ÂêÑ„Çø„ÉñÔºà„Éö„Éº„Ç∏Ôºâ„Å´„ÅØ„ÄÅ{@link ERDiagramEditor} „ÇíÂâ≤„ÇäÂΩì„Å¶„Çã
  * </pre>
  */
 public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
@@ -66,11 +73,24 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 
 	private ERDiagramEditPartFactory editPartFactory;
 
-	private ZoomComboContributionItem zoomComboContributionItem;
-
 	private ERDiagramOutlinePage outlinePage;
 
 	private ERDiagramElementStateListener fElementStateListener;
+
+	private IGotoMarker gotoMaker;
+
+	private Map<IMarker, Object> markedObjectMap = new HashMap<IMarker, Object>();
+
+	private PropertySheetPage propertySheetPage;
+
+	public ERDiagramMultiPageEditor() {
+		this.propertySheetPage = new PropertySheetPage();
+		this.propertySheetPage
+				.setPropertySourceProvider(new ERDiagramPropertySourceProvider(
+						this));
+
+		this.gotoMaker = new ERDiagramGotoMarker(this);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -110,16 +130,12 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 		this.outlinePage = new ERDiagramOutlinePage(this.diagram);
 
 		try {
-			this.zoomComboContributionItem = new ZoomComboContributionItem(this
-					.getSite().getPage());
-
-			ERDiagramEditor editor = new ERDiagramEditor(diagram,
-					this.editPartFactory, zoomComboContributionItem,
-					this.outlinePage);
+			ERDiagramEditor editor = new ERDiagramEditor(this.diagram,
+					this.editPartFactory, this.outlinePage);
 
 			int index = this.addPage(editor, this.getEditorInput());
-			this.setPageText(index, ResourceString
-					.getResourceString("label.all"));
+			this.setPageText(index,
+					ResourceString.getResourceString("label.all"));
 
 		} catch (PartInitException e) {
 			Activator.showExceptionDialog(e);
@@ -196,8 +212,7 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 				Category category = selectedCategories.get(i - 1);
 
 				ERDiagramEditor diagramEditor = new ERDiagramEditor(
-						this.diagram, this.editPartFactory,
-						this.zoomComboContributionItem, this.outlinePage);
+						this.diagram, this.editPartFactory, this.outlinePage);
 
 				this.addPage(diagramEditor, this.getEditorInput());
 				this.setPageText(i, Format.null2blank(category.getName()));
@@ -271,27 +286,38 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 	 */
 	@Override
 	protected void pageChange(int newPageIndex) {
+		ERDiagramEditor currentEditor = (ERDiagramEditor) this
+				.getActiveEditor();
+		currentEditor.removeSelection();
+
 		super.pageChange(newPageIndex);
 
-		for (int i = 0; i < this.getPageCount(); i++) {
-			ERDiagramEditor editor = (ERDiagramEditor) this.getEditor(i);
-			editor.removeSelection();
-		}
+		// for (int i = 0; i < this.getPageCount(); i++) {
+		// ERDiagramEditor editor = (ERDiagramEditor) this.getEditor(i);
+		// editor.removeSelection();
+		// }
 
-		ERDiagramEditor selectedEditor = (ERDiagramEditor) this
-				.getActiveEditor();
-		selectedEditor.changeCategory();
+		ERDiagramEditor newEditor = (ERDiagramEditor) this.getActiveEditor();
+		newEditor.changeCategory();
 
 		Category category = this.getCurrentPageCategory();
 		this.diagram.setCurrentCategory(category, newPageIndex);
+		
+		this.diagram.refreshWithConnection();		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public IEditorPart getActiveEditor() {
-		return super.getActiveEditor();
+	public ERDiagramEditor getActiveEditor() {
+		return (ERDiagramEditor) super.getActiveEditor();
+	}
+
+	public void selectRootEditPart() {
+		GraphicalViewer viewer = this.getActiveEditor().getGraphicalViewer();
+		viewer.deselectAll();
+		viewer.appendSelection(viewer.getRootEditPart());
 	}
 
 	public Category getCurrentPageCategory() {
@@ -348,10 +374,8 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 		} else {
 			IWorkspaceRunnable editorMarker = new IWorkspaceRunnable() {
 				public void run(IProgressMonitor monitor) throws CoreException {
-					ERDiagramEditor editor = (ERDiagramEditor) getActiveEditor();
-
 					file.deleteMarkers(null, true, IResource.DEPTH_INFINITE);
-					editor.clearMarkedObject();
+					clearMarkedObject();
 
 					Validator validator = new Validator();
 					List<ValidateResult> errorList = validator
@@ -360,15 +384,13 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 					for (ValidateResult error : errorList) {
 						IMarker marker = file.createMarker(IMarker.PROBLEM);
 
-						marker
-								.setAttribute(IMarker.MESSAGE, error
-										.getMessage());
+						marker.setAttribute(IMarker.MESSAGE, error.getMessage());
 						marker.setAttribute(IMarker.TRANSIENT, true);
-						marker.setAttribute(IMarker.LOCATION, error
-								.getLocation());
-						marker.setAttribute(IMarker.SEVERITY, error
-								.getSeverity());
-						editor.setMarkedObject(marker, error.getObject());
+						marker.setAttribute(IMarker.LOCATION,
+								error.getLocation());
+						marker.setAttribute(IMarker.SEVERITY,
+								error.getSeverity());
+						setMarkedObject(marker, error.getObject());
 					}
 
 					List<ValidateResult> todoList = validateTodo();
@@ -378,14 +400,15 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 
 						marker.setAttribute(IMarker.MESSAGE, todo.getMessage());
 						marker.setAttribute(IMarker.TRANSIENT, true);
-						marker.setAttribute(IMarker.LOCATION, todo
-								.getLocation());
-						marker.setAttribute(IMarker.SEVERITY, todo
-								.getSeverity());
-						editor.setMarkedObject(marker, todo.getObject());
+						marker.setAttribute(IMarker.LOCATION,
+								todo.getLocation());
+						marker.setAttribute(IMarker.SEVERITY,
+								todo.getSeverity());
+						setMarkedObject(marker, todo.getObject());
 					}
 				}
 			};
+			
 			try {
 				ResourcesPlugin.getWorkspace().run(editorMarker, null);
 			} catch (CoreException e) {
@@ -401,13 +424,13 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 				.getTableSet()) {
 
 			String description = table.getDescription();
-			resultList.addAll(this.createTodo(description, table
-					.getLogicalName(), table));
+			resultList.addAll(this.createTodo(description,
+					table.getLogicalName(), table));
 
 			for (NormalColumn column : table.getNormalColumns()) {
 				description = column.getDescription();
-				resultList.addAll(this.createTodo(description, table
-						.getLogicalName(), table));
+				resultList.addAll(this.createTodo(description,
+						table.getLogicalName(), table));
 			}
 
 			for (Index index : table.getIndexes()) {
@@ -421,18 +444,18 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 				.getViewSet().getList()) {
 
 			String description = view.getDescription();
-			resultList.addAll(this
-					.createTodo(description, view.getName(), view));
+			resultList
+					.addAll(this.createTodo(description, view.getName(), view));
 
 			for (NormalColumn column : view.getNormalColumns()) {
 				description = column.getDescription();
-				resultList.addAll(this.createTodo(description, view
-						.getLogicalName(), view));
+				resultList.addAll(this.createTodo(description,
+						view.getLogicalName(), view));
 			}
 		}
 
 		for (Trigger trigger : this.diagram.getDiagramContents()
-				.getTriggerSet().getTriggerList()) {
+				.getTriggerSet().getObjectList()) {
 
 			String description = trigger.getDescription();
 			resultList.addAll(this.createTodo(description, trigger.getName(),
@@ -440,7 +463,7 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 		}
 
 		for (Sequence sequence : this.diagram.getDiagramContents()
-				.getSequenceSet().getSequenceList()) {
+				.getSequenceSet().getObjectList()) {
 
 			String description = sequence.getDescription();
 			resultList.addAll(this.createTodo(description, sequence.getName(),
@@ -481,8 +504,8 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 
 	public void setCurrentCategoryPageName() {
 		Category category = this.getCurrentPageCategory();
-		this.setPageText(this.getActivePage(), Format.null2blank(category
-				.getName()));
+		this.setPageText(this.getActivePage(),
+				Format.null2blank(category.getName()));
 	}
 
 	private void addMouseListenerToTabFolder() {
@@ -527,8 +550,32 @@ public class ERDiagramMultiPageEditor extends MultiPageEditorPart {
 	public Object getAdapter(Class type) {
 		if (type == ERDiagram.class) {
 			return this.diagram;
+
+		} else if (type == IGotoMarker.class) {
+			return this.gotoMaker;
+		}
+
+		else if (type == IPropertySheetPage.class) {
+			return this.propertySheetPage;
 		}
 
 		return super.getAdapter(type);
 	}
+
+	public Object getMarkedObject(IMarker marker) {
+		return markedObjectMap.get(marker);
+	}
+
+	public void setMarkedObject(IMarker marker, Object markedObject) {
+		this.markedObjectMap.put(marker, markedObject);
+	}
+
+	public void clearMarkedObject() {
+		this.markedObjectMap.clear();
+	}
+
+	public void refreshPropertySheet() {
+		this.propertySheetPage.refresh();
+	}
+
 }

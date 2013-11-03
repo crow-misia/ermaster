@@ -28,7 +28,7 @@ public class AddColumnGroupCommand extends AbstractCommand {
 			this.tableView.addColumn(index, columnGroup);
 		}
 
-		this.tableView.getDiagram().changeAll();
+		this.tableView.refresh();
 	}
 
 	/**
@@ -37,7 +37,8 @@ public class AddColumnGroupCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.tableView.removeColumn(columnGroup);
-		this.tableView.getDiagram().changeAll();
+
+		this.tableView.refresh();
 	}
 
 }

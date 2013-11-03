@@ -3,6 +3,7 @@ package org.insightech.er.editor.controller.command.tracking;
 import org.insightech.er.editor.controller.command.AbstractCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.tracking.ChangeTracking;
+import org.insightech.er.editor.model.tracking.ChangeTrackingList;
 
 /**
  * 変更履歴削除コマンド
@@ -11,10 +12,11 @@ public class DeleteChangeTrackingCommand extends AbstractCommand {
 
 	private ERDiagram diagram;
 
-	// 変更履歴
 	private ChangeTracking changeTracking;
 
 	private int index;
+
+	private ChangeTrackingList changeTrackingList;
 
 	/**
 	 * 変更履歴削除コマンドを作成します。
@@ -24,9 +26,10 @@ public class DeleteChangeTrackingCommand extends AbstractCommand {
 	 */
 	public DeleteChangeTrackingCommand(ERDiagram diagram, int index) {
 		this.diagram = diagram;
+		this.changeTrackingList = this.diagram.getChangeTrackingList();
 
 		this.index = index;
-		this.changeTracking = this.diagram.getChangeTrackingList().get(index);
+		this.changeTracking = this.changeTrackingList.get(index);
 	}
 
 	/**
@@ -34,7 +37,12 @@ public class DeleteChangeTrackingCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		this.diagram.getChangeTrackingList().removeChangeTracking(index);
+		this.changeTrackingList.removeChangeTracking(this.index);
+
+		if (this.changeTrackingList.isCalculated()) {
+			this.changeTrackingList.setCalculated(false);
+			this.diagram.refresh();
+		}
 	}
 
 	/**
@@ -42,8 +50,8 @@ public class DeleteChangeTrackingCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		this.diagram.getChangeTrackingList().addChangeTracking(index,
-				changeTracking);
+		this.changeTrackingList.addChangeTracking(this.index,
+				this.changeTracking);
 	}
 
 }

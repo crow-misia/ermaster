@@ -25,6 +25,10 @@ public class UniqueWordDictionary {
 	}
 	
 	public Word getUniqueWord(Word word, boolean add) {
+		if (word == null) {
+			return null;
+		}
+		
 		UniqueWord uniqueWord = new UniqueWord(word);
 
 		if (this.dictionary.get(uniqueWord) != null) {

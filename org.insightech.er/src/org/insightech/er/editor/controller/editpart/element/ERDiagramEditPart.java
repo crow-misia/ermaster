@@ -2,48 +2,27 @@ package org.insightech.er.editor.controller.editpart.element;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.CompoundSnapToHelper;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.SelectionManager;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.ui.PlatformUI;
-import org.insightech.er.ResourceString;
 import org.insightech.er.Resources;
-import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.controller.editpart.element.node.NodeElementEditPart;
 import org.insightech.er.editor.controller.editpolicy.ERDiagramLayoutEditPolicy;
 import org.insightech.er.editor.model.ERDiagram;
-import org.insightech.er.editor.model.ViewableModel;
+import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
-import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.settings.Settings;
-import org.insightech.er.editor.view.property_source.ERDiagramPropertySource;
 
 public class ERDiagramEditPart extends AbstractModelEditPart {
-
-	private static boolean updateable = true;
-
-	public static void setUpdateable(boolean enabled) {
-		updateable = enabled;
-	}
-
-	public static boolean isUpdateable() {
-		return updateable;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -90,8 +69,6 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 		modelChildren.addAll(diagram.getDiagramContents().getSettings()
 				.getCategorySetting().getSelectedCategories());
 
-		modelChildren.add(diagram.getDiagramContents().getSettings()
-				.getModelProperties());
 		modelChildren.addAll(diagram.getDiagramContents().getContents()
 				.getNodeElementList());
 
@@ -100,66 +77,89 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 					.getRemovedNodeElementSet());
 		}
 
+		modelChildren.add(diagram.getDiagramContents().getSettings()
+				.getModelProperties());
+
 		return modelChildren;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void doPropertyChange(PropertyChangeEvent event) {
-		if ("consumed".equals(event.getPropagationId())) {
-			return;
-		}
-
-		if (event.getPropertyName().equals(NodeSet.PROPERTY_CHANGE_CONTENTS)) {
+		if (event.getPropertyName().equals("refreshChildren")) {
 			this.refreshChildren();
 
-		} else if (event.getPropertyName()
-				.equals(ERDiagram.PROPERTY_CHANGE_ALL)) {
-			this.refresh();
-			this.refreshRelations();
-
-			List<NodeElement> nodeElementList = (List<NodeElement>) event
-					.getNewValue();
-
-			if (nodeElementList != null) {
-				this.getViewer().deselectAll();
-				SelectionManager selectionManager = this.getViewer()
-						.getSelectionManager();
-
-				Map<NodeElement, EditPart> modelToEditPart = getModelToEditPart();
-
-				for (NodeElement nodeElement : nodeElementList) {
-					selectionManager.appendSelection(modelToEditPart
-							.get(nodeElement));
+		} else if (event.getPropertyName().equals("refreshConnection")) {
+			for (NodeElement nodeElement : this.getDiagram()
+					.getDiagramContents().getContents().getNodeElementList()) {
+				for (ConnectionElement connection : nodeElement.getIncomings()) {
+					connection.refreshVisuals();
 				}
 			}
 
-		} else if (event.getPropertyName().equals(
-				ViewableModel.PROPERTY_CHANGE_COLOR)) {
-			this.refreshVisuals();
+		} else if (event.getPropertyName().equals("refreshSettings")) {
+			this.refreshChildren();
+			this.refreshSettings();
 
-		} else if (event.getPropertyName().equals(
-				ERDiagram.PROPERTY_CHANGE_DATABASE)) {
-			this.changeDatabase(event);
+		} else if (event.getPropertyName().equals("refreshWithConnection")) {
+			this.refresh();
+			for (NodeElement nodeElement : this.getDiagram()
+					.getDiagramContents().getContents().getNodeElementList()) {
+				for (ConnectionElement connection : nodeElement.getIncomings()) {
+					connection.refreshVisuals();
+				}
+			}
 
-		} else if (event.getPropertyName().equals(
-				ERDiagramPropertySource.PROPERTY_INIT_DATABASE)) {
-			ERDiagram diagram = (ERDiagram) this.getModel();
-			diagram.restoreDatabase(DBManagerFactory.getAllDBList().get(0));
-
-		} else if (event.getPropertyName().equals(
-				ERDiagram.PROPERTY_CHANGE_SETTINGS)) {
-			this.changeSettings();
+			this.getViewer().deselectAll();
+			/*
+			 * List<NodeElement> nodeElementList = (List<NodeElement>) event
+			 * .getNewValue();
+			 * 
+			 * if (nodeElementList != null) { SelectionManager selectionManager
+			 * = this.getViewer() .getSelectionManager();
+			 * 
+			 * Map<NodeElement, EditPart> modelToEditPart =
+			 * getModelToEditPart();
+			 * 
+			 * for (NodeElement nodeElement : nodeElementList) {
+			 * selectionManager.appendSelection(modelToEditPart
+			 * .get(nodeElement)); } }
+			 */
 		}
+
+		/*
+		 * } else if (event.getPropertyName()
+		 * .equals(ERDiagram.PROPERTY_CHANGE_ALL)) {
+		 * 
+		 * this.refresh(); this.refreshRelations();
+		 * 
+		 * List<NodeElement> nodeElementList = (List<NodeElement>) event
+		 * .getNewValue();
+		 * 
+		 * if (nodeElementList != null) { this.getViewer().deselectAll();
+		 * SelectionManager selectionManager = this.getViewer()
+		 * .getSelectionManager();
+		 * 
+		 * Map<NodeElement, EditPart> modelToEditPart = getModelToEditPart();
+		 * 
+		 * for (NodeElement nodeElement : nodeElementList) {
+		 * selectionManager.appendSelection(modelToEditPart .get(nodeElement));
+		 * } }
+		 */
+
+		super.doPropertyChange(event);
 	}
 
-	public void refreshRelations() {
-		for (Object child : this.getChildren()) {
-			if (child instanceof NodeElementEditPart) {
-				NodeElementEditPart part = (NodeElementEditPart) child;
-				part.refreshConnections();
-			}
-		}
+	@Override
+	final public void refresh() {
+		long start = System.currentTimeMillis();
+		refreshChildren();
+		refreshVisuals();
+
+		refreshSourceConnections();
+		refreshTargetConnections();
+
+		long end = System.currentTimeMillis();
+		System.out.println("time:" + (end - start));
 	}
 
 	/**
@@ -184,49 +184,30 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 		}
 	}
 
-	private void changeSettings() {
+	private void refreshSettings() {
 		ERDiagram diagram = (ERDiagram) this.getModel();
 		Settings settings = diagram.getDiagramContents().getSettings();
 
 		for (Object child : this.getChildren()) {
 			if (child instanceof NodeElementEditPart) {
 				NodeElementEditPart part = (NodeElementEditPart) child;
-				part.changeSettings(settings);
+				part.refreshSettings(settings);
 			}
 		}
 	}
 
-	private void changeDatabase(PropertyChangeEvent event) {
-
-		MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getShell(), SWT.ICON_QUESTION
-				| SWT.OK | SWT.CANCEL);
-		messageBox.setText(ResourceString
-				.getResourceString("dialog.title.change.database"));
-		messageBox.setMessage(ResourceString
-				.getResourceString("dialog.message.change.database"));
-
-		if (messageBox.open() == SWT.OK) {
-			event.setPropagationId("consumed");
-
-		} else {
-			ERDiagram diagram = (ERDiagram) this.getModel();
-
-			diagram.restoreDatabase(String.valueOf(event.getOldValue()));
-		}
-	}
-
-	private Map<NodeElement, EditPart> getModelToEditPart() {
-		Map<NodeElement, EditPart> modelToEditPart = new HashMap<NodeElement, EditPart>();
-		List children = getChildren();
-
-		for (int i = 0; i < children.size(); i++) {
-			EditPart editPart = (EditPart) children.get(i);
-			modelToEditPart.put((NodeElement) editPart.getModel(), editPart);
-		}
-
-		return modelToEditPart;
-	}
+	// private Map<NodeElement, EditPart> getModelToEditPart() {
+	// Map<NodeElement, EditPart> modelToEditPart = new HashMap<NodeElement,
+	// EditPart>();
+	// List children = getChildren();
+	//
+	// for (int i = 0; i < children.size(); i++) {
+	// EditPart editPart = (EditPart) children.get(i);
+	// modelToEditPart.put((NodeElement) editPart.getModel(), editPart);
+	// }
+	//
+	// return modelToEditPart;
+	// }
 
 	@Override
 	public Object getAdapter(Class key) {
@@ -241,10 +222,10 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 				helpers.add(new SnapToGrid(this));
 			}
 
-//			if (Boolean.TRUE.equals(getViewer().getProperty(
-//					SnapToGrid.PROPERTY_GRID_ENABLED))) {
-//				helpers.add(new SnapToGrid(this));
-//			}
+			// if (Boolean.TRUE.equals(getViewer().getProperty(
+			// SnapToGrid.PROPERTY_GRID_ENABLED))) {
+			// helpers.add(new SnapToGrid(this));
+			// }
 
 			if (helpers.size() == 0) {
 				return null;

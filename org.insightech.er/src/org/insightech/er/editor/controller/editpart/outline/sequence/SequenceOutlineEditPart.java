@@ -1,7 +1,5 @@
 package org.insightech.er.editor.controller.editpart.outline.sequence;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPolicy;
@@ -26,9 +24,6 @@ import org.insightech.er.editor.view.dialog.outline.sequence.SequenceDialog;
 public class SequenceOutlineEditPart extends AbstractOutlineEditPart implements
 		DeleteableEditPart {
 
-	public void propertyChange(PropertyChangeEvent evt) {
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -39,7 +34,7 @@ public class SequenceOutlineEditPart extends AbstractOutlineEditPart implements
 		if (!DBManagerFactory.getDBManager(this.getDiagram()).isSupported(
 				DBManager.SUPPORT_SEQUENCE)) {
 			((TreeItem) getWidget()).setForeground(ColorConstants.lightGray);
-		
+
 		} else {
 			((TreeItem) getWidget()).setForeground(ColorConstants.black);
 		}

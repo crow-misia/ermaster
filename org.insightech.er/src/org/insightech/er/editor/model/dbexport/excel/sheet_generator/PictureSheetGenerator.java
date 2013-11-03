@@ -35,7 +35,7 @@ public class PictureSheetGenerator {
 	public void setImage(HSSFWorkbook workbook, HSSFSheet sheet) {
 		CellLocation cellLocation = POIUtils.findMatchCell(sheet, "\\"
 				+ KEYWORD_ER + ".*");
-System.out.println(cellLocation);
+
 		if (cellLocation != null) {
 			int width = -1;
 			int height = -1;
@@ -60,7 +60,7 @@ System.out.println(cellLocation);
 	private void setImage(HSSFWorkbook workbook, HSSFSheet sheet,
 			CellLocation cellLocation, int width, int height) {
 		POIUtils.setCellValue(sheet, cellLocation, "");
-System.out.println("this.imageBuffer:" + this.imageBuffer);
+
 		if (this.imageBuffer != null) {
 			HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 

@@ -13,17 +13,15 @@ public class InsertedImage extends NodeElement {
 
 	private static final long serialVersionUID = -2035035973213266486L;
 
-	public static final String PROPERTY_CHANGE_IMAGE = "image";
-
 	private String base64EncodedData;
 
-	/** 0Å@Å`Å@360 */
+	/** 0ÔøΩ@ÔøΩ`ÔøΩ@360 */
 	private int hue;
 
-	/** -100Å@Å`Å@+100 */
+	/** -100ÔøΩ@ÔøΩ`ÔøΩ@+100 */
 	private int saturation;
 
-	/** -100Å@Å`Å@+100 */
+	/** -100ÔøΩ@ÔøΩ`ÔøΩ@+100 */
 	private int brightness;
 
 	private int alpha;
@@ -120,6 +118,5 @@ public class InsertedImage extends NodeElement {
 	}
 
 	public void setDirty() {
-		this.firePropertyChange(PROPERTY_CHANGE_IMAGE, null, null);
 	}
 }

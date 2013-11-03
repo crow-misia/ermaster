@@ -10,27 +10,16 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.insightech.er.Activator;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.PasteCommand;
+import org.insightech.er.editor.controller.command.edit.PasteCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.edit.CopyManager;
 
-/**
- * �\��t���A�N�V����
- * 
- * @author nakajima
- * 
- */
 public class PasteAction extends SelectionAction {
 
 	private ERDiagramEditor editor;
 
-	/**
-	 * �R���X�g���N�^
-	 * 
-	 * @param part
-	 */
 	public PasteAction(IWorkbenchPart part) {
 		super(part);
 
@@ -69,15 +58,8 @@ public class PasteAction extends SelectionAction {
 		}
 	}
 
-	/**
-	 * �\��t���R�}���h���쐬���܂��B<br>
-	 * �R�s�[�̈�ɕ�������Ă���m�[�h������ɕ������ē\��t���܂�<br>
-	 * 
-	 * @return �\��t���R�}���h
-	 */
 	private Command createCommand() {
 
-		// �\��t���s�̏ꍇ
 		if (!calculateEnabled()) {
 			return null;
 		}
@@ -85,12 +67,10 @@ public class PasteAction extends SelectionAction {
 		EditPart editPart = this.editor.getGraphicalViewer().getContents();
 		ERDiagram diagram = (ERDiagram) editPart.getModel();
 
-		// �\��t���Ώۂ̃m�[�h�ꗗ
 		NodeSet pasteList = CopyManager.paste(diagram);
 
 		int numberOfCopy = CopyManager.getNumberOfCopy();
 
-		// �\��t���R�}���h���쐬���܂��B
 		boolean first = true;
 		int x = 0;
 		int y = 0;

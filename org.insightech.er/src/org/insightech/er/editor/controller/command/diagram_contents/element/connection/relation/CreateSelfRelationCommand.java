@@ -1,7 +1,6 @@
 package org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation;
 
 import org.eclipse.gef.EditPart;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Bendpoint;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -30,7 +29,7 @@ public class CreateSelfRelationCommand extends AbstractCreateRelationCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		ERDiagramEditPart.setUpdateable(false);
+		// ERDiagramEditPart.setUpdateable(false);
 
 		boolean anotherSelfRelation = false;
 
@@ -65,11 +64,13 @@ public class CreateSelfRelationCommand extends AbstractCreateRelationCommand {
 
 		relation.setSource((ERTable) sourceTable);
 
-		ERDiagramEditPart.setUpdateable(true);
+		// ERDiagramEditPart.setUpdateable(true);
 
 		relation.setTargetTableView((ERTable) this.target.getModel());
 
-		sourceTable.setDirty();
+		// sourceTable.setDirty();
+
+		this.getTargetModel().refresh();
 	}
 
 	/**
@@ -77,18 +78,20 @@ public class CreateSelfRelationCommand extends AbstractCreateRelationCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		ERDiagramEditPart.setUpdateable(false);
+		// ERDiagramEditPart.setUpdateable(false);
 
 		relation.setSource(null);
 
-		ERDiagramEditPart.setUpdateable(true);
+		// ERDiagramEditPart.setUpdateable(true);
 
 		relation.setTargetTableView(null);
 
 		this.relation.removeBendpoint(0);
-		
-		ERTable targetTable = (ERTable) this.target.getModel();
-		targetTable.setDirty();
+
+		// ERTable targetTable = (ERTable) this.target.getModel();
+		// targetTable.setDirty();
+
+		this.getTargetModel().refresh();
 	}
 
 	/**

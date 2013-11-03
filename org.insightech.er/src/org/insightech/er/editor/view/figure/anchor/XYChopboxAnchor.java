@@ -14,7 +14,7 @@ public class XYChopboxAnchor extends ChopboxAnchor {
 
 	public void setLocation(Point location) {
 		this.location = location;
-		fireAnchorMoved();
+		this.fireAnchorMoved();
 	}
 
 	/**
@@ -24,7 +24,7 @@ public class XYChopboxAnchor extends ChopboxAnchor {
 	public Point getLocation(Point reference) {
 		if (this.location != null) {
 			Point point = new Point(this.location);
-			getOwner().translateToAbsolute(point);
+			this.getOwner().translateToAbsolute(point);
 			return point;
 		}
 
@@ -38,7 +38,7 @@ public class XYChopboxAnchor extends ChopboxAnchor {
 	public Point getReferencePoint() {
 		if (this.location != null) {
 			Point point = new Point(this.location);
-			getOwner().translateToAbsolute(point);
+			this.getOwner().translateToAbsolute(point);
 			return point;
 		}
 

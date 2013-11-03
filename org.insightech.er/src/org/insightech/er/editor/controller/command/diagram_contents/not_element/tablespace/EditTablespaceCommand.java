@@ -29,7 +29,7 @@ public class EditTablespaceCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.newTablespace.copyTo(this.tablespace);
-		this.tablespaceSet.addTablespace(this.tablespace);
+		this.tablespaceSet.refresh();
 	}
 
 	/**
@@ -38,6 +38,6 @@ public class EditTablespaceCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.oldTablespace.copyTo(this.tablespace);
-		this.tablespaceSet.addTablespace(this.tablespace);
+		this.tablespaceSet.refresh();
 	}
 }

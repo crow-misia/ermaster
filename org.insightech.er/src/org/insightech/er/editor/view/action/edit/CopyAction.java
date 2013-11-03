@@ -17,19 +17,8 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
 import org.insightech.er.editor.model.edit.CopyManager;
 
-/**
- * コピーアクション
- * 
- * @author nakajima
- * 
- */
 public class CopyAction extends SelectionAction {
 
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param part
-	 */
 	public CopyAction(IWorkbenchPart part) {
 		super(part);
 
@@ -72,19 +61,13 @@ public class CopyAction extends SelectionAction {
 		copy();
 	}
 
-	/**
-	 * コピーを実行します。 <br>
-	 * この時点のコピー対象をコピー領域に複製しておきます<br>
-	 */
 	private void copy() {
 		if (!calculateEnabled()) {
 			return;
 		}
 
-		// コピー情報をクリアします。
 		CopyManager.clear();
 
-		// 選択されているノードのEditPartを取得します
 		NodeSet nodeElementList = new NodeSet();
 
 		for (Object object : this.getSelectedObjects()) {

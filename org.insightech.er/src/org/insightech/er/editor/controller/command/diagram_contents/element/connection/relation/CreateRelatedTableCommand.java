@@ -2,7 +2,6 @@ package org.insightech.er.editor.controller.command.diagram_contents.element.con
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.TableViewEditPart;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
@@ -65,7 +64,7 @@ public class CreateRelatedTableCommand extends AbstractCreateRelationCommand {
 	 */
 	@Override
 	protected void doExecute() {
-		ERDiagramEditPart.setUpdateable(false);
+		// ERDiagramEditPart.setUpdateable(false);
 
 		this.init();
 
@@ -77,10 +76,14 @@ public class CreateRelatedTableCommand extends AbstractCreateRelationCommand {
 		this.relation2.setSource((ERTable) this.target.getModel());
 		this.relation2.setTargetTableView(this.relatedTable);
 
-		ERDiagramEditPart.setUpdateable(true);
+		this.diagram.refreshChildren();
+		this.getTargetModel().refresh();
+		this.getSourceModel().refresh();
 
-		this.diagram.getDiagramContents().getContents().getTableSet()
-				.setDirty();
+		// ERDiagramEditPart.setUpdateable(true);
+
+		// this.diagram.getDiagramContents().getContents().getTableSet()
+		// .setDirty();
 	}
 
 	/**
@@ -88,7 +91,7 @@ public class CreateRelatedTableCommand extends AbstractCreateRelationCommand {
 	 */
 	@Override
 	protected void doUndo() {
-		ERDiagramEditPart.setUpdateable(false);
+		// ERDiagramEditPart.setUpdateable(false);
 
 		this.diagram.removeContent(this.relatedTable);
 
@@ -98,10 +101,14 @@ public class CreateRelatedTableCommand extends AbstractCreateRelationCommand {
 		this.relation2.setSource(null);
 		this.relation2.setTargetTableView(null);
 
-		ERDiagramEditPart.setUpdateable(true);
+		this.diagram.refreshChildren();
+		this.getTargetModel().refresh();
+		this.getSourceModel().refresh();
 
-		this.diagram.getDiagramContents().getContents().getTableSet()
-				.setDirty();
+		// ERDiagramEditPart.setUpdateable(true);
+
+		// this.diagram.getDiagramContents().getContents().getTableSet()
+		// .setDirty();
 	}
 
 	private void init() {

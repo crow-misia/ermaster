@@ -7,6 +7,7 @@ import org.insightech.er.editor.controller.command.AbstractCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.index.IndexSet;
 
 public class ChangeIndexCommand extends AbstractCommand {
 
@@ -16,8 +17,11 @@ public class ChangeIndexCommand extends AbstractCommand {
 
 	private List<Index> newIndexList;
 
+	private IndexSet indexSet;
+
 	public ChangeIndexCommand(ERDiagram diagram, Index oldIndex, Index newIndex) {
 		this.table = oldIndex.getTable();
+		this.indexSet = diagram.getDiagramContents().getIndexSet();
 
 		this.oldIndexList = oldIndex.getTable().getIndexes();
 		this.newIndexList = new ArrayList<Index>(oldIndexList);
@@ -34,6 +38,7 @@ public class ChangeIndexCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.table.setIndexes(this.newIndexList);
+		this.indexSet.refresh();
 	}
 
 	/**
@@ -42,5 +47,6 @@ public class ChangeIndexCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.table.setIndexes(this.oldIndexList);
+		this.indexSet.refresh();
 	}
 }

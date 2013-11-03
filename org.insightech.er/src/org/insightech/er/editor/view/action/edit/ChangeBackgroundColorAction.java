@@ -31,7 +31,7 @@ import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.ChangeBackgroundColorCommand;
+import org.insightech.er.editor.controller.command.display.ChangeBackgroundColorCommand;
 import org.insightech.er.editor.controller.editpart.element.node.column.NormalColumnEditPart;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ViewableModel;
@@ -68,9 +68,9 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 				255, 255));
 		imageData.palette.colors[blackPixel] = this.rgb;
 
-		if (this.image != null) {
+		//if (this.image != null) {
 			// this.image.dispose();
-		}
+		//}
 		this.image = new Image(Display.getCurrent(), imageData);
 
 		ImageDescriptor descriptor = ImageDescriptor.createFromImage(image);
@@ -109,14 +109,13 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 		return objects;
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected boolean calculateEnabled() {
 		List objects = this.getSelectedObjects();
-		
+
 		if (objects.isEmpty()) {
 			return false;
 		}
@@ -157,22 +156,19 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 
 			this.setImageDescriptor(Activator
 					.getImageDescriptor(ImageKey.CHANGE_BACKGROUND_COLOR));
-			this
-					.setDisabledImageDescriptor(Activator
-							.getImageDescriptor(ImageKey.CHANGE_BACKGROUND_COLOR_DISABLED));
+			this.setDisabledImageDescriptor(Activator
+					.getImageDescriptor(ImageKey.CHANGE_BACKGROUND_COLOR_DISABLED));
 			this.setToolTipText(ResourceString
 					.getResourceString("action.title.change.background.color"));
 
-			// サブメニューの生成
 			setMenuCreator(new IMenuCreator() {
 				public Menu getMenu(Control parent) {
 					Menu menu = new Menu(parent);
 
 					try {
 						MenuItem item1 = new MenuItem(menu, SWT.NONE);
-						item1
-								.setText(ResourceString
-										.getResourceString("action.title.select.color"));
+						item1.setText(ResourceString
+								.getResourceString("action.title.select.color"));
 						item1.setImage(Activator.getImage(ImageKey.PALETTE));
 
 						item1.addSelectionListener(new SelectionAdapter() {
@@ -187,9 +183,8 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 												.getActiveWorkbenchWindow()
 												.getShell(), SWT.NULL);
 
-								colorDialog
-										.setText(ResourceString
-												.getResourceString("dialog.title.change.background.color"));
+								colorDialog.setText(ResourceString
+										.getResourceString("dialog.title.change.background.color"));
 
 								ChangeBackgroundColorAction action = (ChangeBackgroundColorAction) getActionHandler();
 
@@ -218,7 +213,7 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 
 	@Override
 	public void dispose() {
-		image.dispose();
+		this.image.dispose();
 
 		super.dispose();
 	}

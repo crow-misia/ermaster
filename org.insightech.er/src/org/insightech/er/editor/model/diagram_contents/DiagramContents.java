@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.insightech.er.editor.model.diagram_contents.element.node.NodeSet;
+import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.IndexSet;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Dictionary;
+import org.insightech.er.editor.model.diagram_contents.not_element.group.ColumnGroup;
 import org.insightech.er.editor.model.diagram_contents.not_element.group.GroupSet;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.SequenceSet;
 import org.insightech.er.editor.model.diagram_contents.not_element.tablespace.TablespaceSet;
@@ -45,7 +47,7 @@ public class DiagramContents {
 
 		this.testDataList = new ArrayList<TestData>();
 	}
-	
+
 	public void clear() {
 		this.contents.clear();
 		this.groups.clear();
@@ -70,6 +72,11 @@ public class DiagramContents {
 
 	public void setColumnGroups(GroupSet groups) {
 		this.groups = groups;
+		for (ColumnGroup group : groups) {
+			for (NormalColumn normalColumn : group.getColumns()) {
+				this.dictionary.add(normalColumn);
+			}
+		}
 	}
 
 	public Dictionary getDictionary() {
@@ -108,16 +115,8 @@ public class DiagramContents {
 		return indexSet;
 	}
 
-	public void setIndexSet(IndexSet indexSet) {
-		this.indexSet = indexSet;
-	}
-
 	public TablespaceSet getTablespaceSet() {
 		return tablespaceSet;
-	}
-
-	public void setTablespaceSet(TablespaceSet tablespaceSet) {
-		this.tablespaceSet = tablespaceSet;
 	}
 
 	public List<TestData> getTestDataList() {

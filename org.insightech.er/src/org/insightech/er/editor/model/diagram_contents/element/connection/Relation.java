@@ -37,14 +37,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	private NormalColumn referencedColumn;
 
-	private int sourceXp;
-
-	private int sourceYp;
-
-	private int targetXp;
-
-	private int targetYp;
-
 	private Relation original;
 
 	public Relation() {
@@ -60,11 +52,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 		this.referenceForPK = referenceForPK;
 		this.referencedComplexUniqueKey = referencedComplexUniqueKey;
 		this.referencedColumn = referencedColumn;
-
-		this.sourceXp = -1;
-		this.sourceYp = -1;
-		this.targetXp = -1;
-		this.targetYp = -1;
 
 		if (notnull) {
 			this.parentCardinality = PARENT_CARDINALITY_1;
@@ -139,8 +126,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 				}
 			}
 		}
-
-		this.firePropertyChange("target", null, target);
 	}
 
 	private NormalColumn createForeiKeyColumn(NormalColumn referencedColumn,
@@ -165,8 +150,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 			List<NormalColumn> foreignKeyColumnList) {
 
 		super.setTarget(target);
-
-		this.firePropertyChange("target", null, target);
 	}
 
 	public void delete(boolean removeForeignKey, Dictionary dictionary) {
@@ -233,9 +216,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	public void setChildCardinality(String childCardinality) {
 		this.childCardinality = childCardinality;
-		firePropertyChange(
-				ConnectionElement.PROPERTY_CHANGE_CONNECTION_ATTRIBUTE, null,
-				null);
 	}
 
 	public String getParentCardinality() {
@@ -244,10 +224,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 
 	public void setParentCardinality(String parentCardinality) {
 		this.parentCardinality = parentCardinality;
-
-		firePropertyChange(
-				ConnectionElement.PROPERTY_CHANGE_CONNECTION_ATTRIBUTE, null,
-				null);
 	}
 
 	public void setNotNullOfForeignKey(boolean notnull) {
@@ -256,10 +232,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 		} else {
 			this.parentCardinality = PARENT_CARDINALITY_0_OR_1;
 		}
-
-		firePropertyChange(
-				ConnectionElement.PROPERTY_CHANGE_CONNECTION_ATTRIBUTE, null,
-				null);
 	}
 
 	public void setName(String name) {
@@ -397,32 +369,6 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 		return this.referencedComplexUniqueKey;
 	}
 
-	public int getSourceXp() {
-		return sourceXp;
-	}
-
-	public void setSourceLocationp(int sourceXp, int sourceYp) {
-		this.sourceXp = sourceXp;
-		this.sourceYp = sourceYp;
-	}
-
-	public int getSourceYp() {
-		return sourceYp;
-	}
-
-	public int getTargetXp() {
-		return targetXp;
-	}
-
-	public void setTargetLocationp(int targetXp, int targetYp) {
-		this.targetXp = targetXp;
-		this.targetYp = targetYp;
-	}
-
-	public int getTargetYp() {
-		return targetYp;
-	}
-
 	public boolean isReferedStrictly() {
 		for (NormalColumn column : this.getForeignKeyColumns()) {
 			if (column.isReferedStrictly()) {
@@ -433,6 +379,14 @@ public class Relation extends ConnectionElement implements Comparable<Relation> 
 		return false;
 	}
 
+	public boolean isSelfRelation() {
+		if (this.source == this.target) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

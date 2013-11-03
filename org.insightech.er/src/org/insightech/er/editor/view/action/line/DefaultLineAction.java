@@ -11,7 +11,7 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.swt.widgets.Event;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.diagram_contents.element.connection.DefaultLineCommand;
+import org.insightech.er.editor.controller.command.diagram_contents.element.connection.bendpoint.DefaultLineCommand;
 import org.insightech.er.editor.controller.editpart.element.node.IResizable;
 import org.insightech.er.editor.controller.editpart.element.node.NodeElementEditPart;
 import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;

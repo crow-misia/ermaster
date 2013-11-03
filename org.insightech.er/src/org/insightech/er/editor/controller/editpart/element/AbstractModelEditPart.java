@@ -19,7 +19,7 @@ public abstract class AbstractModelEditPart extends AbstractGraphicalEditPart
 			.getName());
 
 	private static final boolean DEBUG = false;
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -57,10 +57,13 @@ public abstract class AbstractModelEditPart extends AbstractGraphicalEditPart
 	public final void propertyChange(PropertyChangeEvent event) {
 		try {
 			if (DEBUG) {
-				logger.log(Level.INFO, this.getClass().getName() + ":"
-						+ event.getPropertyName() + ":" + event.toString());
+				logger.log(
+						Level.INFO,
+						this.getClass().getName() + ":"
+								+ event.getPropertyName() + ":"
+								+ event.toString());
 			}
-			
+
 			this.doPropertyChange(event);
 
 		} catch (Exception e) {
@@ -69,6 +72,22 @@ public abstract class AbstractModelEditPart extends AbstractGraphicalEditPart
 	}
 
 	protected void doPropertyChange(PropertyChangeEvent event) {
+		if (event.getPropertyName().equals("refreshVisuals")) {
+			this.refreshVisuals();
+
+		} else if (event.getPropertyName().equals("refresh")) {
+			this.refresh();
+
+		}
+	}
+
+	@Override
+	public void refresh() {
+		refreshChildren();
+		refreshVisuals();
+
+		refreshSourceConnections();
+		refreshTargetConnections();
 	}
 
 }

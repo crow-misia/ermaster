@@ -1,7 +1,5 @@
 package org.insightech.er.editor.controller.editpart.element.node;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -34,18 +32,6 @@ public class NoteEditPart extends NodeElementEditPart implements IResizable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPropertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(Note.PROPERTY_CHANGE_NOTE)) {
-			refreshVisuals();
-		}
-
-		super.doPropertyChange(event);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	protected void createEditPolicies() {
 		this.installEditPolicy(EditPolicy.COMPONENT_ROLE,
 				new NodeElementComponentEditPolicy());
@@ -59,14 +45,12 @@ public class NoteEditPart extends NodeElementEditPart implements IResizable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void refreshVisuals() {
+	public void doRefreshVisuals() {
 		Note note = (Note) this.getModel();
 
 		NoteFigure figure = (NoteFigure) this.getFigure();
 
 		figure.setText(note.getText(), note.getColor());
-
-		super.refreshVisuals();
 	}
 
 	/**

@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.ui.PlatformUI;
@@ -40,11 +41,12 @@ public abstract class DBManagerBase implements DBManager {
 
 	public String getURL(String serverName, String dbName, int port) {
 		String temp = serverName.replaceAll("\\\\", "\\\\\\\\");
-		String url = this.getURL().replaceAll("<SERVER NAME>", temp);
+		String url = this.getURL().replaceAll("<SERVER NAME>",
+				Matcher.quoteReplacement(temp));
 		url = url.replaceAll("<PORT>", String.valueOf(port));
 
 		temp = dbName.replaceAll("\\\\", "\\\\\\\\");
-		url = url.replaceAll("<DB NAME>", temp);
+		url = url.replaceAll("<DB NAME>", Matcher.quoteReplacement(temp));
 
 		return url;
 	}
@@ -64,29 +66,32 @@ public abstract class DBManagerBase implements DBManager {
 						driverClassName);
 
 				// Cash the class loader to map.
-				// Because if I use the another loader with the driver using native library(.dll)
+				// Because if I use the another loader with the driver using
+				// native library(.dll)
 				// next error occur.
-				// 
-				// java.lang.UnsatisfiedLinkError: Native Library xxx.dll already loaded in another classloader
+				//
+				// java.lang.UnsatisfiedLinkError: Native Library xxx.dll
+				// already loaded in another classloader
 				//
 				ClassLoader loader = this.loaderMap.get(path);
 				if (loader == null) {
 					loader = this.getClassLoader(path);
 					this.loaderMap.put(path, loader);
 				}
-				
-				clazz = loader.loadClass(driverClassName);				
+
+				clazz = loader.loadClass(driverClassName);
 			}
 
 		} catch (Exception e) {
 			JDBCPathDialog dialog = new JDBCPathDialog(PlatformUI
-					.getWorkbench().getActiveWorkbenchWindow().getShell(), this
-					.getId(), driverClassName, path,
+					.getWorkbench().getActiveWorkbenchWindow().getShell(),
+					this.getId(), driverClassName, path,
 					new ArrayList<JDBCDriverSetting>(), false);
 
 			if (dialog.open() == IDialogConstants.OK_ID) {
-				JDBCDriverSetting newDriverSetting = new JDBCDriverSetting(this
-						.getId(), dialog.getDriverClassName(), dialog.getPath());
+				JDBCDriverSetting newDriverSetting = new JDBCDriverSetting(
+						this.getId(), dialog.getDriverClassName(),
+						dialog.getPath());
 
 				List<JDBCDriverSetting> driverSettingList = PreferenceInitializer
 						.getJDBCDriverSettingList();

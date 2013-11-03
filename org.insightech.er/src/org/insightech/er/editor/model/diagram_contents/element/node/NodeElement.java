@@ -12,13 +12,9 @@ public abstract class NodeElement extends ViewableModel implements ObjectModel {
 
 	private static final long serialVersionUID = -5143984125818569247L;
 
-	public static final String PROPERTY_CHANGE_RECTANGLE = "rectangle";
-
-	public static final String PROPERTY_CHANGE_INCOMING = "incoming";
-
-	public static final String PROPERTY_CHANGE_OUTGOING = "outgoing";
-
 	private Location location;
+
+	private Location actualLocation;
 
 	private List<ConnectionElement> incomings = new ArrayList<ConnectionElement>();
 
@@ -56,8 +52,14 @@ public abstract class NodeElement extends ViewableModel implements ObjectModel {
 
 	public void setLocation(Location location) {
 		this.location = location;
+	}
 
-		this.firePropertyChange(PROPERTY_CHANGE_RECTANGLE, null, null);
+	public Location getActualLocation() {
+		return actualLocation;
+	}
+
+	public void setActualLocation(Location actualLocation) {
+		this.actualLocation = actualLocation;
 	}
 
 	public List<ConnectionElement> getIncomings() {
@@ -70,32 +72,26 @@ public abstract class NodeElement extends ViewableModel implements ObjectModel {
 
 	public void setIncoming(List<ConnectionElement> relations) {
 		this.incomings = relations;
-		this.firePropertyChange(PROPERTY_CHANGE_INCOMING, null, null);
 	}
 
 	public void setOutgoing(List<ConnectionElement> relations) {
 		this.outgoings = relations;
-		this.firePropertyChange(PROPERTY_CHANGE_OUTGOING, null, null);
 	}
 
 	public void addIncoming(ConnectionElement relation) {
 		this.incomings.add(relation);
-		this.firePropertyChange(PROPERTY_CHANGE_INCOMING, null, null);
 	}
 
 	public void removeIncoming(ConnectionElement relation) {
 		this.incomings.remove(relation);
-		this.firePropertyChange(PROPERTY_CHANGE_INCOMING, null, null);
 	}
 
 	public void addOutgoing(ConnectionElement relation) {
 		this.outgoings.add(relation);
-		this.firePropertyChange(PROPERTY_CHANGE_OUTGOING, null, null);
 	}
 
 	public void removeOutgoing(ConnectionElement relation) {
 		this.outgoings.remove(relation);
-		this.firePropertyChange(PROPERTY_CHANGE_OUTGOING, null, null);
 	}
 
 	public List<NodeElement> getReferringElementList() {
@@ -121,7 +117,19 @@ public abstract class NodeElement extends ViewableModel implements ObjectModel {
 
 		return referedElementList;
 	}
-	
+
+	public void refreshSourceConnections() {
+		if (isUpdateable()) {
+			this.firePropertyChange("refreshSourceConnections", null, null);
+		}
+	}
+
+	public void refreshTargetConnections() {
+		if (isUpdateable()) {
+			this.firePropertyChange("refreshTargetConnections", null, null);
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

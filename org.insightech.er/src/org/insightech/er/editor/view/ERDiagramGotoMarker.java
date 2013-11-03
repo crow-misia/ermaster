@@ -2,14 +2,15 @@ package org.insightech.er.editor.view;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.ui.ide.IGotoMarker;
-import org.insightech.er.editor.ERDiagramEditor;
+import org.insightech.er.editor.ERDiagramMultiPageEditor;
 
 public class ERDiagramGotoMarker implements IGotoMarker {
 
-	private ERDiagramEditor editor;
+	private ERDiagramMultiPageEditor editor;
 
-	public ERDiagramGotoMarker(ERDiagramEditor editor) {
+	public ERDiagramGotoMarker(ERDiagramMultiPageEditor editor) {
 		this.editor = editor;
 	}
 
@@ -18,12 +19,13 @@ public class ERDiagramGotoMarker implements IGotoMarker {
 	}
 
 	private void focus(Object object) {
-		EditPart editPart = (EditPart) this.editor.getGraphicalViewer()
-				.getEditPartRegistry().get(object);
+		GraphicalViewer viewer = this.editor.getActiveEditor()
+				.getGraphicalViewer();
+		EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(object);
 
 		if (editPart != null) {
-			this.editor.getGraphicalViewer().select(editPart);
-			this.editor.getGraphicalViewer().reveal(editPart);
+			viewer.select(editPart);
+			viewer.reveal(editPart);
 		}
 	}
 }

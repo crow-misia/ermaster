@@ -6,13 +6,13 @@ import java.util.List;
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.editor.model.ObjectModel;
+import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.Column;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.ColumnHolder;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.CopyIndex;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.index.Index;
-import org.insightech.er.editor.model.diagram_contents.element.node.table.index.IndexSet;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.properties.TableProperties;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.properties.TablePropertiesHolder;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.properties.TableViewProperties;
@@ -221,12 +221,6 @@ public class ERTable extends TableView implements TablePropertiesHolder,
 
 	public void setIndexes(List<Index> indexes) {
 		this.indexes = indexes;
-
-		if (this.getDiagram() != null) {
-			this.firePropertyChange(IndexSet.PROPERTY_CHANGE_INDEXES, null,
-					null);
-			this.getDiagram().getDiagramContents().getIndexSet().update();
-		}
 	}
 
 	public void setComplexUniqueKeyList(
@@ -242,16 +236,24 @@ public class ERTable extends TableView implements TablePropertiesHolder,
 		this.tableViewProperties = tableProperties;
 	}
 
-	/**
-	 * �e�[�u���𕡐����܂��B<br>
-	 * ����������́A���O�ƁA�e�[�u���v���p�e�B�̂݁B<br>
-	 * �񂨂�сA�C���f�b�N�X�͕����ΏۊO�Ƃ��A�ォ�畡������B<br>
-	 */
+	public List<Relation> getSelfRelations() {
+		List<Relation> relations = new ArrayList<Relation>();
+
+		for (ConnectionElement connection : this.getOutgoings()) {
+			if (connection instanceof Relation) {
+				if (connection.getSource() == connection.getTarget()) {
+					relations.add((Relation) connection);
+				}
+			}
+		}
+
+		return relations;
+	}
+
 	@Override
 	public ERTable clone() {
 		ERTable clone = (ERTable) super.clone();
 
-		// �e�[�u���v���p�e�B�𕡐����܂��B
 		TableProperties cloneTableProperties = (TableProperties) this
 				.getTableViewProperties().clone();
 		clone.tableViewProperties = cloneTableProperties;

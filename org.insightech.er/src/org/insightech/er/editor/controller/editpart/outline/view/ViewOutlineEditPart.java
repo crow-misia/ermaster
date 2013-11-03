@@ -1,9 +1,6 @@
 package org.insightech.er.editor.controller.editpart.outline.view;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -25,20 +22,54 @@ import org.insightech.er.editor.view.dialog.element.view.ViewDialog;
 public class ViewOutlineEditPart extends AbstractOutlineEditPart implements
 		DeleteableEditPart {
 
-	public void propertyChange(PropertyChangeEvent evt) {
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void refreshOutlineVisuals() {
-		this.refreshName();
+		View model = (View) this.getModel();
 
-		for (Object child : this.getChildren()) {
-			EditPart part = (EditPart) child;
-			part.refresh();
+		ERDiagram diagram = (ERDiagram) this.getRoot().getContents().getModel();
+
+		String name = null;
+
+		int viewMode = diagram.getDiagramContents().getSettings()
+				.getOutlineViewMode();
+
+		if (viewMode == Settings.VIEW_MODE_PHYSICAL) {
+			if (model.getPhysicalName() != null) {
+				name = model.getPhysicalName();
+
+			} else {
+				name = "";
+			}
+
+		} else if (viewMode == Settings.VIEW_MODE_LOGICAL) {
+			if (model.getLogicalName() != null) {
+				name = model.getLogicalName();
+
+			} else {
+				name = "";
+			}
+
+		} else {
+			if (model.getLogicalName() != null) {
+				name = model.getLogicalName();
+
+			} else {
+				name = "";
+			}
+
+			name += "/";
+
+			if (model.getPhysicalName() != null) {
+				name += model.getPhysicalName();
+
+			}
 		}
+
+		this.setWidgetText(diagram.filter(name));
+		this.setWidgetImage(Activator.getImage(ImageKey.VIEW));
 	}
 
 	/**
@@ -89,49 +120,4 @@ public class ViewOutlineEditPart extends AbstractOutlineEditPart implements
 		return true;
 	}
 
-	protected void refreshName() {
-		View model = (View) this.getModel();
-
-		ERDiagram diagram = (ERDiagram) this.getRoot().getContents().getModel();
-
-		String name = null;
-
-		int viewMode = diagram.getDiagramContents().getSettings()
-				.getOutlineViewMode();
-
-		if (viewMode == Settings.VIEW_MODE_PHYSICAL) {
-			if (model.getPhysicalName() != null) {
-				name = model.getPhysicalName();
-
-			} else {
-				name = "";
-			}
-
-		} else if (viewMode == Settings.VIEW_MODE_LOGICAL) {
-			if (model.getLogicalName() != null) {
-				name = model.getLogicalName();
-
-			} else {
-				name = "";
-			}
-
-		} else {
-			if (model.getLogicalName() != null) {
-				name = model.getLogicalName();
-
-			} else {
-				name = "";
-			}
-
-			name += "/";
-
-			if (model.getPhysicalName() != null) {
-				name += model.getPhysicalName();
-
-			}
-		}
-
-		this.setWidgetText(diagram.filter(name));
-		this.setWidgetImage(Activator.getImage(ImageKey.VIEW));
-	}
 }

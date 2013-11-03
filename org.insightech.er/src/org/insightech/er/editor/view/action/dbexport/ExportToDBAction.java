@@ -3,6 +3,7 @@ package org.insightech.er.editor.view.action.dbexport;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.RetargetAction;
@@ -71,6 +72,12 @@ public class ExportToDBAction extends AbstractBaseAction {
 			this.setImageDescriptor(Activator
 					.getImageDescriptor(ImageKey.EXPORT_TO_DB));
 			this.setToolTipText(this.getText());
+		}
+
+		@Override
+		protected void propagateChange(PropertyChangeEvent event) {
+			// TODO Auto-generated method stub
+			super.propagateChange(event);
 		}
 
 	}

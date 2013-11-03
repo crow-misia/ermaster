@@ -39,7 +39,7 @@ import org.insightech.er.editor.view.drag_drop.ERDiagramTransferDragSourceListen
 
 public class ERDiagramOutlinePage extends ContentOutlinePage {
 
-	// ƒy[ƒW‚ğƒAƒEƒgƒ‰ƒCƒ“‚ÆƒTƒ€ƒlƒCƒ‹‚É•ª—£‚·‚éƒRƒ“ƒ|ƒWƒbƒg
+	// ãƒšãƒ¼ã‚¸ã‚’ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã¨ã‚µãƒ ãƒã‚¤ãƒ«ã«åˆ†é›¢ã™ã‚‹ã‚³ãƒ³ãƒã‚¸ãƒƒãƒˆ
 	private SashForm sash;
 
 	private TreeViewer viewer;
@@ -57,7 +57,7 @@ public class ERDiagramOutlinePage extends ContentOutlinePage {
 	private ActionRegistry registry;
 
 	public ERDiagramOutlinePage(ERDiagram diagram) {
-		// GEFƒcƒŠ[ƒrƒ…[ƒ‚ğg—p‚·‚é
+		// GEFãƒ„ãƒªãƒ¼ãƒ“ãƒ¥ãƒ¼ãƒ¯ã‚’ä½¿ç”¨ã™ã‚‹
 		super(new TreeViewer());
 
 		this.viewer = (TreeViewer) this.getViewer();
@@ -74,18 +74,18 @@ public class ERDiagramOutlinePage extends ContentOutlinePage {
 	public void createControl(Composite parent) {
 		this.sash = new SashForm(parent, SWT.VERTICAL);
 
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Åw’è‚µ‚½ƒrƒ…[ƒ‚Ìì¬
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§æŒ‡å®šã—ãŸãƒ“ãƒ¥ãƒ¼ãƒ¯ã®ä½œæˆ
 		this.viewer.createControl(this.sash);
 
-		// EditPartFactory ‚Ìİ’è
+		// EditPartFactory ã®è¨­å®š
 		ERDiagramOutlineEditPartFactory editPartFactory = new ERDiagramOutlineEditPartFactory();
 		this.viewer.setEditPartFactory(editPartFactory);
 
-		// ƒOƒ‰ƒtƒBƒJƒ‹EƒGƒfƒBƒ^‚Ìƒ‹[ƒgEƒ‚ƒfƒ‹‚ğƒcƒŠ[Eƒrƒ…[ƒ‚É‚àİ’è
+		// ã‚°ãƒ©ãƒ•ã‚£ã‚«ãƒ«ãƒ»ã‚¨ãƒ‡ã‚£ã‚¿ã®ãƒ«ãƒ¼ãƒˆãƒ»ãƒ¢ãƒ‡ãƒ«ã‚’ãƒ„ãƒªãƒ¼ãƒ»ãƒ“ãƒ¥ãƒ¼ãƒ¯ã«ã‚‚è¨­å®š
 		this.viewer.setContents(this.diagram);
 
 		Canvas canvas = new Canvas(this.sash, SWT.BORDER);
-		// ƒTƒ€ƒlƒCƒ‹EƒtƒBƒMƒ…ƒA‚ğ”z’u‚·‚éˆ×‚Ì LightweightSystem
+		// ã‚µãƒ ãƒã‚¤ãƒ«ãƒ»ãƒ•ã‚£ã‚®ãƒ¥ã‚¢ã‚’é…ç½®ã™ã‚‹ç‚ºã® LightweightSystem
 		this.lws = new LightweightSystem(canvas);
 
 		this.resetView(this.registry);
@@ -93,6 +93,8 @@ public class ERDiagramOutlinePage extends ContentOutlinePage {
 		AbstractTransferDragSourceListener dragSourceListener = new ERDiagramTransferDragSourceListener(
 				this.viewer, TemplateTransfer.getInstance());
 		this.viewer.addDragSourceListener(dragSourceListener);
+		
+		this.diagram.refreshOutline();
 	}
 
 	/**
@@ -100,12 +102,12 @@ public class ERDiagramOutlinePage extends ContentOutlinePage {
 	 */
 	@Override
 	public Control getControl() {
-		// ƒAƒEƒgƒ‰ƒCƒ“Eƒrƒ…[‚ğƒAƒNƒeƒBƒu‚É‚µ‚½‚ÉƒtƒH[ƒJƒX‚ªİ’è‚³‚ê‚éƒRƒ“ƒgƒ[ƒ‹‚ğ•Ô‚·
+		// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãƒ»ãƒ“ãƒ¥ãƒ¼ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã—ãŸæ™‚ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒè¨­å®šã•ã‚Œã‚‹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’è¿”ã™
 		return sash;
 	}
 
 	private void showThumbnail() {
-		// RootEditPart‚Ìƒrƒ…[‚ğƒ\[ƒX‚Æ‚µ‚ÄƒTƒ€ƒlƒCƒ‹‚ğì¬
+		// RootEditPartã®ãƒ“ãƒ¥ãƒ¼ã‚’ã‚½ãƒ¼ã‚¹ã¨ã—ã¦ã‚µãƒ ãƒã‚¤ãƒ«ã‚’ä½œæˆ
 		ScalableFreeformRootEditPart editPart = (ScalableFreeformRootEditPart) this.graphicalViewer
 				.getRootEditPart();
 
@@ -135,7 +137,7 @@ public class ERDiagramOutlinePage extends ContentOutlinePage {
 		this.graphicalViewer = graphicalViewer;
 		this.viewer.setContextMenu(outlineMenuMgr);
 
-		// ƒGƒfƒBƒbƒgEƒhƒƒCƒ“‚Ìİ’è
+		// ã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒ»ãƒ‰ãƒ¡ã‚¤ãƒ³ã®è¨­å®š
 		this.viewer.setEditDomain(editDomain);
 		this.registry = registry;
 
@@ -145,7 +147,7 @@ public class ERDiagramOutlinePage extends ContentOutlinePage {
 	}
 
 	private void resetAction(ActionRegistry registry) {
-		// ƒAƒEƒgƒ‰ƒCƒ“Eƒy[ƒW‚Å—LŒø‚É‚·‚éƒAƒNƒVƒ‡ƒ“
+		// ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ãƒ»ãƒšãƒ¼ã‚¸ã§æœ‰åŠ¹ã«ã™ã‚‹ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
 		IActionBars bars = this.getSite().getActionBars();
 
 		String id = ActionFactory.UNDO.getId();

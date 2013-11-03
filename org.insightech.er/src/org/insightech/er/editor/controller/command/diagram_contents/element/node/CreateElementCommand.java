@@ -62,6 +62,8 @@ public class CreateElementCommand extends AbstractCommand {
 			category.setContents(this.enclosedElementList);
 			this.diagram.addCategory(category);
 		}
+
+		this.diagram.refreshChildren();
 	}
 
 	/**
@@ -77,6 +79,8 @@ public class CreateElementCommand extends AbstractCommand {
 			category.getContents().clear();
 			this.diagram.removeCategory(category);
 		}
+		
+		this.diagram.refreshChildren();
 	}
 
 	/**

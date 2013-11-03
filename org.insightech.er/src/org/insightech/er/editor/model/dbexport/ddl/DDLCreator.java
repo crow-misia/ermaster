@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 
 import org.insightech.er.ResourceString;
 import org.insightech.er.db.DBManager;
@@ -700,6 +701,9 @@ public abstract class DDLCreator {
 			if (!Character
 					.isDigit(normalColumn.getDefaultValue().toCharArray()[0])) {
 				return false;
+
+			} else if (Check.isNumber(normalColumn.getDefaultValue())) {
+				return false;
 			}
 		}
 
@@ -988,9 +992,9 @@ public abstract class DDLCreator {
 		ddl.append("DROP TABLE ");
 		ddl.append(this.getIfExistsOption());
 		ddl.append(filter(table.getNameWithSchema(diagram.getDatabase())));
-		
+
 		ddl.append(this.getPostDropDDL(table));
-		
+
 		if (this.semicolon) {
 			ddl.append(";");
 		}
@@ -999,7 +1003,7 @@ public abstract class DDLCreator {
 
 		return ddl.toString();
 	}
-	
+
 	public String getPostDropDDL(TableView table) {
 		return "";
 	}
@@ -1124,19 +1128,20 @@ public abstract class DDLCreator {
 		}
 
 		if (ddlTarget.commentReplaceLineFeed) {
-			comment = comment.replaceAll("\r\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\r",
-					Format.null2blank(ddlTarget.commentReplaceString));
-			comment = comment.replaceAll("\n",
-					Format.null2blank(ddlTarget.commentReplaceString));
+			comment = comment.replaceAll("\r\n", Matcher
+					.quoteReplacement(Format
+							.null2blank(ddlTarget.commentReplaceString)));
+			comment = comment.replaceAll("\r", Matcher.quoteReplacement(Format
+					.null2blank(ddlTarget.commentReplaceString)));
+			comment = comment.replaceAll("\n", Matcher.quoteReplacement(Format
+					.null2blank(ddlTarget.commentReplaceString)));
 		}
 
 		return comment;
 	}
-	
+
 	public String getCreateOrReplacePrefix() {
 		return "CREATE";
 	}
-	
+
 }

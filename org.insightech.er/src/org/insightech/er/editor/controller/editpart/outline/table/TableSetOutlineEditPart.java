@@ -1,11 +1,9 @@
 package org.insightech.er.editor.controller.editpart.outline.table;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.gef.EditPart;
 import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
@@ -17,12 +15,6 @@ import org.insightech.er.editor.model.diagram_contents.element.node.table.TableV
 import org.insightech.er.editor.model.settings.Settings;
 
 public class TableSetOutlineEditPart extends AbstractOutlineEditPart {
-
-	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(TableSet.PROPERTY_CHANGE_TABLE_SET)) {
-			refresh();
-		}
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -60,19 +52,6 @@ public class TableSetOutlineEditPart extends AbstractOutlineEditPart {
 		this.setWidgetText(ResourceString.getResourceString("label.table")
 				+ " (" + this.getModelChildren().size() + ")");
 		this.setWidgetImage(Activator.getImage(ImageKey.DICTIONARY));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void refreshChildren() {
-		super.refreshChildren();
-
-		for (Object child : this.getChildren()) {
-			EditPart part = (EditPart) child;
-			part.refresh();
-		}
 	}
 
 }

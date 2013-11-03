@@ -25,6 +25,13 @@ public class Bendpoint implements Serializable, Cloneable {
 		return y;
 	}
 
+	public void transform(int dx, int dy) {
+		if (!this.relative) {
+			this.x += dx;
+			this.y += dy;
+		}
+	}
+
 	public boolean isRelative() {
 		return this.relative;
 	}

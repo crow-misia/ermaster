@@ -4,7 +4,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Event;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.notation.ChangeNotationLevelCommand;
+import org.insightech.er.editor.controller.command.display.notation.ChangeNotationLevelCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.view.action.AbstractBaseAction;
 

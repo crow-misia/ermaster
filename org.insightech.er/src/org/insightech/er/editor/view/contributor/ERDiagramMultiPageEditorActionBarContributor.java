@@ -11,19 +11,31 @@ import org.insightech.er.editor.ERDiagramEditor;
 public class ERDiagramMultiPageEditorActionBarContributor extends
 		MultiPageEditorActionBarContributor {
 
+	private ZoomComboContributionItem zoomComboContributionItem;
+
+	public ERDiagramMultiPageEditorActionBarContributor() {
+	}
+
 	@Override
 	public void setActivePage(IEditorPart activeEditor) {
-		ERDiagramEditor editor = (ERDiagramEditor) activeEditor;
-
-		ERDiagramActionBarContributor actionBarContributor = editor
-				.getActionBarContributor();
-
 		IActionBars actionBars = this.getActionBars();
+
 		actionBars.clearGlobalActionHandlers();
 		actionBars.getToolBarManager().removeAll();
 
-		actionBarContributor.init(actionBars, editor.getEditorSite().getPage());
-		actionBarContributor.setActiveEditor(editor);
+		ERDiagramEditor editor = (ERDiagramEditor) activeEditor;
+
+		ERDiagramActionBarContributor activeContributor = editor
+				.getActionBarContributor();
+		if (this.zoomComboContributionItem == null) {
+			this.zoomComboContributionItem = new ZoomComboContributionItem(
+					this.getPage());
+		}
+		
+		activeContributor.contributeToToolBar(actionBars.getToolBarManager(),
+				this.zoomComboContributionItem);
+		activeContributor.setActiveEditor(editor);
+
 		ZoomComboContributionItem item = (ZoomComboContributionItem) getActionBars()
 				.getToolBarManager().find(
 						GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
@@ -33,7 +45,6 @@ public class ERDiagramMultiPageEditorActionBarContributor extends
 			item.setZoomManager(zoomManager);
 		}
 
-		getActionBars().updateActionBars();
+		actionBars.updateActionBars();
 	}
-
 }

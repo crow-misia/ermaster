@@ -26,6 +26,18 @@ public class Check {
 		return true;
 	}
 
+	public static boolean isNumber(String str) {
+		char[] ch = str.toCharArray();
+
+		for (int i = 0; i < ch.length; i++) {
+			if (ch[i] < '0' || '9' < ch[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public static boolean equals(Object str1, Object str2) {
 		if (str1 == null) {
 			if (str2 == null) {

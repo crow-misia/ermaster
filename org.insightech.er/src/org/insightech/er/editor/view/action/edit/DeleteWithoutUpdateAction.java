@@ -9,16 +9,16 @@ import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.ui.IWorkbenchPart;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.WithoutUpdateCommandWrapper;
+import org.insightech.er.editor.controller.command.WithoutUpdateCommandWrapper;
 import org.insightech.er.editor.model.ERDiagram;
 
 public class DeleteWithoutUpdateAction extends DeleteAction {
 
-	private ERDiagramEditor part;
+	private ERDiagramEditor editor;
 
-	public DeleteWithoutUpdateAction(ERDiagramEditor part) {
-		super((IWorkbenchPart) part);
-		this.part = part;
+	public DeleteWithoutUpdateAction(ERDiagramEditor editor) {
+		super((IWorkbenchPart) editor);
+		this.editor = editor;
 		this.setText(ResourceString.getResourceString("action.title.delete"));
 		this.setToolTipText(ResourceString
 				.getResourceString("action.title.delete"));
@@ -30,7 +30,7 @@ public class DeleteWithoutUpdateAction extends DeleteAction {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Command createDeleteCommand(List objects) {
+	public Command createDeleteCommand(List objects) {		
 		Command command = super.createDeleteCommand(objects);
 
 		if (command == null) {
@@ -42,12 +42,18 @@ public class DeleteWithoutUpdateAction extends DeleteAction {
 			if (compoundCommand.getCommands().isEmpty()) {
 				return null;
 			}
+
+			if (compoundCommand.getCommands().size() == 1) {
+				return compoundCommand;
+			}
+
+			EditPart editPart = this.editor.getGraphicalViewer().getContents();
+			ERDiagram diagram = (ERDiagram) editPart.getModel();
+
+			return new WithoutUpdateCommandWrapper(compoundCommand, diagram);
 		}
 
-		EditPart editPart = part.getGraphicalViewer().getContents();
-		ERDiagram diagram = (ERDiagram) editPart.getModel();
-
-		return new WithoutUpdateCommandWrapper(command, diagram);
+		return command;
 	}
 
 	@Override

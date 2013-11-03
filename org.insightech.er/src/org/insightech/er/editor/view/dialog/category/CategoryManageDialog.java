@@ -31,6 +31,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.editor.model.diagram_contents.element.node.category.Category;
 import org.insightech.er.editor.model.settings.CategorySetting;
 import org.insightech.er.editor.model.settings.Settings;
+import org.insightech.er.util.Format;
 
 public class CategoryManageDialog extends AbstractDialog {
 
@@ -265,7 +266,7 @@ public class CategoryManageDialog extends AbstractDialog {
 			tableItem.setText(1, ResourceString
 					.getResourceString("label.object.type."
 							+ nodeElement.getObjectType()));
-			tableItem.setText(2, nodeElement.getName());
+			tableItem.setText(2, Format.null2blank(nodeElement.getName()));
 
 			this.nodeCheckMap.put(nodeElement, editor);
 		}

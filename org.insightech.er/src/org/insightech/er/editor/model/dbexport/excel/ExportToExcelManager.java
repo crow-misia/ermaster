@@ -133,16 +133,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 
 		monitor.done();
 	}
-
-	/**
-	 * �f�[�^�x�[�X��`��G�N�Z���ɏ����o���܂��B
-	 * 
-	 * @param editorPart
-	 * @param viewer
-	 * @param saveFilePath
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
+	
 	public void save(IProgressMonitor monitor) throws IOException,
 			InterruptedException {
 		File excelFile = new File(this.saveFilePath);
@@ -260,7 +251,6 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 				workbook.removeSheetAt(0);
 
 			} else {
-				System.out.println("non sheet generator :  " + templateSheetName);
 				if (!isExcludeTarget(templateSheetName)) {
 					moveSheet(workbook, 0);
 					HSSFSheet sheet = workbook.getSheetAt(workbook.getNumberOfSheets() - 1);

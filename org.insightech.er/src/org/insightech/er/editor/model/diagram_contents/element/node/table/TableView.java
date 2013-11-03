@@ -1,7 +1,6 @@
 package org.insightech.er.editor.model.diagram_contents.element.node.table;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -28,12 +27,6 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 		ColumnHolder, Comparable<TableView> {
 
 	private static final long serialVersionUID = -4492787972500741281L;
-
-	public static final String PROPERTY_CHANGE_PHYSICAL_NAME = "table_view_physicalName";
-
-	public static final String PROPERTY_CHANGE_LOGICAL_NAME = "table_view_logicalName";
-
-	public static final String PROPERTY_CHANGE_COLUMNS = "columns";
 
 	public static final int DEFAULT_WIDTH = 120;
 
@@ -62,11 +55,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 	}
 
 	public void setPhysicalName(String physicalName) {
-		String old = this.physicalName;
 		this.physicalName = physicalName;
-
-		this.firePropertyChange(PROPERTY_CHANGE_PHYSICAL_NAME, old,
-				physicalName);
 	}
 
 	public String getLogicalName() {
@@ -74,10 +63,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 	}
 
 	public void setLogicalName(String logicalName) {
-		String old = this.logicalName;
 		this.logicalName = logicalName;
-
-		this.firePropertyChange(PROPERTY_CHANGE_LOGICAL_NAME, old, logicalName);
 	}
 
 	public String getName() {
@@ -150,8 +136,6 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 			}
 		}
 
-		Collections.sort(relations);
-
 		return relations;
 	}
 
@@ -161,15 +145,6 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 	@Override
 	public void setLocation(Location location) {
 		super.setLocation(location);
-
-		if (this.getDiagram() != null) {
-			for (Relation relation : this.getOutgoingRelations()) {
-				relation.setParentMove();
-			}
-			for (Relation relation : this.getIncomingRelations()) {
-				relation.setParentMove();
-			}
-		}
 	}
 
 	public List<NormalColumn> getNormalColumns() {
@@ -193,30 +168,23 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 		for (Column column : columns) {
 			column.setColumnHolder(this);
 		}
-		this.firePropertyChange(PROPERTY_CHANGE_COLUMNS, null, null);
 	}
 
 	public void setDirty() {
-		this.firePropertyChange(PROPERTY_CHANGE_COLUMNS, null, null);
 	}
 
 	public void addColumn(Column column) {
 		this.columns.add(column);
 		column.setColumnHolder(this);
-
-		this.firePropertyChange(PROPERTY_CHANGE_COLUMNS, null, null);
 	}
 
 	public void addColumn(int index, Column column) {
 		this.columns.add(index, column);
 		column.setColumnHolder(this);
-
-		this.firePropertyChange(PROPERTY_CHANGE_COLUMNS, null, null);
 	}
 
 	public void removeColumn(Column column) {
 		this.columns.remove(column);
-		this.firePropertyChange(PROPERTY_CHANGE_COLUMNS, null, null);
 	}
 
 	public TableView copyTableViewData(TableView to) {
@@ -308,62 +276,57 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 			}
 		}
 
-		this.setTargetTableRelation(to, newPrimaryKeyColumns);
-
 		to.setColumns(columns);
+
+		this.setTargetTableRelation(to, newPrimaryKeyColumns);
 	}
 
 	private void setTargetTableRelation(TableView sourceTable,
 			List<NormalColumn> newPrimaryKeyColumns) {
 		for (Relation relation : sourceTable.getOutgoingRelations()) {
 
-			// �֘A��PK���Q�Ƃ��Ă���ꍇ
 			if (relation.isReferenceForPK()) {
-				// �Q�Ƃ���e�[�u��
 				TableView targetTable = relation.getTargetTableView();
 
-				// �O���L�[���X�g
 				List<NormalColumn> foreignKeyColumns = relation
 						.getForeignKeyColumns();
 
 				boolean isPrimary = true;
 				boolean isPrimaryChanged = false;
 
-				// �Q�Ƃ����e�[�u����PK�ɑ΂��ď������s��
-				for (NormalColumn primaryKeyColumn : newPrimaryKeyColumns) {
-					boolean isReferenced = false;
+				for (NormalColumn newPrimaryKeyColumn : newPrimaryKeyColumns) {
+					boolean isNewPrimaryKeyReferenced = false;
 
 					for (Iterator<NormalColumn> iter = foreignKeyColumns
 							.iterator(); iter.hasNext();) {
 
-						// �O���L�[
 						NormalColumn foreignKeyColumn = iter.next();
 
 						if (isPrimary) {
 							isPrimary = foreignKeyColumn.isPrimaryKey();
 						}
 
-						// �O���L�[�̎Q�Ɨ�PK��Ɠ����ꍇ
 						for (NormalColumn referencedColumn : foreignKeyColumn
 								.getReferencedColumnList()) {
-							if (referencedColumn == primaryKeyColumn) {
-								isReferenced = true;
+
+							if (referencedColumn == newPrimaryKeyColumn) {
+								isNewPrimaryKeyReferenced = true;
 								iter.remove();
 								break;
 							}
 						}
 
-						if (isReferenced) {
+						if (isNewPrimaryKeyReferenced) {
 							break;
 						}
 					}
 
-					if (!isReferenced) {
+					if (!isNewPrimaryKeyReferenced) {
 						if (isPrimary) {
 							isPrimaryChanged = true;
 						}
-						NormalColumn foreignKeyColumn = primaryKeyColumn.createForeignKey(relation,
-								isPrimary);
+						NormalColumn foreignKeyColumn = newPrimaryKeyColumn
+								.createForeignKey(relation, isPrimary);
 
 						targetTable.addColumn(foreignKeyColumn);
 					}
@@ -384,7 +347,7 @@ public abstract class TableView extends NodeElement implements ObjectModel,
 							nextNewPrimaryKeyColumns);
 				}
 
-				targetTable.setDirty();
+				// targetTable.setDirty();
 			}
 		}
 	}

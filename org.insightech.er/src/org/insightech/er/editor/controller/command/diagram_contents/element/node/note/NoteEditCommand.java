@@ -23,6 +23,8 @@ public class NoteEditCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.note.setText(text);
+		
+		this.note.refreshVisuals();
 	}
 
 	/**
@@ -31,5 +33,7 @@ public class NoteEditCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.note.setText(oldText);
+		
+		this.note.refreshVisuals();
 	}
 }

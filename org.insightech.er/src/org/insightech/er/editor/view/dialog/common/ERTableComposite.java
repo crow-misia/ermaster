@@ -474,6 +474,8 @@ public class ERTableComposite extends Composite {
 	}
 
 	private void setNotNull(NormalColumn normalColumn, boolean notnull) {
+		normalColumn.setNotNull(notnull);
+
 		for (NormalColumn anotherColumn : ertable.getNormalColumns()) {
 			if (anotherColumn.isForeignKey()) {
 				Relation anotherColumnsRelation = anotherColumn

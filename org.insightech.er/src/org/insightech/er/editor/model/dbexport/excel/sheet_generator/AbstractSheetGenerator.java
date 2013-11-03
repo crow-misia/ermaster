@@ -3,6 +3,7 @@ package org.insightech.er.editor.model.dbexport.excel.sheet_generator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -31,58 +32,58 @@ public abstract class AbstractSheetGenerator {
 
 	protected static final String KEYWORD_PHYSICAL_TABLE_NAME = "$PTN";
 
-	// ˜_—ƒJƒ‰ƒ€–¼
+	// ï¿½_ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	protected static final String KEYWORD_LOGICAL_COLUMN_NAME = "$LCN";
 
-	// •¨—ƒJƒ‰ƒ€–¼
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	protected static final String KEYWORD_PHYSICAL_COLUMN_NAME = "$PCN";
 
-	// Œ^
+	// ï¿½^
 	protected static final String KEYWORD_TYPE = "$TYP";
 
-	// ’·‚³
+	// ï¿½ï¿½ï¿½ï¿½
 	protected static final String KEYWORD_LENGTH = "$LEN";
 
-	// ¬”
+	// ï¿½ï¿½ï¿½ï¿½
 	protected static final String KEYWORD_DECIMAL = "$DEC";
 
-	// åƒL[
+	// ï¿½ï¿½Lï¿½[
 	protected static final String KEYWORD_PRIMARY_KEY = "$PK";
 
 	// Not Null
 	protected static final String KEYWORD_NOT_NULL = "$NN";
 
-	// ƒ†ƒj[ƒNƒL[
+	// ï¿½ï¿½ï¿½jï¿½[ï¿½Nï¿½Lï¿½[
 	protected static final String KEYWORD_UNIQUE_KEY = "$UK";
 
-	// ŠO•”ƒL[
+	// ï¿½Oï¿½ï¿½ï¿½Lï¿½[
 	protected static final String KEYWORD_FOREIGN_KEY = "$FK";
 
-	// QÆƒe[ƒuƒ‹.ƒL[i˜_—–¼j
+	// ï¿½Qï¿½Æƒeï¿½[ï¿½uï¿½ï¿½.ï¿½Lï¿½[ï¿½iï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½j
 	protected static final String KEYWORD_LOGICAL_REFERENCE_TABLE_KEY = "$LRFTC";
 
-	// QÆƒe[ƒuƒ‹.ƒL[i•¨—–¼j
+	// ï¿½Qï¿½Æƒeï¿½[ï¿½uï¿½ï¿½.ï¿½Lï¿½[ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½j
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_TABLE_KEY = "$PRFTC";
 
-	// QÆƒe[ƒuƒ‹i˜_—–¼j
+	// ï¿½Qï¿½Æƒeï¿½[ï¿½uï¿½ï¿½ï¿½iï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½j
 	protected static final String KEYWORD_LOGICAL_REFERENCE_TABLE = "$LRFT";
 
-	// QÆƒe[ƒuƒ‹i•¨—–¼j
+	// ï¿½Qï¿½Æƒeï¿½[ï¿½uï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½j
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_TABLE = "$PRFT";
 
-	// QÆƒL[i˜_—–¼j
+	// ï¿½Qï¿½ÆƒLï¿½[ï¿½iï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½j
 	protected static final String KEYWORD_LOGICAL_REFERENCE_KEY = "$LRFC";
 
-	// QÆƒL[i•¨—–¼j
+	// ï¿½Qï¿½ÆƒLï¿½[ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½j
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_KEY = "$PRFC";
 
-	// ƒI[ƒgƒCƒ“ƒNƒŠƒƒ“ƒg
+	// ï¿½Iï¿½[ï¿½gï¿½Cï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½g
 	protected static final String KEYWORD_AUTO_INCREMENT = "$INC";
 
-	// à–¾
+	// ï¿½ï¿½ï¿½ï¿½
 	protected static final String KEYWORD_DESCRIPTION = "$CDSC";
 
-	// ƒfƒtƒHƒ‹ƒg’l
+	// ï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½l
 	protected static final String KEYWORD_DEFAULT_VALUE = "$DEF";
 
 	protected static final String KEYWORD_LOGICAL_FOREIGN_KEY_NAME = "$LFKN";
@@ -208,8 +209,9 @@ public abstract class AbstractSheetGenerator {
 		String str = template;
 
 		for (String keyword : KEYWORDS_OF_COLUMN) {
-			str = str.replaceAll("\\" + keyword, this.getKeywordValue(
-					keywordsValueMap, normalColumn, tableView, keyword));
+			str = str.replaceAll("\\" + keyword, Matcher.quoteReplacement(this
+					.getKeywordValue(keywordsValueMap, normalColumn, tableView,
+							keyword)));
 		}
 
 		return str;
@@ -502,13 +504,13 @@ public abstract class AbstractSheetGenerator {
 		HSSFSheet sheet = workbook.cloneSheet(sheetNo);
 		int newSheetNo = workbook.getSheetIndex(sheet);
 
-		workbook.setSheetName(newSheetNo, decideSheetName(name,
-				sheetNameMap));
+		workbook.setSheetName(newSheetNo, decideSheetName(name, sheetNameMap));
 
 		return sheet;
 	}
 
-	public static String decideSheetName(String name, Map<String, Integer> sheetNameMap) {
+	public static String decideSheetName(String name,
+			Map<String, Integer> sheetNameMap) {
 		if (name.length() > MAX_SHEET_NAME_LENGTH) {
 			name = name.substring(0, MAX_SHEET_NAME_LENGTH);
 		}
@@ -533,8 +535,8 @@ public abstract class AbstractSheetGenerator {
 	}
 
 	public void init(HSSFSheet wordsSheet) {
-		this.keywordsValueMap = this.buildKeywordsValueMap(wordsSheet, this
-				.getKeywordsColumnNo(), this.getKeywords());
+		this.keywordsValueMap = this.buildKeywordsValueMap(wordsSheet,
+				this.getKeywordsColumnNo(), this.getKeywords());
 	}
 
 	public abstract void generate(IProgressMonitor monitor,

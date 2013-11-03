@@ -6,7 +6,7 @@ import org.insightech.er.Activator;
 import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
-import org.insightech.er.editor.controller.command.common.ChangeSettingsCommand;
+import org.insightech.er.editor.controller.command.settings.ChangeSettingsCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.settings.Settings;
 import org.insightech.er.editor.view.action.AbstractBaseAction;
@@ -28,24 +28,24 @@ public class ExportToTestDataAction extends AbstractBaseAction {
 		ERDiagram diagram = this.getDiagram();
 
 		ExportToTestDataDialog dialog = new ExportToTestDataDialog(PlatformUI
-				.getWorkbench().getActiveWorkbenchWindow().getShell(), this
-				.getEditorPart(), diagram, diagram.getDiagramContents()
-				.getTestDataList(), -1);
+				.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				this.getEditorPart(), diagram, diagram.getDiagramContents()
+						.getTestDataList(), -1);
 
 		dialog.open();
 		this.refreshProject();
 
 		if (dialog.getExportTestDataSetting() != null
 				&& !diagram.getDiagramContents().getSettings()
-						.getExportSetting().getExportTestDataSetting().equals(
-								dialog.getExportTestDataSetting())) {
+						.getExportSetting().getExportTestDataSetting()
+						.equals(dialog.getExportTestDataSetting())) {
 			Settings newSettings = (Settings) diagram.getDiagramContents()
 					.getSettings().clone();
 			newSettings.getExportSetting().setExportTestDataSetting(
 					dialog.getExportTestDataSetting());
 
 			ChangeSettingsCommand command = new ChangeSettingsCommand(diagram,
-					newSettings);
+					newSettings, false);
 			this.execute(command);
 		}
 	}

@@ -13,8 +13,6 @@ public class ModelProperties extends NodeElement implements Cloneable {
 
 	private static final long serialVersionUID = 5311013351131568260L;
 
-	public static final String PROPERTY_CHANGE_MODEL_PROPERTIES = "model_properties";
-
 	private boolean display;
 
 	private List<NameValue> properties;
@@ -71,8 +69,6 @@ public class ModelProperties extends NodeElement implements Cloneable {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
-
-		this.firePropertyChange(PROPERTY_CHANGE_MODEL_PROPERTIES, null, null);
 	}
 
 	public boolean isDisplay() {
@@ -81,8 +77,6 @@ public class ModelProperties extends NodeElement implements Cloneable {
 
 	public void setDisplay(boolean display) {
 		this.display = display;
-
-		this.firePropertyChange(PROPERTY_CHANGE_MODEL_PROPERTIES, null, null);
 	}
 
 	/**
@@ -116,8 +110,6 @@ public class ModelProperties extends NodeElement implements Cloneable {
 
 	public void setProperties(List<NameValue> properties) {
 		this.properties = properties;
-
-		this.firePropertyChange(PROPERTY_CHANGE_MODEL_PROPERTIES, null, null);
 	}
 
 	public String getDescription() {

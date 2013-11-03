@@ -63,6 +63,25 @@ public class ERTableEditPart extends TableViewEditPart implements IResizable {
 		}
 	}
 
+	// // @Override
+	// public void doRefreshVisuals() {
+	// super.doRefreshVisuals();
+	// // this.refreshSelfRelationVisuals();
+	// }
+
+	// private void refreshSelfRelationVisuals() {
+	// for (int i = 0; i < this.getSourceConnections().size(); i++) {
+	// AbstractERDiagramConnectionEditPart connectionEditPart =
+	// (AbstractERDiagramConnectionEditPart) this
+	// .getSourceConnections().get(i);
+	//
+	// if (connectionEditPart.getSource() == connectionEditPart
+	// .getTarget()) {
+	// connectionEditPart.refreshVisuals();
+	// }
+	// }
+	// }
+
 	public static CompoundCommand createChangeTablePropertyCommand(
 			ERDiagram diagram, ERTable table, ERTable copyTable) {
 		CompoundCommand command = new CompoundCommand();

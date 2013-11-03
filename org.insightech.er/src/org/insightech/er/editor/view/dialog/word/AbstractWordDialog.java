@@ -25,6 +25,8 @@ import org.insightech.er.util.Format;
 
 public abstract class AbstractWordDialog extends AbstractDialog {
 
+	protected static int WIDTH = -1;
+	
 	protected Combo typeCombo;
 
 	protected Text logicalNameText;
@@ -72,11 +74,9 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		Composite rootComposite = this.createRootComposite(composite);
 
 		this.initializeComposite(rootComposite);
-
+		this.initializeTypeCombo();
+		
 		this.physicalNameText.setFocus();
-
-		this.validate();
-
 	}
 
 	protected Composite createRootComposite(Composite parent) {
@@ -105,10 +105,10 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		int numColumns = this.getCompositeNumColumns();
 
 		this.physicalNameText = CompositeFactory.createText(this, composite,
-				"label.physical.name", numColumns - 1, false);
+				"label.physical.name", numColumns - 1, WIDTH, false);
 
 		this.logicalNameText = CompositeFactory.createText(this, composite,
-				"label.logical.name", numColumns - 1, true);
+				"label.logical.name", numColumns - 1, WIDTH, true);
 
 		this.typeCombo = CompositeFactory.createReadOnlyCombo(this, composite,
 				"label.column.type");
@@ -174,8 +174,8 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 	 */
 	@Override
 	final protected void setData() {
-		this.initializeTypeCombo();
-
+		this.initData();
+		
 		if (!this.add) {
 			this.setWordData();
 		}
@@ -183,6 +183,9 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		this.setEnabledBySqlType();
 	}
 
+	protected void initData() {		
+	}
+	
 	protected void setData(String physicalName, String logicalName,
 			SqlType sqlType, TypeData typeData, String description) {
 

@@ -29,7 +29,6 @@ public class ChangeFreeLayoutCommand extends AbstractCommand {
 	@Override
 	protected void doExecute() {
 		this.categorySettings.setFreeLayout(this.newFreeLayout);
-		this.diagram.changeAll();
 	}
 
 	/**
@@ -38,6 +37,5 @@ public class ChangeFreeLayoutCommand extends AbstractCommand {
 	@Override
 	protected void doUndo() {
 		this.categorySettings.setFreeLayout(this.oldFreeLayout);
-		this.diagram.changeAll();
 	}
 }

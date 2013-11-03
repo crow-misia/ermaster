@@ -88,6 +88,7 @@ public class GroupDialog extends AbstractDialog implements
 	 */
 	@Override
 	protected void perfomeOK() {
+		this.copyData.setGroupName(this.groupNameText.getText());
 	}
 
 	@Override

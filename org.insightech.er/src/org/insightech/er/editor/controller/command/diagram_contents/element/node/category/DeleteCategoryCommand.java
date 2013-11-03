@@ -38,6 +38,7 @@ public class DeleteCategoryCommand extends AbstractCommand {
 				this.categorySettings.getSelectedCategories());
 
 		this.diagram.removeCategory(category);
+		this.diagram.refreshChildren();
 	}
 
 	/**
@@ -48,5 +49,6 @@ public class DeleteCategoryCommand extends AbstractCommand {
 		this.categorySettings.setAllCategories(oldAllCategories);
 		this.categorySettings.setSelectedCategories(oldSelectedCategories);
 		this.diagram.restoreCategories();
+		this.diagram.refreshChildren();
 	}
 }

@@ -45,7 +45,7 @@ public class CopyManager {
 			this.uniqueWordDictionary.init(diagram);
 		}
 	}
-	
+
 	public static void copy(NodeSet nodeElementList) {
 		CopyManager copyManager = new CopyManager(null);
 		copyList = copyManager.copyNodeElementList(nodeElementList);
@@ -90,6 +90,9 @@ public class CopyManager {
 
 			if (nodeElement instanceof ModelProperties) {
 				// モデルプロパティの場合、何もしません
+				continue;
+
+			} else if (nodeElement instanceof Category) {
 				continue;
 			}
 
@@ -283,14 +286,15 @@ public class CopyManager {
 				// 普通の列の場合
 				// 列を複製します。
 				NormalColumn cloneNormalColumn = (NormalColumn) column.clone();
-				
+
 				if (this.uniqueWordDictionary != null) {
-					Word word = this.uniqueWordDictionary.getUniqueWord(cloneNormalColumn.getWord(), false);
+					Word word = this.uniqueWordDictionary.getUniqueWord(
+							cloneNormalColumn.getWord(), false);
 					if (word != null) {
 						cloneNormalColumn.setWord(word);
 					}
 				}
-				
+
 				cloneColumn = cloneNormalColumn;
 			}
 
@@ -479,7 +483,7 @@ public class CopyManager {
 			Tablespace newTablespace = (Tablespace) tablespace.clone();
 			tablespaceMap.put(tablespace, newTablespace);
 
-			copyTablespaceSet.addTablespace(newTablespace);
+			copyTablespaceSet.addObject(newTablespace);
 		}
 
 		for (TableView tableView : copyDiagramContents.getContents()

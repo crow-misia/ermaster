@@ -14,8 +14,6 @@ public class Dictionary extends AbstractModel {
 
 	private static final long serialVersionUID = -4476318682977312216L;
 
-	public static final String PROPERTY_CHANGE_DICTIONARY = "dictionary";
-
 	private Map<Word, List<NormalColumn>> wordMap;
 
 	public Dictionary() {
@@ -39,8 +37,6 @@ public class Dictionary extends AbstractModel {
 		if (!useColumns.contains(column)) {
 			useColumns.add(column);
 		}
-
-		this.firePropertyChange(PROPERTY_CHANGE_DICTIONARY, null, null);
 	}
 
 	public void remove(NormalColumn column) {
@@ -58,8 +54,6 @@ public class Dictionary extends AbstractModel {
 				this.wordMap.remove(word);
 			}
 		}
-
-		this.firePropertyChange(PROPERTY_CHANGE_DICTIONARY, null, null);
 	}
 
 	public void remove(TableView tableView) {
@@ -74,9 +68,9 @@ public class Dictionary extends AbstractModel {
 
 	public List<Word> getWordList() {
 		List<Word> list = new ArrayList<Word>(this.wordMap.keySet());
-
+		
 		Collections.sort(list);
-
+		
 		return list;
 	}
 

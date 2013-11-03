@@ -531,7 +531,7 @@ public class XMLLoader {
 				Element sequenceElemnt = (Element) nodeList.item(i);
 				Sequence sequence = this.loadSequence(sequenceElemnt);
 
-				sequenceSet.addSequence(sequence);
+				sequenceSet.addObject(sequence);
 			}
 		}
 	}
@@ -566,7 +566,7 @@ public class XMLLoader {
 				Element triggerElemnt = (Element) nodeList.item(i);
 				Trigger trigger = this.loadTrigger(triggerElemnt);
 
-				triggerSet.addTrigger(trigger);
+				triggerSet.addObject(trigger);
 			}
 		}
 	}
@@ -594,7 +594,7 @@ public class XMLLoader {
 				Tablespace tablespace = this.loadTablespace(tablespaceElemnt,
 						context);
 				if (tablespace != null) {
-					tablespaceSet.addTablespace(tablespace);
+					tablespaceSet.addObject(tablespace);
 				}
 			}
 		}
@@ -1705,10 +1705,6 @@ public class XMLLoader {
 				"on_delete_action"));
 		connection.setOnUpdateAction(this.getStringValue(element,
 				"on_update_action"));
-		connection.setSourceLocationp(this.getIntValue(element, "source_xp"),
-				this.getIntValue(element, "source_yp"));
-		connection.setTargetLocationp(this.getIntValue(element, "target_xp"),
-				this.getIntValue(element, "target_yp"));
 
 		String referencedComplexUniqueKeyId = this.getStringValue(element,
 				"referenced_complex_unique_key");
@@ -1740,6 +1736,11 @@ public class XMLLoader {
 
 		context.connectionSourceMap.put(connection, source);
 		context.connectionTargetMap.put(connection, target);
+
+		connection.setSourceLocationp(this.getIntValue(element, "source_xp"),
+				this.getIntValue(element, "source_yp"));
+		connection.setTargetLocationp(this.getIntValue(element, "target_xp"),
+				this.getIntValue(element, "target_yp"));
 
 		NodeList nodeList = element.getElementsByTagName("bendpoint");
 

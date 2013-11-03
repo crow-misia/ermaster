@@ -10,6 +10,16 @@ public abstract class AbstractModel implements Serializable, Cloneable {
 
 	private PropertyChangeSupport support;
 
+	private static boolean updateable = true;
+
+	public static void setUpdateable(boolean enabled) {
+		updateable = enabled;
+	}
+
+	public static boolean isUpdateable() {
+		return updateable;
+	}
+
 	public AbstractModel() {
 		this.support = new PropertyChangeSupport(this);
 	}
@@ -34,6 +44,18 @@ public abstract class AbstractModel implements Serializable, Cloneable {
 
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		this.support.removePropertyChangeListener(listener);
+	}
+
+	public void refresh() {
+		if (updateable) {
+			this.firePropertyChange("refresh", null, null);
+		}
+	}
+
+	public void refreshVisuals() {
+		if (updateable) {
+			this.firePropertyChange("refreshVisuals", null, null);
+		}
 	}
 
 	/**

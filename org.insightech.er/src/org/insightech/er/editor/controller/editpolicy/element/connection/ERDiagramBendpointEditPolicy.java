@@ -8,10 +8,9 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.BendpointEditPolicy;
 import org.eclipse.gef.requests.BendpointRequest;
-import org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation.bendpoint.CreateBendpointCommand;
-import org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation.bendpoint.DeleteBendpointCommand;
-import org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation.bendpoint.MoveBendpointCommand;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
+import org.insightech.er.editor.controller.command.diagram_contents.element.connection.bendpoint.CreateBendpointCommand;
+import org.insightech.er.editor.controller.command.diagram_contents.element.connection.bendpoint.DeleteBendpointCommand;
+import org.insightech.er.editor.controller.command.diagram_contents.element.connection.bendpoint.MoveBendpointCommand;
 import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 import org.insightech.er.editor.view.figure.connection.ERDiagramConnection;
 
@@ -86,9 +85,10 @@ public class ERDiagramBendpointEditPolicy extends BendpointEditPolicy {
 	 */
 	@Override
 	protected void showSelection() {
-		ERDiagramEditPart diagramEditPart = (ERDiagramEditPart) this.getHost()
-				.getRoot().getContents();
-		diagramEditPart.refreshVisuals();
+		// ERDiagramEditPart diagramEditPart = (ERDiagramEditPart)
+		// this.getHost()
+		// .getRoot().getContents();
+		// diagramEditPart.refreshVisuals();
 
 		super.showSelection();
 	}

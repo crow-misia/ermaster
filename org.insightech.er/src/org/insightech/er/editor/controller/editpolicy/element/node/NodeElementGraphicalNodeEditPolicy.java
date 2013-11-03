@@ -114,7 +114,7 @@ public class NodeElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy 
 			relation.setReferencedComplexUniqueKey(temp
 					.getReferencedComplexUniqueKey());
 			relation.setReferencedColumn(temp.getReferencedColumn());
-System.out.println("###");
+
 			request.setStartCommand(command);
 
 			return command;
@@ -174,18 +174,12 @@ System.out.println("###");
 		ConnectionElement connection = (ConnectionElement) reconnectrequest
 				.getConnectionEditPart().getModel();
 
-		if (!(connection instanceof Relation)) {
-			return null;
-		}
-
-		Relation relation = (Relation) connection;
-
-		if (relation.getSource() == relation.getTarget()) {
+		if (connection.getSource() == connection.getTarget()) {
 			return null;
 		}
 
 		NodeElement newSource = (NodeElement) reconnectrequest.getTarget().getModel();
-		if (!relation.getSource().equals(newSource)) {
+		if (connection.getSource() != newSource) {
 			return null;
 		}
 
@@ -213,7 +207,7 @@ System.out.println("###");
 			yp = 100 * (point.y - bounds.y) / bounds.height;
 		}
 
-		ReconnectSourceCommand command = new ReconnectSourceCommand(relation,
+		ReconnectSourceCommand command = new ReconnectSourceCommand(connection,
 				xp, yp);
 
 		return command;
@@ -228,19 +222,13 @@ System.out.println("###");
 		ConnectionElement connection = (ConnectionElement) reconnectrequest
 				.getConnectionEditPart().getModel();
 
-		if (!(connection instanceof Relation)) {
-			return null;
-		}
-
-		Relation relation = (Relation) connection;
-
-		if (relation.getSource() == relation.getTarget()) {
+		if (connection.getSource() == connection.getTarget()) {
 			return null;
 		}
 
 		NodeElement newTarget = (NodeElement) reconnectrequest.getTarget()
 				.getModel();
-		if (!relation.getTarget().equals(newTarget)) {
+		if (connection.getTarget() != newTarget) {
 			return null;
 		}
 
@@ -268,7 +256,7 @@ System.out.println("###");
 			xp = 100 * (point.x - bounds.x) / bounds.width;
 			yp = 100 * (point.y - bounds.y) / bounds.height;
 		}
-		ReconnectTargetCommand command = new ReconnectTargetCommand(relation,
+		ReconnectTargetCommand command = new ReconnectTargetCommand(connection,
 				xp, yp);
 
 		return command;

@@ -16,8 +16,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.handles.BendpointMoveHandle;
 import org.eclipse.gef.requests.BendpointRequest;
 import org.eclipse.swt.SWT;
-import org.insightech.er.editor.controller.command.diagram_contents.element.connection.relation.bendpoint.MoveRelationBendpointCommand;
-import org.insightech.er.editor.controller.editpart.element.ERDiagramEditPart;
+import org.insightech.er.editor.controller.command.diagram_contents.element.connection.bendpoint.MoveRelationBendpointCommand;
 import org.insightech.er.editor.controller.editpart.element.connection.RelationEditPart;
 import org.insightech.er.editor.controller.editpart.element.node.ERTableEditPart;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Bendpoint;
@@ -136,8 +135,8 @@ public class RelationBendpointEditPolicy extends ERDiagramBendpointEditPolicy {
 				Bendpoint rate = this.getRate(point);
 
 				MoveRelationBendpointCommand command = new MoveRelationBendpointCommand(
-						editPart, rate.getX(), rate.getY(), bendpointrequest
-								.getIndex());
+						editPart, rate.getX(), rate.getY(),
+						bendpointrequest.getIndex());
 
 				return command;
 			}
@@ -195,9 +194,9 @@ public class RelationBendpointEditPolicy extends ERDiagramBendpointEditPolicy {
 
 			this.showSelectedLine();
 
-			ERDiagramEditPart diagramEditPart = (ERDiagramEditPart) this
-					.getHost().getRoot().getContents();
-			diagramEditPart.refreshVisuals();
+			// ERDiagramEditPart diagramEditPart = (ERDiagramEditPart) this
+			// .getHost().getRoot().getContents();
+			// diagramEditPart.refreshVisuals();
 
 			return list;
 		}

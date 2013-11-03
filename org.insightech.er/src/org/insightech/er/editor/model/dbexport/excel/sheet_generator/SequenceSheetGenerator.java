@@ -126,7 +126,7 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 
 	@Override
 	public int count(ERDiagram diagram) {
-		return diagram.getDiagramContents().getSequenceSet().getSequenceList()
+		return diagram.getDiagramContents().getSequenceSet().getObjectList()
 				.size();
 	}
 

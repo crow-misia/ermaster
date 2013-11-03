@@ -1,11 +1,9 @@
 package org.insightech.er.editor.controller.editpart.element.node;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.ui.PlatformUI;
-import org.insightech.er.editor.controller.command.common.ChangeModelPropertiesCommand;
+import org.insightech.er.editor.controller.command.diagram_contents.element.node.model_properties.ChangeModelPropertiesCommand;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.node.model_properties.ModelProperties;
 import org.insightech.er.editor.model.settings.Settings;
@@ -40,40 +38,26 @@ public class ModelPropertiesEditPart extends NodeElementEditPart implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void doPropertyChange(PropertyChangeEvent event) {
-		if (event.getPropertyName().equals(
-				ModelProperties.PROPERTY_CHANGE_MODEL_PROPERTIES)) {
-			refreshVisuals();
-		}
-
-		super.doPropertyChange(event);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void refreshVisuals() {
+	public void doRefreshVisuals() {
 		ERDiagram diagram = this.getDiagram();
 		ModelProperties modelProperties = (ModelProperties) this.getModel();
 
 		ModelPropertiesFigure figure = (ModelPropertiesFigure) this.getFigure();
 
-		figure.setData(modelProperties.getProperties(), modelProperties
-				.getCreationDate(), modelProperties.getUpdatedDate(), diagram
-				.getDiagramContents().getSettings().getTableStyle(),
+		figure.setData(modelProperties.getProperties(),
+				modelProperties.getCreationDate(),
+				modelProperties.getUpdatedDate(), diagram.getDiagramContents()
+						.getSettings().getTableStyle(),
 				modelProperties.getColor());
-
-		super.refreshVisuals();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void changeSettings(Settings settings) {
+	public void refreshSettings(Settings settings) {
 		this.figure.setVisible(settings.getModelProperties().isDisplay());
-		super.changeSettings(settings);
+		super.refreshSettings(settings);
 	}
 
 	/**

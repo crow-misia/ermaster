@@ -7,7 +7,7 @@ import org.insightech.er.editor.model.diagram_contents.element.node.NodeElement;
 import org.insightech.er.util.Format;
 
 /**
- * ƒm[ƒg‚Ìƒ‚ƒfƒ‹
+ * ï¿½mï¿½[ï¿½gï¿½Ìƒï¿½ï¿½fï¿½ï¿½
  * 
  * @author nakajima
  * 
@@ -16,12 +16,10 @@ public class Note extends NodeElement implements Comparable<Note> {
 
 	private static final long serialVersionUID = -8810455349879962852L;
 
-	public static final String PROPERTY_CHANGE_NOTE = "note";
-
 	private String text;
 
 	/**
-	 * ƒm[ƒg‚Ì–{•¶‚ğ•Ô‹p‚µ‚Ü‚·B
+	 * ï¿½mï¿½[ï¿½gï¿½Ì–{ï¿½ï¿½ï¿½ï¿½Ô‹pï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B
 	 * 
 	 * @return
 	 */
@@ -30,14 +28,12 @@ public class Note extends NodeElement implements Comparable<Note> {
 	}
 
 	/**
-	 * ƒm[ƒg‚Ì–{•¶‚ğİ’è‚µ‚Ü‚·B
+	 * ï¿½mï¿½[ï¿½gï¿½Ì–{ï¿½ï¿½ï¿½ï¿½İ’è‚µï¿½Ü‚ï¿½ï¿½B
 	 * 
 	 * @param text
 	 */
 	public void setText(String text) {
 		this.text = text;
-
-		this.firePropertyChange(PROPERTY_CHANGE_NOTE, null, null);
 	}
 
 	/**

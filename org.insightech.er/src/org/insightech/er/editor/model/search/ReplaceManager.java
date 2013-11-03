@@ -2,7 +2,10 @@ package org.insightech.er.editor.model.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.insightech.er.db.sqltype.SqlType;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.note.Note;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.ERTable;
@@ -42,7 +45,7 @@ public class ReplaceManager {
 
 	private static final int[] EXCLUDE_TYPES = new int[] {
 			SearchResultRow.TYPE_INDEX_COLUMN_NAME,
-			SearchResultRow.TYPE_WORD_TYPE, SearchResultRow.TYPE_COLUMN_TYPE,
+			SearchResultRow.TYPE_COLUMN_TYPE,
 			SearchResultRow.TYPE_COLUMN_GROUP_COLUMN_TYPE };
 
 	private static final List<String> replaceWordList = new ArrayList<String>();
@@ -271,18 +274,21 @@ public class ReplaceManager {
 				return null;
 			}
 
-			if (!str.equals("")) {
-				TypeData oldTypeData = word.getTypeData();
-				TypeData newTypeData = new TypeData(Integer.parseInt(str),
-						oldTypeData.getDecimal(), oldTypeData.isArray(),
-						oldTypeData.getArrayDimension(),
-						oldTypeData.isUnsigned(), oldTypeData.isBinary(),
-						oldTypeData.getArgs());
-
-				word.setType(word.getType(), newTypeData, database);
+			Integer newLength = null;
+			try {
+				newLength = Integer.parseInt(str);
+			} catch (NumberFormatException e) {
 			}
 
-			return new ReplaceResult(original);
+			TypeData oldTypeData = word.getTypeData();
+			TypeData newTypeData = new TypeData(newLength,
+					oldTypeData.getDecimal(), oldTypeData.isArray(),
+					oldTypeData.getArrayDimension(), oldTypeData.isUnsigned(),
+					oldTypeData.isBinary(), oldTypeData.getArgs());
+
+			word.setType(word.getType(), newTypeData, database);
+
+			return new ReplaceResult(oldTypeData);
 
 		} else if (type == SearchResultRow.TYPE_WORD_DECIMAL) {
 			Word word = (Word) object;
@@ -294,18 +300,46 @@ public class ReplaceManager {
 				return null;
 			}
 
-			if (!str.equals("")) {
-				TypeData oldTypeData = word.getTypeData();
-				TypeData newTypeData = new TypeData(oldTypeData.getLength(),
-						Integer.parseInt(str), oldTypeData.isArray(),
-						oldTypeData.getArrayDimension(),
-						oldTypeData.isUnsigned(), oldTypeData.isBinary(),
-						oldTypeData.getArgs());
-
-				word.setType(word.getType(), newTypeData, database);
+			Integer newDecimal = null;
+			try {
+				newDecimal = Integer.parseInt(str);
+			} catch (NumberFormatException e) {
 			}
 
-			return new ReplaceResult(original);
+			TypeData oldTypeData = word.getTypeData();
+			TypeData newTypeData = new TypeData(oldTypeData.getLength(),
+					newDecimal, oldTypeData.isArray(),
+					oldTypeData.getArrayDimension(), oldTypeData.isUnsigned(),
+					oldTypeData.isBinary(), oldTypeData.getArgs());
+
+			word.setType(word.getType(), newTypeData, database);
+
+			return new ReplaceResult(oldTypeData);
+
+		} else if (type == SearchResultRow.TYPE_WORD_TYPE) {
+			Word word = (Word) object;
+			String original = String.valueOf(word.getType().getAlias(database));
+
+			String str = replace(original, keyword, replaceWord);
+
+			SqlType newSqlType = SqlType.valueOf(database, str);
+
+			if (Check.isEmpty(str)) {
+				newSqlType = null;
+
+			} else {
+				newSqlType = SqlType.valueOf(database, str);
+				if (newSqlType == null) {
+					return null;
+				}
+			}
+
+			SqlType oldSqlType = word.getType();
+			TypeData oldTypeData = word.getTypeData();
+
+			word.setType(newSqlType, word.getTypeData(), database);
+
+			return new ReplaceResult(new Object[] { oldSqlType, oldTypeData });
 
 		} else if (type == SearchResultRow.TYPE_WORD_COMMENT) {
 			Word word = (Word) object;
@@ -376,7 +410,9 @@ public class ReplaceManager {
 	}
 
 	private static String replace(String str, String keyword, String replaceWord) {
-		return str.replaceAll(keyword, replaceWord);
+		return Pattern
+				.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE)
+				.matcher(str).replaceAll(Matcher.quoteReplacement(replaceWord));
 	}
 
 	private static void addReplaceWord(String replaceWord) {
@@ -393,73 +429,88 @@ public class ReplaceManager {
 		return replaceWordList;
 	}
 
-	public static void undo(int type, Object object, String str) {
+	public static void undo(int type, Object object, Object original,
+			String database) {
 
 		if (type == SearchResultRow.TYPE_RELATION_NAME) {
 			Relation relation = (Relation) object;
-
-			relation.setName(str);
+			relation.setName((String) original);
 
 		} else if (type == SearchResultRow.TYPE_INDEX_NAME) {
 			Index index = (Index) object;
-
-			index.setName(str);
+			index.setName((String) original);
 
 		} else if (type == SearchResultRow.TYPE_INDEX_COLUMN_NAME) {
 
 		} else if (type == SearchResultRow.TYPE_NOTE) {
 			Note note = (Note) object;
-
-			note.setText(str);
+			note.setText((String) original);
 
 		} else if (type == SearchResultRow.TYPE_MODEL_PROPERTY_NAME) {
 			NameValue property = (NameValue) object;
-
-			property.setName(str);
+			property.setName((String) original);
 
 		} else if (type == SearchResultRow.TYPE_MODEL_PROPERTY_VALUE) {
 			NameValue property = (NameValue) object;
-
-			property.setValue(str);
+			property.setValue((String) original);
 
 		} else if (type == SearchResultRow.TYPE_TABLE_PHYSICAL_NAME) {
 			ERTable table = (ERTable) object;
-
-			table.setPhysicalName(str);
+			table.setPhysicalName((String) original);
 
 		} else if (type == SearchResultRow.TYPE_TABLE_LOGICAL_NAME) {
 			ERTable table = (ERTable) object;
-
-			table.setLogicalName(str);
+			table.setLogicalName((String) original);
 
 		} else if (type == SearchResultRow.TYPE_COLUMN_PHYSICAL_NAME
 				|| type == SearchResultRow.TYPE_COLUMN_GROUP_COLUMN_PHYSICAL_NAME) {
 			NormalColumn column = (NormalColumn) object;
-
-			column.setForeignKeyPhysicalName(str);
+			column.setForeignKeyPhysicalName((String) original);
 
 		} else if (type == SearchResultRow.TYPE_COLUMN_LOGICAL_NAME
 				|| type == SearchResultRow.TYPE_COLUMN_GROUP_COLUMN_LOGICAL_NAME) {
 			NormalColumn column = (NormalColumn) object;
-
-			column.setForeignKeyLogicalName(str);
+			column.setForeignKeyLogicalName((String) original);
 
 		} else if (type == SearchResultRow.TYPE_COLUMN_DEFAULT_VALUE
 				|| type == SearchResultRow.TYPE_COLUMN_GROUP_COLUMN_DEFAULT_VALUE) {
 			NormalColumn column = (NormalColumn) object;
-
-			column.setDefaultValue(str);
+			column.setDefaultValue((String) original);
 
 		} else if (type == SearchResultRow.TYPE_COLUMN_COMMENT) {
 			NormalColumn column = (NormalColumn) object;
-
-			column.setForeignKeyDescription(str);
+			column.setForeignKeyDescription((String) original);
 
 		} else if (type == SearchResultRow.TYPE_COLUMN_GROUP_NAME
 				|| type == SearchResultRow.TYPE_COLUMN_GROUP_COLUMN_COMMENT) {
 			ColumnGroup group = (ColumnGroup) object;
+			group.setGroupName((String) original);
 
-			group.setGroupName(str);
+		} else if (type == SearchResultRow.TYPE_WORD_COMMENT) {
+			Word word = (Word) object;
+			word.setDescription((String) original);
+
+		} else if (type == SearchResultRow.TYPE_WORD_DECIMAL) {
+			Word word = (Word) object;
+			word.setType(word.getType(), (TypeData) original, database);
+
+		} else if (type == SearchResultRow.TYPE_WORD_LENGTH) {
+			Word word = (Word) object;
+			word.setType(word.getType(), (TypeData) original, database);
+
+		} else if (type == SearchResultRow.TYPE_WORD_TYPE) {
+			Word word = (Word) object;
+			Object[] originals = (Object[]) original;
+			word.setType((SqlType) originals[0], (TypeData) originals[1],
+					database);
+
+		} else if (type == SearchResultRow.TYPE_WORD_LOGICAL_NAME) {
+			Word word = (Word) object;
+			word.setLogicalName((String) original);
+
+		} else if (type == SearchResultRow.TYPE_WORD_PHYSICAL_NAME) {
+			Word word = (Word) object;
+			word.setPhysicalName((String) original);
 
 		}
 	}
