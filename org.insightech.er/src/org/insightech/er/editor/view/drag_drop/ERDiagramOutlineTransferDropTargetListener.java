@@ -26,7 +26,7 @@ public class ERDiagramOutlineTransferDropTargetListener extends
 	@Override
 	protected Request createTargetRequest() {
 		Object object = this.getTargetModel();
-System.out.println("#####" + object);
+
 		if (object instanceof Map) {
 			DirectEditRequest request = new DirectEditRequest(
 					ERDiagramTransferDragSourceListener.REQUEST_TYPE_ADD_COLUMN_GROUP);
