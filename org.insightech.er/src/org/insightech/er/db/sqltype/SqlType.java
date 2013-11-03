@@ -180,7 +180,9 @@ public class SqlType implements Serializable {
 	public static SqlType valueOf(String database, String alias) {
 		int size = 0;
 
-		if (alias.indexOf("(") != -1) {
+		Matcher matcher = NEED_LENGTH_PATTERN.matcher(alias);
+
+		if (matcher.matches()) {
 			size = 1;
 		}
 

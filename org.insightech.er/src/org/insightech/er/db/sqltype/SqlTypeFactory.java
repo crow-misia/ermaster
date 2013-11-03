@@ -30,14 +30,11 @@ public class SqlTypeFactory {
 
 			HSSFRow headerRow = sheet.getRow(0);
 
-			for (int colNum = 4; colNum < headerRow.getLastCellNum(); colNum++) {
+			for (int colNum = 4; colNum < headerRow.getLastCellNum(); colNum += 2) {
 				String dbId = POIUtils.getCellValue(sheet, 0, colNum);
 
-				Map<SqlType, String> aliasMap = new LinkedHashMap<SqlType, String>();
-				dbAliasMap.put(dbId, aliasMap);
-
-				Map<TypeKey, SqlType> sqlTypeMap = new LinkedHashMap<TypeKey, SqlType>();
-				dbSqlTypeMap.put(dbId, sqlTypeMap);
+				dbAliasMap.put(dbId, new LinkedHashMap<SqlType, String>());
+				dbSqlTypeMap.put(dbId, new LinkedHashMap<TypeKey, SqlType>());
 			}
 
 			SqlType.setDBAliasMap(dbAliasMap, dbSqlTypeMap);
@@ -59,36 +56,33 @@ public class SqlTypeFactory {
 				SqlType sqlType = new SqlType(sqlTypeId, javaClass, needArgs,
 						fullTextIndexable);
 
-				for (int colNum = 4; colNum < row.getLastCellNum(); colNum++) {
+				for (int colNum = 4; colNum < row.getLastCellNum(); colNum += 2) {
 
 					String dbId = POIUtils.getCellValue(sheet, 0, colNum);
 
-					if (Check.isEmpty(dbId)) {
-						dbId = POIUtils.getCellValue(sheet, 0, colNum - 1);
-						String key = POIUtils.getCellValue(sheet, rowNum,
+					Map<SqlType, String> aliasMap = dbAliasMap.get(dbId);
+
+					if (POIUtils.getCellColor(sheet, rowNum, colNum) != HSSFColor.RED.index) {
+						String alias = POIUtils.getCellValue(sheet, rowNum,
 								colNum);
-						if (!Check.isEmpty(key)) {
-							sqlType.addToSqlTypeMap(key, dbId);
+
+						if (Check.isEmpty(alias)) {
+							alias = sqlTypeId;
 						}
 
-					} else {
-						Map<SqlType, String> aliasMap = dbAliasMap.get(dbId);
+						aliasMap.put(sqlType, alias);
 
-						if (POIUtils.getCellColor(sheet, rowNum, colNum) != HSSFColor.RED.index) {
-							String alias = POIUtils.getCellValue(sheet, rowNum,
-									colNum);
-
-							if (Check.isEmpty(alias)) {
-								alias = sqlTypeId;
-							}
-
-							aliasMap.put(sqlType, alias);
-
-							if (POIUtils.getCellColor(sheet, rowNum, colNum) == HSSFColor.SKY_BLUE.index) {
-								sqlType.addToSqlTypeMap(alias, dbId);
-							}
+						if (POIUtils.getCellColor(sheet, rowNum, colNum) == HSSFColor.SKY_BLUE.index) {
+							sqlType.addToSqlTypeMap(alias, dbId);
 						}
 					}
+
+					String key = POIUtils.getCellValue(sheet, rowNum,
+							colNum + 1);
+					if (!Check.isEmpty(key)) {
+						sqlType.addToSqlTypeMap(key, dbId);
+					}
+
 				}
 			}
 

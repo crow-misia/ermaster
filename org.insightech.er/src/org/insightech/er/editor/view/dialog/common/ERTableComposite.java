@@ -45,11 +45,11 @@ public class ERTableComposite extends Composite {
 
 	public static final int NAME_WIDTH = 150;
 
-	private static final int TYPE_WIDTH = 100;
+	private static final int TYPE_WIDTH = 130;
 
-	private static final int NOT_NULL_WIDTH = 80;
+	private static final int NOT_NULL_WIDTH = 90;
 
-	public static final int UNIQUE_KEY_WIDTH = 70;
+	public static final int UNIQUE_KEY_WIDTH = 90;
 
 	private Table table;
 

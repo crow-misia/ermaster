@@ -269,6 +269,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 				.getText());
 
 		if (selectedType != null) {
+			System.out.println(selectedType.isNeedLength(diagram.getDatabase()));
 			if (!selectedType.isNeedLength(diagram.getDatabase())) {
 				lengthText.setEnabled(false);
 			} else {
