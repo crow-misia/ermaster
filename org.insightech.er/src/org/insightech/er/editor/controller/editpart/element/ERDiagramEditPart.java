@@ -101,6 +101,7 @@ public class ERDiagramEditPart extends AbstractModelEditPart {
 			this.refreshSettings();
 
 		} else if (event.getPropertyName().equals("refreshWithConnection")) {
+			System.out.println("###");
 			this.refresh();
 			for (NodeElement nodeElement : this.getDiagram()
 					.getDiagramContents().getContents().getNodeElementList()) {

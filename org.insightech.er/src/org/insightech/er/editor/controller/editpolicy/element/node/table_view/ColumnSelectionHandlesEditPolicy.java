@@ -73,7 +73,7 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 
 	private Rectangle getColumnRectangle() {
 		ColumnEditPart columnEditPart = (ColumnEditPart) this.getHost();
-		NormalColumn column = (NormalColumn) columnEditPart.getModel();
+		Column column = (Column) columnEditPart.getModel();
 
 		IFigure figure = columnEditPart.getFigure();
 		Rectangle rect = figure.getBounds();
@@ -274,7 +274,6 @@ public class ColumnSelectionHandlesEditPolicy extends NonResizableEditPolicy {
 
 		CompoundCommand command = new CompoundCommand();
 
-		// �Q�Ƃ��Ă���O���L�[�̕ύX
 		List<Relation> relationList = oldColumn.getOutgoingRelationList();
 
 		if (!relationList.isEmpty()) {

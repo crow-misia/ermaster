@@ -5,6 +5,8 @@ import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -44,6 +46,8 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 	private Text physicalNameText;
 
 	private Text logicalNameText;
+
+	private String oldPhysicalName;
 
 	private Combo groupCombo;
 
@@ -93,6 +97,7 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 				.getPhysicalName()));
 		this.logicalNameText.setText(Format.null2blank(copyData
 				.getLogicalName()));
+		this.oldPhysicalName = this.physicalNameText.getText();
 	}
 
 	private void createBody(Composite parent) {
@@ -341,5 +346,24 @@ public class AttributeTabWrapper extends ValidatableTabWrapper implements
 
 	@Override
 	public void perfomeOK() {
+	}
+	
+	@Override
+	protected void addListener() {
+		super.addListener();
+
+		this.physicalNameText.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				String logicalName = logicalNameText.getText();
+				String physicalName = physicalNameText.getText();
+
+				if (oldPhysicalName.equals(logicalName)
+						|| logicalName.equals("")) {
+					logicalNameText.setText(physicalName);
+					oldPhysicalName = physicalName;
+				}
+			}
+		});
 	}
 }

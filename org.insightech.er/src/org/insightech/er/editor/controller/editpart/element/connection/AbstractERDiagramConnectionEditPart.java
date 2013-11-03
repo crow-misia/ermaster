@@ -175,6 +175,9 @@ public abstract class AbstractERDiagramConnectionEditPart extends
 						}
 					}
 				}
+				
+			} else {
+				this.figure.setVisible(true);
 			}
 		}
 	}

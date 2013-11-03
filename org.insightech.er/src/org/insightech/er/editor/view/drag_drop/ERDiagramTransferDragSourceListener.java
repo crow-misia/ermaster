@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.dnd.AbstractTransferDragSourceListener;
@@ -26,7 +27,7 @@ public class ERDiagramTransferDragSourceListener extends
 	public static final String MOVE_COLUMN_GROUP_PARAM_PARENT = "parent";
 
 	public static final String MOVE_COLUMN_GROUP_PARAM_GROUP = "group";
-	
+
 	public static final String REQUEST_TYPE_ADD_WORD = "add word";
 
 	private EditPartViewer dragSourceViewer;
@@ -44,12 +45,12 @@ public class ERDiagramTransferDragSourceListener extends
 
 		Object target = this.getTargetModel(dragsourceevent);
 
-		if (target != null) {
-			// && target == dragSourceViewer.findObjectAt(
-			// new Point(dragsourceevent.x, dragsourceevent.y))
-			// .getModel()) {
+		if (target != null
+				&& target == this.dragSourceViewer.findObjectAt(
+						new Point(dragsourceevent.x, dragsourceevent.y))
+						.getModel()) {
 			TemplateTransfer transfer = (TemplateTransfer) this.getTransfer();
-			transfer.setObject(target);
+			transfer.setObject(this.createTransferData(dragsourceevent));
 
 		} else {
 			dragsourceevent.doit = false;
@@ -57,35 +58,56 @@ public class ERDiagramTransferDragSourceListener extends
 	}
 
 	public void dragSetData(DragSourceEvent event) {
-		event.data = this.getTargetModel(event);
+		event.data = this.createTransferData(event);
 	}
 
 	private Object getTargetModel(DragSourceEvent event) {
 		List editParts = dragSourceViewer.getSelectedEditParts();
 		if (editParts.size() != 1) {
-			// �h���b�O�A���h�h���b�v�͑I������Ă���I�u�W�F�N�g���P�̂Ƃ��̂݉\�Ƃ���
+			// ドラッグアンドドロップは選択されているオブジェクトが１つのときのみ可能とする
 			return null;
 		}
 
 		EditPart editPart = (EditPart) editParts.get(0);
 
 		Object model = editPart.getModel();
-		
+		if (model instanceof NormalColumn || model instanceof ColumnGroup
+				|| model instanceof Word) {
+			return model;
+		}
+
+		return null;
+	}
+
+	private Object createTransferData(DragSourceEvent event) {
+		List editParts = this.dragSourceViewer.getSelectedEditParts();
+		if (editParts.size() != 1) {
+			// ドラッグアンドドロップは選択されているオブジェクトが１つのときのみ可能とする
+			return null;
+		}
+
+		EditPart editPart = (EditPart) editParts.get(0);
+
+		Object model = editPart.getModel();
+
 		if (model instanceof NormalColumn) {
 			NormalColumn normalColumn = (NormalColumn) model;
 			if (normalColumn.getColumnHolder() instanceof ColumnGroup) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put(MOVE_COLUMN_GROUP_PARAM_PARENT, editPart.getParent().getModel());
-				map.put(MOVE_COLUMN_GROUP_PARAM_GROUP, normalColumn.getColumnHolder());
-	
+				map.put(MOVE_COLUMN_GROUP_PARAM_PARENT, editPart.getParent()
+						.getModel());
+				map.put(MOVE_COLUMN_GROUP_PARAM_GROUP,
+						normalColumn.getColumnHolder());
+
 				return map;
 			}
-			
+
 			return model;
 
 		} else if (model instanceof ColumnGroup) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(MOVE_COLUMN_GROUP_PARAM_PARENT, editPart.getParent().getModel());
+			map.put(MOVE_COLUMN_GROUP_PARAM_PARENT, editPart.getParent()
+					.getModel());
 			map.put(MOVE_COLUMN_GROUP_PARAM_GROUP, model);
 
 			return map;
