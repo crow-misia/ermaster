@@ -184,7 +184,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 			String type = null;
 			if (normalColumn.getType() != null) {
 				type = Format.formatType(normalColumn.getType(), normalColumn
-						.getTypeData(), diagram.getDatabase());
+						.getTypeData(), diagram.getDatabase(), true);
 			} else {
 				type = "";
 			}
@@ -217,7 +217,7 @@ public abstract class AbstractHtmlReportPageGenerator implements
 
 			if (normalColumn.getType() != null) {
 				type = Format.formatType(normalColumn.getType(), normalColumn
-						.getTypeData(), diagram.getDatabase());
+						.getTypeData(), diagram.getDatabase(), true);
 			} else {
 				type = "";
 			}

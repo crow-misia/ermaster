@@ -81,7 +81,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	}
 
 	public Settings() {
-		this.capital = true;
+		this.capital = false;
 		this.notationExpandGroup = true;
 
 		this.tableStyle = null;
@@ -244,7 +244,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	}
 
 	/**
-	 * translationSettings ‚ðŽæ“¾‚µ‚Ü‚·.
+	 * translationSettings ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return translationSettings
 	 */
@@ -253,7 +253,7 @@ public class Settings implements Serializable, Cloneable, TablePropertiesHolder 
 	}
 
 	/**
-	 * environmentSetting ‚ðŽæ“¾‚µ‚Ü‚·.
+	 * environmentSetting ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return environmentSetting
 	 */

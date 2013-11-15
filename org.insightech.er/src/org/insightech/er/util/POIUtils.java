@@ -237,13 +237,6 @@ public class POIUtils {
 		cell.setCellValue(text);
 	}
 
-	/**
-	 * �G�N�Z���t�@�C���̓ǂݍ��݂�s���܂��B
-	 * 
-	 * @param excelFile
-	 * @return
-	 * @throws IOException
-	 */
 	public static HSSFWorkbook readExcelBook(File excelFile) throws IOException {
 		FileInputStream fis = null;
 
@@ -259,13 +252,6 @@ public class POIUtils {
 		}
 	}
 
-	/**
-	 * �G�N�Z���t�@�C���̓ǂݍ��݂�s���܂��B
-	 * 
-	 * @param excelFile
-	 * @return
-	 * @throws IOException
-	 */
 	public static HSSFWorkbook readExcelBook(InputStream stream)
 			throws IOException {
 		BufferedInputStream bis = null;
@@ -280,14 +266,6 @@ public class POIUtils {
 		}
 	}
 
-	/**
-	 * �G�N�Z���t�@�C���ɏ����o����s���܂��B
-	 * 
-	 * @param excelFile
-	 * @param workbook
-	 * @return
-	 * @throws IOException
-	 */
 	public static void writeExcelFile(File excelFile, HSSFWorkbook workbook)
 			throws IOException {
 		FileOutputStream fos = null;
@@ -308,13 +286,6 @@ public class POIUtils {
 		}
 	}
 
-	/**
-	 * location�Ŏw�肵���s�́A�w�肵���񂩂�n�܂錋�����ꂽ�̈��擾���܂�
-	 * 
-	 * @param sheet
-	 * @param location
-	 * @return
-	 */
 	public static CellRangeAddress getMergedRegion(HSSFSheet sheet,
 			CellLocation location) {
 		for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
@@ -335,13 +306,6 @@ public class POIUtils {
 		return null;
 	}
 
-	/**
-	 * location�Ŏw�肵���s�́A�������ꂽ�̈�̈ꗗ��擾���܂�
-	 * 
-	 * @param sheet
-	 * @param location
-	 * @return
-	 */
 	public static List<CellRangeAddress> getMergedRegionList(HSSFSheet sheet,
 			int rowNum) {
 		List<CellRangeAddress> regionList = new ArrayList<CellRangeAddress>();

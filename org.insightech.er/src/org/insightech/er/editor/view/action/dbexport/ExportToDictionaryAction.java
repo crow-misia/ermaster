@@ -68,7 +68,7 @@ public class ExportToDictionaryAction extends AbstractExportAction {
 				writer.print(word.getLogicalName());
 				if (word.getType() != null) {
 					writer.print(Format.formatType(word.getType(), word
-							.getTypeData(), database));
+							.getTypeData(), database, true));
 				} else {
 					writer.print("");
 				}

@@ -19,6 +19,7 @@ import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDe
 import org.insightech.er.editor.model.diagram_contents.element.connection.Relation;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.TableView;
 import org.insightech.er.editor.model.diagram_contents.element.node.table.column.NormalColumn;
+import org.insightech.er.util.Format;
 import org.insightech.er.util.POIUtils;
 import org.insightech.er.util.POIUtils.CellLocation;
 
@@ -32,58 +33,42 @@ public abstract class AbstractSheetGenerator {
 
 	protected static final String KEYWORD_PHYSICAL_TABLE_NAME = "$PTN";
 
-	// �_���J������
 	protected static final String KEYWORD_LOGICAL_COLUMN_NAME = "$LCN";
 
-	// �����J������
 	protected static final String KEYWORD_PHYSICAL_COLUMN_NAME = "$PCN";
 
-	// �^
 	protected static final String KEYWORD_TYPE = "$TYP";
 
-	// ����
+	protected static final String KEYWORD_TYPE_EMBEDDED = "$TYE";
+
 	protected static final String KEYWORD_LENGTH = "$LEN";
 
-	// ����
 	protected static final String KEYWORD_DECIMAL = "$DEC";
 
-	// ��L�[
 	protected static final String KEYWORD_PRIMARY_KEY = "$PK";
 
-	// Not Null
 	protected static final String KEYWORD_NOT_NULL = "$NN";
 
-	// ���j�[�N�L�[
 	protected static final String KEYWORD_UNIQUE_KEY = "$UK";
 
-	// �O���L�[
 	protected static final String KEYWORD_FOREIGN_KEY = "$FK";
 
-	// �Q�ƃe�[�u��.�L�[�i�_�����j
 	protected static final String KEYWORD_LOGICAL_REFERENCE_TABLE_KEY = "$LRFTC";
 
-	// �Q�ƃe�[�u��.�L�[�i�������j
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_TABLE_KEY = "$PRFTC";
 
-	// �Q�ƃe�[�u���i�_�����j
 	protected static final String KEYWORD_LOGICAL_REFERENCE_TABLE = "$LRFT";
 
-	// �Q�ƃe�[�u���i�������j
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_TABLE = "$PRFT";
 
-	// �Q�ƃL�[�i�_�����j
 	protected static final String KEYWORD_LOGICAL_REFERENCE_KEY = "$LRFC";
 
-	// �Q�ƃL�[�i�������j
 	protected static final String KEYWORD_PHYSICAL_REFERENCE_KEY = "$PRFC";
 
-	// �I�[�g�C���N�������g
 	protected static final String KEYWORD_AUTO_INCREMENT = "$INC";
 
-	// ����
 	protected static final String KEYWORD_DESCRIPTION = "$CDSC";
 
-	// �f�t�H���g�l
 	protected static final String KEYWORD_DEFAULT_VALUE = "$DEF";
 
 	protected static final String KEYWORD_LOGICAL_FOREIGN_KEY_NAME = "$LFKN";
@@ -95,8 +80,9 @@ public abstract class AbstractSheetGenerator {
 	private static final String[] KEYWORDS_OF_COLUMN = { KEYWORD_ORDER,
 			KEYWORD_LOGICAL_TABLE_NAME, KEYWORD_PHYSICAL_TABLE_NAME,
 			KEYWORD_LOGICAL_COLUMN_NAME, KEYWORD_PHYSICAL_COLUMN_NAME,
-			KEYWORD_TYPE, KEYWORD_LENGTH, KEYWORD_DECIMAL, KEYWORD_PRIMARY_KEY,
-			KEYWORD_NOT_NULL, KEYWORD_UNIQUE_KEY, KEYWORD_FOREIGN_KEY,
+			KEYWORD_TYPE, KEYWORD_TYPE_EMBEDDED, KEYWORD_LENGTH,
+			KEYWORD_DECIMAL, KEYWORD_PRIMARY_KEY, KEYWORD_NOT_NULL,
+			KEYWORD_UNIQUE_KEY, KEYWORD_FOREIGN_KEY,
 			KEYWORD_LOGICAL_REFERENCE_TABLE_KEY,
 			KEYWORD_PHYSICAL_REFERENCE_TABLE_KEY,
 			KEYWORD_LOGICAL_REFERENCE_TABLE, KEYWORD_PHYSICAL_REFERENCE_TABLE,
@@ -237,8 +223,17 @@ public abstract class AbstractSheetGenerator {
 			if (normalColumn.getType() == null) {
 				obj = null;
 			} else {
-				obj = normalColumn.getType().getAlias(
-						tableView.getDiagram().getDatabase());
+				obj = Format.formatType(normalColumn.getType(), normalColumn
+						.getTypeData(), tableView.getDiagram().getDatabase(),
+						false);
+			}
+		} else if (KEYWORD_TYPE_EMBEDDED.equals(keyword)) {
+			if (normalColumn.getType() == null) {
+				obj = null;
+			} else {
+				obj = Format.formatType(normalColumn.getType(), normalColumn
+						.getTypeData(), tableView.getDiagram().getDatabase(),
+						true);
 			}
 		} else if (KEYWORD_LENGTH.equals(keyword)) {
 			obj = normalColumn.getTypeData().getLength();
@@ -517,7 +512,7 @@ public abstract class AbstractSheetGenerator {
 
 		String sheetName = null;
 
-		Integer sameNameNum = sheetNameMap.get(name);
+		Integer sameNameNum = sheetNameMap.get(name.toUpperCase());
 		if (sameNameNum == null) {
 			sameNameNum = 0;
 			sheetName = name;
@@ -526,10 +521,10 @@ public abstract class AbstractSheetGenerator {
 			do {
 				sameNameNum++;
 				sheetName = name + "(" + sameNameNum + ")";
-			} while (sheetNameMap.containsKey(sheetName));
+			} while (sheetNameMap.containsKey(sheetName.toUpperCase()));
 		}
 
-		sheetNameMap.put(name, sameNameNum);
+		sheetNameMap.put(name.toUpperCase(), sameNameNum);
 
 		return sheetName;
 	}

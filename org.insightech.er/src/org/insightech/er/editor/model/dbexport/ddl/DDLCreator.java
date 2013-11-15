@@ -651,7 +651,7 @@ public abstract class DDLCreator {
 		ddl.append(" ");
 
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
-				normalColumn.getTypeData(), diagram.getDatabase())));
+				normalColumn.getTypeData(), diagram.getDatabase(), true)));
 
 		if (!Check.isEmpty(normalColumn.getDefaultValue())) {
 			String defaultValue = normalColumn.getDefaultValue();

@@ -133,7 +133,7 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 
 		monitor.done();
 	}
-	
+
 	public void save(IProgressMonitor monitor) throws IOException,
 			InterruptedException {
 		File excelFile = new File(this.saveFilePath);
@@ -147,8 +147,9 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		POIUtils.writeExcelFile(excelFile, workbook);
 
 		int count = this.countSheetFromTemplate(workbook, this.diagram);
-		monitor.beginTask(ResourceString
-				.getResourceString("dialog.message.export.excel"), count);
+		monitor.beginTask(
+				ResourceString.getResourceString("dialog.message.export.excel"),
+				count);
 
 		this.pictureSheetGenerator = new PictureSheetGenerator(workbook,
 				imageBuffer, excelPictureType);
@@ -175,22 +176,24 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		HSSFWorkbook workbook = POIUtils.readExcelBook(template);
 
 		if (workbook == null) {
-			throw new IOException(ResourceString
-					.getResourceString("error.read.file"));
+			throw new IOException(
+					ResourceString.getResourceString("error.read.file"));
 		}
 
 		HSSFSheet wordsSheet = workbook.getSheet(WORDS_SHEET_NAME);
 
 		if (wordsSheet == null) {
-			throw new IOException(ResourceString
-					.getResourceString("error.not.found.words.sheet"));
+			throw new IOException(
+					ResourceString
+							.getResourceString("error.not.found.words.sheet"));
 		}
 
 		HSSFSheet loopsSheet = workbook.getSheet(LOOPS_SHEET_NAME);
 
 		if (loopsSheet == null) {
-			throw new IOException(ResourceString
-					.getResourceString("error.not.found.loops.sheet"));
+			throw new IOException(
+					ResourceString
+							.getResourceString("error.not.found.loops.sheet"));
 		}
 
 		this.initLoopDefinitionMap(loopsSheet);
@@ -231,9 +234,18 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		return null;
 	}
 
+	private void initSheetNameMap(HSSFWorkbook workbook) {
+		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+			String sheetName = workbook.getSheetName(i);
+			this.sheetNameMap.put(sheetName.toUpperCase(), 0);
+		}
+	}
+
 	private void createSheetFromTemplate(IProgressMonitor monitor,
 			HSSFWorkbook workbook, ERDiagram diagram,
 			boolean useLogicalNameAsSheetName) throws InterruptedException {
+		this.initSheetNameMap(workbook);
+
 		int originalSheetNum = workbook.getNumberOfSheets();
 
 		int sheetIndexSheetNo = -1;
@@ -253,7 +265,8 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 			} else {
 				if (!isExcludeTarget(templateSheetName)) {
 					moveSheet(workbook, 0);
-					HSSFSheet sheet = workbook.getSheetAt(workbook.getNumberOfSheets() - 1);
+					HSSFSheet sheet = workbook.getSheetAt(workbook
+							.getNumberOfSheets() - 1);
 
 					this.sheetObjectMap.put(templateSheetName,
 							new StringObjectModel(templateSheetName));
@@ -298,10 +311,10 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 	public static HSSFSheet moveSheet(HSSFWorkbook workbook, int sheetNo) {
 		HSSFSheet oldSheet = workbook.getSheetAt(sheetNo);
 		String sheetName = oldSheet.getSheetName();
-		
+
 		HSSFSheet newSheet = workbook.cloneSheet(sheetNo);
 		int newSheetNo = workbook.getSheetIndex(newSheet);
-		
+
 		workbook.removeSheetAt(sheetNo);
 
 		workbook.setSheetName(newSheetNo - 1, sheetName);
@@ -309,7 +322,6 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 		return newSheet;
 	}
 
-	
 	private int countSheetFromTemplate(HSSFWorkbook workbook, ERDiagram diagram) {
 		int count = 0;
 
@@ -346,8 +358,8 @@ public class ExportToExcelManager implements IRunnableWithProgress {
 			FileUtils.copyFile(file, backupFile);
 
 		} catch (IOException e) {
-			throw new IOException(ResourceString
-					.getResourceString("error.backup.excel.file"));
+			throw new IOException(
+					ResourceString.getResourceString("error.backup.excel.file"));
 		}
 
 		return true;

@@ -98,7 +98,7 @@ public class NormalColumnEditPart extends ColumnEditPart {
 				.getNotationLevel();
 
 		String type = diagram.filter(Format.formatType(normalColumn.getType(),
-				normalColumn.getTypeData(), diagram.getDatabase()));
+				normalColumn.getTypeData(), diagram.getDatabase(), true));
 
 		boolean displayKey = true;
 		if (notationLevel == Settings.NOTATION_LEVLE_COLUMN) {

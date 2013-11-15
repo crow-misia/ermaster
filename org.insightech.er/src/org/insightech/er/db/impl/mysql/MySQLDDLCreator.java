@@ -100,7 +100,7 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(" ");
 
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
-				normalColumn.getTypeData(), this.getDiagram().getDatabase())));
+				normalColumn.getTypeData(), this.getDiagram().getDatabase(), true)));
 
 		if (normalColumn.getTypeData().isBinary()) {
 			ddl.append(" BINARY");

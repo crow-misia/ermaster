@@ -20,16 +20,12 @@ import org.insightech.er.util.POIUtils.CellLocation;
 
 public class SheetIndexSheetGenerator extends AbstractSheetGenerator {
 
-	// シートタイプ
 	private static final String KEYWORD_SHEET_TYPE = "$SHTT";
 
-	// 名前
 	private static final String KEYWORD_NAME = "$NAM";
 
-	// 説明
 	private static final String KEYWORD_DESCRIPTION = "$DSC";
 
-	// シート名
 	private static final String KEYWORD_SHEET_NAME = "$SHTN";
 
 	private static final String[] FIND_KEYWORDS_LIST = { KEYWORD_SHEET_TYPE,

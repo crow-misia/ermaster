@@ -8,37 +8,42 @@ import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.Ty
 public class Format {
 
 	public static String formatType(SqlType sqlType, TypeData typeData,
-			String database) {
+			String database, boolean embedded) {
 		String type = null;
 
 		if (sqlType != null) {
 			type = sqlType.getAlias(database);
 			if (type != null) {
-				if (typeData.getLength() != null
-						&& typeData.getDecimal() != null) {
-					type = type.replaceAll("\\(.,.\\)", "("
-							+ typeData.getLength() + ","
-							+ typeData.getDecimal() + ")");
+				if (embedded) {
+					if (typeData.getLength() != null
+							&& typeData.getDecimal() != null) {
+						type = type.replaceAll(
+								"\\(.,.\\)",
+								"(" + typeData.getLength() + ","
+										+ typeData.getDecimal() + ")");
 
-					type = type.replaceFirst("\\([a-z]\\)",
-							"(" + typeData.getLength() + ")").replaceFirst(
-							"\\([a-z]\\)", "(" + typeData.getDecimal() + ")");
+						type = type.replaceFirst("\\([a-z]\\)",
+								"(" + typeData.getLength() + ")").replaceFirst(
+								"\\([a-z]\\)",
+								"(" + typeData.getDecimal() + ")");
 
-				} else if (typeData.getLength() != null) {
-					String len = null;
+					} else if (typeData.getLength() != null) {
+						String len = null;
 
-					if ("BLOB".equalsIgnoreCase(type)) {
-						len = getFileSizeStr(typeData.getLength().longValue());
-					} else {
-						len = String.valueOf(typeData.getLength());
+						if ("BLOB".equalsIgnoreCase(type)) {
+							len = getFileSizeStr(typeData.getLength()
+									.longValue());
+						} else {
+							len = String.valueOf(typeData.getLength());
+						}
+
+						type = type.replaceAll("\\(.\\)", "(" + len + ")");
+
 					}
-
-					type = type.replaceAll("\\(.\\)", "(" + len + ")");
-
 				}
-
+				
 				if (typeData.isArray() && PostgresDBManager.ID.equals(database)) {
-					for (int i=0; i <typeData.getArrayDimension(); i++) {
+					for (int i = 0; i < typeData.getArrayDimension(); i++) {
 						type += "[]";
 					}
 				}

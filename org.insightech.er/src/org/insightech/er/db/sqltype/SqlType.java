@@ -443,7 +443,7 @@ public class SqlType implements Serializable {
 					TypeData typeData = new TypeData(new Integer(1),
 							new Integer(1), false, null, false, false, null);
 
-					str = Format.formatType(type, typeData, db);
+					str = Format.formatType(type, typeData, db, true);
 					if (str.equals(alias)) {
 						errorCount3++;
 						msg.append("×3");
@@ -453,7 +453,7 @@ public class SqlType implements Serializable {
 					TypeData typeData = new TypeData(new Integer(1), null,
 							false, null, false, false, null);
 
-					str = Format.formatType(type, typeData, db);
+					str = Format.formatType(type, typeData, db, true);
 
 					if (str.equals(alias)) {
 						errorCount3++;
@@ -464,7 +464,7 @@ public class SqlType implements Serializable {
 					TypeData typeData = new TypeData(null, new Integer(1),
 							false, null, false, false, null);
 
-					str = Format.formatType(type, typeData, db);
+					str = Format.formatType(type, typeData, db, true);
 
 					if (str.equals(alias)) {
 						errorCount3++;

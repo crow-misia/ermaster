@@ -379,7 +379,7 @@ public class ERTableComposite extends Composite {
 			SqlType sqlType = normalColumn.getType();
 
 			tableItem.setText(4, Format.formatType(sqlType,
-					normalColumn.getTypeData(), this.diagram.getDatabase()));
+					normalColumn.getTypeData(), this.diagram.getDatabase(), true));
 
 			this.setTableEditor(normalColumn, tableItem);
 
