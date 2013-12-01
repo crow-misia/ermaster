@@ -21,6 +21,8 @@ public class ERDiagramConnection extends PolylineConnection {
 
 	private boolean bezier;
 
+	private Color color;
+
 	public ERDiagramConnection(boolean bezier) {
 		this.bezier = bezier;
 	}
@@ -33,6 +35,14 @@ public class ERDiagramConnection extends PolylineConnection {
 		this.bezier = bezier;
 	}
 
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -40,7 +50,11 @@ public class ERDiagramConnection extends PolylineConnection {
 	protected void outlineShape(Graphics g) {
 		g.setAntialias(SWT.ON);
 
-		g.setForegroundColor(ColorConstants.black);
+		if (this.color == null) {
+			this.color = ColorConstants.black;
+		}
+
+		g.setForegroundColor(this.color);
 		g.setLineWidth(1);
 
 		if (this.selected) {

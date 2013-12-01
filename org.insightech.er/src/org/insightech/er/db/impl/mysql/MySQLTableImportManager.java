@@ -88,6 +88,12 @@ public class MySQLTableImportManager extends ImportFromDBManagerBase {
 			String restrictType = this.getRestrictType(tableNameWithSchema,
 					columnData);
 			columnData.type = restrictType;
+			
+		} else if (columnData.type.toUpperCase().indexOf(" UNSIGNED") != -1) {
+			String restrictType = this.getRestrictType(tableNameWithSchema,
+					columnData);
+			columnData.type = restrictType;
+			
 		}
 	}
 

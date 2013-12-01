@@ -59,6 +59,9 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 	private static final Pattern AS_PATTERN = Pattern
 			.compile("(.+) [aA][sS] (.+)");
 
+	private static final Pattern TYPE_WITH_LENGTH_PATTERN = Pattern
+			.compile(".+\\((\\d+)\\).*");
+
 	protected Connection con;
 
 	private DatabaseMetaData metaData;
@@ -746,7 +749,15 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			Integer arrayDimension = null;
 			boolean unsigned = false;
 
-			int unsignedIndex = type.indexOf(" UNSIGNED");
+			boolean zerofill = false;
+
+			int zerofillIndex = type.toUpperCase().indexOf(" ZEROFILL");
+			if (zerofillIndex != -1) {
+				zerofill = true;
+				type = type.substring(0, zerofillIndex);
+			}
+
+			int unsignedIndex = type.toUpperCase().indexOf(" UNSIGNED");
 			if (unsignedIndex != -1) {
 				unsigned = true;
 				type = type.substring(0, unsignedIndex);
@@ -761,7 +772,19 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				type = type.substring(0, arrayStartIndex);
 			}
 
-			int size = this.getLength(type, columnData.size);
+			int size = 0;
+
+			if (zerofillIndex != -1) {
+				Matcher matcher = TYPE_WITH_LENGTH_PATTERN.matcher(type);
+				if (matcher.find()) {
+					size = Integer.parseInt(matcher.group(1));
+				}
+
+			} else {
+				size = this.getLength(type, columnData.size);
+
+			}
+
 			Integer length = new Integer(size);
 
 			SqlType sqlType = SqlType.valueOf(this.dbSetting.getDbsystem(),
@@ -818,7 +841,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 			String args = columnData.enumData;
 
 			TypeData typeData = new TypeData(length, decimal, array,
-					arrayDimension, unsigned, columnData.isBinary, args);
+					arrayDimension, unsigned, zerofill, columnData.isBinary,
+					args);
 
 			Word word = new Word(columnName, logicalName, sqlType, typeData,
 					description, this.diagram.getDatabase());
@@ -1465,8 +1489,8 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 		} else {
 			word = new Word(columnAlias,
 					this.translationResources.translate(columnAlias), null,
-					new TypeData(null, null, false, null, false, false, null),
-					null, null);
+					new TypeData(null, null, false, null, false, false, false,
+							null), null, null);
 
 		}
 

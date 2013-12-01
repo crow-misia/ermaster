@@ -7,6 +7,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -26,7 +27,7 @@ import org.insightech.er.util.Format;
 public abstract class AbstractWordDialog extends AbstractDialog {
 
 	protected static int WIDTH = -1;
-	
+
 	protected Combo typeCombo;
 
 	protected Text logicalNameText;
@@ -44,6 +45,8 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 	protected Text arrayDimensionText;
 
 	protected Button unsignedCheck;
+
+	protected Button zerofillCheck;
 
 	protected Button binaryCheck;
 
@@ -75,7 +78,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 		this.initializeComposite(rootComposite);
 		this.initializeTypeCombo();
-		
+
 		this.physicalNameText.setFocus();
 	}
 
@@ -95,7 +98,7 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			return 10;
 
 		} else if (MySQLDBManager.ID.equals(this.diagram.getDatabase())) {
-			return 8;
+			return 6;
 		}
 
 		return 6;
@@ -147,21 +150,46 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 		}
 
 		if (MySQLDBManager.ID.equals(this.diagram.getDatabase())) {
+			CompositeFactory.filler(composite, 1);
+
+			Composite childComposite = new Composite(composite, SWT.NONE);
+
+			GridData gridData = new GridData();
+			gridData.horizontalSpan = 5;
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.grabExcessHorizontalSpace = true;
+
+			childComposite.setLayoutData(gridData);
+
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 3;
+
+			childComposite.setLayout(layout);
 
 			this.unsignedCheck = CompositeFactory.createCheckbox(this,
-					composite, "label.column.unsigned");
+					childComposite, "label.column.unsigned");
 			this.unsignedCheck.setEnabled(false);
 
+			this.zerofillCheck = CompositeFactory.createCheckbox(this,
+					childComposite, "label.column.zerofill");
+			this.zerofillCheck.setEnabled(false);
 
 			this.binaryCheck = CompositeFactory.createCheckbox(this,
-					composite, "label.column.binary");
+					childComposite, "label.column.binary");
 			this.binaryCheck.setEnabled(false);
 
 			CompositeFactory.filler(composite, 1);
-			
-			this.argsText = CompositeFactory.createText(this, composite,
-					"label.column.type.enum.set", getCompositeNumColumns() - 2,
-					false);
+
+			childComposite = new Composite(composite, SWT.NONE);
+			childComposite.setLayoutData(gridData);
+
+			layout = new GridLayout();
+			layout.numColumns = 3;
+			layout.marginHeight = 1;
+			childComposite.setLayout(layout);
+
+			this.argsText = CompositeFactory.createText(this, childComposite,
+					"label.column.type.enum.set", 2, false);
 			this.argsText.setEnabled(false);
 		}
 
@@ -175,24 +203,24 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 	@Override
 	final protected void setData() {
 		this.initData();
-		
+
 		if (!this.add) {
 			this.setWordData();
 		}
-		
+
 		this.setEnabledBySqlType();
 	}
 
-	protected void initData() {		
+	protected void initData() {
 	}
-	
+
 	protected void setData(String physicalName, String logicalName,
 			SqlType sqlType, TypeData typeData, String description) {
 
 		this.physicalNameText.setText(Format.toString(physicalName));
 		this.logicalNameText.setText(Format.toString(logicalName));
 		this.oldPhysicalName = physicalNameText.getText();
-		
+
 		if (sqlType != null) {
 			String database = this.diagram.getDatabase();
 
@@ -209,6 +237,10 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 
 			if (this.unsignedCheck != null && !sqlType.isNumber()) {
 				this.unsignedCheck.setEnabled(false);
+			}
+
+			if (this.zerofillCheck != null && !sqlType.isNumber()) {
+				this.zerofillCheck.setEnabled(false);
 			}
 
 			if (this.binaryCheck != null && !sqlType.isFullTextIndexable()) {
@@ -228,6 +260,9 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			this.decimalText.setEnabled(false);
 			if (this.unsignedCheck != null) {
 				this.unsignedCheck.setEnabled(false);
+			}
+			if (this.zerofillCheck != null) {
+				this.zerofillCheck.setEnabled(false);
 			}
 			if (this.binaryCheck != null) {
 				this.binaryCheck.setEnabled(false);
@@ -251,6 +286,10 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			this.unsignedCheck.setSelection(typeData.isUnsigned());
 		}
 
+		if (this.zerofillCheck != null) {
+			this.zerofillCheck.setSelection(typeData.isZerofill());
+		}
+
 		if (this.binaryCheck != null) {
 			this.binaryCheck.setSelection(typeData.isBinary());
 		}
@@ -265,8 +304,8 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 	protected void setEnabledBySqlType() {
 		String database = diagram.getDatabase();
 
-		SqlType selectedType = SqlType.valueOf(diagram.getDatabase(), typeCombo
-				.getText());
+		SqlType selectedType = SqlType.valueOf(diagram.getDatabase(),
+				typeCombo.getText());
 
 		if (selectedType != null) {
 			if (!selectedType.isNeedLength(diagram.getDatabase())) {
@@ -286,6 +325,14 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 					unsignedCheck.setEnabled(false);
 				} else {
 					unsignedCheck.setEnabled(true);
+				}
+			}
+
+			if (this.zerofillCheck != null) {
+				if (!selectedType.isNumber()) {
+					zerofillCheck.setEnabled(false);
+				} else {
+					zerofillCheck.setEnabled(true);
 				}
 			}
 
@@ -349,6 +396,27 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 				}
 			}
 		});
+
+		if (this.zerofillCheck != null) {
+			this.zerofillCheck.addSelectionListener(new SelectionAdapter() {
+
+				/**
+				 * {@inheritDoc}
+				 */
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (zerofillCheck.getSelection()) {
+						unsignedCheck.setSelection(true);
+						unsignedCheck.setEnabled(false);
+
+					} else {
+						unsignedCheck.setSelection(false);
+						unsignedCheck.setEnabled(true);
+					}
+				}
+			});
+		}
+
 	}
 
 	abstract protected void setWordData();
@@ -430,8 +498,8 @@ public abstract class AbstractWordDialog extends AbstractDialog {
 			}
 		}
 
-		SqlType selectedType = SqlType.valueOf(diagram.getDatabase(), typeCombo
-				.getText());
+		SqlType selectedType = SqlType.valueOf(diagram.getDatabase(),
+				typeCombo.getText());
 
 		if (selectedType != null && this.argsText != null) {
 			text = argsText.getText();

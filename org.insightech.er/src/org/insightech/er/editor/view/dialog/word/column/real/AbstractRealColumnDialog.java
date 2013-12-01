@@ -136,18 +136,18 @@ public abstract class AbstractRealColumnDialog extends AbstractColumnDialog {
 	protected void perfomeOK() {
 		super.perfomeOK();
 
-		this.returnColumn = new NormalColumn(this.returnWord, notNullCheck
-				.getSelection(), false, uniqueKeyCheck.getSelection(), false,
-				defaultText.getText(), constraintText.getText(), null, null,
-				null);
+		this.returnColumn = new NormalColumn(this.returnWord,
+				notNullCheck.getSelection(), false,
+				uniqueKeyCheck.getSelection(), false, defaultText.getText(),
+				constraintText.getText(), null, null, null);
 	}
 
 	@Override
 	protected void setEnabledBySqlType() {
 		super.setEnabledBySqlType();
 
-		SqlType selectedType = SqlType.valueOf(diagram.getDatabase(), typeCombo
-				.getText());
+		SqlType selectedType = SqlType.valueOf(diagram.getDatabase(),
+				typeCombo.getText());
 
 		if (selectedType != null) {
 			String defaultValue = this.defaultText.getText();
@@ -158,10 +158,17 @@ public abstract class AbstractRealColumnDialog extends AbstractColumnDialog {
 						.getResourceString("label.current.date.time"));
 				this.defaultText.setText(defaultValue);
 
+			} else if (selectedType.isFullTextIndexable()) {
+				this.defaultText.add(ResourceString
+						.getResourceString("label.empty.string"));
+				this.defaultText.setText(defaultValue);
+
 			} else {
 				if (!ResourceString
 						.getResourceString("label.current.date.time").equals(
-								defaultValue)) {
+								defaultValue)
+						&& !ResourceString.getResourceString(
+								"label.empty.string").equals(defaultValue)) {
 					this.defaultText.setText(defaultValue);
 				}
 			}

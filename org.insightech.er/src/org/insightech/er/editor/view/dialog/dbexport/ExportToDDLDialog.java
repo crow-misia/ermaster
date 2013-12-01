@@ -361,6 +361,20 @@ public class ExportToDDLDialog extends AbstractDialog {
 	protected void perfomeOK() throws InputException {
 		String saveFilePath = this.outputFileText.getFilePath();
 
+		File outputFile = new File(saveFilePath);
+		File outputDir = outputFile.getParentFile();
+
+		if (!outputDir.exists()) {
+			if (!Activator.showConfirmDialog(ResourceString.getResourceString(
+					"dialog.message.create.parent.dir",
+					new String[] { outputDir.getAbsolutePath() }))) {
+				throw new InputException(null);
+
+			} else {
+				outputDir.mkdirs();
+			}
+		}
+
 		DDLTarget ddlTarget = new DDLTarget();
 		ddlTarget.dropTablespace = this.dropTablespace.getSelection();
 		ddlTarget.dropSequence = this.dropSequence.getSelection();

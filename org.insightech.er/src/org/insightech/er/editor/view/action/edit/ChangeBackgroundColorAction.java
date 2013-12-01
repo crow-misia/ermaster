@@ -32,9 +32,11 @@ import org.insightech.er.ImageKey;
 import org.insightech.er.ResourceString;
 import org.insightech.er.editor.ERDiagramEditor;
 import org.insightech.er.editor.controller.command.display.ChangeBackgroundColorCommand;
+import org.insightech.er.editor.controller.command.display.ChangeConnectionColorCommand;
 import org.insightech.er.editor.controller.editpart.element.node.column.NormalColumnEditPart;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ViewableModel;
+import org.insightech.er.editor.model.diagram_contents.element.connection.ConnectionElement;
 
 public class ChangeBackgroundColorAction extends SelectionAction {
 
@@ -68,9 +70,9 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 				255, 255));
 		imageData.palette.colors[blackPixel] = this.rgb;
 
-		//if (this.image != null) {
-			// this.image.dispose();
-		//}
+		// if (this.image != null) {
+		// this.image.dispose();
+		// }
 		this.image = new Image(Display.getCurrent(), imageData);
 
 		ImageDescriptor descriptor = ImageDescriptor.createFromImage(image);
@@ -140,8 +142,19 @@ public class ChangeBackgroundColorAction extends SelectionAction {
 
 		for (int i = 0; i < objects.size(); i++) {
 			GraphicalEditPart part = (GraphicalEditPart) objects.get(i);
-			command.add(new ChangeBackgroundColorCommand((ViewableModel) part
-					.getModel(), rgb.red, rgb.green, rgb.blue));
+			Object modelObject = part.getModel();
+			
+			if (modelObject instanceof ViewableModel) {
+				command.add(new ChangeBackgroundColorCommand(
+						(ViewableModel) modelObject, rgb.red, rgb.green,
+						rgb.blue));
+				
+			} else if (modelObject instanceof ConnectionElement) {
+				command.add(new ChangeConnectionColorCommand(
+						(ConnectionElement) modelObject, rgb.red, rgb.green,
+						rgb.blue));
+			
+			}
 		}
 
 		return command;

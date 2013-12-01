@@ -68,12 +68,15 @@ public class GlobalGroupSet {
 								.get("array_dimension"));
 						boolean unsigned = Boolean.valueOf(
 								columnSection.get("unsigned")).booleanValue();
+						boolean zerofill = Boolean.valueOf(
+								columnSection.get("zerofill")).booleanValue();
 						boolean binary = Boolean.valueOf(
 								columnSection.get("binary")).booleanValue();
 						String args = columnSection.get("args");
 
 						TypeData typeData = new TypeData(length, decimal,
-								array, arrayDimension, unsigned, binary, args);
+								array, arrayDimension, unsigned, zerofill,
+								binary, args);
 
 						Word word = new Word(physicalName, logicalName,
 								sqlType, typeData, description, database);
@@ -136,6 +139,8 @@ public class GlobalGroupSet {
 									.getArrayDimension()));
 					columnSection.put("unsigned", normalColumn.getTypeData()
 							.isUnsigned());
+					columnSection.put("zerofill", normalColumn.getTypeData()
+							.isZerofill());
 					columnSection.put("binary", normalColumn.getTypeData()
 							.isBinary());
 

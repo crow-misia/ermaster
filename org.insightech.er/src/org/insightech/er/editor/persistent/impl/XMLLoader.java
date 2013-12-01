@@ -932,8 +932,9 @@ public class XMLLoader {
 						element, "decimal"), this.getBooleanValue(element,
 						"array"), this.getIntegerValue(element,
 						"array_dimension"), this.getBooleanValue(element,
-						"unsigned"), this.getBooleanValue(element, "binary"),
-				this.getStringValue(element, "args"));
+						"unsigned"), this.getBooleanValue(element, "zerofill"),
+				this.getBooleanValue(element, "binary"), this.getStringValue(
+						element, "args"));
 
 		Word word = new Word(Format.null2blank(this.getStringValue(element,
 				"physical_name")), Format.null2blank(this.getStringValue(
@@ -997,7 +998,7 @@ public class XMLLoader {
 			word = new Word(this.getStringValue(element, "physical_name"),
 					this.getStringValue(element, "logical_name"),
 					SqlType.valueOfId(type), new TypeData(null, null, false,
-							null, false, false, null), this.getStringValue(
+							null, false, false, false, null), this.getStringValue(
 							element, "description"), database);
 
 			word = context.uniqueWordDictionary.getUniqueWord(word);
@@ -1717,6 +1718,8 @@ public class XMLLoader {
 		if (!"null".equals(referencedColumnId)) {
 			context.referencedColumnMap.put(connection, referencedColumnId);
 		}
+		
+		this.loadConnectionColor(connection, element);
 	}
 
 	private void loadCommentConnection(Element element, LoadContext context) {
@@ -1756,6 +1759,8 @@ public class XMLLoader {
 
 			connection.addBendpoint(i, bendpoint);
 		}
+		
+		this.loadConnectionColor(connection, element);
 	}
 
 	private void loadDBSetting(ERDiagram diagram, Element element) {
@@ -1805,6 +1810,19 @@ public class XMLLoader {
 		}
 	}
 
+	private void loadConnectionColor(ConnectionElement model, Element element) {
+		int[] rgb = new int[] { 0, 0, 0 };
+		Element color = this.getElement(element, "color");
+
+		if (color != null) {
+			rgb[0] = this.getIntValue(color, "r");
+			rgb[1] = this.getIntValue(color, "g");
+			rgb[2] = this.getIntValue(color, "b");
+		}
+
+		model.setColor(rgb[0], rgb[1], rgb[2]);
+	}
+	
 	private void loadColor(ViewableModel model, Element element) {
 		int[] rgb = new int[] { 255, 255, 255 };
 		Element color = this.getElement(element, "color");

@@ -342,4 +342,11 @@ public class ERTable extends TableView implements TablePropertiesHolder,
 	public String getObjectType() {
 		return "table";
 	}
+
+	@Override
+	public String toString() {
+		return "name:" + this.getName() + ", " + super.toString();
+	}
+	
+	
 }

@@ -178,7 +178,8 @@ public class NodeElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy 
 			return null;
 		}
 
-		NodeElement newSource = (NodeElement) reconnectrequest.getTarget().getModel();
+		NodeElement newSource = (NodeElement) reconnectrequest.getTarget()
+				.getModel();
 		if (connection.getSource() != newSource) {
 			return null;
 		}
@@ -261,4 +262,5 @@ public class NodeElementGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy 
 
 		return command;
 	}
+
 }

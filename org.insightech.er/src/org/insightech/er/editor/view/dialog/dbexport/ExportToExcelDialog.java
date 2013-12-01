@@ -213,6 +213,41 @@ public class ExportToExcelDialog extends AbstractDialog {
 			String templateName = this.templateCombo.getText();
 			String outputExcelFilePath = this.outputExcelFileText.getFilePath();
 			String outputImageFilePath = this.outputImageFileText.getFilePath();
+
+			File outputExcelFile = new File(outputExcelFilePath);
+			File outputExcelDir = outputExcelFile.getParentFile();
+
+			if (!outputExcelDir.exists()) {
+				if (!Activator
+						.showConfirmDialog(ResourceString
+								.getResourceString(
+										"dialog.message.create.parent.dir",
+										new String[] { outputExcelDir
+												.getAbsolutePath() }))) {
+					throw new InputException(null);
+
+				} else {
+					outputExcelDir.mkdirs();
+				}
+			}
+
+			File outputImageFile = new File(outputImageFilePath);
+			File outputImageDir = outputImageFile.getParentFile();
+
+			if (!outputImageDir.exists()) {
+				if (!Activator
+						.showConfirmDialog(ResourceString
+								.getResourceString(
+										"dialog.message.create.parent.dir",
+										new String[] { outputImageDir
+												.getAbsolutePath() }))) {
+					throw new InputException(null);
+
+				} else {
+					outputImageDir.mkdirs();
+				}
+			}
+
 			byte[] imageBuffer = null;
 			int excelPictureType = -1;
 
@@ -283,6 +318,9 @@ public class ExportToExcelDialog extends AbstractDialog {
 			if (manager.getException() != null) {
 				throw manager.getException();
 			}
+
+		} catch (InputException e) {
+			throw e;
 
 		} catch (IOException e) {
 			Activator.showMessageDialog(e.getMessage());

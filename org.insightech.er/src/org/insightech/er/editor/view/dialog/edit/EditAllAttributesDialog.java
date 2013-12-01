@@ -79,8 +79,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 
 		CopyManager copyManager = new CopyManager(null);
 
-		this.copyContents = copyManager.copy(this.diagram
-				.getDiagramContents());
+		this.copyContents = copyManager.copy(this.diagram.getDiagramContents());
 		this.columnList = new ArrayList<Column>();
 	}
 
@@ -710,6 +709,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 											.isArray(), oldTypeData
 											.getArrayDimension(), oldTypeData
 											.isUnsigned(), oldTypeData
+											.isZerofill(), oldTypeData
 											.isBinary(), oldTypeData.getArgs());
 
 							word.setType(word.getType(), newTypeData, database);
@@ -741,6 +741,7 @@ public class EditAllAttributesDialog extends AbstractDialog implements
 									oldTypeData.isArray(),
 									oldTypeData.getArrayDimension(),
 									oldTypeData.isUnsigned(),
+									oldTypeData.isZerofill(),
 									oldTypeData.isBinary(),
 									oldTypeData.getArgs());
 

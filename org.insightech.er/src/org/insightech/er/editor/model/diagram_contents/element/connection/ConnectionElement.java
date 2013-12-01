@@ -22,6 +22,8 @@ public abstract class ConnectionElement extends AbstractModel {
 
 	private int targetYp;
 
+	private int[] color;
+
 	private List<Bendpoint> bendPoints = new ArrayList<Bendpoint>();
 
 	public ConnectionElement() {
@@ -29,6 +31,8 @@ public abstract class ConnectionElement extends AbstractModel {
 		this.sourceYp = -1;
 		this.targetXp = -1;
 		this.targetYp = -1;
+
+		this.setColor(0, 0, 0);
 	}
 
 	public NodeElement getSource() {
@@ -144,6 +148,17 @@ public abstract class ConnectionElement extends AbstractModel {
 		return false;
 	}
 
+	public void setColor(int red, int green, int blue) {
+		this.color = new int[3];
+		this.color[0] = red;
+		this.color[1] = green;
+		this.color[2] = blue;
+	}
+
+	public int[] getColor() {
+		return this.color;
+	}
+
 	public void refreshBendpoint() {
 		if (isUpdateable()) {
 			this.firePropertyChange("refreshBendpoint", null, null);
@@ -160,6 +175,11 @@ public abstract class ConnectionElement extends AbstractModel {
 		}
 
 		clone.bendPoints = cloneBendPoints;
+
+		if (this.color != null) {
+			clone.color = new int[] { this.color[0], this.color[1],
+					this.color[2] };
+		}
 
 		return clone;
 	}

@@ -100,7 +100,8 @@ public class MySQLDDLCreator extends DDLCreator {
 		ddl.append(" ");
 
 		ddl.append(filter(Format.formatType(normalColumn.getType(),
-				normalColumn.getTypeData(), this.getDiagram().getDatabase(), true)));
+				normalColumn.getTypeData(), this.getDiagram().getDatabase(),
+				true)));
 
 		if (normalColumn.getTypeData().isBinary()) {
 			ddl.append(" BINARY");
@@ -121,6 +122,10 @@ public class MySQLDDLCreator extends DDLCreator {
 			if (ResourceString.getResourceString("label.current.date.time")
 					.equals(defaultValue)) {
 				defaultValue = this.getDBManager().getCurrentTimeValue()[0];
+
+			} else if (ResourceString.getResourceString(
+					"label.empty.string").equals(defaultValue)) {
+				defaultValue = "";
 			}
 
 			ddl.append(" DEFAULT ");

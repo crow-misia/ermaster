@@ -1431,7 +1431,6 @@ public class PersistentXmlImpl extends Persistent {
 			} else if (connection instanceof Relation) {
 				xml.append(tab(this.createXML((Relation) connection, context)));
 			}
-
 		}
 
 		xml.append("</connections>\n");
@@ -1463,6 +1462,8 @@ public class PersistentXmlImpl extends Persistent {
 		for (Bendpoint bendpoint : connection.getBendpoints()) {
 			xml.append(tab(this.createXML(bendpoint)));
 		}
+
+		xml.append(tab(this.createXMLColor(connection.getColor())));
 
 		return xml.toString();
 	}
@@ -1773,6 +1774,8 @@ public class PersistentXmlImpl extends Persistent {
 
 		xml.append("\t<unsigned>").append(word.getTypeData().isUnsigned())
 				.append("</unsigned>\n");
+		xml.append("\t<zerofill>").append(word.getTypeData().isZerofill())
+				.append("</zerofill>\n");
 		xml.append("\t<binary>").append(word.getTypeData().isBinary())
 				.append("</binary>\n");
 		xml.append("\t<args>").append(escape(word.getTypeData().getArgs()))

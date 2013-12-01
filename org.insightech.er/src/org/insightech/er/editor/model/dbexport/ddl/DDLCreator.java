@@ -658,6 +658,10 @@ public abstract class DDLCreator {
 			if (ResourceString.getResourceString("label.current.date.time")
 					.equals(defaultValue)) {
 				defaultValue = this.getDBManager().getCurrentTimeValue()[0];
+
+			} else if (ResourceString.getResourceString(
+					"label.empty.string").equals(defaultValue)) {
+				defaultValue = "";
 			}
 
 			ddl.append(" DEFAULT ");
@@ -693,6 +697,10 @@ public abstract class DDLCreator {
 	}
 
 	protected boolean doesNeedQuoteDefaultValue(NormalColumn normalColumn) {
+		if (normalColumn.getType() == null) {
+			return false;
+		}
+
 		if (normalColumn.getType().isNumber()) {
 			return false;
 		}

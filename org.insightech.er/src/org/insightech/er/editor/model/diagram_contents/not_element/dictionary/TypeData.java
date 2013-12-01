@@ -16,18 +16,21 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 
 	private boolean unsigned;
 	
+	private boolean zerofill;
+	
 	private boolean binary;
 
 	private String args;
 
 	public TypeData(Integer length, Integer decimal, boolean array,
-			Integer arrayDimension, boolean unsigned, boolean binary, String args) {
+			Integer arrayDimension, boolean unsigned, boolean zerofill, boolean binary, String args) {
 		super();
 		this.length = length;
 		this.decimal = decimal;
 		this.array = array;
 		this.arrayDimension = arrayDimension;
 		this.unsigned = unsigned;
+		this.zerofill = zerofill;
 		this.binary = binary;
 		this.args = args;
 	}
@@ -72,7 +75,14 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 		this.unsigned = unsigned;
 	}
 
-	
+	public boolean isZerofill() {
+		return zerofill;
+	}
+
+	public void setZerofill(boolean zerofill) {
+		this.zerofill = zerofill;
+	}
+
 	public boolean isBinary() {
 		return binary;
 	}
@@ -152,6 +162,14 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 			}
 		}
 
+		if (this.zerofill != o.zerofill) {
+			if (this.zerofill) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+
 		if (this.binary != o.binary) {
 			if (this.binary) {
 				return 1;
@@ -199,6 +217,7 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 		result = prime * result + ((decimal == null) ? 0 : decimal.hashCode());
 		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime * result + (unsigned ? 1231 : 1237);
+		result = prime * result + (zerofill ? 1231 : 1237);
 		result = prime * result + (binary ? 1231 : 1237);
 		return result;
 	}
@@ -235,6 +254,8 @@ public class TypeData implements Serializable, Cloneable, Comparable<TypeData> {
 		} else if (!length.equals(other.length))
 			return false;
 		if (unsigned != other.unsigned)
+			return false;
+		if (zerofill != other.zerofill)
 			return false;
 		if (binary != other.binary)
 			return false;

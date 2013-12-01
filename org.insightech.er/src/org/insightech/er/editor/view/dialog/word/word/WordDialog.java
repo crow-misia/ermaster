@@ -77,6 +77,12 @@ public class WordDialog extends AbstractWordDialog {
 			unsigned = this.unsignedCheck.getSelection();
 		}
 
+		boolean zerofill = false;
+
+		if (this.zerofillCheck != null) {
+			zerofill = this.zerofillCheck.getSelection();
+		}
+
 		boolean binary = false;
 
 		if (this.binaryCheck != null) {
@@ -94,7 +100,7 @@ public class WordDialog extends AbstractWordDialog {
 			args = this.argsText.getText();
 		}
 		TypeData typeData = new TypeData(length, decimal, array,
-				arrayDimension, unsigned, binary, args);
+				arrayDimension, unsigned, zerofill, binary, args);
 
 		this.returnWord = new Word(physicalNameText.getText(), logicalNameText
 				.getText(), selectedType, typeData, descriptionText.getText(),

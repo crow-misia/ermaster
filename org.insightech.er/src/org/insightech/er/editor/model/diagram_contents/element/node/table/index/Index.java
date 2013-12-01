@@ -73,7 +73,17 @@ public class Index extends AbstractModel implements ObjectModel,
 	}
 
 	public List<NormalColumn> getColumns() {
-		return this.columns;
+		List<NormalColumn> list = new ArrayList<NormalColumn>();
+
+		for (int i=0; i<this.columns.size(); i++) {
+			NormalColumn column = this.columns.get(i);
+			
+			if (this.table.getNormalColumns().contains(column)) {
+				list.add(column);
+			}
+		}
+		
+		return list;
 	}
 
 	public boolean isNonUnique() {
@@ -81,7 +91,17 @@ public class Index extends AbstractModel implements ObjectModel,
 	}
 
 	public List<String> getColumnNames() {
-		return columnNames;
+		List<String> list = new ArrayList<String>();
+
+		for (int i=0; i<this.columns.size(); i++) {
+			NormalColumn column = this.columns.get(i);
+			
+			if (this.table.getNormalColumns().contains(column)) {
+				list.add(this.columnNames.get(i));
+			}
+		}
+		
+		return list;
 	}
 
 	public void addColumnName(String columnName, Boolean desc) {
@@ -90,7 +110,17 @@ public class Index extends AbstractModel implements ObjectModel,
 	}
 
 	public List<Boolean> getDescs() {
-		return descs;
+		List<Boolean> list = new ArrayList<Boolean>();
+
+		for (int i=0; i<this.columns.size(); i++) {
+			NormalColumn column = this.columns.get(i);
+			
+			if (this.table.getNormalColumns().contains(column)) {
+				list.add(this.descs.get(i));
+			}
+		}
+		
+		return list;
 	}
 
 	public String getName() {
@@ -150,7 +180,7 @@ public class Index extends AbstractModel implements ObjectModel,
 	}
 
 	/**
-	 * description ‚ðŽæ“¾‚µ‚Ü‚·.
+	 * description ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ü‚ï¿½.
 	 * 
 	 * @return description
 	 */
@@ -159,7 +189,7 @@ public class Index extends AbstractModel implements ObjectModel,
 	}
 
 	/**
-	 * description ‚ðÝ’è‚µ‚Ü‚·.
+	 * description ï¿½ï¿½Ý’è‚µï¿½Ü‚ï¿½.
 	 * 
 	 * @param description
 	 *            description
@@ -167,7 +197,7 @@ public class Index extends AbstractModel implements ObjectModel,
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getObjectType() {
 		return "index";
 	}

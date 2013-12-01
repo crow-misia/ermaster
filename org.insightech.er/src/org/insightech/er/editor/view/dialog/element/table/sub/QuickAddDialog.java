@@ -114,7 +114,7 @@ public class QuickAddDialog extends AbstractDialog {
 					length);
 
 			TypeData typeData = new TypeData(length, decimal, false, null,
-					false, false, null);
+					false, false, false, null);
 
 			Word word = new CopyWord(new Word(physicalName, logicalName,
 					sqlType, typeData, null, this.diagram.getDatabase()));
@@ -136,16 +136,16 @@ public class QuickAddDialog extends AbstractDialog {
 
 		this.editColumnTable.removeData();
 
-		this.editColumnTable.addColumnHeader(ResourceString
-				.getResourceString("label.logical.name"), 150);
-		this.editColumnTable.addColumnHeader(ResourceString
-				.getResourceString("label.physical.name"), 150);
-		this.editColumnTable.addColumnHeader(ResourceString
-				.getResourceString("label.column.type"), 100);
-		this.editColumnTable.addColumnHeader(ResourceString
-				.getResourceString("label.column.length"), 100);
-		this.editColumnTable.addColumnHeader(ResourceString
-				.getResourceString("label.column.decimal"), 100);
+		this.editColumnTable.addColumnHeader(
+				ResourceString.getResourceString("label.logical.name"), 150);
+		this.editColumnTable.addColumnHeader(
+				ResourceString.getResourceString("label.physical.name"), 150);
+		this.editColumnTable.addColumnHeader(
+				ResourceString.getResourceString("label.column.type"), 100);
+		this.editColumnTable.addColumnHeader(
+				ResourceString.getResourceString("label.column.length"), 100);
+		this.editColumnTable.addColumnHeader(
+				ResourceString.getResourceString("label.column.decimal"), 100);
 
 		this.addNewRowToTable();
 

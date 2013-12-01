@@ -17,7 +17,9 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.insightech.er.Activator;
+import org.insightech.er.Resources;
 import org.insightech.er.editor.controller.editpart.element.node.NodeElementEditPart;
+import org.insightech.er.editor.controller.editpart.element.node.TableViewEditPart;
 import org.insightech.er.editor.model.AbstractModel;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.element.connection.Bendpoint;
@@ -74,6 +76,8 @@ public abstract class AbstractERDiagramConnectionEditPart extends
 	protected void createEditPolicies() {
 		this.installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE,
 				new ConnectionEndpointEditPolicy());
+		// this.installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
+		// new ConnectionGraphicalNodeEditPolicy());
 	}
 
 	public final void propertyChange(PropertyChangeEvent event) {
@@ -116,11 +120,28 @@ public abstract class AbstractERDiagramConnectionEditPart extends
 	@Override
 	public void refreshVisuals() {
 		if (this.isActive()) {
+			ConnectionElement element = (ConnectionElement) this.getModel();
+
+			((ERDiagramConnection) this.figure).setColor(Resources
+					.getColor(element.getColor()));
+
 			this.fillterConnectionByCategory();
 			this.decorateRelation();
 			this.calculateAnchorLocation();
 			this.refreshBendpoints();
 		}
+	}
+
+	public void refreshVisualsWithColumn() {
+		this.refreshVisuals();
+
+		TableViewEditPart sourceTableViewEditPart = (TableViewEditPart) this
+				.getSource();
+		sourceTableViewEditPart.refreshVisuals();
+
+		TableViewEditPart targetTableViewEditPart = (TableViewEditPart) this
+				.getTarget();
+		targetTableViewEditPart.refreshVisuals();
 	}
 
 	private void fillterConnectionByCategory() {
@@ -175,7 +196,7 @@ public abstract class AbstractERDiagramConnectionEditPart extends
 						}
 					}
 				}
-				
+
 			} else {
 				this.figure.setVisible(true);
 			}

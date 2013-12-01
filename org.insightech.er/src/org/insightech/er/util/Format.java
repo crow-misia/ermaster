@@ -53,6 +53,11 @@ public class Format {
 					type += " unsigned";
 				}
 
+				if (sqlType.isNumber() && typeData.isZerofill()
+						&& MySQLDBManager.ID.equals(database)) {
+					type += " zerofill";
+				}
+
 				if (sqlType.doesNeedArgs()) {
 					type += "(" + typeData.getArgs() + ")";
 				}

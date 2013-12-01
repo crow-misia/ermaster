@@ -231,6 +231,12 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 			unsigned = this.unsignedCheck.getSelection();
 		}
 		
+		boolean zerofill = false;
+
+		if (this.zerofillCheck != null) {
+			zerofill = this.zerofillCheck.getSelection();
+		}
+		
 		boolean binary = false;
 
 		if (this.binaryCheck != null) {
@@ -251,7 +257,7 @@ public abstract class AbstractColumnDialog extends AbstractWordDialog {
 		SqlType selectedType = SqlType.valueOf(database, typeCombo.getText());
 
 		TypeData typeData = new TypeData(length, decimal, array,
-				arrayDimension, unsigned, binary, args);
+				arrayDimension, unsigned, zerofill, binary, args);
 
 		int wordIndex = this.wordCombo.getSelectionIndex();
 

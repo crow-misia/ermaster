@@ -8,13 +8,14 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.impl.mysql.MySQLDBManager;
 import org.insightech.er.editor.model.diagram_contents.not_element.dictionary.TypeData;
 import org.insightech.er.util.Format;
 
@@ -201,16 +202,23 @@ public class SqlType implements Serializable {
 		SqlType sqlType = sqlTypeMap.get(typeKey);
 
 		if (sqlType == null) {
-			alias = alias.replaceAll("\\(.*\\)", "");
-			alias = alias.replaceAll(" UNSIGNED", "");
-
-			typeKey = new TypeKey(alias, size);
-			sqlType = sqlTypeMap.get(typeKey);
+			if (MySQLDBManager.ID.equals(database)) {
+				alias = alias.replaceAll("\\(.*\\)", "(N)");
+				typeKey = new TypeKey(alias, size);
+				sqlType = sqlTypeMap.get(typeKey);
+			}
 
 			if (sqlType == null) {
-				// db import の場合に、サイズが取得されていても、指定はできないケースがある
-				typeKey = new TypeKey(alias, 0);
+				alias = alias.replaceAll("\\(.*\\)", "");
+
+				typeKey = new TypeKey(alias, size);
 				sqlType = sqlTypeMap.get(typeKey);
+
+				if (sqlType == null) {
+					// db import の場合に、サイズが取得されていても、指定はできないケースがある
+					typeKey = new TypeKey(alias, 0);
+					sqlType = sqlTypeMap.get(typeKey);
+				}
 			}
 		}
 
@@ -295,9 +303,9 @@ public class SqlType implements Serializable {
 		}
 
 		List<String> list = new ArrayList<String>(aliases);
-		
+
 		Collections.sort(list);
-		
+
 		return list;
 	}
 
@@ -344,6 +352,14 @@ public class SqlType implements Serializable {
 	}
 
 	public static void main(String[] args) {
+		for (Entry<TypeKey, SqlType> entry : dbSqlTypeMap
+				.get(MySQLDBManager.ID).entrySet()) {
+			logger.info(entry.getKey().toString() + ":"
+					+ entry.getValue().getAlias(MySQLDBManager.ID));
+		}
+	}
+
+	public static void main2(String[] args) {
 		int maxIdLength = 37;
 
 		StringBuilder msg = new StringBuilder();
@@ -441,7 +457,8 @@ public class SqlType implements Serializable {
 
 				if (type.isNeedLength(db) && type.isNeedDecimal(db)) {
 					TypeData typeData = new TypeData(new Integer(1),
-							new Integer(1), false, null, false, false, null);
+							new Integer(1), false, null, false, false, false,
+							null);
 
 					str = Format.formatType(type, typeData, db, true);
 					if (str.equals(alias)) {
@@ -451,7 +468,7 @@ public class SqlType implements Serializable {
 
 				} else if (type.isNeedLength(db)) {
 					TypeData typeData = new TypeData(new Integer(1), null,
-							false, null, false, false, null);
+							false, null, false, false, false, null);
 
 					str = Format.formatType(type, typeData, db, true);
 
@@ -462,7 +479,7 @@ public class SqlType implements Serializable {
 
 				} else if (type.isNeedDecimal(db)) {
 					TypeData typeData = new TypeData(null, new Integer(1),
-							false, null, false, false, null);
+							false, null, false, false, false, null);
 
 					str = Format.formatType(type, typeData, db, true);
 

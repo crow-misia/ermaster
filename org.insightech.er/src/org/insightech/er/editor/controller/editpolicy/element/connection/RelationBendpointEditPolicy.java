@@ -170,7 +170,7 @@ public class RelationBendpointEditPolicy extends ERDiagramBendpointEditPolicy {
 		super.showSelection();
 
 		RelationEditPart editPart = (RelationEditPart) this.getHost();
-		editPart.refresh();
+		editPart.refreshVisualsWithColumn();
 	}
 
 	@Override
@@ -178,7 +178,7 @@ public class RelationBendpointEditPolicy extends ERDiagramBendpointEditPolicy {
 		super.hideSelection();
 
 		RelationEditPart editPart = (RelationEditPart) this.getHost();
-		editPart.refresh();
+		editPart.refreshVisualsWithColumn();
 	}
 
 	@Override
