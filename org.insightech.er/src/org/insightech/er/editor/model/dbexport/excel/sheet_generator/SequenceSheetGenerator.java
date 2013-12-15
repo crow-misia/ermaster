@@ -7,6 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.impl.h2.H2DBManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.ObjectModel;
 import org.insightech.er.editor.model.dbexport.excel.ExportToExcelManager.LoopDefinition;
@@ -50,6 +51,18 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 			}
 		}
 
+		String min = Format.toString(sequence.getMinValue());
+		String max = Format.toString(sequence.getMaxValue());
+		String start = Format.toString(sequence.getStart());
+		String cycle = String.valueOf(sequence.isCycle()).toUpperCase();
+
+		if (H2DBManager.ID.equals(diagram.getDatabase())) {
+			min = "-";
+			max = "-";
+			start = "-";
+			cycle = "-";
+		}
+
 		POIUtils.replace(sheet, KEYWORD_SEQUENCE_NAME, this.getValue(
 				this.keywordsValueMap, KEYWORD_SEQUENCE_NAME,
 				sequence.getName()));
@@ -61,28 +74,16 @@ public class SequenceSheetGenerator extends AbstractSheetGenerator {
 				KEYWORD_INCREMENT,
 				this.getValue(this.keywordsValueMap, KEYWORD_INCREMENT,
 						Format.toString(sequence.getIncrement())));
-		POIUtils.replace(
-				sheet,
-				KEYWORD_MIN,
-				this.getValue(this.keywordsValueMap, KEYWORD_MIN,
-						Format.toString(sequence.getMinValue())));
-		POIUtils.replace(
-				sheet,
-				KEYWORD_MAX,
-				this.getValue(this.keywordsValueMap, KEYWORD_MAX,
-						Format.toString(sequence.getMaxValue())));
-		POIUtils.replace(
-				sheet,
-				KEYWORD_START,
-				this.getValue(this.keywordsValueMap, KEYWORD_START,
-						Format.toString(sequence.getStart())));
+		POIUtils.replace(sheet, KEYWORD_MIN,
+				this.getValue(this.keywordsValueMap, KEYWORD_MIN, min));
+		POIUtils.replace(sheet, KEYWORD_MAX,
+				this.getValue(this.keywordsValueMap, KEYWORD_MAX, max));
+		POIUtils.replace(sheet, KEYWORD_START,
+				this.getValue(this.keywordsValueMap, KEYWORD_START, start));
 		POIUtils.replace(sheet, KEYWORD_CACHE,
 				this.getValue(this.keywordsValueMap, KEYWORD_CACHE, cache));
-		POIUtils.replace(
-				sheet,
-				KEYWORD_CYCLE,
-				this.getValue(this.keywordsValueMap, KEYWORD_CYCLE,
-						sequence.isCycle()));
+		POIUtils.replace(sheet, KEYWORD_CYCLE,
+				this.getValue(this.keywordsValueMap, KEYWORD_CYCLE, cycle));
 	}
 
 	@Override

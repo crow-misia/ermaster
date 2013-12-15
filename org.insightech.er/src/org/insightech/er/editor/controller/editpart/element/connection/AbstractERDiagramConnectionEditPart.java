@@ -137,11 +137,14 @@ public abstract class AbstractERDiagramConnectionEditPart extends
 
 		TableViewEditPart sourceTableViewEditPart = (TableViewEditPart) this
 				.getSource();
-		sourceTableViewEditPart.refreshVisuals();
-
+		if (sourceTableViewEditPart != null) {
+			sourceTableViewEditPart.refreshVisuals();
+		}
 		TableViewEditPart targetTableViewEditPart = (TableViewEditPart) this
 				.getTarget();
-		targetTableViewEditPart.refreshVisuals();
+		if (targetTableViewEditPart != null) {
+			targetTableViewEditPart.refreshVisuals();
+		}
 	}
 
 	private void fillterConnectionByCategory() {

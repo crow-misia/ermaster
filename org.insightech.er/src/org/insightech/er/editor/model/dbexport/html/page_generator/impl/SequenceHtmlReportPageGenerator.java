@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
+import org.insightech.er.db.impl.h2.H2DBManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.dbexport.html.page_generator.AbstractHtmlReportPageGenerator;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
@@ -49,20 +50,21 @@ public class SequenceHtmlReportPageGenerator extends
 			}
 		}
 
-		return new String[] { Format.null2blank(sequence.getDescription()),
-				this.getValue(sequence.getIncrement()),
-				this.getValue(sequence.getMinValue()),
-				this.getValue(sequence.getMaxValue()),
-				this.getValue(sequence.getStart()), cache,
-				String.valueOf(sequence.isCycle()).toUpperCase() };
-	}
+		String min = Format.toString(sequence.getMinValue());
+		String max = Format.toString(sequence.getMaxValue());
+		String start = Format.toString(sequence.getStart());
+		String cycle = String.valueOf(sequence.isCycle()).toUpperCase();
 
-	private String getValue(Number value) {
-		if (value == null) {
-			return "";
-		} else {
-			return String.valueOf(value);
+		if (H2DBManager.ID.equals(diagram.getDatabase())) {
+			min = "-";
+			max = "-";
+			start = "-";
+			cycle = "-";
 		}
+
+		return new String[] { Format.null2blank(sequence.getDescription()),
+				Format.toString(sequence.getIncrement()), min, max, start, cache,
+				cycle };
 	}
 
 	public String getObjectName(Object object) {

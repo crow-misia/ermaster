@@ -12,10 +12,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -231,16 +233,38 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 	protected void cashColumnData(List<DBObject> dbObjectList,
 			IProgressMonitor monitor) throws SQLException, InterruptedException {
-		this.cashColumnDataX(null, dbObjectList, monitor);
+		Set<String> schemas = new HashSet<String>();
+
+		for (DBObject dbObject : dbObjectList) {
+			if (!dbObject.getType().equals(DBObject.TYPE_TABLE)) {
+				continue;
+			}
+			
+			String schemaName = dbObject.getSchema();
+
+			if (!schemas.contains(schemaName)) {
+				if (monitor != null) {
+					monitor.subTask("reading schema: " + schemaName);
+				}
+
+				this.cashColumnDataX(schemaName, null, dbObjectList, monitor);
+
+				schemas.add(schemaName);
+
+				if (monitor != null && monitor.isCanceled()) {
+					throw new InterruptedException("Cancel has been requested.");
+				}
+			}
+		}
 	}
 
-	protected void cashColumnDataX(String tableName,
+	protected void cashColumnDataX(String schemaName, String tableName,
 			List<DBObject> dbObjectList, IProgressMonitor monitor)
 			throws SQLException, InterruptedException {
 		ResultSet columnSet = null;
 
 		try {
-			columnSet = metaData.getColumns(null, null, tableName, null);
+			columnSet = metaData.getColumns(null, schemaName, tableName, null);
 
 			while (columnSet.next()) {
 				tableName = columnSet.getString("TABLE_NAME");
@@ -248,10 +272,6 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 
 				String tableNameWithSchema = this.dbSetting
 						.getTableNameWithSchema(tableName, schema);
-
-				if (monitor != null) {
-					monitor.subTask("reading : " + tableNameWithSchema);
-				}
 
 				Map<String, ColumnData> cash = this.columnDataCash
 						.get(tableNameWithSchema);
@@ -265,10 +285,6 @@ public abstract class ImportFromDBManagerBase implements ImportFromDBManager,
 				this.cashOtherColumnData(tableName, schema, columnData);
 
 				cash.put(columnData.columnName, columnData);
-
-				if (monitor != null && monitor.isCanceled()) {
-					throw new InterruptedException("Cancel has been requested.");
-				}
 			}
 
 		} finally {

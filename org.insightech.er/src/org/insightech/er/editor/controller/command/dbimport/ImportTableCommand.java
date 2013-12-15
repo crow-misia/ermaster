@@ -151,6 +151,8 @@ public class ImportTableCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doExecute() {
+		this.diagram.getEditor().getActiveEditor().removeSelection();
+
 		if (this.columnGroups != null) {
 			for (ColumnGroup columnGroup : columnGroups) {
 				this.columnGroupSet.add(columnGroup);
@@ -230,6 +232,8 @@ public class ImportTableCommand extends AbstractCommand {
 	 */
 	@Override
 	protected void doUndo() {
+		this.diagram.getEditor().getActiveEditor().removeSelection();
+
 		for (NodeElement nodeElement : this.nodeElementList) {
 			this.diagram.removeContent(nodeElement);
 

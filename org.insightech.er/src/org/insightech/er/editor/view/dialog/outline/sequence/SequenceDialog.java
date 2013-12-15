@@ -16,6 +16,7 @@ import org.insightech.er.common.widgets.CompositeFactory;
 import org.insightech.er.db.DBManager;
 import org.insightech.er.db.DBManagerFactory;
 import org.insightech.er.db.impl.db2.DB2DBManager;
+import org.insightech.er.db.impl.h2.H2DBManager;
 import org.insightech.er.db.impl.hsqldb.HSQLDBDBManager;
 import org.insightech.er.editor.model.ERDiagram;
 import org.insightech.er.editor.model.diagram_contents.not_element.sequence.Sequence;
@@ -67,13 +68,15 @@ public class SequenceDialog extends AbstractDialog {
 
 	@Override
 	protected void initialize(Composite composite) {
+		String database = this.diagram.getDatabase();
+
 		this.nameText = CompositeFactory.createText(this, composite,
 				"label.sequence.name", 4, false);
 		this.schemaText = CompositeFactory.createText(this, composite,
 				"label.schema", 4, false);
 
-		if (DB2DBManager.ID.equals(diagram.getDatabase())
-				|| HSQLDBDBManager.ID.equals(diagram.getDatabase())) {
+		if (DB2DBManager.ID.equals(database)
+				|| HSQLDBDBManager.ID.equals(database)) {
 			this.dataTypeCombo = CompositeFactory.createReadOnlyCombo(this,
 					composite, "Data Type", 1, TEXT_SIZE);
 			this.dataTypeCombo.add("BIGINT");
@@ -98,34 +101,38 @@ public class SequenceDialog extends AbstractDialog {
 				"Increment", TEXT_SIZE);
 		CompositeFactory.filler(composite, 3);
 
-		this.startText = CompositeFactory.createNumText(this, composite,
-				"Start", TEXT_SIZE);
-		CompositeFactory.filler(composite, 3);
+		if (!H2DBManager.ID.equals(database)) {
+			this.startText = CompositeFactory.createNumText(this, composite,
+					"Start", TEXT_SIZE);
+			CompositeFactory.filler(composite, 3);
 
-		this.minValueText = CompositeFactory.createNumText(this, composite,
-				"MinValue", TEXT_SIZE);
-		CompositeFactory.filler(composite, 3);
+			this.minValueText = CompositeFactory.createNumText(this, composite,
+					"MinValue", TEXT_SIZE);
+			CompositeFactory.filler(composite, 3);
 
-		this.maxValueText = CompositeFactory.createNumText(this, composite,
-				"MaxValue", TEXT_SIZE);
-		CompositeFactory.filler(composite, 3);
+			this.maxValueText = CompositeFactory.createNumText(this, composite,
+					"MaxValue", TEXT_SIZE);
+			CompositeFactory.filler(composite, 3);
+		}
 
 		if (!HSQLDBDBManager.ID.equals(diagram.getDatabase())) {
 			this.cacheText = CompositeFactory.createNumText(this, composite,
 					"Cache", TEXT_SIZE);
-			
+
 			if (DB2DBManager.ID.equals(diagram.getDatabase())) {
-				this.nocacheCheckBox = CompositeFactory.createCheckbox(this, composite,
-						"nocache", 2);
+				this.nocacheCheckBox = CompositeFactory.createCheckbox(this,
+						composite, "nocache", 2);
 			} else {
 				CompositeFactory.filler(composite, 3);
-				
+
 			}
 		}
 
-		this.cycleCheckBox = CompositeFactory.createCheckbox(this, composite,
-				"Cycle", 2);
-		CompositeFactory.filler(composite, 3);
+		if (!H2DBManager.ID.equals(database)) {
+			this.cycleCheckBox = CompositeFactory.createCheckbox(this,
+					composite, "Cycle", 2);
+			CompositeFactory.filler(composite, 3);
+		}
 
 		if (DB2DBManager.ID.equals(diagram.getDatabase())) {
 			this.orderCheckBox = CompositeFactory.createCheckbox(this,
@@ -199,14 +206,16 @@ public class SequenceDialog extends AbstractDialog {
 			}
 		}
 
-		text = startText.getText();
+		if (this.startText != null) {
+			text = this.startText.getText();
 
-		if (!text.equals("")) {
-			try {
-				Long.parseLong(text);
+			if (!text.equals("")) {
+				try {
+					Long.parseLong(text);
 
-			} catch (NumberFormatException e) {
-				return "error.sequence.start.degit";
+				} catch (NumberFormatException e) {
+					return "error.sequence.start.degit";
+				}
 			}
 		}
 
@@ -347,10 +356,13 @@ public class SequenceDialog extends AbstractDialog {
 				this.maxValueText.setText(Format.toString(this.sequence
 						.getMaxValue()));
 			}
-			this.startText.setText(Format.toString(this.sequence.getStart()));
+			if (this.startText != null) {
+				this.startText
+						.setText(Format.toString(this.sequence.getStart()));
+			}
 			if (this.cacheText != null) {
-				this.cacheText.setText(Format
-						.toString(this.sequence.getCache()));
+				this.cacheText
+						.setText(Format.toString(this.sequence.getCache()));
 			}
 			if (this.nocacheCheckBox != null) {
 				this.nocacheCheckBox.setSelection(this.sequence.isNocache());
@@ -403,10 +415,10 @@ public class SequenceDialog extends AbstractDialog {
 
 			});
 		}
-		
+
 		if (this.nocacheCheckBox != null) {
 			this.nocacheCheckBox.addSelectionListener(new SelectionAdapter() {
-				
+
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					if (nocacheCheckBox.getSelection()) {
@@ -417,7 +429,7 @@ public class SequenceDialog extends AbstractDialog {
 					}
 
 				}
-				
+
 			});
 		}
 	}

@@ -351,7 +351,7 @@ public class SqlType implements Serializable {
 		return this.getId();
 	}
 
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		for (Entry<TypeKey, SqlType> entry : dbSqlTypeMap
 				.get(MySQLDBManager.ID).entrySet()) {
 			logger.info(entry.getKey().toString() + ":"
@@ -359,7 +359,7 @@ public class SqlType implements Serializable {
 		}
 	}
 
-	public static void main2(String[] args) {
+	public static void main(String[] args) {
 		int maxIdLength = 37;
 
 		StringBuilder msg = new StringBuilder();
